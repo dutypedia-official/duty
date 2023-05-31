@@ -8,6 +8,7 @@ import {
   Pressable,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +20,7 @@ import BackHeader from "../../components/BackHeader";
 import SubHeader from "../../components/SubHeader";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+const {width,height}=Dimensions.get("window")
 
 export default function MemberList({ navigation, route }) {
   const [Data, setData] = React.useState();
@@ -194,34 +196,16 @@ export default function MemberList({ navigation, route }) {
               key={i}
             />
           ))}
-        {Data && Data.length == 0 && (
+        
+        {users && users.length == 0&& (
           <View
             style={{
               alignItems: "center",
-              height: "60%",
+              height: height-300,
               paddingTop: "20%",
               justifyContent: "center",
             }}>
-            <SvgXml xml={vectorImage} />
-            <Text
-              style={{
-                color: textColor,
-                fontSize: 16,
-                marginTop: 20,
-              }}>
-              No member found!
-            </Text>
-          </View>
-        )}
-        {users && users.length == 0 && (
-          <View
-            style={{
-              alignItems: "center",
-              height: "60%",
-              paddingTop: "20%",
-              justifyContent: "center",
-            }}>
-            <SvgXml xml={noIcon} />
+            {/* <SvgXml xml={noIcon} /> */}
             <Text
               style={{
                 color: textColor,

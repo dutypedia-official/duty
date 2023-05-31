@@ -114,8 +114,8 @@ export default function ContactList({ navigation, seller, onClose, data ,bottomR
         ))}
 
       {Members && Members.length == 0 && (
-        <View style={[customStyle.fullBox,{minHeight:350}]}>
-          <SvgXml xml={noResult} />
+        <View style={[customStyle.fullBox,{minHeight:height-250}]}>
+          {/* <SvgXml xml={noResult} /> */}
           <Text
             style={{
               marginVertical: 20,

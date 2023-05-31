@@ -20,7 +20,6 @@ import {
   Pressable,
   Animated as Animation,
   Platform,
-  StatusBar,
 } from "react-native";
 import rnTextSize, { TSFontSpecs } from "react-native-text-size";
 import { Ionicons } from "@expo/vector-icons";
@@ -86,7 +85,7 @@ import {
   useImage,
 } from "@shopify/react-native-skia";
 import Swiper from "react-native-swiper";
-
+import { StatusBar } from "expo-status-bar";
 import CustomAppStatusBar from "../Hooks/AppBar";
 import { TabbedHeaderPager } from "react-native-sticky-parallax-header";
 import BottomBar from "../components/BottomBar";
@@ -502,7 +501,7 @@ const OtherProfile = (props) => {
        <View style={{height:25}}/>
       )} */}
       <StatusBar
-        hidden={true}
+        hidden={false}
         backgroundColor={scrollEnabled ? primaryColor : "transparent"}
       />
       {/* {Platform.OS == "android" && (
@@ -1400,7 +1399,7 @@ const OtherProfile = (props) => {
 
       <FixedBackHeader
         style={{
-          marginTop: -15,
+          marginTop: -10,
         }}
         navigation={navigation}
         Yoffset={offset ? offset : 0}

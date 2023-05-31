@@ -306,6 +306,7 @@ export const newHouseKeeper=`<svg width="31" height="30" viewBox="0 0 31 30" fil
 </defs>
 </svg>
 `
+
 export const CATEGORY_LIST=[
     {
         title:"Builder",

@@ -1,6 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View, Animated, Text } from "react-native";
+import { View, Animated, Text, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import { getOnlineUsers, getSocket } from "../../Class/socket";
 import ActivityLoader from "../../components/ActivityLoader";
 import ChatHeader from "../../components/ChatHeader";
 import SearchBar from "../../components/SearchBar";
-
+const {height,width}=Dimensions.get("window")
 export default function SellerList({ navigation, seller, onClose, data,bottomRef,setIndex }) {
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 300);
@@ -150,8 +150,8 @@ export default function SellerList({ navigation, seller, onClose, data,bottomRef
             />
           ))}
         {Members && Members.length == 0 && (
-          <View style={[customStyle.fullBox,{minHeight:350}]}>
-            <SvgXml xml={noResult} />
+          <View style={[customStyle.fullBox,{minHeight:height-250}]}>
+            {/* <SvgXml xml={noResult} /> */}
             <Text
               style={{
                 marginVertical: 20,

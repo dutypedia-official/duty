@@ -978,7 +978,7 @@ const VendorProfile = (props) => {
           style={{
             backgroundColor: "#F0F0F0",
             position: "absolute",
-            top: 20,
+            top: 26,
             right: 20,
             padding: 5,
             borderRadius: 5,

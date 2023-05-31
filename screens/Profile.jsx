@@ -9,9 +9,9 @@ import {
   Image,
   Platform,
   RefreshControl,
-  StatusBar,
   Pressable,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color } from "../assets/colors";
@@ -1151,7 +1151,7 @@ const MainProfile = (props) => {
           flex: 1,
         }}>
         <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
-        <StatusBar backgroundColor={"#F2F2F6"} />
+        <StatusBar backgroundColor={isFocused?"#F2F2F6":"white"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ backgroundColor: "#F2F2F6" }}
@@ -1295,7 +1295,7 @@ const MainProfile = (props) => {
         flex: 1,
       }}>
       <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
-      <StatusBar backgroundColor={"#F2F2F6"} />
+      <StatusBar backgroundColor={isFocused?"#F2F2F6":"white"} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ backgroundColor: "#F2F2F6" }}
