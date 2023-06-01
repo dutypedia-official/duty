@@ -34,18 +34,18 @@ export default function SignUp_3({ navigation, route }) {
   const [passwordError, setPasswordError] = useState();
   const [RePassword, setRePassword] = useState();
   const [RePasswordError, setRePasswordError] = useState();
-  const [check,setCheck]=useState(false)
-  const dispatch=useDispatch()
-  const [loader,setLoader]=useState(false)
-  var regName = /^[a-zA-Z ]+$/
+  const [check, setCheck] = useState(false);
+  const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
+  var regName = /^[a-zA-Z ]+$/;
   const openMenu = () => setVisible(true);
-//console.log("df")
+  //console.log("df")
   const closeMenu = () => setVisible(false);
-  const verify = async() => {
-    setNameError()
-    setUserNameError()
-    setPasswordError()
-    setRePasswordError()
+  const verify = async () => {
+    setNameError();
+    setUserNameError();
+    setPasswordError();
+    setRePasswordError();
     if (!regName.test(name)) {
       setNameError("Invalid name");
       return;
@@ -70,54 +70,54 @@ export default function SignUp_3({ navigation, route }) {
       setUserNameError("Name is too large");
       return;
     }
-    if(password.split("")?.length<8){
-      setPasswordError("Minimum 8 character")
-      return
+    if (password.split("")?.length < 8) {
+      setPasswordError("Minimum 8 character");
+      return;
     }
-    if(password!==RePassword){
-      setRePasswordError("Password not matched")
-      return
+    if (password !== RePassword) {
+      setRePasswordError("Password not matched");
+      return;
     }
-    setLoader(true)
-   try{
-    await registerUser(token,name,userName,password,age,gender).catch(err=>{
-      //console.log()
-      setUserNameError(err.response.data.msg)
-    }).then(res=>{
-      userLogin(userName, password)
-      .then((res) => {
-        setLoader(false)
-        //console.log(res);
-        if (res) {
-          dispatch({ type: "SET_USER", playload: res });
-          navigation.navigate("Feed");
-        }
-      })
-      .catch((err) => {
-        setLoader(false)
-        Alert.alert(err.response.data.msg)
-      });
-    })
-    
-   }catch(err){
-    setLoader(false)
-    console.log(err.message)
-   }
-
+    setLoader(true);
+    try {
+      await registerUser(token, name, userName, password, age, gender)
+        .catch((err) => {
+          //console.log()
+          setUserNameError(err.response.data.msg);
+        })
+        .then((res) => {
+          userLogin(userName, password)
+            .then((res) => {
+              setLoader(false);
+              //console.log(res);
+              if (res) {
+                dispatch({ type: "SET_USER", playload: res });
+                navigation.navigate("Feed");
+              }
+            })
+            .catch((err) => {
+              setLoader(false);
+              Alert.alert(err.response.data.msg);
+            });
+        });
+    } catch (err) {
+      setLoader(false);
+      console.log(err.message);
+    }
   };
-  if(loader){
-    return(
-      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-        <ActivityLoader/>
+  if (loader) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={[styles.mt37, { paddingHorizontal: 20 }]}>
           <Text style={styles.label}>Your name</Text>
           <Input
@@ -209,7 +209,7 @@ export default function SignUp_3({ navigation, route }) {
           </View>
           <Text style={[styles.label, styles.mt20]}>Create a username</Text>
           <Input
-          autoCapitalize={"none"}
+            autoCapitalize={"none"}
             value={userName}
             onChange={setUserName}
             placeholder={"Type your username"}
@@ -247,63 +247,64 @@ export default function SignUp_3({ navigation, route }) {
             placeholder={"Retype password"}
           />
         </View>
-      </ScrollView>
-      <View
-        style={{
-          paddingVertical: 20,
-          paddingHorizontal: 20,
-        }}>
         <View
           style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            flex:1,
-            marginBottom:10
+            paddingVertical: 20,
+            paddingHorizontal: 20,
           }}>
-          <CheckBox  value={check} onChange={()=>{
-            setCheck(v=>(!v))
-          }} />
-          <Text
+          <View
             style={{
-              
-              fontWeight: "500",
-              flex:1,
-              fontSize: 14,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              flex: 1,
+              marginBottom: 10,
             }}>
-            I agree with all of Duty's{" "}
-            <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-              Terms of Service
+            <CheckBox
+              value={check}
+              onChange={() => {
+                setCheck((v) => !v);
+              }}
+            />
+            <Text
+              style={{
+                fontWeight: "500",
+                flex: 1,
+                fontSize: 14,
+              }}>
+              I agree with all of Duty's{" "}
+              <Text style={{ color: "#7566FF", fontWeight: "400" }}>
+                Terms of Service
+              </Text>
+              ,{" "}
+              <Text style={{ color: "#7566FF", fontWeight: "400" }}>
+                Privacy Policy
+              </Text>
+              , and{" "}
+              <Text style={{ color: "#7566FF", fontWeight: "400" }}>
+                Refund Policy
+              </Text>
             </Text>
-            ,{" "}
-            <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-              Privacy Policy
-            </Text>
-            , and{" "}
-            <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-              Refund Policy
-            </Text>
-          </Text>
+          </View>
         </View>
-      </View>
-      <IconButton
-        onPress={verify}
-        disabled={
-          name && gender && age && userName && password && RePassword&&check
-            ? false
-            : true
-        }
-        active={
-          name && gender && age && userName && password && RePassword&&check
-            ? true
-            : false
-        }
-        style={{
-          marginHorizontal: 20,
-          marginVertical: 20,
-          
-        }}
-        title={"Confirm"}
-      />
+        <IconButton
+          onPress={verify}
+          disabled={
+            name && gender && age && userName && password && RePassword && check
+              ? false
+              : true
+          }
+          active={
+            name && gender && age && userName && password && RePassword && check
+              ? true
+              : false
+          }
+          style={{
+            marginHorizontal: 20,
+            marginVertical: 20,
+          }}
+          title={"Confirm"}
+        />
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
