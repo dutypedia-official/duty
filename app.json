@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "duty",
+    "name": "Duty",
     "slug": "duty",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -67,10 +67,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    
     "extra": {
       "eas": {
         "projectId": "81b891e3-f2d8-4658-961f-3fa315ee1ba4"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/81b891e3-f2d8-4658-961f-3fa315ee1ba4",
+      "enabled":true
     }
   }
 }
