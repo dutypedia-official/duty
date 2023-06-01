@@ -334,7 +334,7 @@ const Search = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ height: inset?.top }} />
+      
       <Stack.Navigator>
         <Stack.Screen
           options={{ headerShown: false }}
