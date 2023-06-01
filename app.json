@@ -64,9 +64,7 @@
       ],
       "runtimeVersion": "1.0.0"
     },
-    "updates":{
-      "enabled":true
-    },
+   
     "web": {
       "favicon": "./assets/favicon.png"
     },
