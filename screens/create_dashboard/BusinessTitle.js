@@ -131,6 +131,7 @@ export default function BusinessTitle({ navigation ,route}) {
                 return;
               }
               dispatch({ type: "SERVICE_CENTER_NAME", playload: name });
+             // console.log(serviceCategory)
               navigation.navigate("YourInformation", {
                 data:{
                   serviceCategory:serviceCategory,

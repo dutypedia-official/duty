@@ -63,7 +63,7 @@ export default function Reset({navigation,route}) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
         <View style={{
           paddingHorizontal:20
         }}>

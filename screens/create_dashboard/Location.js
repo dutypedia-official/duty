@@ -194,6 +194,7 @@ export default function Location({ navigation, route }) {
               dispatch({ type: "DISTRICT", playload: district });
               dispatch({ type: "AREA", playload: area });
               dispatch({ type: "ADDRESS", playload: address });
+              //console.log(data)
               navigation.navigate("About", {
                 data: {
                   keywords: data?.keywords,

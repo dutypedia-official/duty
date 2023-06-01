@@ -39,7 +39,7 @@ export default function SignUp_3({ navigation, route }) {
   const [loader,setLoader]=useState(false)
   var regName = /^[a-zA-Z ]+$/
   const openMenu = () => setVisible(true);
-
+//console.log("df")
   const closeMenu = () => setVisible(false);
   const verify = async() => {
     setNameError()
@@ -117,7 +117,7 @@ export default function SignUp_3({ navigation, route }) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
         <View style={[styles.mt37, { paddingHorizontal: 20 }]}>
           <Text style={styles.label}>Your name</Text>
           <Input
@@ -257,15 +257,17 @@ export default function SignUp_3({ navigation, route }) {
           style={{
             flexDirection: "row",
             flexWrap: "wrap",
+            flex:1,
+            marginBottom:10
           }}>
-          <CheckBox value={check} onChange={()=>{
+          <CheckBox  value={check} onChange={()=>{
             setCheck(v=>(!v))
           }} />
           <Text
             style={{
-              flex: 1,
-              fontWeight: "500",
               
+              fontWeight: "500",
+              flex:1,
               fontSize: 14,
             }}>
             I agree with all of Duty's{" "}
@@ -297,7 +299,7 @@ export default function SignUp_3({ navigation, route }) {
         }
         style={{
           marginHorizontal: 20,
-          marginTop: 12,
+          marginVertical: 20,
           
         }}
         title={"Confirm"}

@@ -211,6 +211,7 @@ export default function ServiceDescribe({ navigation,route }) {
               dispatch({ type: "SECOND_IMAGE", playload: secondImage });
               dispatch({ type: "THIRD_IMAGE", playload: thirdImage });
               dispatch({ type: "FOURTH_IMAGE", playload: forthImage });
+              //console.log(data)
               navigation.navigate("Location",{
                 data:{
                   keywords: data?.keywords,

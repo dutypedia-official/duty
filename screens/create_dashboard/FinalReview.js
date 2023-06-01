@@ -349,9 +349,9 @@ const FinalReview = (props) => {
       t47: newData?.fullTime ? true : false,
       skills: newData?.skills,
       keywords: newData?.keywords,
-      category: newData?.serviceCategory,
+      category: newData?.serviceCategory?newData.serviceCategory:"-",
     };
-    
+    //console.log(businessForm)
     const res = await createService(
       businessForm,
       listData,
