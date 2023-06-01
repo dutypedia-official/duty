@@ -214,6 +214,7 @@ export default function About({ navigation,route }) {
               }
               dispatch({ type: "FACILITIES", playload: Service });
               dispatch({ type: "ABOUT", playload: about });
+              
               navigation.navigate("FinalReview",{
                 data:{
                   keywords: data?.keywords,

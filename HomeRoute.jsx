@@ -285,7 +285,7 @@ const HomeRoute = ({ navigation }) => {
         }}
         name="Skills"
         component={Skills}
-      />
+      /> 
       <Stack.Screen
         options={{
           header: (props) => (

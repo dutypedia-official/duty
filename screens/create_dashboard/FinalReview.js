@@ -351,7 +351,7 @@ const FinalReview = (props) => {
       keywords: newData?.keywords,
       category: newData?.serviceCategory,
     };
-    //setLoading(false)
+    
     const res = await createService(
       businessForm,
       listData,
@@ -362,7 +362,7 @@ const FinalReview = (props) => {
     ).catch((err) => {
       setLoading(false);
       console.warn(err.response.data.msg);
-      Alert.alert(res.response.data.msg);
+      Alert.alert(err.response.data.msg);
     });
     if (!res) {
       setLoading(false);
@@ -381,7 +381,7 @@ const FinalReview = (props) => {
       navigation.navigate("MainProfile");
       navigation.navigate("VendorProfile");
     } catch (e) {
-      navigation.navigate("Profile");
+      navigation.navigate("Feed");
     }
     // try{
     //   props.navigation.navigate("VendorProfile");
