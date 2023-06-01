@@ -41,13 +41,14 @@ import * as Notifications from "expo-notifications";
 import * as Updates from "expo-updates";
 
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: true,
+//     shouldSetBadge: true,
+//   }),
+// });
+Notifications.setNotificationHandler(null);
 export default function App() {
   const MyTheme = {
     ...DefaultTheme,
