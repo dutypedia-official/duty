@@ -1,5 +1,6 @@
 import React from "react";
 import { Animated, ScrollView,View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HidableHeaderLayout({ header, component, bottom }) {
   const scrollY = new Animated.Value(0);
@@ -8,8 +9,9 @@ export default function HidableHeaderLayout({ header, component, bottom }) {
     inputRange: [0, 200],
     outputRange: [0, -200],
   });
+  const inset=useSafeAreaInsets()
   return (
-    <View style={{flex:1}}>
+    <View style={{flex:1,paddingTop:inset?.top}}>
       <ScrollView
         style={{ flexGrow: 1 }}
         stickyHeaderIndices={[0]}
