@@ -126,7 +126,7 @@ export default function ServiceCategoryAdd({ onClose,onSelect }) {
           style={[
             styles.button,
             {
-              marginTop: "100%",
+              marginTop:height-350
             },
           ]}
           title={"Done"}

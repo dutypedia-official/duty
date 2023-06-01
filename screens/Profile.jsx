@@ -1151,7 +1151,7 @@ const MainProfile = (props) => {
           flex: 1,
         }}>
         <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
-        <StatusBar backgroundColor={isFocused?"#F2F2F6":"white"} />
+        <StatusBar style="dark" backgroundColor={isFocused?"#F2F2F6":"white"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ backgroundColor: "#F2F2F6" }}
@@ -1295,7 +1295,7 @@ const MainProfile = (props) => {
         flex: 1,
       }}>
       <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
-      <StatusBar backgroundColor={isFocused?"#F2F2F6":"white"} />
+      <StatusBar style="dark" backgroundColor={isFocused?"#F2F2F6":"white"} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ backgroundColor: "#F2F2F6" }}
