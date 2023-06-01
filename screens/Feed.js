@@ -150,7 +150,7 @@ const Feed = ({ navigation, route }) => {
           }
           navigation.navigate("InitialServiceCreate")
         }}/>
-        <View style={{height:30,width:100,backgroundColor:"red"}}/>
+        {/* <View style={{height:30,width:100,backgroundColor:"red"}}/> */}
         <ServiceListCart navigation={navigation}/>
         <PopularCategory refresh={refreshing} navigation={navigation} onMore={(data)=>{
           navigation.navigate("ServiceScreen",{data:data})
