@@ -101,6 +101,8 @@ import { vendorLogin } from "../../Class/auth";
 import customStyle from "../../assets/stylesheet";
 import ViewMore from "../../Hooks/ViewMore";
 import ServiceListViewer from "../../components/ServiceListViewer";
+//import businessForm from "../../Reducers/businessForm";
+
 
 const { width, height } = Dimensions.get("window");
 const FinalReview = (props) => {
@@ -186,6 +188,7 @@ const FinalReview = (props) => {
   const [imageUploader, setImageUploader] = useState(false);
   const [ButtonPress, setButtonPress] = useState(false);
   const [loading, setLoading] = useState(false);
+  const business=useSelector(state=>state.businessForm)
 
   React.useEffect(() => {
     if (isFocused) {
@@ -349,7 +352,7 @@ const FinalReview = (props) => {
       t47: newData?.fullTime ? true : false,
       skills: newData?.skills,
       keywords: newData?.keywords,
-      category: newData?.serviceCategory?newData.serviceCategory:"-",
+      category: newData?.serviceCategory?.name?newData.serviceCategory:{name:business.serviceCategory},
     };
     //console.log(businessForm)
     const res = await createService(
@@ -1216,6 +1219,7 @@ const BargainingScreen = (props) => {
   const scrollTo = params.scrollTo;
   const changeScreenName = params.changeScreenName;
   const dispatch = useDispatch();
+  const business=useSelector(state=>state.businessForm)
   //console.log(Data);
 
   React.useEffect(() => {
@@ -1362,7 +1366,7 @@ const BargainingScreen = (props) => {
         />
       </View>
       <ServiceListViewer
-        serviceCategory={Data?.serviceCategory}
+        serviceCategory={Data?.serviceCategory?.name?Data.serviceCategory:{name:business.serviceCategory}}
         facilities={Facilities}
         skills={Data?.skills}
       />

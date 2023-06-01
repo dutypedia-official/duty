@@ -1312,7 +1312,9 @@ const MainProfile = (props) => {
           <Avatar
             onEdit={() => {
               pickImage().then((res) => {
-                updateProfilePicture(res);
+                if(res){
+                  updateProfilePicture(res);
+                }
               });
             }}
             containerStyle={{ marginTop: 12 }}
