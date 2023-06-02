@@ -81,6 +81,12 @@ import { SearchSecond, SearchThird } from "./screens/Search";
 import ServiceCategory from "./screens/create_dashboard/ServiceCategory";
 import ExtraFacilities from "./screens/create_dashboard/ExtraFacilities";
 import ProfileKeyWord from "./screens/create_dashboard/ProfileKeyWord";
+import Login from "./screens/Login";
+import Recovery from "./screens/signup/Recovery";
+import SignUp_1 from "./screens/signup/SignUp_1";
+import SignUp_2 from "./screens/signup/SignUp_2";
+import SignUp_3 from "./screens/signup/SignUp_3";
+import Reset from "./screens/signup/Reset";
 
 const Stack = createStackNavigator();
 
@@ -424,6 +430,36 @@ const HomeRoute = ({ navigation }) => {
         name="InstructionOrder"
         component={InstructionOrder}
       />
+      <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Login"} {...props}/> }}
+          name="LogIn"
+          component={Login}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="Recovery"
+          component={Recovery}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Password reset"} {...props}/> }}
+          name="Reset"
+          component={Reset}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="SignUp_1"
+          component={SignUp_1}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="SignUp_2"
+          component={SignUp_2}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
+          name="SignUp_3"
+          component={SignUp_3}
+        />
     </Stack.Navigator>
   );
 };

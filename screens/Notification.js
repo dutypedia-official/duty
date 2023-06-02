@@ -58,6 +58,12 @@ import VendorOrderDetails from "./Vendor/VendorOrderDetails";
 import AccountBalance from "./Vendor/account/AccountBalance";
 import AllTransactions from "./Vendor/account/AllTransactions";
 import { AllWithdraws } from "./Vendor/account/AllWithdraws";
+import SignUp_3 from "./signup/SignUp_3";
+import SignUp_2 from "./signup/SignUp_2";
+import SignUp_1 from "./signup/SignUp_1";
+import Reset from "./signup/Reset";
+import Recovery from "./signup/Recovery";
+import Login from "./Login";
 
 const Stack = createNativeStackNavigator();
 const formatOrderNotificationMessage = (item) => {
@@ -285,6 +291,36 @@ const Notification = ({ navigation, route }) => {
         }}
         component={AllWithdraws}
       />
+      <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Login"} {...props}/> }}
+          name="LogIn"
+          component={Login}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="Recovery"
+          component={Recovery}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Password reset"} {...props}/> }}
+          name="Reset"
+          component={Reset}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="SignUp_1"
+          component={SignUp_1}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="SignUp_2"
+          component={SignUp_2}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
+          name="SignUp_3"
+          component={SignUp_3}
+        />
     </Stack.Navigator>
   );
 };

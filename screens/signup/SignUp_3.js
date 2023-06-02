@@ -255,8 +255,6 @@ export default function SignUp_3({ navigation, route }) {
           <View
             style={{
               flexDirection: "row",
-              flexWrap: "wrap",
-              flex: 1,
               marginBottom: 10,
             }}>
             <CheckBox
@@ -268,7 +266,7 @@ export default function SignUp_3({ navigation, route }) {
             <Text
               style={{
                 fontWeight: "500",
-                flex: 1,
+               
                 fontSize: 14,
               }}>
               I agree with all of Duty's{" "}

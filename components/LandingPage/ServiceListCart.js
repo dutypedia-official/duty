@@ -89,7 +89,7 @@ export const CATEGORY_LIST=[
     },
     {
         title:"Lifestyle",
-        icon:builder,
+        icon:trainer,
         color:"#9C2AA0",
         key:"LIFESTYLE",
     },

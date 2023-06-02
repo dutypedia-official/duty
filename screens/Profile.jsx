@@ -144,6 +144,12 @@ import EditKeywords from "./Profile/EditKeywords";
 import EditExtraFacilities from "./Profile/EditExtraFacilities";
 import EditServiceCategory from "./Profile/EditServiceCategory";
 import EditSkills from "./Profile/EditSkills";
+import SignUp_3 from "./signup/SignUp_3";
+import SignUp_2 from "./signup/SignUp_2";
+import SignUp_1 from "./signup/SignUp_1";
+import Reset from "./signup/Reset";
+import Recovery from "./signup/Recovery";
+import Login from "./Login";
 //import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
@@ -928,6 +934,36 @@ const Profile = ({ navigation }) => {
           }}
           name="OtherProfile"
           component={OtherProfile}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Login"} {...props}/> }}
+          name="LogIn"
+          component={Login}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="Recovery"
+          component={Recovery}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Password reset"} {...props}/> }}
+          name="Reset"
+          component={Reset}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="SignUp_1"
+          component={SignUp_1}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          name="SignUp_2"
+          component={SignUp_2}
+        />
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
+          name="SignUp_3"
+          component={SignUp_3}
         />
     </Stack.Navigator>
   );
