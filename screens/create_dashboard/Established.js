@@ -177,9 +177,10 @@ const CustomInput = ({ value, onChange }) => {
         }}>
         {value ? serverTimeToLocalDate(value) : "dd/mm/yyyy"}
       </Text>
-      <DateTimePickerModal
+      <DateTimePickerModal 
         isVisible={isDatePickerVisible}
         mode="date"
+        themeVariant="light"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />

@@ -133,7 +133,7 @@ export const AutoComplete = memo(({ onChange, value, onFocus,blur,innerRef }) =>
         ]}>
         <AutocompleteDropdown
           onFocus={onFocus}
-          ref={searchRef}
+          ref={searchRef} 
           closeOnBlur={blur?blur:false}
           direction={Platform.select({ ios: "up" })}
           controller={(controller) => {
@@ -142,8 +142,10 @@ export const AutoComplete = memo(({ onChange, value, onFocus,blur,innerRef }) =>
           
           dataSet={suggestionsList ? suggestionsList : items}
           onChangeText={(e) => {
-            getSuggestions(e);
             onChange(e);
+            getSuggestions(e);
+            
+            console.log(e)
           }}
           onSelectItem={(item) => {
             item && setSelectedItem(item.id);
@@ -156,7 +158,7 @@ export const AutoComplete = memo(({ onChange, value, onFocus,blur,innerRef }) =>
           onSubmit={(e) => console.log(e.nativeEvent.text)}
           onOpenSuggestionsList={onOpenSuggestionsList}
           loading={loading}
-          useFilter={false} // prevent rerender twice
+          //useFilter={false} // prevent rerender twice
           textInputProps={{
             placeholder: "Position",
             placeholderTextColor: "#767676",

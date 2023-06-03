@@ -120,7 +120,7 @@ export const TrendingCart = ({data,onPress}) => {
   };
   
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <View>
         <Image
           style={styles.image}
@@ -203,7 +203,7 @@ export const TrendingCart = ({data,onPress}) => {
           </View>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

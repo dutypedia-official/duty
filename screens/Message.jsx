@@ -32,6 +32,12 @@ import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../Reducers/hideBottomBar";
 import SupportForm from "./support/SupportForm";
 import OtherProfile from "./OtherProfile";
+import SignUp_3 from "./signup/SignUp_3";
+import SignUp_2 from "./signup/SignUp_2";
+import SignUp_1 from "./signup/SignUp_1";
+import Reset from "./signup/Reset";
+import Recovery from "./signup/Recovery";
+import Login from "./Login";
 const Stack = createStackNavigator();
 
 const Message = (props) => {
@@ -103,6 +109,12 @@ const Message = (props) => {
             headerShown: false,
           }}
           component={SupportForm}
+        />
+        
+        <Stack.Screen
+          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
+          name="SignUp_3"
+          component={SignUp_3}
         />
       </Stack.Navigator>
     </View>

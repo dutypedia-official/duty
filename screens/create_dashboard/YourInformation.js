@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import {
   ScrollView,
   KeyboardAvoidingView,
@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import PageChip from "./components/PageChip";
+import OptionCart,{Cart} from "./components/OptionCart";
 
 export default function YourInformation({ navigation, route }) {
   const businessForm = useSelector((state) => state.businessForm);
@@ -97,6 +98,25 @@ export default function YourInformation({ navigation, route }) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
+  const [pos,setPos]=useState([])
+  useEffect(() => {
+    if (position) {
+      const filteredCategory =
+      text === ""
+        ? PositionData
+        : PositionData.filter((cat) =>
+            cat.title
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .match(position.toLowerCase().replace(/\s+/g, ""))
+          );
+          //console.log(filteredCategory)
+          setPos(filteredCategory);
+      //console.log(arr[0].title)
+    } else {
+      setPos([]);
+    }
+  }, [position]);
 
   return (
     <KeyboardAvoidingView
@@ -201,12 +221,37 @@ export default function YourInformation({ navigation, route }) {
               />
             </View>
             <View style={{flex:1}}>
-              <AutoComplete
+              {/* <AutoComplete
                 innerRef={suggestionBox}
                 value={position}
                 onChange={setPosition}
                 onFocus={() => setGenderPress(false)}
-              />
+              /> */}
+              <Input placeholder={"Your position"} onFocus={() => setGenderPress(false)} onChange={setPosition} value={position} style={[styles.input,{marginTop:3,marginLeft:15}]}/>
+              <View
+            style={{
+              position: "absolute",
+              width: width - 135,
+              bottom:55,
+              zIndex:100,
+              left:15,
+              backgroundColor:"#ffffff"
+            }}>
+              <OptionCart Child={(data) => (
+                <Cart
+                  onPress={() => {
+                    setPosition(data?.doc?.title)
+                    setTimeout(() => {
+                      setPos([]);
+                    }, 100);
+                  }}
+                  title={data?.doc?.title}
+                  key={data?.index}
+                  index={data?.index}
+                />
+              )}
+              data={pos}/>
+              </View>
               {specialtyError && (
                 <Text
                   style={{

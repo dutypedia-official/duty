@@ -14,138 +14,193 @@ export default function ProfileSkeleton() {
   const colorMode = "light";
   //const colors = ["#F3F3F3", "#505050"];
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <MotiView
-        transition={{
-          type: "timing",
-        }}
-        style={[styles.container, styles.padded]}
-        animate={{ backgroundColor: "#ffffff" }}>
-        <View
-          style={{
-            height: 410,
-            alignItems: "flex-end",
-            justifyContent: "center",
-          }}>
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={21}
-            width={31}
-          />
-          <Gap height={16} />
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={21}
-            width={31}
-          />
-          <Gap height={16} />
-          <Skeleton
-            // colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={21}
-            width={31}
-          />
-          <Gap height={16} />
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={21}
-            width={31}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}>
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={20}
-            width={138}
-          />
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={20}
-            width={76}
-          />
-        </View>
-        <Gap height={32} />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}>
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={63}
-            width={63}
-          />
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={30}
-            width={width / 2 - 68}
-          />
-          <Skeleton
-            //colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={30}
-            width={width / 2 - 68}
-          />
-        </View>
-        <Gap height={32} />
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          marginHorizontal: 20,
+        },
+      ]}>
+      <View
+        style={{
+          height: 410,
+          alignItems: "flex-end",
+          justifyContent: "center",
+        }}>
         <Skeleton
           //colors={colors}
           colorMode={colorMode}
           radius="round"
-          height={17}
-          width={230}
+          height={21}
+          width={31}
         />
-        <Gap height={32} />
+        <Gap height={16} />
         <Skeleton
           //colors={colors}
+          colorMode={colorMode}
+          radius="round"
+          height={21}
+          width={31}
+        />
+        <Gap height={16} />
+        <Skeleton
+          // colors={colors}
+          colorMode={colorMode}
+          radius="round"
+          height={21}
+          width={31}
+        />
+        <Gap height={16} />
+        <Skeleton
+          //colors={colors}
+          colorMode={colorMode}
+          radius="round"
+          height={21}
+          width={31}
+        />
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}>
+        <Skeleton
+          colorMode={colorMode}
+          radius="round"
+          height={20}
+          width={138}
+        />
+        <Skeleton colorMode={colorMode} radius="round" height={20} width={76} />
+      </View>
+      <Gap height={32} />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}>
+        <Skeleton colorMode={colorMode} radius="round" height={63} width={63} />
+        <Skeleton
+          colorMode={colorMode}
+          radius="round"
+          height={30}
+          width={width / 2 - 68}
+        />
+        <Skeleton
+          colorMode={colorMode}
+          radius="round"
+          height={30}
+          width={width / 2 - 68}
+        />
+      </View>
+      <Gap height={32} />
+      <Skeleton colorMode={colorMode} radius="round" height={17} width={230} />
+      <Gap height={32} />
+      <Skeleton colorMode={colorMode} radius="round" height={11} width={276} />
+      <Gap height={32} />
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+        }}>
+        <Skeleton
           colorMode={colorMode}
           radius="round"
           height={11}
-          width={276}
+          width={138}
+        />
+        <Gap width={16} />
+        <Skeleton
+          colorMode={colorMode}
+          radius="round"
+          height={11}
+          width={138}
+        />
+      </View>
+      {/* 
+        
+       
+        
+        <Gap height={32} />
+        <Skeleton
+         
+          colorMode={colorMode}
+          radius="round"
+          height={17}
+          width={113}
         />
         <Gap height={32} />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}>
-          <Skeleton
-            // colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={11}
-            width={138}
-          />
-          <Gap width={16} />
-          <Skeleton
-            // colors={colors}
-            colorMode={colorMode}
-            radius="round"
-            height={11}
-            width={138}
-          />
-        </View>
+        <Skeleton
+         
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
+        <Gap height={6} />
+        <Skeleton
+        
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
+        <Gap height={6} />
+        <Skeleton
+         
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
+        <Gap height={6} />
+        <Skeleton
+        
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
+        <Gap height={32} />
+        <Skeleton
+        
+          colorMode={colorMode}
+          radius="round"
+          height={17}
+          width={113}
+        />
+        <Gap height={32} />
+        <Skeleton
+         
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
+        <Gap height={6} />
+        <Skeleton
+         
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
+        <Gap height={6} />
+        <Skeleton
+         
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
+        <Gap height={6} /> */}
+      {/* <Skeleton
+          // colors={colors}
+          colorMode={colorMode}
+          radius="round"
+          height={12}
+          width={width - 40}
+        />
         <Gap height={32} />
         <Skeleton
           //colors={colors}
@@ -164,86 +219,6 @@ export default function ProfileSkeleton() {
         />
         <Gap height={6} />
         <Skeleton
-          //colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={6} />
-        <Skeleton
-          //colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={6} />
-        <Skeleton
-          // colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={32} />
-        <Skeleton
-          //colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={17}
-          width={113}
-        />
-        <Gap height={32} />
-        <Skeleton
-          //colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={6} />
-        <Skeleton
-          //  colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={6} />
-        <Skeleton
-          // colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={6} />
-        <Skeleton
-          // colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={32} />
-        <Skeleton
-          //colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={17}
-          width={113}
-        />
-        <Gap height={32} />
-        <Skeleton
-          //colors={colors}
-          colorMode={colorMode}
-          radius="round"
-          height={12}
-          width={width - 40}
-        />
-        <Gap height={6} />
-        <Skeleton
           // colors={colors}
           colorMode={colorMode}
           radius="round"
@@ -265,8 +240,7 @@ export default function ProfileSkeleton() {
           radius="round"
           height={12}
           width={width - 40}
-        />
-      </MotiView>
+        /> */}
     </SafeAreaView>
   );
 }
@@ -284,7 +258,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    
   },
   padded: {
     paddingHorizontal: 20,
