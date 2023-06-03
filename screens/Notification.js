@@ -291,31 +291,7 @@ const Notification = ({ navigation, route }) => {
         }}
         component={AllWithdraws}
       />
-      <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Login"} {...props}/> }}
-          name="LogIn"
-          component={Login}
-        />
-        <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
-          name="Recovery"
-          component={Recovery}
-        />
-        <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Password reset"} {...props}/> }}
-          name="Reset"
-          component={Reset}
-        />
-        <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
-          name="SignUp_1"
-          component={SignUp_1}
-        />
-        <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
-          name="SignUp_2"
-          component={SignUp_2}
-        />
+      
         <Stack.Screen
           options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
           name="SignUp_3"

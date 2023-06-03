@@ -94,6 +94,7 @@ import { uploadFile } from "../Class/upload";
 import { updateData } from "../Class/update";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import ServiceListViewer from "../components/ServiceListViewer";
+import ServiceTab from "./SellerProfile/ServiceTab";
 
 const { width, height } = Dimensions.get("window");
 const VendorProfile = (props) => {
@@ -119,6 +120,11 @@ const VendorProfile = (props) => {
       title: "Package",
       value: false,
       type: "PACKAGE",
+    },
+    {
+      title: "Settings",
+      value: false,
+      type: "SETTINGS",
     },
     // {
     //   title: "Installment",
@@ -281,39 +287,7 @@ const VendorProfile = (props) => {
       }
     }
   }, [vendor, data, isFocused]);
-  React.useEffect(() => {
-    setActive("Bargaining");
-    if (Data) {
-      const gigs = Data.service.gigs.filter((d) => d.type == "STARTING");
-      setBackgroundImage(Data.service.wallPhoto);
-      setImage(Data.service.profilePhoto);
-
-      setImages(gigs[0].images);
-      setPrice(gigs[0].price);
-      setTitle(gigs[0].title);
-      setDescription(gigs[0].description);
-
-      //setFacilities(gigs[0].facilites.selectedOptions);
-      let arr = initialState;
-      Data.service.activeServiceTypes.forEach((doc) => {
-        arr = arr.map((d) => {
-          if (d.type == doc) {
-            //console.log(doc);
-            return {
-              title: d.title,
-              value: true,
-              type: d.type,
-            };
-          } else {
-            return d;
-          }
-        });
-      });
-
-      setActiveServiceData(arr);
-      
-    }
-  }, [Bargaining, Data, isFocused]);
+  
   
   React.useState(()=>{
     if(newUser&&data){
@@ -338,22 +312,8 @@ const VendorProfile = (props) => {
   }, [specialtyHeight]);
 
   React.useEffect(() => {}, [newNavigation]);
-  const changeScrollStatus = React.useCallback((val) => {
-    //setScrollEnabled(val);
-  });
-  const scrollTo = React.useCallback((position) => {
-    if (scrollRef) {
-      //console.log(offset)
-      if (position > 0) {
-        scrollRef.current.scrollTo({ y: position, animated: true });
-        //setOffset(val=>(val-position))
-      } else {
-        //console.log(position)
-        scrollRef.current.scrollTo({ y: 1200, animated: true });
-        //setOffset(val=>(val+position))
-      }
-    }
-  });
+ 
+  
   const uploadProfileImage = async (image, isProfile) => {
     setImageUploader(true);
     let arr = [];
@@ -862,28 +822,16 @@ const VendorProfile = (props) => {
         </MotiView>
         {Loader && (
           <ServiceTab
-            newNavigation={newNavigation}
-            initialState={initialState}
-            Images={Images}
-            Title={Title}
-            Description={Description}
-            ServiceList={ServiceList}
-            SubServiceList={SubServiceList}
-            NewDataList={NewDataList}
-            Facilities={Facilities}
-            Price={Price}
-            Data={Data}
-            setNewNavigation={setNewNavigation}
-            RelatedServices={RelatedService}
-            UnRelatedServices={UnRelatedServices}
-            changeScrollStatus={changeScrollStatus}
-            scrollTo={scrollTo}
-            changeScreenName={changeScreenName}
-            clickFixed={clickFixed}
-            clickPackage={clickPackage}
-            FixedService={FixedService}
-            PackageService={PackageService}
-          />
+          wid={130}
+          scrollEnabled={true}
+          categories={initialState}
+          components={[
+            <BargainingScreen navigation={navigation}/>,
+            <FixedScreen navigation={navigation} Data={Data} isFocused={isFocused} onPress={clickFixed}/>,
+            <PackageScreen isFocused={isFocused} onPress={clickPackage} Data={Data}/>,
+            <ServiceSettings/>
+          ]}
+        />
         )}
         {!Loader&&(
           <ActivityLoader/>
@@ -1027,7 +975,7 @@ const VendorProfile = (props) => {
 
 export default VendorProfile;
 
-const ServiceTab = ({
+const ServiceTabss = ({
   newNavigation,
   initialState,
   Images,
@@ -1251,109 +1199,7 @@ const ServiceTab = ({
     </View>
   );
 };
-const styles = StyleSheet.create({
-  activeContent: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    zIndex: 100,
-  },
-  inactiveContent: {},
-  backgroundContainer: {
-    minHeight: 300,
-  },
-  container: {
-    minHeight: 30,
-    backgroundColor: primaryColor,
-  },
-  profile: {
-    borderWidth: 1,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowColor: backgroundColor,
-    width: 110,
-    height: 110,
-    marginTop: -55,
-    alignSelf: "center",
-    backgroundColor: primaryColor,
-    borderColor: backgroundColor,
-    borderRadius: 55,
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-  },
-  icon: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: assentColor,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowRadius: 5,
-    shadowColor: backgroundColor,
-    elevation: 5,
-    shadowOpacity: 0.1,
-  },
-  iconTop: {
-    position: "absolute",
-    right: 20,
-    top: 50,
-    zIndex: 4,
-  },
-  iconBottom: {
-    position: "absolute",
-    zIndex: 4,
-    bottom: -10,
-    right: -10,
-  },
-  headLine: {
-    fontSize: Platform.OS == "ios" ? 22 : 20.5,
-    fontFamily: "Poppins-SemiBold",
-  },
-  text: {
-    textAlign: "center",
-    fontSize: Platform.OS == "ios" ? 14 : 13,
-    fontFamily: "Poppins-Medium",
-  },
-  image: {
-    width: 110,
-    height: 110,
-  },
-  starIcon: {
-    marginRight: 3,
-  },
-  activeButton: {
-    color: "#666666",
-    backgroundColor: "#4ADE80",
-    borderRadius: 15,
-    borderWidth: 0,
-    marginBottom: 5,
-    alignItems: "flex-start",
-    paddingLeft: 10,
-    paddingRight: 10,
-    height: 30,
-    fontSize: Platform.OS == "ios" ? 13.5 : 12,
-    fontFamily: "Poppins-SemiBold",
-  },
-  inactiveButton: {
-    color: textColor,
-    borderRadius: 5,
-    borderWidth: 0,
-    marginBottom: 5,
-    alignItems: "flex-start",
-    paddingLeft: 10,
-    paddingRight: 10,
-    height: 30,
-    fontSize: Platform.OS == "ios" ? 13.5 : 12,
-    fontFamily: "Poppins-SemiBold",
-  },
-});
+
 
 const BarOption = ({ icon, title }) => {
   const [lines, setLines] = React.useState(1);
@@ -1398,134 +1244,19 @@ function uniq(a) {
     return !pos || item != ary[pos - 1];
   });
 }
-const BargainingScreen = ({ navigation, route }) => {
-  const params = route.params;
-  const Images = params.Images;
-  const primaryColor = params.primaryColor;
-  const textColor = params.textColor;
-  const Title = params.Title;
-  const [NewLines, setNewLines] = React.useState(3);
-  const Description = params.Description;
-  const ServiceList = params.ServiceList;
-  const sub = params.SubServiceList;
-  const [SubServiceList, setSubServiceList] = React.useState(sub);
-  const NewDataList = params.NewDataList;
-  //const [NewDataList,setNewDataList]=useState([])
-  const [ActiveService, setActiveService] = React.useState(
-    ServiceList ? ServiceList[0] : NewDataList[0].mainTitle
-  );
-  //const Facilities = params.Facilities;
-  const Data = params.Data;
-  const Price = params.Price;
-  const startingHeight = 120;
-  const fullHeight = calculateHeight(Description, 25);
-  const setNewNavigation = params.setNewNavigation;
-  const isFocused = useIsFocused();
-  const animatedHeight = React.useRef(
-    new Animation.Value(startingHeight)
-  ).current;
-  const [newHeight, setHeight] = React.useState(3);
-  const [text, setText] = React.useState("");
-  const [navHeight, setNavHeight] = React.useState(0);
-  const RelatedServices = params.RelatedServices;
-  const UnRelatedServices = params.UnRelatedServices;
-  const [textHeight, setTextHeight] = React.useState(0);
-  const [scrollEnabled, setScrollEnabled] = React.useState(true);
-  const [offset, setOffset] = React.useState(0);
-  const [ServiceTableHeight, setServiceTableHeight] = React.useState(0);
-  const scrollTo = params.scrollTo;
-  const changeScreenName = params.changeScreenName;
-  const dispatch = useDispatch();
-  //const [Facilities,setFacilities]=useState([])
-  //const [NewDataList,setNewDataList]=useState([])
+const BargainingScreen = ({ navigation, route,params }) => {
+  //const params = route.params;
+  const primaryColor = "#ffffff";
+  const textColor = "#000000";
   const vendor=useSelector(state=>state.vendor)
   const gigs = vendor.service.gigs.filter(
     (d) => d.type == "STARTING"
   );
-  
   const Facilities=convertServerFacilities(gigs[0]?.facilites)
 
-  //console.log(Data);
-  // React.useEffect(()=>{
-  //   try{
-  //     setNewDataList(
-  //       serverToLocal(gigs[0].services.options, gigs[0].services.category)
-  //     );
-  //   }catch(err){
-  //     console.error(err.message)
-  //   }
-  // },[gigs])
- 
   
-  function handleInfinityScroll(event) {
-    let mHeight = event.nativeEvent.layoutMeasurement.height;
-    let cSize = event.nativeEvent.contentSize.height;
-    let Y = event.nativeEvent.contentOffset.y;
-    if (Math.ceil(mHeight + Y) >= cSize) return true;
-    return false;
-  }
-  React.useEffect(() => {
-    Animation.spring(animatedHeight, {
-      speed: 1100,
-      toValue: NewLines != 3 ? fullHeight : startingHeight,
-      useNativeDriver: false,
-    }).start();
-  }, [NewLines]);
-  React.useEffect(() => {
-    if (Description) {
-      setText(null);
-      let totalText = "";
-      Description.split("").map((doc, i) => {
-        if (NewLines != 3) {
-          totalText = totalText + doc;
-          //setText((val) => val + doc);
-        }
-        if (i < 121 && NewLines == 3) {
-          totalText = totalText + doc;
-          //setNewHeight(calculateHeight(text))
-          //setText((val) => val + doc);
-        }
-      });
-      setText(totalText);
-    }
-  }, [NewLines]);
-  //console.log(newHeight);
-  React.useEffect(() => {
-    if (navHeight && isFocused) {
-      //console.log(textHeight)
-      changeScreenName("BARGAINING");
-      setTimeout(() => {
-        setNewNavigation(navHeight + textHeight);
-      }, 0);
-    }
-    //setFacilities();
-  }, [navHeight + isFocused + textHeight]);
-  
-
   return (
-    <View
-      onLayout={(e) => {
-        if (navHeight === 0) {
-          setNavHeight(e.nativeEvent.layout.height);
-        }
-      }}
-      scrollEventThrottle={16}
-      onScroll={(e) => {
-        //console.log(e.nativeEvent.contentOffset.y)
-        const currentOffset = e.nativeEvent.contentOffset.y;
-        //console.log(navHeight)
-        if (currentOffset < -80) {
-          //console.log("ok")
-          scrollTo(1);
-        }
-
-        if (currentOffset > offset && currentOffset > 0) {
-          scrollTo(-10);
-        }
-
-        setOffset(currentOffset);
-      }}
-      nestedScrollEnabled={true}>
+    <View>
       <View style={{ backgroundColor: primaryColor, marginBottom: -1 }}>
         <Text
           style={{
@@ -1548,7 +1279,7 @@ const BargainingScreen = ({ navigation, route }) => {
             onChange={(height) => {
               //setNewNavigation(newHeight + 55 + height);
               //console.log(height)
-              setTextHeight(height - 50);
+              //setTextHeight(height - 50);
             }}
             button={true}
             text={gigs?gigs[0].description:""}
@@ -1618,7 +1349,7 @@ const BargainingScreen = ({ navigation, route }) => {
        
       </View>
       
-      <View style={{ height: 70 }} />
+      <View style={{ height: 30 }} />
     </View>
   );
 };
@@ -1627,34 +1358,11 @@ const newStar = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" 
 <path id="Polygon_1" data-name="Polygon 1" d="M9.6,1.879a1,1,0,0,1,1.8,0l1.844,3.843a1,1,0,0,0,.817.564l4.428.376a1,1,0,0,1,.537,1.78l-3.181,2.526a1,1,0,0,0-.349,1.024l.951,3.827a1,1,0,0,1-1.441,1.123L10.971,14.79a1,1,0,0,0-.941,0L5.994,16.942a1,1,0,0,1-1.441-1.123L5.5,11.992a1,1,0,0,0-.349-1.024L1.973,8.442a1,1,0,0,1,.537-1.78l4.428-.376a1,1,0,0,0,.817-.564Z" fill="#ffc107"/>
 </svg>
 `;
-const FixedScreen = ({ navigation, route }) => {
-  const params = route.params;
+const FixedScreen = ({ navigation, Data,onPress,isFocused }) => {
   const [FixedService, setFixedService] = useState([]);
-  const onPress = params.onPress;
-  const setNewNavigation = params.setNewNavigation;
-  const isFocused = useIsFocused();
-  const [viewHeight, setViewHeight] = React.useState();
-  const RelatedServices = params.RelatedServices;
-  const UnRelatedServices = params.UnRelatedServices;
-  const [content, setContent] = React.useState(2);
-  const [layoutHeight, setLayoutHeight] = React.useState();
-  const [offset, setOffset] = React.useState(0);
-  const scrollTo = params.scrollTo;
-  const changeScreenName = params.changeScreenName;
+  
   const newUser = useSelector((state) => state.user);
-  const Data = params?.Data;
 
-  React.useEffect(() => {
-    if (layoutHeight && isFocused) {
-      //console.log(layoutHeight);
-      setNewNavigation(layoutHeight + 50);
-      changeScreenName("ONETIME");
-      //setNewNavigation(layoutHeight + 70);
-      setTimeout(() => {
-        //setNewNavigation(layoutHeight + 140);
-      }, 50);
-    }
-  }, [isFocused + layoutHeight]);
   React.useEffect(() => {
     if (newUser && Data) {
       getOtherServices(newUser.token, Data.service.id, "ONETIME")
@@ -1671,25 +1379,7 @@ const FixedScreen = ({ navigation, route }) => {
 
   //console.log(FixedService)
   return (
-    <View
-      onLayout={(e) => {
-        setLayoutHeight(e.nativeEvent.layout.height);
-      }}
-      scrollEventThrottle={16}
-      onScroll={(e) => {
-        //console.log(e.nativeEvent.contentOffset.y)
-        const currentOffset = e.nativeEvent.contentOffset.y;
-        //console.log(navHeight)
-        if (currentOffset < -80) {
-          //console.log("ok")
-          scrollTo(1);
-        }
-        if (currentOffset > offset && currentOffset > 0) {
-          scrollTo(-10);
-        }
-        setOffset(currentOffset);
-      }}
-      nestedScrollEnabled={true}>
+    <View>
       <View
         style={{
           flexDirection: "row",
@@ -1727,33 +1417,15 @@ const FixedScreen = ({ navigation, route }) => {
           </View>
         </Animated.View>
       )}
-      <View style={{ height: 70 }} />
+      <View style={{ height: 30 }} />
     </View>
   );
 };
-const PackageScreen = ({ navigation, route }) => {
-  const params = route.params;
+const PackageScreen = ({isFocused,onPress,Data }) => {
   const [PackageService, setPackageService] = useState([]);
-  const onPress = route.params.onPress;
-  const RelatedServices = params.RelatedServices;
-  const UnRelatedServices = params.UnRelatedServices;
-  const [content, setContent] = React.useState(2);
-  const [layoutHeight, setLayoutHeight] = React.useState();
-  const isFocused = useIsFocused();
-  const setNewNavigation = params.setNewNavigation;
-  const scrollTo = params.scrollTo;
-  const [offset, setOffset] = React.useState(0);
-  const changeScreenName = params.changeScreenName;
-  const Data = params?.Data;
   const newUser = useSelector((state) => state.user);
 
-  React.useEffect(() => {
-    if (layoutHeight && isFocused) {
-      //console.log(layoutHeight);
-      changeScreenName("PACKAGE");
-      setNewNavigation(layoutHeight + 50);
-    }
-  }, [layoutHeight + isFocused]);
+ 
   React.useEffect(() => {
     if (newUser && Data) {
       getOtherServices(newUser.token, Data.service.id, "PACKAGE")
@@ -1770,24 +1442,8 @@ const PackageScreen = ({ navigation, route }) => {
   //console.log(FixedService)
   return (
     <View
-      scrollEventThrottle={16}
-      onScroll={(e) => {
-        //console.log(e.nativeEvent.contentOffset.y)
-        const currentOffset = e.nativeEvent.contentOffset.y;
-        //console.log(navHeight)
-        if (currentOffset < -80) {
-          //console.log("ok")
-          scrollTo(1);
-        }
-        if (currentOffset > offset && currentOffset > 0) {
-          scrollTo(-10);
-        }
-        setOffset(currentOffset);
-      }}
-      onLayout={(e) => {
-        setLayoutHeight(e.nativeEvent.layout.height);
-      }}
-      nestedScrollEnabled={true}>
+      
+      >
       <View
         style={{
           marginHorizontal: 10,
@@ -1833,24 +1489,11 @@ const PackageScreen = ({ navigation, route }) => {
           </View>
         </Animated.View>
       )}
-      <View style={{ height: 70 }} />
+      <View style={{ height: 30 }} />
     </View>
   );
 };
-const calculateHeight = (text, plus, minus) => {
-  let textLength = text.split("").length;
-  textLength = parseInt(textLength);
-  let lineHeight = Platform.OS == "ios" ? 26 : 26;
-  let letterWidth = Platform.OS == "ios" ? 8 : 8;
-  let height = ((textLength * letterWidth) / (width - 40)) * lineHeight;
-  if (plus) {
-    return height + plus;
-  }
-  if (minus) {
-    return height - minus;
-  }
-  return height;
-};
+
 const SpecialtyComponent = ({ doc, i, arr, seeMore, more }) => {
   const [Length, setLength] = React.useState(0);
   React.useEffect(() => {

@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   Pressable,
+  TouchableHighlight,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import customStyle from "../../assets/stylesheet";
@@ -136,7 +137,7 @@ export const Card = ({ style, data, onPress }) => {
     dispatch(setSaveList(response.data.gigs));
   };
   return (
-    <Pressable onPress={onPress} style={[styles.container, style]}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <Image
         style={styles.image}
         source={{
@@ -207,7 +208,7 @@ export const Card = ({ style, data, onPress }) => {
           <Text style={styles.hugeText}>{data ? data.price : "00"}৳</Text>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

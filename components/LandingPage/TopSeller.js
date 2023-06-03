@@ -163,7 +163,7 @@ export const TopSellerCard = ({
     dispatch(setSaveList(response.data.gigs));
   };
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={onPress}
       style={[styles.container, width ? st.width : null, style]}>
       <View>
@@ -262,7 +262,7 @@ export const TopSellerCard = ({
           </View>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 export const TopSellerCardLike = ({ width, style, height, data, onPress }) => {

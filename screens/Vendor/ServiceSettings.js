@@ -41,11 +41,8 @@ const ServiceSettings = ({ navigation, route }) => {
   ];
   const [Data, setData] = React.useState();
   const vendor = useSelector((state) => state.vendor);
-  const params = route.params;
-  const setNewNavigation = params.setNewNavigation;
-  const [layoutHeight, setLayoutHeight] = React.useState();
+
   const isFocused = useIsFocused();
-  const changeScreenName = params.changeScreenName;
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
@@ -79,25 +76,12 @@ const ServiceSettings = ({ navigation, route }) => {
     }
     setData(arr);
   };
-  React.useEffect(() => {
-    if (layoutHeight && isFocused) {
-      changeScreenName("Settings");
-      if (width < 350 && Platform.OS == "android") {
-        setNewNavigation(400);
-      } else {
-        setNewNavigation(350);
-      }
-    }
-  }, [layoutHeight + isFocused]);
 
   return (
     <View
-      onLayout={(e) => {
-        if (!layoutHeight) {
-          setLayoutHeight(e.nativeEvent.layout.height);
-        }
-      }}
-      style={{ flex: 1 }}>
+      style={{
+        height: 500,
+      }}>
       <View style={{ backgroundColor: primaryColor }}>
         {/* <Text
           style={{
@@ -113,7 +97,7 @@ const ServiceSettings = ({ navigation, route }) => {
       </View>
       <View>
         <View style={{ height: 20 }} />
-        {Array.isArray(Data)&&
+        {Array.isArray(Data) &&
           Data.map((doc, i) => (
             <Cart
               i={i}
@@ -124,16 +108,30 @@ const ServiceSettings = ({ navigation, route }) => {
               setLoader={setLoader}
             />
           ))}
-        {!Data||loader && (
+        {!Data && (
           <View
             style={{
               height: 150,
               justifyContent: "center",
               alignItems: "center",
-              position:"absolute",
-              zIndex:100,
-              width:"100%",
-              backgroundColor:"#ffffff"
+              position: "absolute",
+              zIndex: 100,
+              width: "100%",
+              backgroundColor: "#ffffff",
+            }}>
+            <ActivityLoader />
+          </View>
+        )}
+        {loader && (
+          <View
+            style={{
+              height: 150,
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              zIndex: 100,
+              width: "100%",
+              backgroundColor: "#ffffff",
             }}>
             <ActivityLoader />
           </View>
@@ -144,7 +142,7 @@ const ServiceSettings = ({ navigation, route }) => {
 };
 
 export default ServiceSettings;
-const Cart = ({ title, value, i, data,setLoader }) => {
+const Cart = ({ title, value, i, data, setLoader }) => {
   const [isEnabled, setIsEnabled] = React.useState(value);
   const dispatch = useDispatch();
   const serviceSettings = useSelector((state) => state.serviceSettings);
@@ -204,24 +202,22 @@ const Cart = ({ title, value, i, data,setLoader }) => {
           {title}
         </Text>
         <View>
-          
-            <Switch
-              style={{
-                transform: [
-                  { scaleX: Platform.OS == "ios" ? 0.8 : 1 },
-                  { scaleY: Platform.OS == "ios" ? 0.8 : 1 },
-                ],
-              }}
-              trackColor={{ false: "#B0BEC5", true: "#06BD06" }}
-              thumbColor={isEnabled ? "#ECEFF1" : "#ECEFF1"}
-              ios_backgroundColor="#B0BEC5"
-              value={isEnabled}
-              onValueChange={(val) => {
-                //setMute(val);
-                toggleSwitch();
-              }}
-            />
-       
+          <Switch
+            style={{
+              transform: [
+                { scaleX: Platform.OS == "ios" ? 0.8 : 1 },
+                { scaleY: Platform.OS == "ios" ? 0.8 : 1 },
+              ],
+            }}
+            trackColor={{ false: "#B0BEC5", true: "#06BD06" }}
+            thumbColor={isEnabled ? "#ECEFF1" : "#ECEFF1"}
+            ios_backgroundColor="#B0BEC5"
+            value={isEnabled}
+            onValueChange={(val) => {
+              //setMute(val);
+              toggleSwitch();
+            }}
+          />
         </View>
       </View>
       <View style={{ width: 0 }} />

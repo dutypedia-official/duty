@@ -64,6 +64,7 @@ export default function SelectDate({onChange,navigation,route}) {
           setOpen(true)
         }} style={styles.box}>
           <DateTimePickerModal
+          themeVariant="light"
             date={OpeningTime ? OpeningTime : new Date()}
             buttonTextColorIOS={backgroundColor}
             isVisible={Open}
@@ -98,6 +99,7 @@ export default function SelectDate({onChange,navigation,route}) {
           setClose(true)
         }} style={styles.box}>
           <DateTimePickerModal
+          themeVariant="light"
             date={ClosingTime ? ClosingTime : new Date()}
             buttonTextColorIOS={backgroundColor}
             isVisible={Close}

@@ -238,6 +238,7 @@ export default function CreateAppointment({ navigation, route }) {
           <DateTimePickerModal
             date={new Date()}
             isVisible={DateVisible}
+            themeVariant="light"
             mode="date"
             onConfirm={(e) => {
               setDateError("");
@@ -293,6 +294,7 @@ export default function CreateAppointment({ navigation, route }) {
             />
             <DateTimePickerModal
               date={new Date(date)}
+              themeVariant="light"
               isVisible={FromTimeVisible}
               mode="time"
               onConfirm={(e) => {
@@ -339,6 +341,7 @@ export default function CreateAppointment({ navigation, route }) {
             <DateTimePickerModal
               date={new Date(date)}
               isVisible={ToTimeVisible}
+              themeVariant="light"
               mode="time"
               onConfirm={(e) => {
                 let time = allTimeConverter(e);

@@ -253,6 +253,7 @@ export default function AppointmentForm({ navigation, route }) {
           />
           <DateTimePickerModal
             date={new Date()}
+            themeVariant="light"
             isVisible={DateVisible}
             mode="date"
             onConfirm={(e) => {
@@ -309,6 +310,7 @@ export default function AppointmentForm({ navigation, route }) {
             />
             <DateTimePickerModal
               date={new Date(date)}
+              themeVariant="light"
               isVisible={FromTimeVisible}
               mode="time"
               onConfirm={(e) => {
@@ -353,6 +355,7 @@ export default function AppointmentForm({ navigation, route }) {
             />
             <DateTimePickerModal
               date={new Date(date)}
+              themeVariant="light"
               isVisible={ToTimeVisible}
               mode="time"
               onConfirm={(e) => {
