@@ -178,6 +178,7 @@ const OrderDetails = ({ navigation, route }) => {
       facilities: Facilities,
       id: data.id,
       data: data,
+      skills:ListData
     });
   };
   React.useState(() => {

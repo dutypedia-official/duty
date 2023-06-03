@@ -14,6 +14,7 @@ export default function ServiceTab({
   components,
   wid,
   scrollEnabled,
+  onChange
 }) {
   const [active, setActive] = useState("Bargaining");
   const [translateValue] = useState(new Animated.Value(0));
@@ -49,6 +50,7 @@ export default function ServiceTab({
                   press(i);
                   setIndex(i);
                   console.log(i)
+                  onChange&&onChange(doc.type)
                 }}
                 style={[
                   st.button,

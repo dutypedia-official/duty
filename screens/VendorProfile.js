@@ -821,7 +821,7 @@ const VendorProfile = (props) => {
           </View>
         </MotiView>
         {Loader && (
-          <ServiceTab
+          <ServiceTab  onChange={e=>setScreenName(e)}
           wid={130}
           scrollEnabled={true}
           categories={initialState}

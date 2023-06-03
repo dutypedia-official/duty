@@ -191,10 +191,12 @@ const OrderDetails = ({ navigation, route }) => {
       ref?.current?.scrollTo({ y: 200 });
       return;
     }
+    
     navigation.navigate("AcceptOrder", {
       facilities: Facilities,
       id: data.id,
       data: data,
+      skills:ListData
     });
   };
   React.useState(() => {
