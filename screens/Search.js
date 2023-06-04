@@ -39,6 +39,7 @@ import InstructionOrder from "./order/InstructionOrder";
 import SubHeader from "../components/SubHeader";
 import customStyle from "../assets/stylesheet";
 import OrderDetails from "./Seller/OrderDetails";
+import { getJson } from "../Class/storage";
 const Stack = createNativeStackNavigator();
 
 export const SearchSecond = ({ navigation, route }) => {
@@ -52,15 +53,15 @@ export const SearchSecond = ({ navigation, route }) => {
   const [filter, setFilter] = useState();
   const params = route?.params;
   const key = params?.key;
-  const mainCategory=params?.mainCategory;
+  const mainCategory = params?.mainCategory;
   const [searchKey, setSearchKey] = useState(key);
   const [data, setData] = useState();
   const [category, setCategory] = useState("All");
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
-  const [subCategory,setSubCategory]=useState()
-  const [selectedSub,setSelectedSub]=useState()
+  const [subCategory, setSubCategory] = useState();
+  const [selectedSub, setSelectedSub] = useState();
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -77,7 +78,7 @@ export const SearchSecond = ({ navigation, route }) => {
     //console.log(category)
     setLoader(true);
     search(null, {
-      q:!mainCategory? searchKey:undefined,
+      q: !mainCategory ? searchKey : undefined,
       min: filter?.min ? parseInt(filter?.min) : null,
       max: filter?.max ? parseInt(filter?.max) : null,
       division: filter ? filter.division : "",
@@ -85,7 +86,7 @@ export const SearchSecond = ({ navigation, route }) => {
       verified: filter?.verified,
       online: filter?.online,
       sort: filter?.orderBy,
-      category: category=="All"?mainCategory:category,
+      category: category == "All" ? mainCategory : category,
       subCategory: category,
     })
       .then((res) => {
@@ -113,8 +114,8 @@ export const SearchSecond = ({ navigation, route }) => {
           category={category}
           onCategory={setCategory}
           subData={subCategory}
-          onSelectCategory={(e,title)=>{
-            navigation.navigate("SearchThird", { key: title,subData:e });
+          onSelectCategory={(e, title) => {
+            navigation.navigate("SearchThird", { key: title, subData: e });
           }}
           onSubCategory={setSelectedSub}
           selectedSub={selectedSub}
@@ -179,15 +180,15 @@ export const SearchThird = ({ navigation, route }) => {
   const [filter, setFilter] = useState();
   const params = route?.params;
   const key = params?.key;
-  const subData=params?.subData;
+  const subData = params?.subData;
   const [searchKey, setSearchKey] = useState(key);
   const [data, setData] = useState();
   const [category, setCategory] = useState("All");
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
-  const [subCategory,setSubCategory]=useState()
-  const [selectedSub,setSelectedSub]=useState("All")
+  const [subCategory, setSubCategory] = useState();
+  const [selectedSub, setSelectedSub] = useState("All");
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -202,18 +203,22 @@ export const SearchThird = ({ navigation, route }) => {
   }, [isFocused]);
   useEffect(() => {
     setLoader(true);
-    search(null, {
-      q: searchKey || "",
-      min: filter?.min ? parseInt(filter?.min) : null,
-      max: filter?.max ? parseInt(filter?.max) : null,
-      division: filter ? filter.division : "",
-      district: filter?.district,
-      verified: filter?.verified,
-      online: filter?.online,
-      sort: filter?.orderBy,
-      category: key,
-      subCategory: category,
-    },selectedSub=="All"?undefined:selectedSub)
+    search(
+      null,
+      {
+        q: searchKey || "",
+        min: filter?.min ? parseInt(filter?.min) : null,
+        max: filter?.max ? parseInt(filter?.max) : null,
+        division: filter ? filter.division : "",
+        district: filter?.district,
+        verified: filter?.verified,
+        online: filter?.online,
+        sort: filter?.orderBy,
+        category: key,
+        subCategory: category,
+      },
+      selectedSub == "All" ? undefined : selectedSub
+    )
       .then((res) => {
         setData(res.data.gigs);
         setLoader(false);
@@ -223,7 +228,7 @@ export const SearchThird = ({ navigation, route }) => {
         setLoader(false);
         console.warn(err.response.data.msg);
       });
-  }, [searchKey, filter, category,selectedSub]);
+  }, [searchKey, filter, category, selectedSub]);
 
   return (
     <HidableHeaderLayout
@@ -239,7 +244,7 @@ export const SearchThird = ({ navigation, route }) => {
           category={category}
           onCategory={setCategory}
           subData={subData}
-          onSelectCategory={e=>{
+          onSelectCategory={(e) => {
             //setSubCategory(e)
             //navigation.navigate("SearchSecond", { key: category });
           }}
@@ -322,7 +327,10 @@ export const SearchFirst = ({ navigation, route }) => {
       component={
         <ITEM
           onSelect={(e) => {
-            navigation.navigate("SearchSecond", { key: e?.split(" ")[0],mainCategory:e?.split(" ")[0] });
+            navigation.navigate("SearchSecond", {
+              key: e?.split(" ")[0],
+              mainCategory: e?.split(" ")[0],
+            });
           }}
         />
       }
@@ -334,7 +342,6 @@ const Search = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      
       <Stack.Navigator>
         <Stack.Screen
           options={{ headerShown: false }}
@@ -436,6 +443,18 @@ const ITEM = ({ onSelect }) => {
 };
 const SCREEN = ({ data, navigation, loader }) => {
   // 2 next 12; after calculating 12 if there odd number then print flat cart
+  const [newData, setNewData] = useState();
+  useEffect(() => {
+    fetchSuggest();
+  }, []);
+  const fetchSuggest = async () => {
+    try {
+      const data = await getJson("some_suggest");
+      setNewData(data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   if (loader) {
     return (
       <View style={[customStyle.fullBox, { height: 200 }]}>
@@ -443,6 +462,7 @@ const SCREEN = ({ data, navigation, loader }) => {
       </View>
     );
   }
+
   return (
     <View
       style={{
@@ -534,7 +554,34 @@ const SCREEN = ({ data, navigation, loader }) => {
             </View>
           )
         )}
-
+        {data&&data.length==0&&(
+          <Text style={{
+            color:"#484848",
+            fontSize:18,
+            fontWeight:"500",
+            width:"100%",
+            marginTop:24
+          }}>Top search services</Text>
+        )}
+      {data &&
+        data.length == 0 &&
+        newData?.map((doc, i) => (
+          <View key={i} style={{ width: "100%" }}>
+            <Card
+              onPress={() => {
+                navigation.navigate("OtherProfile", {
+                  serviceId: doc.service.id,
+                  data: doc,
+                });
+              }}
+              style={{
+                borderBottomWidth: 0,
+                paddingBottom: 0,
+              }}
+              data={doc}
+            />
+          </View>
+        ))}
       <View style={{ height: 36, width: "100%" }} />
     </View>
   );
