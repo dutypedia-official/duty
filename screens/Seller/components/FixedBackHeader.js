@@ -2,6 +2,7 @@ import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import { View, Animated as Animation, 
   StatusBar, Dimensions,TouchableOpacity,Text } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 const {width,height}=Dimensions.get("window")
 
 export default function FixedBackHeader({ Yoffset, navigation,style,scrollSize,color,title }) {
@@ -13,6 +14,7 @@ export default function FixedBackHeader({ Yoffset, navigation,style,scrollSize,c
     inputRange: [200, 250],
     outputRange: [0, 1],
   });
+  const inset=useSafeAreaInsets()
   React.useEffect(() => {
     if (Yoffset > 200) {
       // console.log("white");
@@ -47,7 +49,7 @@ export default function FixedBackHeader({ Yoffset, navigation,style,scrollSize,c
       <View
         style={{
           position: "absolute",
-          top: 25,
+          top:inset?.top>25?inset?.top:25,
           paddingHorizontal: 0,
           flexDirection: "row",
           zIndex: 2,
@@ -91,7 +93,7 @@ export default function FixedBackHeader({ Yoffset, navigation,style,scrollSize,c
             zIndex: 1,
             width: width,
             position: "absolute",
-            height: 70,
+            height: (70+(inset?.top-10)),
             opacity: translateY,
           },
         ]}
