@@ -66,6 +66,8 @@ import OfferNow from "./Seller/OfferNow";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import ServiceListViewer from "../components/ServiceListViewer";
+import ViewMore from "../Hooks/ViewMore";
+import ReadMore from "../components/ReadMore";
 
 const { width, height } = Dimensions.get("window");
 const PackageService = (props) => {
@@ -506,7 +508,7 @@ const PackageService = (props) => {
                 marginHorizontal: 20,
                 paddingTop: 15,
               }}>
-              <AnimatedHeight
+              {/* <AnimatedHeight
                 onChange={(height) => {
                   //setNewNavigation(newHeight + 55 + height);
                   //console.log(height)
@@ -514,7 +516,10 @@ const PackageService = (props) => {
                 }}
                 button={true}
                 text={Description}
-              />
+              /> */}
+              <ReadMore containerStyle={{
+                marginBottom:15
+              }} content={Description}/>
             </View>
             
           </View>

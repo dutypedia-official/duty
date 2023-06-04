@@ -30,22 +30,25 @@ import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import InputButton from "../Vendor/account/InputButton";
 import SkillAdd from "./components/SkillAdd";
 import PageChip from "./components/PageChip";
+import ReadMore from "../../components/ReadMore";
 const { width, height } = Dimensions.get("window");
 
 export default function Skills({ navigation, route }) {
-  const businessForm=useSelector(state=>state.businessForm)
-  const dispatch=useDispatch()
-  const isFocused=useIsFocused()
-  const [skills, setSkill] = useState(businessForm?.skills?businessForm.skills:[]);
+  const businessForm = useSelector((state) => state.businessForm);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const [skills, setSkill] = useState(
+    businessForm?.skills ? businessForm.skills : []
+  );
   //const data = route?.params?.data;
   const [layoutHeight, setLayoutHeight] = useState(0);
-  const [length,setLength]=useState(0)
-  const serviceCategory=route?.params?.serviceCategory;
-  const [modalVisible,setModalVisible]=useState(false)
-  
-  useEffect(()=>{
-    setLength(skills.length)
-  },[skills.length])
+  const [length, setLength] = useState(0);
+  const serviceCategory = route?.params?.serviceCategory;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    setLength(skills.length);
+  }, [skills.length]);
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -59,13 +62,32 @@ export default function Skills({ navigation, route }) {
     }
   }, [isFocused]);
 
+  const content = `Maximize Your Profile Impact with ${serviceCategory?.name} Skills: Stand Out and Connect with Ease
+
+Choosing the right ${serviceCategory?.name} skills is crucial to effectively showcase your expertise and connect with potential buyers. Here are some key tips to optimize your profile:
+
+1. Define Your Expertise: Clearly specify the services you offer within the ${serviceCategory?.name} service category. Whether you're an individual or representing a company, take the time to highlight the key areas that align with your expertise. For example, if you specialize in ${serviceCategory?.name}, ensure that your profile reflects that focus.
+
+2. Use Clear and Precise Language: Help buyers find you easily by using specific terms to describe what you offer within your ${serviceCategory?.name} skillset. By utilizing descriptive and targeted language, you increase the chances of attracting the right audience and conveying the value you bring.
+
+3. Prioritize Your Strengths: Showcase your top ${serviceCategory?.name} skills prominently on your profile. By listing your best capabilities first, you capture the attention of potential buyers and emphasize your expertise within your chosen service category. This prioritization can make a significant impact on their decision-making process.
+
+4. Stay Updated and Relevant: Regularly update your skills list to reflect any new experiences or additional ${serviceCategory?.name} skills you acquire. This demonstrates your commitment to growth and ensures that buyers see the most accurate representation of your abilities. By staying current, you increase your chances of attracting new clients seeking your specific ${serviceCategory?.name} skills.
+
+5. Foster Trust with Honesty: Represent your abilities accurately and honestly. Buyers rely on your skills to make informed decisions, so it's crucial to provide an authentic portrayal of what you can deliver. Building trust through transparency establishes a solid foundation for successful business relationships.
+
+By optimizing your profile with these strategies, you can enhance your visibility, attract the right buyers, and unlock new opportunities for your business.
+
+Thank you for taking the time to maximize your profile and showcase your expertise within your chosen ${serviceCategory?.name} service. We wish you continued success in connecting with and serving your clients!"  
+`;
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
       <ScrollView showsVerticalScrollIndicator={false}>
-      <PageChip currentPage={2} totalPage={14} />
+        <PageChip currentPage={2} totalPage={14} />
         <View
           style={{
             marginTop: 0,
@@ -90,9 +112,11 @@ export default function Skills({ navigation, route }) {
               }}
               xml={icon}
             />
-            <Text style={[styles.headLine, { flex: 1 }]}>Tips for {serviceCategory?.name} skill</Text>
+            <Text style={[styles.headLine, { flex: 1 }]}>
+              Tips for {serviceCategory?.name} skill
+            </Text>
           </View>
-          <ViewMore view={true}
+          {/* <ViewMore view={true}
             style={{
               marginTop: 24,
               
@@ -149,8 +173,16 @@ export default function Skills({ navigation, route }) {
                 <Text style={[styles.spText,{marginTop:20}]}>Thank you for taking the time to maximize your profile and showcase your expertise within your chosen {serviceCategory?.name} service. We wish you continued success in connecting with and serving your clients!"</Text>
               </View>
             }
+          /> */}
+          <ReadMore
+            containerStyle={{
+              marginTop: 24,
+            }}
+            content={content}
           />
-          <Text style={[styles.headLine, { marginTop: 36 }]}>Add {serviceCategory?.name} Skill</Text>
+          <Text style={[styles.headLine, { marginTop: 36 }]}>
+            Add {serviceCategory?.name} Skill
+          </Text>
           {/* 
          
            */}
@@ -159,7 +191,13 @@ export default function Skills({ navigation, route }) {
             Items, Bike repair, photographer, Baby Care, Business lawyers,
             Cooking Lessons, Dj Mixing{" "}
           </Text> */}
-          <InputButton onPress={()=>setModalVisible(true)} style={styles.input} placeholder={"Example: web development, mobile apps, hair cutting, facial wash"}/>
+          <InputButton
+            onPress={() => setModalVisible(true)}
+            style={styles.input}
+            placeholder={
+              "Example: web development, mobile apps, hair cutting, facial wash"
+            }
+          />
           <Text style={styles.text}>Max 25 character </Text>
           {skills && skills.length > 0 && (
             <View
@@ -180,13 +218,14 @@ export default function Skills({ navigation, route }) {
               ))}
             </View>
           )}
-          <IconButton active={length>0?true:false}
-          disabled={length>0?false:true}
+          <IconButton
+            active={length > 0 ? true : false}
+            disabled={length > 0 ? false : true}
             onPress={() => {
               dispatch({ type: "SKILLS", playload: skills });
-              navigation.navigate("ExtraFacilities",{
-                serviceCategory:serviceCategory,
-                skills:skills
+              navigation.navigate("ExtraFacilities", {
+                serviceCategory: serviceCategory,
+                skills: skills,
               });
             }}
             style={styles.button}
@@ -194,8 +233,17 @@ export default function Skills({ navigation, route }) {
           />
         </View>
       </ScrollView>
-      <Modal animationType="slide" visible={modalVisible} onRequestClose={setModalVisible}>
-        <SkillAdd oldSkills={skills} category={serviceCategory?.key} categoryName={serviceCategory?.name} onSelect={setSkill} onClose={setModalVisible}/>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={setModalVisible}>
+        <SkillAdd
+          oldSkills={skills}
+          category={serviceCategory?.key}
+          categoryName={serviceCategory?.name}
+          onSelect={setSkill}
+          onClose={setModalVisible}
+        />
       </Modal>
     </KeyboardAvoidingView>
   );
@@ -217,11 +265,11 @@ const AddBox = ({ onChange }) => {
       }}>
       <TextInput
         value={text}
-        onChangeText={(e)=>{
-          if(e?.split("")?.length>25){
-            return
+        onChangeText={(e) => {
+          if (e?.split("")?.length > 25) {
+            return;
           }
-          setText(e)
+          setText(e);
         }}
         style={{
           flex: 1,
@@ -252,7 +300,7 @@ const AddBox = ({ onChange }) => {
         <Text
           style={{
             fontSize: 14,
-            
+
             color: text ? "#ffffff" : "#767676",
           }}>
           Add

@@ -65,6 +65,7 @@ import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import FixedBackHeader from "../Seller/components/FixedBackHeader";
 import ActivityLoader from "../../components/ActivityLoader";
 import ServiceListViewer from "../../components/ServiceListViewer";
+import ReadMore from "../../components/ReadMore";
 
 const { width, height } = Dimensions.get("window");
 const VendorPackageService = (props) => {
@@ -539,7 +540,7 @@ const VendorPackageService = (props) => {
                 paddingTop: 15,
               }}
             >
-              <AnimatedHeight
+              {/* <AnimatedHeight
                 onChange={(height) => {
                   //setNewNavigation(newHeight + 55 + height);
                   //console.log(height)
@@ -547,7 +548,8 @@ const VendorPackageService = (props) => {
                 }}
                 button={true}
                 text={Description}
-              />
+              /> */}
+              <ReadMore containerStyle={{marginBottom:15}} content={Description}/>
             </View>
             
           </View>

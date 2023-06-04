@@ -204,7 +204,7 @@ const TabRoute = () => {
         getNotification();
       }
     });
-  }, []);
+  }, []); 
   const getNotification = async () => {
     const res = await getUnreadCount(user.token);
     dispatch(storeNotificationCount(res.data.count));

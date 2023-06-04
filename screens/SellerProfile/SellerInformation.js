@@ -17,6 +17,7 @@ import { getFullRating } from "../../Class/service";
 import { MotiView } from "moti";
 import ProfileOption from "../../components/ProfileOption";
 import { calenderIcon, noticeIcon, user } from "../../assets/icon";
+import ReadMore from "../../components/ReadMore";
 const {width,height}=Dimensions.get('window')
 
 export default function SellerInformation({ Data,newUser,navigation }) {
@@ -265,6 +266,7 @@ export default function SellerInformation({ Data,newUser,navigation }) {
           style={{
             paddingHorizontal: 20,
             backgroundColor: primaryColor,
+            marginBottom:10
           }}>
           <Text
             style={{
@@ -276,10 +278,11 @@ export default function SellerInformation({ Data,newUser,navigation }) {
             About
           </Text>
 
-          <AnimatedHeight
+          {/* <AnimatedHeight
             id={Data.service.id == "W8kHHhBuKG4jkXPNJ32Mw" ? true : false}
             text={Data?.service?.about}
-          />
+          /> */}
+          <ReadMore content={Data?.service?.about}/>
         </View>
         <Pressable
           onPress={() => {

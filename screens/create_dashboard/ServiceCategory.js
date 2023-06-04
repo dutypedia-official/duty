@@ -22,6 +22,7 @@ import ServiceCategoryAdd from "./components/ServiceCategoryAdd";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
+import ReadMore from "../../components/ReadMore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -84,68 +85,10 @@ export default function ServiceCategory({ navigation, route }) {
             Tips for Choosing Your Service Category
           </Text>
         </View>
-        <ViewMore
-          view={true}
-          style={{
-            marginTop: 24,
-          }}
-          lowHeight={70}
-          width={135}
-          position={{
-            bottom: 0,
-          }}
-          height={layoutHeight}
-          component={
-            <View
-              onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-              style={{ width: "100%" }}>
-              <Text style={[styles.spText, { marginTop: 0 }]}>
-                Thank you for choosing our platform to showcase your business!
-                To accurately categorize your services, please follow these
-                instructions:
-              </Text>
-              <TextOp
-                style={{ marginTop: 0 }}
-                text={"Review the available service categories carefully."}
-                number={"1."}
-              />
-              <TextOp
-                style={{ marginTop: 5 }}
-                text={
-                  "Select the category that best represents the primary service your business offers."
-                }
-                number={"2."}
-              />
-              <TextOp
-                style={{ marginTop: 5 }}
-                text={
-                  "If your business provides multiple services, choose the category that aligns with your main service offering."
-                }
-                number={"3."}
-              />
-              <TextOp
-                style={{ marginTop: 5 }}
-                text={
-                  "If you cannot find an exact match, select the closest category that describes your business accurately. Alternatively, you can manually enter your own service category and provide a brief description."
-                }
-                number={"4."}
-              />
-              <TextOp
-                style={{ marginTop: 5 }}
-                text={
-                  "Remember, choosing the appropriate service category will help potential customers find your business easily."
-                }
-                number={"5."}
-              />
-              <Text style={[styles.spText, { marginTop: 0 }]}>
-                If you have any questions or need assistance, please feel free
-                to reach out to our support team. We're here to help! Thank you
-                for your cooperation, and we look forward to showcasing your
-                services on our platform!"
-              </Text>
-            </View>
-          }
-        />
+        
+        <ReadMore containerStyle={{
+          marginTop:24
+        }} content={content}/>
         <Text style={[styles.headLine,{lineHeight:32,marginTop:15}]}>Which service category best describes your business?</Text>
         <InputButton value={serviceCategory} onPress={()=>setModalVisible(true)} style={[styles.input]} placeholder={"example: lawyer, graphic design,Business consultant "}/>
         <Text style={styles.text}>Max 50 characters </Text>
@@ -167,3 +110,11 @@ export default function ServiceCategory({ navigation, route }) {
     </KeyboardAvoidingView>
   );
 }
+const content=`Thank you for choosing our platform to showcase your business! To accurately categorize your services, please follow these instructions:
+1. Review the available service categories carefully.
+2. Select the category that best represents the primary service your business offers.
+3. If your business provides multiple services, choose the category that aligns with your main service offering.
+4. If you cannot find an exact match, select the closest category that describes your business accurately. Alternatively, you can manually enter your own service category and provide a brief description.
+5. Remember, choosing the appropriate service category will help potential customers find your business easily.
+If you have any questions or need assistance, please feel free to reach out to our support team. We're here to help!
+Thank you for your cooperation, and we look forward to showcasing your services on our platform!"`

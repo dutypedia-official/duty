@@ -72,6 +72,8 @@ import OfferNow from "./Seller/OfferNow";
 import ActivityLoader from "../components/ActivityLoader";
 import ServiceListViewer from "../components/ServiceListViewer";
 import ProfileSkeleton from "../components/ProfileSkeleton";
+import ViewMore from "../Hooks/ViewMore";
+import ReadMore from "../components/ReadMore";
 
 const { width, height } = Dimensions.get("window");
 const FixedService = (props) => {
@@ -536,7 +538,7 @@ const FixedService = (props) => {
                 marginHorizontal: 20,
                 paddingTop: 15,
               }}>
-              <AnimatedHeight
+              {/* <AnimatedHeight
                 onChange={(height) => {
                   //setNewNavigation(newHeight + 55 + height);
                   //console.log(height)
@@ -544,7 +546,8 @@ const FixedService = (props) => {
                 }}
                 button={true}
                 text={Description}
-              />
+              /> */}
+              <ReadMore content={Description}/>
             </View>
             
           </View>

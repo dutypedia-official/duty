@@ -23,6 +23,7 @@ import IconButton from "../../components/IconButton";
 import { CheckBox } from "../Seller/Pricing";
 import customStyle from "../../assets/stylesheet";
 import Input from "../../components/Input";
+import ReadMore from "../../components/ReadMore";
 const { width, height } = Dimensions.get("window");
 
 export default function ExtraFacilities({ navigation, route }) {
@@ -102,7 +103,7 @@ export default function ExtraFacilities({ navigation, route }) {
               Tips for Extra Facilities
             </Text>
           </View>
-          <ViewMore
+          {/* <ViewMore
             view={true}
             style={{
               marginTop: 24,
@@ -146,7 +147,8 @@ export default function ExtraFacilities({ navigation, route }) {
                 />
               </View>
             }
-          />
+          /> */}
+          <ReadMore containerStyle={{marginTop:24}} content={content}/>
           <View>
             <Text
               style={{
@@ -331,3 +333,12 @@ const plus = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns=
 <path d="M1 9H17M9 17V1" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
+const content=`1. Identify Unique Offerings: Think about the additional services or features you can provide to enhance the value you offer to potential clients. Consider what makes your business special and how you can go the extra mile to meet their needs.
+
+2. Showcase Your Differentiators: Highlight the unique facilities you provide to attract attention and stand out in your category. Whether it's offering a free consultation, 24/7 customer support, or personalized solutions, make sure to emphasize the benefits clients can enjoy by choosing your services.
+
+3. Be Clear and Concise: When describing your extra facilities, use clear and concise language to convey their value. Focus on the specific advantages they bring and how they can positively impact clients' experiences with your business.
+
+4. Keep it Relevant: Ensure that the extra facilities you offer are relevant to your skills and align with your overall service offerings. This will help create a cohesive and compelling profile that resonates with potential clients.
+
+5. Update as Needed: As your business evolves, revisit and update the extra facilities you provide. Stay responsive to market trends and client demands, and adapt your offerings accordingly to maintain a competitive edge.`

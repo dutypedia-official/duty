@@ -278,8 +278,11 @@ const UserOrderDetails = ({ navigation, route }) => {
             navigation.navigate("ChatScreen", {
               data: {
                 users: [newUser],
+                service:data?.service,
+                serviceId: data?.service?.id,
               },
               username: data.service.user.username,
+              serviceId: data?.service?.id,
             });
           }}
           uri={data?.service?.profilePhoto}

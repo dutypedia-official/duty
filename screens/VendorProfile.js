@@ -95,6 +95,7 @@ import { updateData } from "../Class/update";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import ServiceListViewer from "../components/ServiceListViewer";
 import ServiceTab from "./SellerProfile/ServiceTab";
+import ReadMore from "../components/ReadMore";
 
 const { width, height } = Dimensions.get("window");
 const VendorProfile = (props) => {
@@ -733,10 +734,11 @@ const VendorProfile = (props) => {
                 <SvgXml xml={editIcon} height="50" width={"50"} />
               </TouchableOpacity> */}
             </View>
-            <AnimatedHeight
+            {/* <AnimatedHeight
               id={vendor.service.id == "W8kHHhBuKG4jkXPNJ32Mw" ? true : false}
               text={vendor.service.about}
-            />
+            /> */}
+            <ReadMore containerStyle={{marginBottom:10}} content={vendor.service.about}/>
           </View>
           <Pressable
             onPress={() => {
@@ -1275,15 +1277,8 @@ const BargainingScreen = ({ navigation, route,params }) => {
             marginVertical: 15,
             marginBottom: 0,
           }}>
-          <AnimatedHeight
-            onChange={(height) => {
-              //setNewNavigation(newHeight + 55 + height);
-              //console.log(height)
-              //setTextHeight(height - 50);
-            }}
-            button={true}
-            text={gigs?gigs[0].description:""}
-          />
+          
+          <ReadMore content={gigs?gigs[0].description:""}/>
         </View>
         <View
           style={{

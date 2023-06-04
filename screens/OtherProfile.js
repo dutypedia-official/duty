@@ -73,6 +73,7 @@ import SellerLayout from "./SellerProfile/SellerLayout";
 import ImageCanvas from "./SellerProfile/ImageCanvas";
 import SellerInformation from "./SellerProfile/SellerInformation";
 import ServiceTab from "./SellerProfile/ServiceTab";
+import ReadMore from "../components/ReadMore";
 
 const { width, height } = Dimensions.get("window");
 const OtherProfile = (props) => {
@@ -641,7 +642,8 @@ const BargainingScreen = ({ navigation, route, params,component }) => {
             marginHorizontal: 20,
             marginVertical: 15,
           }}>
-          <AnimatedHeight button={true} text={Description} />
+          {/* <AnimatedHeight button={true} text={Description} /> */}
+          <ReadMore content={Description}/>
         </View>
         <Carousel
           panGestureHandlerProps={{

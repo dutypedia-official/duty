@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { SvgXml } from "react-native-svg";
 import ViewMore from "../Hooks/ViewMore";
 import AddButton from "./AddButton";
 import Button from "./Button";
 import IconButton from "./IconButton";
+import ReadMore from "./ReadMore";
 
 export default function ServiceListViewer({
   serviceCategory,
@@ -17,22 +19,20 @@ export default function ServiceListViewer({
   const [active, setActive] = useState(serviceCategory?.name);
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [text, setText] = useState();
+  const [extra, setExtra] = useState();
   useEffect(() => {
-    if (active == "Extra Facilities") {
-      let t = "";
-      facilities?.map((d, i) => {
-        t = `${t}${i != 0 ? ", " : ""}${d.title}`;
-      });
-      setText(t);
-    } else {
-      let t = "";
-      skills?.map((d, i) => {
-        t = `${t}${i != 0 ? ", " : ""}${d}`;
-      });
-      setText(t);
-    }
+    let e = "";
+    facilities?.map((d, i) => {
+      e = `${e}${e != 0 ? ", " : ""}${d.title}`;
+    });
+    setExtra(e);
+    let t = "";
+    skills?.map((d, i) => {
+      t = `${t}${i != 0 ? ", " : ""}${d}`;
+    });
+    setText(t);
     getLayoutHeight && getLayoutHeight(73);
-  }, [skills?.length,facilities?.length]);
+  }, [skills?.length, facilities?.length]);
   return (
     <View
       style={{
@@ -111,7 +111,7 @@ export default function ServiceListViewer({
                 facilities?.map((d, i) => {
                   t = `${t}${i != 0 ? ", " : ""}${d.title}`;
                 });
-                setText(t);
+                setExtra(t);
               }}
               style={
                 active == "Extra Facilities"
@@ -122,35 +122,15 @@ export default function ServiceListViewer({
             />
           )}
         </View>
-        <View
+        <Animated.View
+          entering={FadeInDown}
           style={{
             flex: 2,
             marginLeft: 20,
           }}>
-          <ViewMore
-            style={{
-              marginTop: 0,
-            }}
-            onChange={(e) => {
-              if (e) {
-                getLayoutHeight && getLayoutHeight(layoutHeight);
-              } else {
-                getLayoutHeight && getLayoutHeight(73);
-              }
-            }}
-            width={100}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => {
-                  setLayoutHeight(e.nativeEvent.layout.height);
-                }}
-                style={[styles.spText, { marginTop: 0 }]}>
-                {text}
-              </Text>
-            }
-          />
-        </View>
+            <ReadMore containerStyle={{ marginTop: 0,height:active=="Extra Facilities"?"auto":0 }} content={extra} /> 
+            <ReadMore containerStyle={{ marginTop: 0,height:active!="Extra Facilities"?"auto":0 }} content={text} />
+        </Animated.View>
       </View>
     </View>
   );
