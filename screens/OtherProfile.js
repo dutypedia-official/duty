@@ -316,6 +316,7 @@ const OtherProfile = (props) => {
       useNativeDriver: false,
     }).start();
   }, [specialtyHeight]);
+  //console.log(Loader)
 
   if (
     Loader ||
@@ -329,7 +330,7 @@ const OtherProfile = (props) => {
   }
   //return <ProfileSkeleton />;
   return (
-    <SellerLayout
+    <SellerLayout 
       headers={
         <>
           {showButton && (

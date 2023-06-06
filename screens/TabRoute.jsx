@@ -198,6 +198,7 @@ const TabRoute = () => {
   // },[user])
   useEffect(() => {
     socket.on("notificationReceived", (e) => {
+      console.log(e)
       if (vendor) {
         getNotificationVendor();
       } else if (user) {

@@ -17,7 +17,7 @@ import ViewMore from "../../Hooks/ViewMore";
 import TextOp from "../create_dashboard/TextOp";
 import InputButton from "../Vendor/account/InputButton";
 import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import { fileFromURL } from "../../action";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { createSupport } from "../../Class/service";
@@ -32,6 +32,7 @@ const status = [
   "Withdraw",
   "Buyer Account Issues ",
   "Seller Account Issues",
+  "Delete My Account",
 ];
 
 export default function SupportForm({ navigation, route }) {
@@ -46,7 +47,7 @@ export default function SupportForm({ navigation, route }) {
   const [loader, setLoader] = useState(false);
   const [visible, setVisible] = useState(false);
   const user = useSelector((state) => state.user);
-  const vendor=useSelector(state=>state.vendor)
+  const vendor = useSelector((state) => state.vendor);
 
   // callbacks
   const handleSheetChange = React.useCallback((index) => {
@@ -63,21 +64,33 @@ export default function SupportForm({ navigation, route }) {
       let arr = [];
       arr.push(Document);
       try {
-        setLoader(true)
+        setLoader(true);
         const res = await uploadFile(arr, user.token);
-        
-        await createSupport(user.token, subject, description, res[0],vendor?vendor?.service?.id:undefined);
-        setLoader(false)
-        setVisible(true)
+
+        await createSupport(
+          user.token,
+          subject,
+          description,
+          res[0],
+          vendor ? vendor?.service?.id : undefined
+        );
+        setLoader(false);
+        setVisible(true);
       } catch (err) {
         console.error(err.message);
       }
     } else {
       try {
-        setLoader(true)
-        await createSupport(user.token, subject, description, null,vendor?vendor?.service?.id:undefined);
-        setLoader(false)
-        setVisible(true)
+        setLoader(true);
+        await createSupport(
+          user.token,
+          subject,
+          description,
+          null,
+          vendor ? vendor?.service?.id : undefined
+        );
+        setLoader(false);
+        setVisible(true);
       } catch (err) {
         console.error(err.message);
       }
@@ -108,7 +121,7 @@ export default function SupportForm({ navigation, route }) {
             style={{
               fontWeight: "500",
               fontSize: 24,
-              
+
               alignItems: "center",
             }}>
             Support Center
@@ -123,7 +136,7 @@ export default function SupportForm({ navigation, route }) {
             style={{
               color: "#000000",
               fontSize: 20,
-              
+
               fontWeight: "500",
               marginTop: 36,
             }}>
@@ -174,7 +187,6 @@ export default function SupportForm({ navigation, route }) {
             style={{
               fontSize: 20,
               fontWeight: "500",
-              
             }}>
             Subject<Text style={{ color: "red" }}>*</Text>
           </Text>
@@ -184,12 +196,23 @@ export default function SupportForm({ navigation, route }) {
             style={[styles.input, { marginTop: 24 }]}
             placeholder={!subject ? "Select Subject" : subject}
           />
+          {subject == "Delete My Account" && (
+            <Text
+              style={{
+                fontSize: 14,
+                color: "#484848",
+                marginTop: 12,
+              }}>
+              ❗️If you have any orders that are currently under processing, we
+              kindly request that you wait until the orders are complete. Thank
+              you for your understanding and patience.
+            </Text>
+          )}
           <View style={{ height: 24 }} />
           <Text
             style={{
               fontSize: 20,
               fontWeight: "500",
-              
             }}>
             Description<Text style={{ color: "red" }}>*</Text>
           </Text>
@@ -204,7 +227,6 @@ export default function SupportForm({ navigation, route }) {
             style={{
               fontSize: 20,
               fontWeight: "500",
-              
             }}>
             Attachments
           </Text>
@@ -311,7 +333,7 @@ export default function SupportForm({ navigation, route }) {
         <Text
           style={{
             fontSize: 16,
-            
+
             color: "#1A1A1A",
             fontWeight: "500",
             textAlign: "center",
@@ -320,7 +342,8 @@ export default function SupportForm({ navigation, route }) {
         </Text>
         <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
           {status.map((doc, i) => (
-            <Box select={doc==subject?true:false}
+            <Box
+              select={doc == subject ? true : false}
               onPress={() => {
                 setSubject(doc);
               }}
@@ -361,14 +384,13 @@ export default function SupportForm({ navigation, route }) {
             style={{
               fontSize: 24,
               fontWeight: "500",
-              
             }}>
             Your request is submited!
           </Text>
           <Text
             style={{
               fontSize: 16,
-             
+
               fontWeight: "400",
               color: "#4D4E4F",
             }}>
@@ -383,7 +405,7 @@ export default function SupportForm({ navigation, route }) {
             }}
             style={{
               fontSize: 16,
-              
+
               fontWeight: "400",
               color: "#4ADE80",
             }}>
@@ -609,16 +631,16 @@ const styles = StyleSheet.create({
   },
 });
 const pickDocument = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: false,
-        aspect: [4, 3],
-        quality: 1,
-      });
-  
-      return result.assets[0]
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    allowsEditing: false,
+    aspect: [4, 3],
+    quality: 1,
+  });
+
+  return result.assets[0];
 };
-const Box = ({ title, onPress, style,select }) => {
+const Box = ({ title, onPress, style, select }) => {
   return (
     <Pressable
       onPress={onPress}
@@ -629,9 +651,9 @@ const Box = ({ title, onPress, style,select }) => {
           borderBottomWidth: 1,
           paddingVertical: 16,
           paddingHorizontal: 20,
-          justifyContent:"space-between",
-          flexDirection:"row",
-          alignItems:"center"
+          justifyContent: "space-between",
+          flexDirection: "row",
+          alignItems: "center",
         },
         style,
       ]}>
@@ -643,11 +665,11 @@ const Box = ({ title, onPress, style,select }) => {
         }}>
         {title}
       </Text>
-      {select&&(<SvgXml xml={right}/>)}
+      {select && <SvgXml xml={right} />}
     </Pressable>
   );
 };
-const right=`<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+const right = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M13.725 0.723741C14.055 0.384991 14.5413 0.16374 15.0188 0.29249C15.5688 0.40749 15.9525 0.926241 16 1.47249V1.53499C15.9688 1.94374 15.7487 2.30374 15.46 2.58249C12.5825 5.45499 9.7075 8.32874 6.835 11.2037C6.54625 11.4925 6.18625 11.7625 5.75625 11.7437C5.325 11.76 4.9625 11.4912 4.67375 11.2012C3.30125 9.82624 1.9275 8.45249 0.55125 7.08249C0.2625 6.80374 0.0375 6.44749 0 6.03999V5.97874C0.03875 5.42249 0.42875 4.89374 0.9875 4.77999C1.46625 4.65124 1.95125 4.87874 2.28125 5.21874C3.44375 6.37249 4.59625 7.53624 5.75875 8.68999C8.41625 6.03749 11.0662 3.37749 13.725 0.723741Z" fill="#4ADE80"/>
 </svg>
-`
+`;
