@@ -44,6 +44,7 @@ const BottomBar = (props) => {
   const hideBottomBar = useSelector((state) => state.hideBottomBar);
   const unReadNotification = useSelector((state) => state.unReadNotification);
   //const routes = useRoute();
+  console.log(unReadNotification)
   const [translateValue] = useState(new Animated.Value(0));
 
   React.useEffect(() => {

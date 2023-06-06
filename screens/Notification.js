@@ -120,32 +120,32 @@ const NotificationScreen = ({ navigation, route }) => {
       });
     }
   }, [isFocused, user, vendor]);
-  useEffect(() => {
-    socket.on("notificationReceived", (e) => {
-      if (vendor) {
-        getVendorNotificationCount(user.token, vendor.service.id)
-          .then((res) => {
-            setUnreadCount(res.data.count);
-            dispatch(storeNotificationCount(res.data.count));
-          })
-          .catch((err) => {
-            console.error(err.response.data.msg);
-          });
-      } else {
-        getUnreadCount(user.token)
-          .then((res) => {
-            setUnreadCount(res.data.count);
-            dispatch(storeNotificationCount(res.data.count));
-          })
-          .catch((err) => {
-            console.error(err.response.data.msg);
-          });
-      }
-    });
-    return () => {
-      socket?.off("notificationReceived");
-    };
-  }, []);
+  // useEffect(() => {
+  //   socket.on("notificationReceived", (e) => {
+  //     if (vendor) {
+  //       getVendorNotificationCount(user.token, vendor.service.id)
+  //         .then((res) => {
+  //           setUnreadCount(res.data.count);
+  //           dispatch(storeNotificationCount(res.data.count));
+  //         })
+  //         .catch((err) => {
+  //           console.error(err.response.data.msg);
+  //         });
+  //     } else {
+  //       getUnreadCount(user.token)
+  //         .then((res) => {
+  //           setUnreadCount(res.data.count);
+  //           dispatch(storeNotificationCount(res.data.count));
+  //         })
+  //         .catch((err) => {
+  //           console.error(err.response.data.msg);
+  //         });
+  //     }
+  //   });
+  //   return () => {
+  //     socket?.off("notificationReceived");
+  //   };
+  // }, []);
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")

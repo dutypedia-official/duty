@@ -187,21 +187,19 @@ const TabRoute = () => {
     //setReload((val) => !val);
     return () => removeNetInfoSubscription();
   }, []);
-  // React.useEffect(()=>{
-  //   if(!Array.isArray(user)&&user?.user?.id){
-  //     socket.on("connect", () => {
-  //       getSocket(user.user.id);
-  //     });
-  //   }
-  // },[user])
+  React.useEffect(()=>{
+    if (vendor) {
+      getNotificationVendor();
+      return
+    } 
+      getNotification();
+    
+  },[status])
   useEffect(() => {
     socket.on("notificationReceived", (e) => {
       console.log(e)
-      if (vendor) {
-        getNotificationVendor();
-      } else if (user) {
-        getNotification();
-      }
+      console.log("notify")
+      setStatus(v=>(!v))
     });
   }, []); 
   const getNotification = async () => {
