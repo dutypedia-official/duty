@@ -203,15 +203,15 @@ const TabRoute = () => {
     });
   }, []); 
   const getNotification = async () => {
-    const res = await getUnreadCount(user.token);
+    const res = await getUnreadCount(user?.token);
     dispatch(storeNotificationCount(res.data.count));
   };
   const getNotificationVendor = async () => {
     const res = await getVendorNotificationCount(
-      user.token,
+      user?.token,
       vendor?.service.id
     );
-    dispatch(storeNotificationCount(res.data.count));
+    dispatch(storeNotificationCount(res?.data?.count));
   };
 
   // TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {

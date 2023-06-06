@@ -81,11 +81,12 @@ const formatOrderNotificationMessage = (item) => {
 const NotificationScreen = ({ navigation, route }) => {
   const user = useSelector((state) => state.user);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [unreadNotification, setUnreadNotification] = useState();
+  //const [unreadNotification, setUnreadNotification] = useState();
   const [readNotification, setReadNotification] = useState();
   const vendor = useSelector((state) => state.vendor);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const unReadNotification = useSelector((state) => state.unReadNotification);
 
   useEffect(() => {
     if (vendor) {
@@ -103,8 +104,9 @@ const NotificationScreen = ({ navigation, route }) => {
       getVendorNotification(user.token, vendor.service.id).then((res) => {
         setReadNotification(res.data.notifications);
       });
-    } else if(user) {
-      getUnreadCount(user.token)
+      return
+    }
+    getUnreadCount(user?.token)
         .then((res) => {
           setUnreadCount(res.data.count);
           dispatch(storeNotificationCount(res.data.count));
@@ -113,13 +115,12 @@ const NotificationScreen = ({ navigation, route }) => {
           console.error(err.response.data.msg);
         });
       getUnreadNotification(user.token).then((res) => {
-        setUnreadNotification(res.data.notifications);
+        setUnreadCount(res.data.notifications);
       });
       getNotification(user.token).then((res) => {
         setReadNotification(res.data.notifications);
       });
-    }
-  }, [isFocused, user, vendor]);
+  }, [isFocused, user, vendor,unReadNotification]);
   // useEffect(() => {
   //   socket.on("notificationReceived", (e) => {
   //     if (vendor) {
