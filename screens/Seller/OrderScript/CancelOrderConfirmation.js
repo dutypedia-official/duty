@@ -35,6 +35,10 @@ export default function CancelOrderConfirmation({navigation,route}) {
           receiverId: order.user.id,
           order: order
         });
+        socket.emit("notificationSend", {
+          receiverId: res.data.receiverId,
+          order: order
+        });
         
       }).catch(err=>{
         setLoader(false)

@@ -218,19 +218,12 @@ const OrderDetails = ({ navigation, route }) => {
     };
   }, []);
   const addService = () => {
+    setServiceError()
     const gigs = data.service.gigs.filter((d) => d.type == "STARTING");
-    dispatch({
-      type: "SET_NEW_LIST_DATA",
-      playload: serverToLocal(
-        gigs[0].services.options,
-        gigs[0].services.category
-      ),
-    });
+    
     navigation.navigate("AddServiceList", {
-      NewDataList: serverToLocal(
-        gigs[0].services.options,
-        gigs[0].services.category
-      ),
+      skills:gigs[0].skills,
+      category:vendor?.service?.category,
       facilites: gigs[0].facilites.selectedOptions,
       setListData: setListData,
       name: "VendorOrderDetails",
