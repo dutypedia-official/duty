@@ -51,8 +51,6 @@ import {
 import Dashboard from "./Seller/Dashboard";
 import Order from "./Vendor/Order";
 import { getSocket, socket } from "../Class/socket";
-import * as BackgroundFetch from "expo-background-fetch";
-import * as TaskManager from "expo-task-manager";
 import NetInfo from "@react-native-community/netinfo";
 import { ActivityIndicator } from "react-native-paper";
 import { setIsOnline } from "../Reducers/isOffline";
@@ -218,39 +216,39 @@ const TabRoute = () => {
     dispatch(storeNotificationCount(res.data.count));
   };
 
-  TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
-    if(!Array.isArray(user)&&user.user){
-      socket.on("connect", () => {
-        getSocket(user?.user?.id);
-      });
-    }
-    setInterval(() => setReload((val) => !val), [2000]);
-    // Be sure to return the successful result type!
-    return BackgroundFetch.BackgroundFetchResult.NewData;
-  });
+  // TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
+  //   if(!Array.isArray(user)&&user.user){
+  //     socket.on("connect", () => {
+  //       getSocket(user?.user?.id);
+  //     });
+  //   }
+  //   setInterval(() => setReload((val) => !val), [2000]);
+  //   // Be sure to return the successful result type!
+  //   return BackgroundFetch.BackgroundFetchResult.NewData;
+  // });
 
-  async function registerBackgroundFetchAsync() {
-    return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-      minimumInterval: 60 * 15, // 15 minutes
-      stopOnTerminate: false, // android only,
-      startOnBoot: true, // android only
-    });
-  }
-  React.useEffect(() => {
-    checkStatusAsync();
-    if (!isRegistered) {
-      registerBackgroundFetchAsync();
-    }
-  }, [isRegistered]);
+  // async function registerBackgroundFetchAsync() {
+  //   return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
+  //     minimumInterval: 60 * 15, // 15 minutes
+  //     stopOnTerminate: false, // android only,
+  //     startOnBoot: true, // android only
+  //   });
+  // }
+  // React.useEffect(() => {
+  //   checkStatusAsync();
+  //   if (!isRegistered) {
+  //     registerBackgroundFetchAsync();
+  //   }
+  // }, [isRegistered]);
 
-  const checkStatusAsync = async () => {
-    const status = await BackgroundFetch.getStatusAsync();
-    const isRegistered = await TaskManager.isTaskRegisteredAsync(
-      BACKGROUND_FETCH_TASK
-    );
-    setStatus(status);
-    setIsRegistered(isRegistered);
-  };
+  // const checkStatusAsync = async () => {
+  //   const status = await BackgroundFetch.getStatusAsync();
+  //   const isRegistered = await TaskManager.isTaskRegisteredAsync(
+  //     BACKGROUND_FETCH_TASK
+  //   );
+  //   setStatus(status);
+  //   setIsRegistered(isRegistered);
+  // };
 
   if (!user) {
     return (
