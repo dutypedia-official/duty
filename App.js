@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 import { secondaryColor } from "./assets/colors";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-gesture-handler";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import store from "./store";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -36,6 +36,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import * as Updates from "expo-updates";
+import {setDeviceToken} from "./Reducers/deviceToken";
+
 
 
 // Notifications.setNotificationHandler({
@@ -125,6 +127,7 @@ const Views = () => {
   const responseListener = React.useRef();
   const user = useSelector((state) => state.user);
   const [isOffline,setIsOffline]=useState(false)
+  const dispatch=useDispatch()
 
   React.useEffect(() => {
     regNotification()
@@ -162,6 +165,7 @@ const Views = () => {
   const regNotification = async () => {
     const token = await registerForPushNotificationsAsync();
     setExpoPushToken(token);
+    dispatch(setDeviceToken(token))
     //console.log(token)
     // if (!Array.isArray(user) && user?.token && token) {
     //   await updateDeviceToken(user.token, token);

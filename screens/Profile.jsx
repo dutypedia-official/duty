@@ -30,7 +30,7 @@ import Header from "../components/Header";
 import { useSelector, useDispatch } from "react-redux";
 import VendorProfile from "./VendorProfile";
 import Menu from "./Vendor/Menu";
-import { logOut, logoutVendor } from "../Class/auth";
+import { logOut, logoutVendor, removeDeviceToken } from "../Class/auth";
 import { dashboard, logout } from "../assets/icon";
 import { SvgXml } from "react-native-svg";
 import DashboardList from "./Vendor/DashboardList";
@@ -1034,7 +1034,7 @@ const MainProfile = (props) => {
   const inset = useSafeAreaInsets();
   const isFocused = useIsFocused();
   const vendor = useSelector((state) => state.vendor);
-
+  const deviceToken=useSelector(state=>state.deviceToken)
   React.useEffect(() => {
     if (isFocused) {
       dispatch(setHideBottomBar(false));
@@ -1478,10 +1478,11 @@ const MainProfile = (props) => {
               type={""}
             />
             <FlatCart
-              onPress={() => {
+              onPress={async() => {
                 setLogOut(true);
                 logOut();
                 logoutVendor();
+                deviceToken&&await removeDeviceToken(user?.token,deviceToken)
                 dispatch({ type: "SET_VENDOR", playload: false });
                 dispatch({ type: "SET_USER", playload: [] });
                 dispatch({ type: "SET_VENDOR_INFO", playload: false });

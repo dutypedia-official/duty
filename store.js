@@ -33,6 +33,7 @@ import orderRef from "./Reducers/orderRef";
 import searchOrderRef from "./Reducers/searchOrderRef";
 import chatSearchRef from "./Reducers/chatSearchRef";
 import chatBottomRef from "./Reducers/chatBottomRef";
+import deviceToken from "./Reducers/deviceToken";
 
 const combine = combineReducers({
   bottomSheet: bottomSheet,
@@ -68,7 +69,8 @@ const combine = combineReducers({
   orderRef:orderRef,
   searchOrderRef:searchOrderRef,
   chatSearchRef:chatSearchRef,
-  chatBottomRef:chatBottomRef
+  chatBottomRef:chatBottomRef,
+  deviceToken:deviceToken
 });
 const store = createStore(combine);
 export default store;
