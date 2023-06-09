@@ -26,6 +26,8 @@ import { updateGigsData } from "../../Class/update";
 import { getService } from "../../Class/service";
 import ActivityLoader from "../../components/ActivityLoader";
 const { width, height } = Dimensions.get("window");
+import uuid from 'react-native-uuid';
+
 
 export default function EditExtraFacilities({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -42,7 +44,7 @@ export default function EditExtraFacilities({ navigation, route }) {
   const [loader, setLoader] = useState(false);
   const vendor = useSelector((state) => state.vendor);
   const gigs = route?.params?.gigs;
-  console.log(Service)
+  //console.log(Service)
   React.useEffect(() => {
     if (businessForm?.facilities) {
       setService(businessForm.facilities);
@@ -204,7 +206,7 @@ export default function EditExtraFacilities({ navigation, route }) {
                     arr[i] = {
                       title: doc.title,
                       checked: !doc.checked,
-                      id: i + 1,
+                      id: doc?.id,
                     };
                     setService(arr);
                     //setChange(!change);
@@ -270,7 +272,7 @@ export default function EditExtraFacilities({ navigation, route }) {
             setService((d) => [
               ...d,
               {
-                id: d.length,
+                id: uuid?.v4(),
                 title: e,
                 checked: true,
               },

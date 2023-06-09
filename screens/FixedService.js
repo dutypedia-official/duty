@@ -17,9 +17,6 @@ import {
   Easing,
   StatusBar as Bar,
 } from "react-native";
-import rnTextSize, { TSFontSpecs } from "react-native-text-size";
-import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   primaryColor,
   backgroundColor,
@@ -30,8 +27,6 @@ import {
 import ProfileOption from "./../components/ProfileOption";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import Button from "./../components/Button";
-import RatingView from "./../components/RatingView";
 import { user, calenderIcon, noticeIcon, serviceIcon } from "../assets/icon";
 import { SvgXml } from "react-native-svg";
 import ReviewCart from "./../Cart/ReviewCart";
@@ -39,16 +34,6 @@ import RelatedService from "./../Cart/RelatedService";
 import IconButton from "./../components/IconButton";
 import { Menu } from "react-native-paper";
 import { Rows, ServiceTable, TabBar, TabScreen } from "./VendorProfile";
-import Animated, {
-  FadeIn,
-  StretchInY,
-  FlipInEasyX,
-  Transition,
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-} from "react-native-reanimated";
-import ServiceCart from "./../Cart/ServiceCart";
 import {
   getService,
   getOtherServices,
@@ -69,7 +54,6 @@ import { setHideBottomBar } from "../Reducers/hideBottomBar";
 import FixedBackHeader from "./Seller/components/FixedBackHeader";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import OfferNow from "./Seller/OfferNow";
-import ActivityLoader from "../components/ActivityLoader";
 import ServiceListViewer from "../components/ServiceListViewer";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import ViewMore from "../Hooks/ViewMore";

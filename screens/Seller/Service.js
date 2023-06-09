@@ -40,6 +40,7 @@ import ActivityLoader from "../../components/ActivityLoader";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { convertServerFacilities } from "../../Class/dataConverter";
+import uuid from 'react-native-uuid';
 
 const Service = ({ navigation, route }) => {
   const [CenterName, setCenterName] = React.useState();
@@ -599,7 +600,7 @@ const Service = ({ navigation, route }) => {
                     arr[i] = {
                       title: doc.title,
                       checked: !doc.checked,
-                      id: i + 1,
+                      id: doc?.id,
                     };
                     setFacilities(arr);
                     setChange(!change);
@@ -691,7 +692,7 @@ const Service = ({ navigation, route }) => {
             setFacilities((val) => [
               ...val,
               {
-                id: val.length + 1,
+                id: uuid?.v4(),
                 title: e,
                 checked: true,
               },

@@ -12,14 +12,7 @@ import {
   Pressable,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { Color } from "../assets/colors";
-import { EvilIcons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import ProfileOption from "../components/ProfileOption";
-import { Octicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { createStackNavigator } from "@react-navigation/stack";
 import ManageOrder from "./ManageOrder";
@@ -27,7 +20,6 @@ import Appointment from "./Appointment";
 import SubHeader from "../components/SubHeader";
 import Upcoming from "./Appointment/Upcoming";
 import AppointmentDetails from "./Appointment/AppointmentDetails";
-import Previous from "./Appointment/Previous";
 import SaveList from "./SaveList";
 import Request from "./Appointment/Request";
 import Receive from "./Appointment/Receive";
@@ -62,7 +54,6 @@ import OnlineUserProfile from "./Vendor/OnlineUserProfile";
 import UserProfile, { MemberOrderList } from "./UserProfile";
 import OfflineProfile from "./OfflineProfile";
 import Note, { AddNote, ViewNote } from "./Vendor/Note";
-import AddPackage from "./services/AddPackage";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -145,11 +136,6 @@ import EditExtraFacilities from "./Profile/EditExtraFacilities";
 import EditServiceCategory from "./Profile/EditServiceCategory";
 import EditSkills from "./Profile/EditSkills";
 import SignUp_3 from "./signup/SignUp_3";
-import SignUp_2 from "./signup/SignUp_2";
-import SignUp_1 from "./signup/SignUp_1";
-import Reset from "./signup/Reset";
-import Recovery from "./signup/Recovery";
-import Login from "./Login";
 //import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
@@ -450,13 +436,7 @@ const Profile = ({ navigation }) => {
         }}
         component={AppointmentDetails}
       />
-      <Stack.Screen
-        name="Previous"
-        options={{
-          header: (props) => <SubHeader title="Appointment" {...props} />,
-        }}
-        component={Previous}
-      />
+      
       <Stack.Screen
         name="Request"
         options={{

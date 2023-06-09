@@ -161,6 +161,7 @@ const TabRoute = () => {
     });
   }, []);
   React.useEffect(() => {
+    dispatch({ type: "SET_USER", playload: [] });
     checkUser()
       .then((res) => {
         //console.log(res)

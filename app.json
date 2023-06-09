@@ -33,11 +33,9 @@
       "assets/*"
     ],
     "ios": {
-      "buildNumber": "1.0.0",
-      "supportsTablet": true,
-      "infoPlist": {
-        
-      },
+      "buildNumber": "1",
+      "supportsTablet": false,
+      "infoPlist": {},
       "bitcode": false,
       "bundleIdentifier": "com.duty.bd",
       "runtimeVersion": {
@@ -59,14 +57,11 @@
         "android.permission.INTERNET",
         "android.permission.SYSTEM_ALERT_WINDOW",
         "android.permission.RECORD_AUDIO"
-      ],
-      "runtimeVersion": "1.0.0"
+      ]
     },
-   
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    
     "extra": {
       "eas": {
         "projectId": "81b891e3-f2d8-4658-961f-3fa315ee1ba4"
@@ -74,7 +69,10 @@
     },
     "updates": {
       "url": "https://u.expo.dev/81b891e3-f2d8-4658-961f-3fa315ee1ba4",
-      "enabled":true
+      "enabled": true
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
