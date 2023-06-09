@@ -12,7 +12,6 @@ import TopTabBar from "./Seller/components/TopTabBar";
 import { useSelector, useDispatch } from "react-redux";
 import { Color } from "../assets/colors";
 import { CheckBox } from "./Seller/Pricing";
-import Button from "./../components/Button";
 import IconButton from "../components/IconButton";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../Reducers/hideBottomBar";

@@ -10,8 +10,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { Bear } from "./../assets/icon";
-import { SvgXml } from "react-native-svg";
 import { AntDesign } from "@expo/vector-icons";
 import SearchItem from "./../Cart/SearchItem";
 import {

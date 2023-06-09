@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 import { secondaryColor } from "./assets/colors";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-gesture-handler";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import store from "./store";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -30,15 +30,14 @@ import { useSelector } from "react-redux";
 import { Color } from "./assets/colors";
 import { RootSiblingParent } from "react-native-root-siblings";
 import * as Network from "expo-network";
-import CustomAppStatusBar from "./Hooks/AppBar";
-import Button from "./components/Button";
-import IconButton from "./components/IconButton";
 //import { getStream } from "./Utils";
 import { getSocket, socket } from "./Class/socket";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import * as Updates from "expo-updates";
+import {setDeviceToken} from "./Reducers/deviceToken";
+
 
 
 // Notifications.setNotificationHandler({
@@ -128,6 +127,7 @@ const Views = () => {
   const responseListener = React.useRef();
   const user = useSelector((state) => state.user);
   const [isOffline,setIsOffline]=useState(false)
+  const dispatch=useDispatch()
 
   React.useEffect(() => {
     regNotification()
@@ -165,6 +165,7 @@ const Views = () => {
   const regNotification = async () => {
     const token = await registerForPushNotificationsAsync();
     setExpoPushToken(token);
+    dispatch(setDeviceToken(token))
     //console.log(token)
     // if (!Array.isArray(user) && user?.token && token) {
     //   await updateDeviceToken(user.token, token);
@@ -194,33 +195,7 @@ const Views = () => {
     </GestureHandlerRootView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#313131",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "100%",
-  },
-  text: {
-    fontSize: 30,
-  },
-  rtcview: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: "40%",
-    width: "80%",
-    backgroundColor: "black",
-  },
-  rtc: {
-    width: "80%",
-    height: "100%",
-  },
-  toggleButtons: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-});
+
 
 async function registerForPushNotificationsAsync() {
   let token;

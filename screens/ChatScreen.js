@@ -28,7 +28,6 @@ import ActivityLoader from "../components/ActivityLoader";
 import { createConversation, seenMessage, sendMessage } from "../Class/message";
 import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import IconButton from "../components/IconButton";
 import CameraScreen from "../components/CameraScreen";
 import {
   dateDifference,

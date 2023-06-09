@@ -10,16 +10,10 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import { Color } from "../assets/colors";
 import Cart from "./../Cart/Cart";
-import SellerCart2 from "./../Cart/SellerCart2";
-import SellerCart4 from "./../Cart/SellerCart4";
-import Cart2 from "./../Cart/Cart2";
-import SellerCart from "../Cart/SellerCart";
 import { useSelector, useDispatch } from "react-redux";
 import { AllData } from "./../Data/AllData";
-import CustomAppStatusBar from "../Hooks/AppBar";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";

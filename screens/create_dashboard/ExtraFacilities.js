@@ -25,6 +25,7 @@ import customStyle from "../../assets/stylesheet";
 import Input from "../../components/Input";
 import ReadMore from "../../components/ReadMore";
 const { width, height } = Dimensions.get("window");
+import uuid from 'react-native-uuid';
 
 export default function ExtraFacilities({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -173,7 +174,7 @@ export default function ExtraFacilities({ navigation, route }) {
                     arr[i] = {
                       title: doc.title,
                       checked: !doc.checked,
-                      id: i + 1,
+                      id: doc.id,
                     };
                     setService(arr);
                     //setChange(!change);
@@ -236,7 +237,7 @@ export default function ExtraFacilities({ navigation, route }) {
             setService((d) => [
               ...d,
               {
-                id: d.length,
+                id: uuid?.v4(),
                 title: e,
                 checked: true,
               },

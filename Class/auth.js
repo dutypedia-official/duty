@@ -110,6 +110,14 @@ const updateDeviceToken=async(token,deviceToken)=>{
   });
   return res;
 }
+const removeDeviceToken=async(token,deviceToken)=>{
+  const res = await axios.put(`${url}/server/auth/remove-device-token`,{
+    deviceToken:deviceToken
+  },{
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res;
+}
 export {
   userLogin,
   checkUser,
@@ -125,5 +133,6 @@ export {
   resetUser,
   checkResetUser,
   resetUserPassword,
-  updateDeviceToken
+  updateDeviceToken,
+  removeDeviceToken
 };

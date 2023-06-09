@@ -406,12 +406,4 @@ export default function StackRoute() {
     </NavigationContainer>
   );
 }
-const New = () => {
-  return (
-    <View
-      style={{
-        backgroundColor: "green",
-        flex: 1,
-      }}></View>
-  );
-};
+
