@@ -1479,6 +1479,7 @@ const MainProfile = (props) => {
             />
             <FlatCart
               onPress={async() => {
+                setLoader(true)
                 setLogOut(true);
                 logOut();
                 logoutVendor();
@@ -1486,6 +1487,7 @@ const MainProfile = (props) => {
                 dispatch({ type: "SET_VENDOR", playload: false });
                 dispatch({ type: "SET_USER", playload: [] });
                 dispatch({ type: "SET_VENDOR_INFO", playload: false });
+                setLoader(false)
                 navigation.navigate("Feed");
               }}
               style={{ borderBottomWidth: 0, paddingBottom: 0 }}
