@@ -1483,7 +1483,11 @@ const MainProfile = (props) => {
                 setLogOut(true);
                 logOut();
                 logoutVendor();
-                deviceToken&&await removeDeviceToken(user?.token,deviceToken)
+                try{
+                  deviceToken&&await removeDeviceToken(user?.token,deviceToken)
+                }catch(e){
+                  console.log(e.message)
+                }
                 dispatch({ type: "SET_VENDOR", playload: false });
                 dispatch({ type: "SET_USER", playload: [] });
                 dispatch({ type: "SET_VENDOR_INFO", playload: false });
