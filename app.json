@@ -33,7 +33,8 @@
       "assets/*"
     ],
     "ios": {
-      "buildNumber": "1",
+
+      "buildNumber": "2",
       "supportsTablet": false,
       "infoPlist": {},
       "bitcode": false,
