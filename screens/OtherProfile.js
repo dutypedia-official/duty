@@ -1,6 +1,4 @@
-import React, {
-  useState,
-} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,11 +11,9 @@ import {
   Pressable,
   Animated as Animation,
   Platform,
+  Modal,
 } from "react-native";
-import {
-  primaryColor,
-  textColor,
-} from "./../assets/colors";
+import { primaryColor, textColor } from "./../assets/colors";
 import ProfileOption from "./../components/ProfileOption";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -74,6 +70,7 @@ import ImageCanvas from "./SellerProfile/ImageCanvas";
 import SellerInformation from "./SellerProfile/SellerInformation";
 import ServiceTab from "./SellerProfile/ServiceTab";
 import ReadMore from "../components/ReadMore";
+import PictureViewer from "./SellerProfile/PictureViewer";
 
 const { width, height } = Dimensions.get("window");
 const OtherProfile = (props) => {
@@ -330,7 +327,7 @@ const OtherProfile = (props) => {
   }
   //return <ProfileSkeleton />;
   return (
-    <SellerLayout 
+    <SellerLayout
       headers={
         <>
           {showButton && (
@@ -595,7 +592,7 @@ function uniq(a) {
     return !pos || item != ary[pos - 1];
   });
 }
-const BargainingScreen = ({ navigation, route, params,component }) => {
+const BargainingScreen = ({ navigation, route, params, component }) => {
   //const params = route.params;
   const Images = params.Images;
   const primaryColor = "#ffffff";
@@ -613,6 +610,7 @@ const BargainingScreen = ({ navigation, route, params,component }) => {
   ).current;
   const newUser = useSelector((state) => state.user);
   const gigs = Data.service.gigs.filter((d) => d.type == "STARTING");
+  const [modalVisible, setModalVisible] = useState(false);
   //console.log(Data);
   React.useEffect(() => {
     Animation.spring(animatedHeight, {
@@ -644,7 +642,7 @@ const BargainingScreen = ({ navigation, route, params,component }) => {
             marginVertical: 15,
           }}>
           {/* <AnimatedHeight button={true} text={Description} /> */}
-          <ReadMore content={Description}/>
+          <ReadMore content={Description} />
         </View>
         <Carousel
           panGestureHandlerProps={{
@@ -658,13 +656,19 @@ const BargainingScreen = ({ navigation, route, params,component }) => {
           scrollAnimationDuration={500}
           onSnapToItem={(index) => {}}
           renderItem={({ index }) => (
-            <Image
-              style={{
-                width: width,
-                height: width + 30,
-              }}
-              source={{ uri: Images[index] }}
-            />
+            <Pressable
+              onPress={() => {
+                setModalVisible(Images[index]);
+                console.log(Images[index])
+              }}>
+              <Image
+                style={{
+                  width: width,
+                  height: width + 30,
+                }}
+                source={{ uri: Images[index] }}
+              />
+            </Pressable>
           )}
         />
       </View>
@@ -715,6 +719,11 @@ const BargainingScreen = ({ navigation, route, params,component }) => {
         )}
       </View>
       {component}
+      <Modal animationType="slide"
+        visible={Boolean(modalVisible)}
+        onRequestClose={() => setModalVisible()}>
+        <PictureViewer onClose={()=>setModalVisible()} url={modalVisible} />
+      </Modal>
     </View>
   );
 };

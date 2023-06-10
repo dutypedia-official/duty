@@ -1479,12 +1479,14 @@ const MainProfile = (props) => {
             />
             <FlatCart
               onPress={async() => {
+                
                 setLoader(true)
                 setLogOut(true);
                 logOut();
                 logoutVendor();
                 try{
                   deviceToken&&await removeDeviceToken(user?.token,deviceToken)
+                  console.log(deviceToken)
                 }catch(e){
                   console.log(e.message)
                 }

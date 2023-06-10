@@ -96,6 +96,8 @@ import ProfileSkeleton from "../components/ProfileSkeleton";
 import ServiceListViewer from "../components/ServiceListViewer";
 import ServiceTab from "./SellerProfile/ServiceTab";
 import ReadMore from "../components/ReadMore";
+import PictureViewer from "./SellerProfile/PictureViewer";
+
 
 const { width, height } = Dimensions.get("window");
 const VendorProfile = (props) => {
@@ -210,7 +212,7 @@ const VendorProfile = (props) => {
   const changeScreenName = React.useCallback((val) => {
     setScreenName(val);
   });
-  const [rating,setRating]=useState(0)
+  const [rating, setRating] = useState(0);
   const [wallPhoto, setWallPhoto] = useState(data.service.wallPhoto);
   const [modalVisible, setModalVisible] = useState(false);
   //console.log(SeeMore)
@@ -241,7 +243,7 @@ const VendorProfile = (props) => {
     //setLoader(false)
     setActive("Bargaining");
     //setLoader(true);
-    setTimeout(()=>setLoader(true),1200)
+    setTimeout(() => setLoader(true), 1200);
     setScrollEnabled(false);
     //setNewDataList(null)
     if (vendor && newUser) {
@@ -252,9 +254,7 @@ const VendorProfile = (props) => {
       //setPackageService(null);
       let response = { data: vendor };
       if (response.data) {
-        const gigs = vendor.service.gigs.filter(
-          (d) => d.type == "STARTING"
-        );
+        const gigs = vendor.service.gigs.filter((d) => d.type == "STARTING");
         setData(vendor);
         setSpecialty(vendor?.service?.keywords);
 
@@ -266,7 +266,7 @@ const VendorProfile = (props) => {
         setDescription(gigs[0].description);
         //setNewDataList(response.data.service.gigs[0].services.options)
         setFacilities(convertServerFacilities(gigs[0]?.facilites));
-        
+
         let arr = initialState;
         response.data.service.activeServiceTypes.forEach((doc) => {
           arr = arr.map((d) => {
@@ -284,19 +284,17 @@ const VendorProfile = (props) => {
         });
         setActiveServiceData(arr);
         //setCategory(gigs[0].services.category);
-        
       }
     }
   }, [vendor, data, isFocused]);
-  
-  
-  React.useState(()=>{
-    if(newUser&&data){
-      getFullRating(newUser?.token,data?.service?.id).then(res=>{
-        setRating(res?.data?.rating)
-      })
+
+  React.useState(() => {
+    if (newUser && data) {
+      getFullRating(newUser?.token, data?.service?.id).then((res) => {
+        setRating(res?.data?.rating);
+      });
     }
-  },[data,newUser])
+  }, [data, newUser]);
   const clickFixed = (doc) => {
     navigation.navigate("VendorFixedService", { data: doc });
   };
@@ -313,8 +311,7 @@ const VendorProfile = (props) => {
   }, [specialtyHeight]);
 
   React.useEffect(() => {}, [newNavigation]);
- 
-  
+
   const uploadProfileImage = async (image, isProfile) => {
     setImageUploader(true);
     let arr = [];
@@ -738,7 +735,10 @@ const VendorProfile = (props) => {
               id={vendor.service.id == "W8kHHhBuKG4jkXPNJ32Mw" ? true : false}
               text={vendor.service.about}
             /> */}
-            <ReadMore containerStyle={{marginBottom:10}} content={vendor.service.about}/>
+            <ReadMore
+              containerStyle={{ marginBottom: 10 }}
+              content={vendor.service.about}
+            />
           </View>
           <Pressable
             onPress={() => {
@@ -823,21 +823,29 @@ const VendorProfile = (props) => {
           </View>
         </MotiView>
         {Loader && (
-          <ServiceTab  onChange={e=>setScreenName(e)}
-          wid={130}
-          scrollEnabled={true}
-          categories={initialState}
-          components={[
-            <BargainingScreen navigation={navigation}/>,
-            <FixedScreen navigation={navigation} Data={Data} isFocused={isFocused} onPress={clickFixed}/>,
-            <PackageScreen isFocused={isFocused} onPress={clickPackage} Data={Data}/>,
-            <ServiceSettings/>
-          ]}
-        />
+          <ServiceTab
+            onChange={(e) => setScreenName(e)}
+            wid={130}
+            scrollEnabled={true}
+            categories={initialState}
+            components={[
+              <BargainingScreen navigation={navigation} />,
+              <FixedScreen
+                navigation={navigation}
+                Data={Data}
+                isFocused={isFocused}
+                onPress={clickFixed}
+              />,
+              <PackageScreen
+                isFocused={isFocused}
+                onPress={clickPackage}
+                Data={Data}
+              />,
+              <ServiceSettings />,
+            ]}
+          />
         )}
-        {!Loader&&(
-          <ActivityLoader/>
-        )}
+        {!Loader && <ActivityLoader />}
       </ScrollView>
       {showButton && ScreenName == "ONETIME" && (
         <Animated.View
@@ -866,10 +874,10 @@ const VendorProfile = (props) => {
               const gigs = vendor.service.gigs.filter(
                 (d) => d.type == "STARTING"
               );
-              
+
               navigation.navigate("AddServiceList_1", {
-                skills:gigs[0].skills,
-                category:vendor.service.category,
+                skills: gigs[0].skills,
+                category: vendor.service.category,
                 name: "VendorOrderDetails",
                 data: "ONETIME",
               });
@@ -908,10 +916,10 @@ const VendorProfile = (props) => {
               const gigs = vendor.service.gigs.filter(
                 (d) => d.type == "STARTING"
               );
-              
+
               navigation.navigate("AddServiceList_1", {
-                skills:gigs[0]?.skills,
-                category:data?.service?.category,
+                skills: gigs[0]?.skills,
+                category: data?.service?.category,
 
                 name: "VendorOrderDetails",
                 data: "PACKAGE",
@@ -921,7 +929,7 @@ const VendorProfile = (props) => {
           </Pressable>
         </Animated.View>
       )}
-  
+
       <FixedBackHeader navigation={navigation} Yoffset={offset ? offset : 0} />
       {offset < 100 && offset > -1 && (
         <Animated.View
@@ -1000,7 +1008,6 @@ const ServiceTabss = ({
   FixedService,
   PackageService,
 }) => {
-  
   return (
     <View>
       <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
@@ -1202,7 +1209,6 @@ const ServiceTabss = ({
   );
 };
 
-
 const BarOption = ({ icon, title }) => {
   const [lines, setLines] = React.useState(1);
   return (
@@ -1246,17 +1252,14 @@ function uniq(a) {
     return !pos || item != ary[pos - 1];
   });
 }
-const BargainingScreen = ({ navigation, route,params }) => {
+const BargainingScreen = ({ navigation, route, params }) => {
   //const params = route.params;
   const primaryColor = "#ffffff";
   const textColor = "#000000";
-  const vendor=useSelector(state=>state.vendor)
-  const gigs = vendor.service.gigs.filter(
-    (d) => d.type == "STARTING"
-  );
-  const Facilities=convertServerFacilities(gigs[0]?.facilites)
-
-  
+  const vendor = useSelector((state) => state.vendor);
+  const gigs = vendor.service.gigs.filter((d) => d.type == "STARTING");
+  const Facilities = convertServerFacilities(gigs[0]?.facilites);
+  const [modalVisible,setModalVisible]=useState()
   return (
     <View>
       <View style={{ backgroundColor: primaryColor, marginBottom: -1 }}>
@@ -1268,7 +1271,7 @@ const BargainingScreen = ({ navigation, route,params }) => {
             paddingHorizontal: 20,
             marginTop: 20,
           }}>
-          {gigs?gigs[0].title:""}
+          {gigs ? gigs[0].title : ""}
         </Text>
 
         <View
@@ -1277,8 +1280,7 @@ const BargainingScreen = ({ navigation, route,params }) => {
             marginVertical: 15,
             marginBottom: 0,
           }}>
-          
-          <ReadMore content={gigs?gigs[0].description:""}/>
+          <ReadMore content={gigs ? gigs[0].description : ""} />
         </View>
         <View
           style={{
@@ -1290,8 +1292,10 @@ const BargainingScreen = ({ navigation, route,params }) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              
-              navigation.navigate("EditService", { data: vendor, gigs: gigs[0] });
+              navigation.navigate("EditService", {
+                data: vendor,
+                gigs: gigs[0],
+              });
             }}
             style={{}}>
             <SvgXml xml={editIcon} height="50" width={"50"} />
@@ -1309,20 +1313,34 @@ const BargainingScreen = ({ navigation, route,params }) => {
           scrollAnimationDuration={500}
           onSnapToItem={(index) => {}}
           renderItem={({ index }) => (
-            <Image
-              style={{
-                width: width,
-                height: width + 30,
-              }}
-              source={{ uri: gigs[0].images[index] }}
-            />
+            <Pressable onPress={()=>setModalVisible(gigs[0].images[index])}>
+              <Image
+                style={{
+                  width: width,
+                  height: width + 30,
+                }}
+                source={{ uri: gigs[0].images[index] }}
+              />
+            </Pressable>
           )}
         />
       </View>
-      <ServiceListViewer onEdit={()=>{
-       
-        navigation?.navigate("EditSkills",{serviceCategory:{name:vendor?.service?.category,key:vendor?.service?.categoryKey},skills:gigs[0].skills,facilities:Facilities})
-      }} editable={true}  serviceCategory={{name:vendor?.service?.category}} skills={gigs[0]?.skills} facilities={Facilities}/>
+      <ServiceListViewer
+        onEdit={() => {
+          navigation?.navigate("EditSkills", {
+            serviceCategory: {
+              name: vendor?.service?.category,
+              key: vendor?.service?.categoryKey,
+            },
+            skills: gigs[0].skills,
+            facilities: Facilities,
+          });
+        }}
+        editable={true}
+        serviceCategory={{ name: vendor?.service?.category }}
+        skills={gigs[0]?.skills}
+        facilities={Facilities}
+      />
       <View
         style={{
           backgroundColor: primaryColor,
@@ -1341,10 +1359,12 @@ const BargainingScreen = ({ navigation, route,params }) => {
           }}>
           From {gigs[0].price} ৳
         </Text>
-       
       </View>
-      
+
       <View style={{ height: 30 }} />
+      <Modal animationType="slide" visible={Boolean(modalVisible)} onRequestClose={()=>setModalVisible()}>
+        <PictureViewer url={modalVisible} onClose={()=>setModalVisible()}/>
+       </Modal>
     </View>
   );
 };
@@ -1353,9 +1373,9 @@ const newStar = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" 
 <path id="Polygon_1" data-name="Polygon 1" d="M9.6,1.879a1,1,0,0,1,1.8,0l1.844,3.843a1,1,0,0,0,.817.564l4.428.376a1,1,0,0,1,.537,1.78l-3.181,2.526a1,1,0,0,0-.349,1.024l.951,3.827a1,1,0,0,1-1.441,1.123L10.971,14.79a1,1,0,0,0-.941,0L5.994,16.942a1,1,0,0,1-1.441-1.123L5.5,11.992a1,1,0,0,0-.349-1.024L1.973,8.442a1,1,0,0,1,.537-1.78l4.428-.376a1,1,0,0,0,.817-.564Z" fill="#ffc107"/>
 </svg>
 `;
-const FixedScreen = ({ navigation, Data,onPress,isFocused }) => {
+const FixedScreen = ({ navigation, Data, onPress, isFocused }) => {
   const [FixedService, setFixedService] = useState([]);
-  
+
   const newUser = useSelector((state) => state.user);
 
   React.useEffect(() => {
@@ -1416,11 +1436,10 @@ const FixedScreen = ({ navigation, Data,onPress,isFocused }) => {
     </View>
   );
 };
-const PackageScreen = ({isFocused,onPress,Data }) => {
+const PackageScreen = ({ isFocused, onPress, Data }) => {
   const [PackageService, setPackageService] = useState([]);
   const newUser = useSelector((state) => state.user);
 
- 
   React.useEffect(() => {
     if (newUser && Data) {
       getOtherServices(newUser.token, Data.service.id, "PACKAGE")
@@ -1436,9 +1455,7 @@ const PackageScreen = ({isFocused,onPress,Data }) => {
   }, [isFocused]);
   //console.log(FixedService)
   return (
-    <View
-      
-      >
+    <View>
       <View
         style={{
           marginHorizontal: 10,
@@ -1620,7 +1637,6 @@ export const ServiceTable = ({
             fontSize: Platform.OS == "ios" ? 16.5 : 15,
             margin: 0,
             color: "#535353",
-            
           }}>
           {item}
         </Text>
@@ -1636,7 +1652,6 @@ export const ServiceTable = ({
                     fontFamily: "Poppins-Medium",
                     fontSize: Platform.OS == "ios" ? 16.5 : 15,
                     color: "#95979D",
-                    
                   }}>
                   {doc}
                 </Text>
@@ -1658,7 +1673,6 @@ export const ServiceTable = ({
               fontFamily: "Poppins-Medium",
               fontSize: Platform.OS == "ios" ? 16.5 : 15,
               color: "#95979D",
-              
             }}>
             {name}
           </Text>
@@ -1717,7 +1731,7 @@ export const Rows = ({ title, item, name, NewDataList, height, index }) => {
         fontSize: Platform.OS == "ios" ? 16.5 : 15,
         fontFamily: "Poppins-Medium",
         color: textColor,
-        
+
         maxHeight: 160,
       }}>
       {text}
