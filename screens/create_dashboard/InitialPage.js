@@ -1,12 +1,13 @@
 import { useIsFocused } from "@react-navigation/native";
 import React from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import customStyle from "../../assets/stylesheet";
 import IconButton from "../../components/IconButton";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
+const { height, width } = Dimensions.get("window");
 
 export default function InitialPage({ navigation }) {
   const isFocused = useIsFocused();
@@ -30,6 +31,7 @@ export default function InitialPage({ navigation }) {
       <View
         style={{
           paddingHorizontal: 20,
+          minHeight: height-65,
         }}>
         <View style={[customStyle.shadow, { marginTop: 24 }]}>
           <SvgXml width={"100%"} xml={vectorImage} />
@@ -52,20 +54,25 @@ export default function InitialPage({ navigation }) {
             business journey with Duty."
           </Text>
         </Text>
-        <IconButton
-          onPress={() => {
-            dispatch({ type: "SET_NEW_DATA", playload: null });
-            navigation.navigate("ServiceCategory");
-            //navigation.navigate("FinalReview")
-          }}
-          style={{
-            backgroundColor: "#4ADE80",
-            height: 40,
-            marginTop: 36,
-            marginBottom: 32,
-          }}
-          title={"Continue"}
-        />
+        <View style={{
+          flex:1,
+          justifyContent:"flex-end"
+        }}>
+          <IconButton
+            onPress={() => {
+              dispatch({ type: "SET_NEW_DATA", playload: null });
+              navigation.navigate("ServiceCategory");
+              //navigation.navigate("FinalReview")
+            }}
+            style={{
+              backgroundColor: "#4ADE80",
+              height: 40,
+              marginTop: 32,
+              marginBottom: 32,
+            }}
+            title={"Continue"}
+          />
+        </View>
       </View>
     </ScrollView>
   );
