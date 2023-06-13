@@ -148,7 +148,7 @@ export const TopSellerCard = ({
     }
   }, [saveList?.length]);
   useEffect(() => {
-    if (!user.token) {
+    if (!user?.token) {
       setLike(false);
     }
   }, [user]);

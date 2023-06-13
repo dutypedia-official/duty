@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Duty",
+    "scheme": "https",
     "slug": "duty",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -33,7 +34,7 @@
       "assets/*"
     ],
     "ios": {
-
+      "associatedDomains": ["applinks:duty.com.bd"],
       "buildNumber": "2",
       "supportsTablet": false,
       "infoPlist": {},
@@ -48,6 +49,20 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "duty.com.bd",
+              "pathPrefix": "/feed/service"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "googleServicesFile": "./google-services.json",
       "package": "com.duty.bd",
       "versionCode": 1,

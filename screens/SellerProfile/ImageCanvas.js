@@ -10,19 +10,27 @@ import {
   useImage,
 } from "@shopify/react-native-skia";
 import { Menu } from "react-native-paper";
-import { Alert, Dimensions, Platform, View } from "react-native";
+import { Alert, Dimensions, Platform, View, Share } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { getLikeGigs, setLikeGigs } from "../../Class/service";
 import { useDispatch, useSelector } from "react-redux";
 import { setSaveList } from "../../Reducers/saveList";
 const { width, height } = Dimensions.get("window");
 const primaryColor = "white";
+import * as Sharing from 'expo-sharing';
 
-export default function ImageCanvas({ backgroundImage,newUser,Data,navigation,isFocused,gigId }) {
+export default function ImageCanvas({
+  backgroundImage,
+  newUser,
+  Data,
+  navigation,
+  isFocused,
+  gigId,
+}) {
   const newImage = useImage(backgroundImage);
-  const userInfo=Data?.service?.user;
+  const userInfo = Data?.service?.user;
   const [like, setLike] = useState(false);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const saveList = useSelector((state) => state.saveList);
   const [Visible, setVisible] = React.useState(false);
 
@@ -35,20 +43,19 @@ export default function ImageCanvas({ backgroundImage,newUser,Data,navigation,is
     }
   }, [saveList?.length, isFocused]);
   useEffect(() => {
-    if (!newUser.token) {
+    if (!newUser?.token) {
       setLike(false);
     }
   }, [newUser, isFocused]);
-
 
   const addToSaveList = async () => {
     if (!Data) {
       return;
     }
 
-    const res = await setLikeGigs(newUser.token,gigId);
+    const res = await setLikeGigs(newUser?.token, gigId);
     //console.log(res.data)
-    const response = await getLikeGigs(newUser.token);
+    const response = await getLikeGigs(newUser?.token);
     //console.log(response.data.gigs)
     dispatch(setSaveList(response.data.gigs));
   };
@@ -123,7 +130,7 @@ export default function ImageCanvas({ backgroundImage,newUser,Data,navigation,is
             anchor={
               <SvgXml
                 onPress={() => {
-                  if (!newUser.token) {
+                  if (!newUser?.token) {
                     navigation.navigate("LogIn");
                     return;
                   }
@@ -160,7 +167,7 @@ export default function ImageCanvas({ backgroundImage,newUser,Data,navigation,is
 
           <SvgXml
             onPress={() => {
-              if (!newUser.token) {
+              if (!newUser?.token) {
                 navigation.navigate("LogIn");
                 return;
               }
@@ -181,25 +188,39 @@ export default function ImageCanvas({ backgroundImage,newUser,Data,navigation,is
             height={Platform.OS == "ios" ? "50" : "45"}
             width={Platform.OS == "ios" ? "50" : "45"}
           />
-          {/* <SvgXml
-              style={{
-                shadowOffset: {
-                  width: 0,
-                  height: 3,
-                },
-                shadowColor: "#DDDDDD",
-                shadowRadius: Platform.OS == "ios" ? 4 : 20,
-                elevation: 0,
-                shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
-              }}
-              xml={shareIcon}
-              height={Platform.OS == "ios" ? "50" : "45"}
-              width={Platform.OS == "ios" ? "50" : "45"}
-            /> */}
+          <SvgXml
+            onPress={async() => {
+              Share.share({
+                title:`${Data?.service?.serviceCenterName}`,
+                url:`https://duty.com.bd/feed/service/${Data?.service?.slug}`,
+                message:"You can share url to other"
+              }).catch(e=>{
+                Alert.alert("Ops!",e.message)
+              })
+            //  const r=await Sharing.isAvailableAsync()
+            //  console.log(r)
+            //   Sharing.shareAsync().catch(e=>{
+            //     Alert.alert("Ops!",e.message)
+            //   })
+            }}
+            style={{
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowColor: "#DDDDDD",
+              shadowRadius: Platform.OS == "ios" ? 4 : 20,
+              elevation: 0,
+              shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
+            }}
+            xml={shareIcon}
+            height={Platform.OS == "ios" ? "50" : "45"}
+            width={Platform.OS == "ios" ? "50" : "45"}
+          />
 
           <SvgXml
             onPress={() => {
-              if (newUser && !newUser.token) {
+              if (newUser && !newUser?.token) {
                 navigation.navigate("LogIn");
                 return;
               }
@@ -222,7 +243,7 @@ export default function ImageCanvas({ backgroundImage,newUser,Data,navigation,is
           />
           <SvgXml
             onPress={() => {
-              if (newUser && !newUser.token) {
+              if (newUser && !newUser?.token) {
                 navigation.navigate("LogIn");
                 return;
               }
@@ -396,4 +417,3 @@ const messageIcon = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http:/
 </g>
 </svg>
 `;
-

@@ -5,7 +5,7 @@ import { View, Animated as Animation,
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 const {width,height}=Dimensions.get("window")
 
-export default function FixedBackHeader({ Yoffset, navigation,style,scrollSize,color,title }) {
+export default function FixedBackHeader({ Yoffset, navigation,style,scrollSize,color,title,onPress }) {
   const primaryColor = "white";
   const [scrollEnabled, setScrollEnabled] = React.useState(false);
   const scrollY = new Animation.Value(0);
@@ -61,6 +61,10 @@ export default function FixedBackHeader({ Yoffset, navigation,style,scrollSize,c
       >
         <TouchableOpacity
           onPress={() => {
+            if(onPress){
+              onPress()
+              return
+            }
             navigation.goBack();
             //dispatch(setHideBottomBar(false))
           }}

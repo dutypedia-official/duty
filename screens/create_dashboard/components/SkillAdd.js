@@ -8,6 +8,7 @@ import {
   Pressable,
   TextInput,
   Dimensions,
+  Keyboard,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
@@ -297,6 +298,7 @@ const AddBox = ({ onChange, onWrite, value }) => {
             setText();
           }
         }}
+        
         value={text}
         onChangeText={(e) => {
           if (e?.split("")?.length > 25) {

@@ -17,6 +17,8 @@ export default function PictureViewer({ url,onClose }) {
       <View
         style={{
           alignItems: "flex-end",
+          paddingRight:20,
+          paddingTop:20
         }}>
         <AntDesign onPress={onClose} name="closecircleo" size={24} color="#e5e5e5" />
       </View>

@@ -8,8 +8,10 @@ import {
   DevSettings,
   Modal,
   Alert,
+  TextInput
 } from "react-native";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import * as Linking from 'expo-linking';
+import { NavigationContainer, DefaultTheme, Link } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 import { secondaryColor } from "./assets/colors";
@@ -37,6 +39,8 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import * as Updates from "expo-updates";
 import {setDeviceToken} from "./Reducers/deviceToken";
+import { localData } from "./Class/dataConverter";
+import axios from "axios";
 
 
 
@@ -129,7 +133,9 @@ const Views = () => {
   const [isOffline,setIsOffline]=useState(false)
   const dispatch=useDispatch()
 
+
   React.useEffect(() => {
+    
     regNotification()
     getNetworkStatus()
     notificationListener.current =
@@ -180,6 +186,14 @@ const Views = () => {
       setIsOffline(false)
     }
   }
+  const handleDeepLink=(event)=>{
+    const data=Linking.parse(event?.url)
+    console.log(data)
+  }
+  useEffect(()=>{
+    Linking.addEventListener("url",handleDeepLink);
+    
+  },[])
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       {/* <CustomAppStatusBar
@@ -187,6 +201,7 @@ const Views = () => {
         backgroundColor={statusBar?.backgroundColor}
       /> */}
       <StackRoute />
+     
       <Modal
         visible={ModalVisible}
         onRequestClose={() => {

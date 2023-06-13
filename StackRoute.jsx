@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
+  StatusBar
 } from "react-native";
 import {
   NavigationContainer,
@@ -104,6 +104,8 @@ import Recovery from "./screens/signup/Recovery";
 import Reset from "./screens/signup/Reset";
 import UserProfile from "./screens/UserProfile";
 import WebViews from "./screens/WebViews";
+import * as Linking from "expo-linking";
+import SellerProfile from "./screens/SellerProfile";
 
 export default function StackRoute() {
   const user = useSelector((state) => state.user);
@@ -120,8 +122,6 @@ export default function StackRoute() {
   const secondaryColor = colors.getSecondaryColor();
   const [userId, setUserId] = React.useState();
 
-  
- 
   const MyTheme = {
     ...DefaultTheme,
     colors: {
@@ -129,10 +129,27 @@ export default function StackRoute() {
       background: secondaryColor,
     },
   };
-
+  const pr = Linking.createURL("duty.com.bd/");
+  console.log(pr)
+  const linking = {
+    prefixes: [pr, "https://duty.com.bd"],
+    config: {
+      screens: {
+        SellerProfile: {
+          path: "feed/service/:slug",
+          parse:{
+            slug:(id)=>id
+          }
+        },
+      },
+    },
+  };
 
   return (
-    <NavigationContainer theme={MyTheme}>
+    <NavigationContainer
+      linking={linking}
+      fallback={<Text>Loading...</Text>}
+      theme={MyTheme}>
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
           gestureEnabled: true,
@@ -153,6 +170,16 @@ export default function StackRoute() {
         />
         <Stack.Screen
           options={{
+            headerStyle: {
+              backgroundColor: "green",
+            },
+            headerShown: false,
+          }}
+          name="SellerProfile"
+          component={SellerProfile}
+        />
+        <Stack.Screen
+          options={{
             headerShown: false,
           }}
           name="ChatImage"
@@ -164,16 +191,7 @@ export default function StackRoute() {
           component={SearchScreen}
         />
 
-        {/* <Stack.Screen
-            options={{
-              headerStyle: {
-                backgroundColor: "green",
-              },
-              headerShown: false,
-            }}
-            name="OtherProfile"
-            component={OtherProfile}
-          />
+        {/* 
           <Stack.Screen
             options={{ headerShown: false }}
             name="FixedService"
@@ -185,32 +203,54 @@ export default function StackRoute() {
             component={PackageService}
           /> */}
         <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Login"} {...props}/> }}
+          options={{
+            header: (props) => <SubHeader title={"Login"} {...props} />,
+          }}
           name="LogIn"
           component={Login}
         />
         <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          options={{
+            header: (props) => (
+              <SubHeader title={"Phone number verification"} {...props} />
+            ),
+          }}
           name="Recovery"
           component={Recovery}
         />
         <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Password reset"} {...props}/> }}
+          options={{
+            header: (props) => (
+              <SubHeader title={"Password reset"} {...props} />
+            ),
+          }}
           name="Reset"
           component={Reset}
         />
         <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          options={{
+            header: (props) => (
+              <SubHeader title={"Phone number verification"} {...props} />
+            ),
+          }}
           name="SignUp_1"
           component={SignUp_1}
         />
         <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"Phone number verification"} {...props}/> }}
+          options={{
+            header: (props) => (
+              <SubHeader title={"Phone number verification"} {...props} />
+            ),
+          }}
           name="SignUp_2"
           component={SignUp_2}
         />
         <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
+          options={{
+            header: (props) => (
+              <SubHeader title={"User information"} {...props} />
+            ),
+          }}
           name="SignUp_3"
           component={SignUp_3}
         />
@@ -222,8 +262,6 @@ export default function StackRoute() {
             component={ChatScreen}
           /> */}
 
-        
-        
         <Stack.Screen
           name="Review"
           options={{
@@ -248,7 +286,9 @@ export default function StackRoute() {
         <Stack.Screen
           name="Service List_1"
           options={{
-            header: (props) => <SubHeader title="Your Service List" {...props} />,
+            header: (props) => (
+              <SubHeader title="Your Service List" {...props} />
+            ),
           }}
           component={AllService}
         />
@@ -288,14 +328,14 @@ export default function StackRoute() {
         />
         <Stack.Screen
           options={{
-           headerShown:false
+            headerShown: false,
           }}
           name="CreateAppointment"
           component={CreateAppointment}
         />
         <Stack.Screen
           options={{
-            headerShown:false
+            headerShown: false,
           }}
           name="AppointmentDetails"
           component={AppointmentDetails}
@@ -316,7 +356,7 @@ export default function StackRoute() {
         />
         <Stack.Screen
           options={{
-            headerShown:false
+            headerShown: false,
           }}
           name="AppointmentForm"
           component={AppointmentForm}
@@ -332,12 +372,12 @@ export default function StackRoute() {
         />
         <Stack.Screen
           options={{
-            headerShown:false
+            headerShown: false,
           }}
           name="VendorAppointmentListDetails"
           component={VendorAppointmentListDetails}
         />
-        
+
         <Stack.Screen
           options={{
             header: (props) => (
@@ -349,7 +389,7 @@ export default function StackRoute() {
         />
         <Stack.Screen
           options={{
-            headerShown:false
+            headerShown: false,
           }}
           name="UserAppointmentDetails"
           component={UserAppointmentDetails}
@@ -398,12 +438,11 @@ export default function StackRoute() {
           component={UserProfile}
         />
         <Stack.Screen
-        options={{ headerShown: false }}
-        name="WebViewsGlobal"
-        component={WebViews}
-      />
+          options={{ headerShown: false }}
+          name="WebViewsGlobal"
+          component={WebViews}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
