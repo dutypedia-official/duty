@@ -94,6 +94,7 @@ const ServiceAgreement = (props) => {
               flexDirection: "row",
               marginTop: 32,
               flex: 1,
+              alignItems:"center"
             }}>
             <SvgXml xml={info} />
             <Text style={[styles.text, { flex: 1 }]}>
@@ -132,9 +133,11 @@ const ServiceAgreement = (props) => {
             style={{
               flexDirection: "row",
               marginTop: 32,
+              alignItems:"center",
+              flex:1
             }}>
             <SvgXml xml={info} />
-            <Text style={styles.text}>
+            <Text style={[styles.text,{flex:1}]}>
               How would you like the service to be delivered ?
             </Text>
           </View>
@@ -208,9 +211,11 @@ const ServiceAgreement = (props) => {
             style={{
               flexDirection: "row",
               marginTop: 32,
+              flex:1,
+              alignItems:"center"
             }}>
             <SvgXml xml={info} />
-            <Text style={styles.text}>
+            <Text style={[styles.text,{flex:1}]}>
               If you agree, please indicate by checking the box below.
             </Text>
           </View>
