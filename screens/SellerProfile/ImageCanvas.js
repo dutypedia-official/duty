@@ -188,7 +188,7 @@ export default function ImageCanvas({
             height={Platform.OS == "ios" ? "50" : "45"}
             width={Platform.OS == "ios" ? "50" : "45"}
           />
-          <SvgXml
+          {/* <SvgXml
             onPress={async() => {
               Share.share({
                 title:`${Data?.service?.serviceCenterName}`,
@@ -216,7 +216,7 @@ export default function ImageCanvas({
             xml={shareIcon}
             height={Platform.OS == "ios" ? "50" : "45"}
             width={Platform.OS == "ios" ? "50" : "45"}
-          />
+          /> */}
 
           <SvgXml
             onPress={() => {
