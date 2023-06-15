@@ -64,7 +64,7 @@ export default function SignUp_1({ navigation, route }) {
             value={number}
             onChange={setNumber}
             style={[signUpStyle.input, signUpStyle.mt18]}
-            placeholder={" "}
+            placeholder={"01*********"}
           />
         </View>
       </ScrollView>
