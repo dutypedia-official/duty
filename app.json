@@ -55,7 +55,7 @@
           "autoVerify": true,
           "data": [
             {
-              "scheme": "https",
+              "scheme": "duty",
               "host": "duty.com.bd",
               "pathPrefix": "/feed/service"
             }
