@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Duty",
-    "scheme": "https",
+    "scheme": "duty",
     "slug": "duty",
     "version": "1.0.1",
     "orientation": "portrait",

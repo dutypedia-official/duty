@@ -112,6 +112,13 @@ export const getServiceBySlug = async (token, slug) => {
   });
   return result;
 };
+export const getServiceMessageCount = async (token, serviceId) => {
+  //console.log(token)
+  const result = await axios.get(`${url}/server/chat/messages/count-unread-by-service/${serviceId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return result;
+};
 export const getGigs = async (token, id) => {
   const myHeaders = new Headers();
   //const formData=new FormData()

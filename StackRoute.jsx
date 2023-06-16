@@ -129,10 +129,10 @@ export default function StackRoute() {
       background: secondaryColor,
     },
   };
-  const pr = Linking.createURL("duty.com.bd/");
+  const pr = Linking.createURL("/");
   console.log(pr)
   const linking = {
-    prefixes: [pr, "https://duty.com.bd"],
+    prefixes: [pr],
     config: {
       screens: {
         SellerProfile: {
