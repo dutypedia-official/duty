@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ScrollView,
   View,
@@ -74,6 +74,7 @@ export default function EditAbout({ navigation, route }) {
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
   const gigs = vendor.service.gigs.filter((d) => d.type == "STARTING");
+  const scrollRef=useRef()
   React.useEffect(() => {
     if (businessForm?.facilities) {
       setService(businessForm.facilities);
@@ -150,7 +151,7 @@ export default function EditAbout({ navigation, route }) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 24,
@@ -202,6 +203,9 @@ export default function EditAbout({ navigation, route }) {
             style={styles.input}
             value={about}
             onChange={(e) => {
+              if(scrollRef){
+                scrollRef?.current?.scrollToEnd()
+              }
               setAbout(e);
             }}
             placeholder={"Type here"}
