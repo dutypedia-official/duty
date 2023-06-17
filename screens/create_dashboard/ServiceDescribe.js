@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   View,
@@ -27,25 +27,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import PageChip from "./components/PageChip";
-const { width } = Dimensions.get("window");
+const {width}=Dimensions.get("window")
 
-export default function ServiceDescribe({ navigation, route }) {
-  const businessForm = useSelector((state) => state.businessForm);
-  const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  const [serviceTitle, setServiceTitle] = useState(businessForm?.serviceTitle);
-  const [serviceDescription, setServiceDescription] = useState(
-    businessForm?.description
-  );
-  const [firstImage, setFirstImage] = useState(businessForm?.firstImage);
-  const [secondImage, setSecondImage] = useState(businessForm?.secondImage);
-  const [thirdImage, setThirdImage] = useState(businessForm?.thirdImage);
-  const [forthImage, setForthImage] = useState(businessForm?.forthImage);
-  const [serviceTitleError, setServiceTitleError] = useState();
-  const [serviceDescriptionError, setServiceDescriptionError] = useState();
+export default function ServiceDescribe({ navigation,route }) {
+  const businessForm=useSelector(state=>state.businessForm)
+  const dispatch=useDispatch()
+  const isFocused=useIsFocused()
+  const [serviceTitle,setServiceTitle]=useState(businessForm?.serviceTitle)
+  const [serviceDescription,setServiceDescription]=useState(businessForm?.description)
+  const [firstImage,setFirstImage]=useState(businessForm?.firstImage)
+  const [secondImage,setSecondImage]=useState(businessForm?.secondImage)
+  const [thirdImage,setThirdImage]=useState(businessForm?.thirdImage)
+  const [forthImage,setForthImage]=useState(businessForm?.forthImage)
+  const [serviceTitleError,setServiceTitleError]=useState()
+  const [serviceDescriptionError,setServiceDescriptionError]=useState()
   const [layoutHeight, setLayoutHeight] = useState(0);
-  const data = route?.params?.data;
-  const scrollRef = useRef();
+  const data=route?.params?.data;
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -64,8 +61,8 @@ export default function ServiceDescribe({ navigation, route }) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <PageChip currentPage={11} totalPage={14} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+      <PageChip currentPage={11} totalPage={14} />
         <View
           style={{
             marginTop: 24,
@@ -88,15 +85,14 @@ export default function ServiceDescribe({ navigation, route }) {
               Tips for title, service describe & photo
             </Text>
           </View>
-          <ViewMore
-            view={true}
+          <ViewMore view={true}
             style={{
               marginTop: 24,
             }}
             lowHeight={72}
             width={145}
             position={{
-              bottom: 0,
+              bottom:0
             }}
             height={layoutHeight}
             component={
@@ -141,115 +137,73 @@ export default function ServiceDescribe({ navigation, route }) {
               </View>
             }
           />
+          
 
           <Text style={[styles.headLine, { marginTop: 36 }]}>
             Service title
           </Text>
-          <Input
-            value={serviceTitle}
-            onChange={(e) => {
-              if (e?.split("")?.length > 100) {
-                return;
-              }
-              setServiceTitle(e);
-            }}
-            error={serviceTitleError}
-            style={styles.input}
-            placeholder={"Type service title"}
-          />
+          <Input value={serviceTitle} 
+          onChange={e=>{
+            if(e?.split("")?.length>100){
+              return
+            }
+            setServiceTitle(e)
+          }}
+          error={serviceTitleError}
+           style={styles.input} placeholder={"Type service title"} />
           <Text style={styles.text}>Max 100 characters </Text>
-          <Text style={[styles.headLine, { marginTop: 36 }]}>Add Photo</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: 24,
-            }}>
-            <ImageButton
-              value={firstImage}
-              onChange={setFirstImage}
-              style={{
-                width: (width - 64) / 4,
-              }}
-            />
-            <ImageButton
-              value={secondImage}
-              onChange={setSecondImage}
-              style={{
-                marginLeft: 8,
-                width: (width - 64) / 4,
-              }}
-            />
-            <ImageButton
-              value={thirdImage}
-              onChange={setThirdImage}
-              style={{
-                marginLeft: 8,
-                width: (width - 64) / 4,
-              }}
-            />
-            <ImageButton
-              value={forthImage}
-              onChange={setForthImage}
-              style={{
-                marginLeft: 8,
-                width: (width - 64) / 4,
-              }}
-            />
-          </View>
           <Text style={[styles.headLine, { marginTop: 36 }]}>
             Service Description
           </Text>
-          <TextArea
-            value={serviceDescription}
-            onChange={(e) => {
-              // if(e?.split("")?.length>2000){
-              //   return
-              // }
-              if(scrollRef){
-                //console.log(scrollRef?.current)
-                scrollRef?.current?.scrollToEnd()
-              }
-              setServiceDescription(e);
-            }}
-            error={serviceDescriptionError}
+          <TextArea value={serviceDescription}
+          onChange={e=>{
+            // if(e?.split("")?.length>2000){
+            //   return
+            // }
+            setServiceDescription(e)
+          }}
+          error={serviceDescriptionError}
             placeholder={"Describe your service"}
             style={styles.input}
           />
-          <Text style={styles.text}>
-            Max 2000/
-            {serviceDescription ? serviceDescription?.split("")?.length : "0"}{" "}
-            characters{" "}
-          </Text>
-
-          <IconButton
-            active={
-              firstImage &&
-              secondImage &&
-              thirdImage &&
-              forthImage &&
-              serviceTitle &&
-              serviceDescription
-                ? true
-                : false
-            }
-            disabled={
-              firstImage &&
-              secondImage &&
-              thirdImage &&
-              forthImage &&
-              serviceTitle &&
-              serviceDescription
-                ? false
-                : true
-            }
+          <Text style={styles.text}>Max 2000/{serviceDescription?serviceDescription?.split("")?.length:"0"} characters </Text>
+          <Text style={[styles.headLine, { marginTop: 36 }]}>Add Photo</Text>
+          <View style={{
+            flexDirection:"row",
+            marginTop:24
+          }}>
+            <ImageButton value={firstImage} onChange={setFirstImage} style={{
+              width:(width-64)/4
+            }} />
+            <ImageButton value={secondImage} 
+            onChange={setSecondImage}
+             style={{
+              marginLeft:8,
+              width:(width-64)/4
+            }}/>
+            <ImageButton value={thirdImage}
+            onChange={setThirdImage}
+             style={{
+              marginLeft:8,
+              width:(width-64)/4
+            }}/>
+            <ImageButton value={forthImage}
+            onChange={setForthImage}
+             style={{
+              marginLeft:8,
+              width:(width-64)/4
+            }}/>
+          </View>
+          <IconButton active={firstImage&&secondImage&&thirdImage&&forthImage&&serviceTitle&&serviceDescription?true:false}
+          disabled={firstImage&&secondImage&&thirdImage&&forthImage&&serviceTitle&&serviceDescription?false:true}
             onPress={() => {
-              if (serviceTitle.split("").length > 100) {
-                serviceTitleError("*Max 100 character required");
-                return;
+              if(serviceTitle.split("").length>100){
+                serviceTitleError("*Max 100 character required")
+                return
               }
-              if (serviceDescription.split("").length > 2000) {
-                setServiceDescriptionError("*Max 2000 character required");
-                return;
+              if(serviceDescription.split("").length>2000){
+                setServiceDescriptionError("*Max 2000 character required")
+                return
               }
               dispatch({ type: "SERVICE_TITLE", playload: serviceTitle });
               dispatch({ type: "DESCRIPTION", playload: serviceDescription });
@@ -258,8 +212,8 @@ export default function ServiceDescribe({ navigation, route }) {
               dispatch({ type: "THIRD_IMAGE", playload: thirdImage });
               dispatch({ type: "FOURTH_IMAGE", playload: forthImage });
               //console.log(data)
-              navigation.navigate("Location", {
-                data: {
+              navigation.navigate("Location",{
+                data:{
                   keywords: data?.keywords,
                   serviceCenterName: data.serviceCenterName,
                   providerName: data.providerName,
@@ -273,10 +227,10 @@ export default function ServiceDescribe({ navigation, route }) {
                   serviceCategory: data?.serviceCategory,
                   skills: data?.skills,
                   facilities: data?.facilities,
-                  serviceTitle: serviceTitle,
-                  serviceDescription: serviceDescription,
-                  images: [firstImage, secondImage, thirdImage, forthImage],
-                },
+                  serviceTitle:serviceTitle,
+                  serviceDescription:serviceDescription,
+                  images:[firstImage,secondImage,thirdImage,forthImage]
+                }
               });
             }}
             style={styles.button}

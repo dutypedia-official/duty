@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   View,
@@ -65,7 +65,6 @@ export default function About({ navigation,route }) {
   const [about,setAbout]=useState(businessForm?.about?businessForm.about:text)
   const [length,setLength]=useState(0)
   const inset=useSafeAreaInsets()
-  const scrollRef=useRef()
 
   React.useEffect(() => {
     if(businessForm?.facilities){
@@ -88,7 +87,7 @@ export default function About({ navigation,route }) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <PageChip currentPage={13} totalPage={14} />
         <View
           style={{
@@ -139,9 +138,7 @@ export default function About({ navigation,route }) {
             style={styles.input}
             value={about}
             onChange={e=>{
-              if(scrollRef){
-                scrollRef?.current?.scrollToEnd()
-              }
+              
               setAbout(e)
             }}
             placeholder={"Type here"}
