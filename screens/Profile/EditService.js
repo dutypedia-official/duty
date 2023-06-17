@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   ScrollView,
   View,
@@ -46,6 +46,7 @@ export default function EditService({ navigation, route }) {
   const [layoutHeight, setLayoutHeight] = useState(0);
   const data = route?.params?.data;
   const gigs=route?.params?.gigs;
+  const scrollRef=useRef()
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -57,6 +58,7 @@ export default function EditService({ navigation, route }) {
       //console.log("seen")
       dispatch(setHideBottomBar(false));
     }
+   
     if (gigs) {
       setFirstImage({ uri: gigs.images[0] });
       setSecondImage({ uri: gigs.images[1] });
@@ -75,7 +77,7 @@ export default function EditService({ navigation, route }) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 24,
@@ -168,26 +170,6 @@ export default function EditService({ navigation, route }) {
             placeholder={"Type service title"}
           />
           <Text style={styles.text}>Max 100 characters </Text>
-          <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Service Description
-          </Text>
-          <TextArea
-            value={serviceDescription}
-            onChange={(e) => {
-              // if(e?.split("")?.length>2000){
-              //   return
-              // }
-              setServiceDescription(e);
-            }}
-            error={serviceDescriptionError}
-            placeholder={"Describe your service"}
-            style={styles.input}
-          />
-          <Text style={styles.text}>
-            Max 2000/
-            {serviceDescription ? serviceDescription?.split("")?.length : "0"}{" "}
-            characters{" "}
-          </Text>
           <Text style={[styles.headLine, { marginTop: 36 }]}>Add Photo</Text>
           <View
             style={{
@@ -226,6 +208,30 @@ export default function EditService({ navigation, route }) {
               }}
             />
           </View>
+          <Text style={[styles.headLine, { marginTop: 36 }]}>
+            Service Description
+          </Text>
+          <TextArea
+            value={serviceDescription}
+            onChange={(e) => {
+              // if(e?.split("")?.length>2000){
+              //   return
+              // }
+              if(scrollRef){
+                scrollRef?.current?.scrollToEnd()
+              }
+              setServiceDescription(e);
+            }}
+            error={serviceDescriptionError}
+            placeholder={"Describe your service"}
+            style={styles.input}
+          />
+          <Text style={styles.text}>
+            Max 2000/
+            {serviceDescription ? serviceDescription?.split("")?.length : "0"}{" "}
+            characters{" "}
+          </Text>
+          
           <IconButton
             active={
               firstImage &&

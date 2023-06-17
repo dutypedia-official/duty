@@ -178,6 +178,7 @@ const Views = () => {
     // }
   };
   const getNetworkStatus=async()=>{
+    
     const res=await Network.getNetworkStateAsync();
     if(!res.isConnected){
       setIsOffline(true)
