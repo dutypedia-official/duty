@@ -899,7 +899,7 @@ export const Screens = ({ navigation, route }) => {
           console.error(err.response.data.msg);
         });
     }
-  }, [Refresh]);
+  }, [Refresh,user,vendor]);
   React.useEffect(() => {
     socket.on("updateOrder", (e) => {
       setRefresh((val) => !val);

@@ -44,7 +44,7 @@ export default function AccountBalance({ navigation }) {
   useEffect(() => {
     getAccountInfo(user.token, vendor.service.id)
       .then((res) => {
-        
+        console.log(res.data)
         setData(res.data);
       })
       .catch((err) => {
@@ -77,8 +77,8 @@ export default function AccountBalance({ navigation }) {
             navigation.navigate("ReviewVerification");
           }}
           verified={data?.service?.verified}
-          id={data?.id}
-          name={`${vendor?.service?.providerInfo?.name}`}
+          id={data?.bankDetails?data?.bankDetails?.accountNumber:"N/A"}
+          name={`${data?.bankDetails?data?.bankDetails?.accountHolderName:"N/A"}`}
         />
         <AccountDetailsCart
           amount={data?.balance}
@@ -192,7 +192,7 @@ const MasterCart = ({ name, id, verified, onVerify }) => {
               color: "white",
               marginVertical: 5,
             }}>
-            Id No: {id}
+            Acc No: {id}
           </Text>
         </View>
       </View>
