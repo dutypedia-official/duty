@@ -136,6 +136,7 @@ import EditExtraFacilities from "./Profile/EditExtraFacilities";
 import EditServiceCategory from "./Profile/EditServiceCategory";
 import EditSkills from "./Profile/EditSkills";
 import SignUp_3 from "./signup/SignUp_3";
+import ComponentDropDown from "../Hooks/DropDown";
 //import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
@@ -179,7 +180,7 @@ const Profile = ({ navigation }) => {
         }}
         component={VendorProfile}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="FakeVendorProfile"
         options={{
           headerShown: false,
@@ -322,7 +323,7 @@ const Profile = ({ navigation }) => {
         }}
         component={ExtraFacilities}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="ProfileKeyword"
         options={{
           header: (props) => (
@@ -436,7 +437,7 @@ const Profile = ({ navigation }) => {
         }}
         component={AppointmentDetails}
       />
-      
+
       <Stack.Screen
         name="Request"
         options={{
@@ -730,7 +731,7 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         name="Company Calender"
         options={{
-          header:props=><SubHeader {...props} title={"Working Time"}/>,
+          header: (props) => <SubHeader {...props} title={"Working Time"} />,
         }}
         component={CompanyCalendar}
       />
@@ -851,14 +852,18 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Business Title"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={"Business Title"} />
+          ),
         }}
         name="EditBusinessTitle"
         component={EditBusinessTitle}
       />
-       <Stack.Screen
+      <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Your Information"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={"Your Information"} />
+          ),
         }}
         name="EditYourInformation"
         component={EditYourInformation}
@@ -872,21 +877,27 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Profile Keywords"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={"Profile Keywords"} />
+          ),
         }}
         name="EditKeywords"
         component={EditKeywords}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Extra Facilities"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={"Extra Facilities"} />
+          ),
         }}
         name="EditExtraFacilities"
         component={EditExtraFacilities}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Service Category"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={"Service Category"} />
+          ),
         }}
         name="EditServiceCategory"
         component={EditServiceCategory}
@@ -905,22 +916,26 @@ const Profile = ({ navigation }) => {
         name="EditAbout"
         component={EditAbout}
       />
-       <Stack.Screen
-          options={{
-            headerStyle: {
-              backgroundColor: "green",
-            },
-            headerShown: false,
-          }}
-          name="OtherProfile"
-          component={OtherProfile}
-        />
-        
-        <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
-          name="SignUp_3"
-          component={SignUp_3}
-        />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "green",
+          },
+          headerShown: false,
+        }}
+        name="OtherProfile"
+        component={OtherProfile}
+      />
+
+      <Stack.Screen
+        options={{
+          header: (props) => (
+            <SubHeader title={"User information"} {...props} />
+          ),
+        }}
+        name="SignUp_3"
+        component={SignUp_3}
+      />
     </Stack.Navigator>
   );
 };
@@ -953,8 +968,8 @@ const MainProfile = (props) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setRefresh((val) => !val);
-    if(user?.token){
-      getUser(user?.token)
+    if (user?.token) {
+      getUser(user?.token);
     }
     //dispatch({ type: "SET_INTEREST_CATEGORY", playload: "Home" });
     wait(1000).then(() => setRefreshing(false));
@@ -1034,7 +1049,7 @@ const MainProfile = (props) => {
   const inset = useSafeAreaInsets();
   const isFocused = useIsFocused();
   const vendor = useSelector((state) => state.vendor);
-  const deviceToken=useSelector(state=>state.deviceToken)
+  const deviceToken = useSelector((state) => state.deviceToken);
   React.useEffect(() => {
     if (isFocused) {
       dispatch(setHideBottomBar(false));
@@ -1143,7 +1158,10 @@ const MainProfile = (props) => {
           flex: 1,
         }}>
         <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
-        <StatusBar style="dark" backgroundColor={isFocused?"#F2F2F6":"white"} />
+        <StatusBar
+          style="dark"
+          backgroundColor={isFocused ? "#F2F2F6" : "white"}
+        />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ backgroundColor: "#F2F2F6" }}
@@ -1188,94 +1206,104 @@ const MainProfile = (props) => {
               />
             </View>
             <View style={[styles.subContainer, { marginBottom: 20 }]}>
-              <FlatCart
-                onPress={() => {
-                  navigation.navigate("WebViews", {
-                    url: "https://duty.com.bd/about",
-                    title: "About Us",
-                  });
-                }}
-                icon={info}
-                title={"About duty"}
-                value={"Transforming the future"}
-                type={""}
-                style={{ paddingTop: 0 }}
+              <ComponentDropDown noHide={true} style={{ paddingTop: 0 }}
+                component={
+                  <>
+                    <FlatCart
+                      onPress={() => {
+                        navigation.navigate("WebViews", {
+                          url: "https://duty.com.bd/about",
+                          title: "About Us",
+                        });
+                      }}
+                      icon={info}
+                      title={"About duty"}
+                      value={"Transforming the future"}
+                      type={""}
+                      
+                    />
+                    <FlatCart
+                      onPress={() => {
+                        navigation.navigate("WebViews", {
+                          url: "https://duty.com.bd/legal/app/privacy-policy",
+                          title: "Privacy Policy",
+                        });
+                      }}
+                      icon={agreement}
+                      title={"Privacy Policy"}
+                      value={"Review our agreements"}
+                      type={""}
+                    />
+                    <FlatCart
+                      onPress={() => {
+                        navigation.navigate("WebViews", {
+                          url: "https://duty.com.bd/legal/app/terms-and-conditions",
+                          title: "Term & Condition",
+                        });
+                      }}
+                      icon={terms}
+                      title={"Terms & condition"}
+                      value={"Comply with our rules"}
+                      type={""}
+                    />
+                    <FlatCart
+                      onPress={() => {
+                        navigation.navigate("WebViews", {
+                          url: "https://duty.com.bd/legal/app/order-policy",
+                          title: "Order policy",
+                        });
+                      }}
+                      icon={order}
+                      title={"Order policy"}
+                      value={"Order like a pro, enjoy the benefits!"}
+                      type={""}
+                    />
+                    <FlatCart
+                      onPress={() => {
+                        navigation.navigate("WebViews", {
+                          url: "https://duty.com.bd/legal/app/refund-policy",
+                          title: "Refund policy",
+                        });
+                      }}
+                      icon={refund}
+                      title={"Refund policy"}
+                      value={"No hassle, just refunds!"}
+                      type={""}
+                    />
+                    <FlatCart
+                      
+                      onPress={() => {
+                        navigation.navigate("WebViews", {
+                          url: "https://duty.com.bd/legal/app/withdraw-policy",
+                          title: "Withdrawal policy",
+                        });
+                      }}
+                      icon={withdrawal}
+                      title={"Withdrawal policy"}
+                      value={"Easy withdrawals, your funds your way!"}
+                      type={""}
+                    />
+                  </>
+                }
+                icon={legal}
+                title={"Legal"}
+                value={"Your rights, our legal duty!"}
               />
               <FlatCart
+                // onPress={()=>{
+                //   navigation.navigate("WebViews",{url:"https://duty.com.bd/profile/support",title:"Support"})
+                // }}
                 onPress={() => {
-                  navigation.navigate("WebViews", {
-                    url: "https://duty.com.bd/legal/app/privacy-policy",
-                    title: "Privacy Policy",
-                  });
-                }}
-                icon={agreement}
-                title={"Privacy Policy"}
-                value={"Review our agreements"}
-                type={""}
-              />
-              <FlatCart
-                onPress={() => {
-                  navigation.navigate("WebViews", {
-                    url: "https://duty.com.bd/legal/app/terms-and-conditions",
-                    title: "Term & Condition",
-                  });
-                }}
-                icon={terms}
-                title={"Terms & condition"}
-                value={"Comply with our rules"}
-                type={""}
-              />
-              <FlatCart
-                onPress={() => {
-                  navigation.navigate("WebViews", {
-                    url: "https://duty.com.bd/legal/app/order-policy",
-                    title: "Order policy",
-                  });
-                }}
-                icon={order}
-                title={"Order policy"}
-                value={"Order like a pro, enjoy the benefits!"}
-                type={""}
-              />
-              <FlatCart
-                onPress={() => {
-                  navigation.navigate("WebViews", {
-                    url: "https://duty.com.bd/legal/app/refund-policy",
-                    title: "Refund policy",
-                  });
-                }}
-                icon={refund}
-                title={"Refund policy"}
-                value={"No hassle, just refunds!"}
-                type={""}
-              />
-             <FlatCart
-                onPress={() => {
-                  navigation.navigate("WebViews", {
-                    url: "https://duty.com.bd/legal/app/withdraw-policy",
-                    title: "Withdrawal policy",
-                  });
-                }}
-                icon={withdrawal}
-                title={"Withdrawal policy"}
-                value={"Easy withdrawals, your funds your way!"}
-                type={""}
-              />
-              
-              <FlatCart
-                onPress={() => {
-                  navigation.navigate("WebViews", {
-                    url: "https://duty.com.bd/contact",
-                    title: "Contact Us",
-                  });
+                  navigation.navigate("Support");
                 }}
                 style={{ borderBottomWidth: 0, paddingBottom: 0 }}
                 icon={support}
-                title={"Contact Us"}
+                title={"Support"}
                 value={"Talk to us"}
                 type={""}
               />
             </View>
+            
           </View>
         </ScrollView>
       </View>
@@ -1287,7 +1315,10 @@ const MainProfile = (props) => {
         flex: 1,
       }}>
       <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
-      <StatusBar style="dark" backgroundColor={isFocused?"#F2F2F6":"white"} />
+      <StatusBar
+        style="dark"
+        backgroundColor={isFocused ? "#F2F2F6" : "white"}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ backgroundColor: "#F2F2F6" }}
@@ -1304,7 +1335,7 @@ const MainProfile = (props) => {
           <Avatar
             onEdit={() => {
               pickImage().then((res) => {
-                if(res){
+                if (res) {
                   updateProfilePicture(res);
                 }
               });
@@ -1352,22 +1383,22 @@ const MainProfile = (props) => {
           <View style={styles.subContainer}>
             <FlatCart
               onPress={() => {
-                navigation.navigate("Mobile",{user:user?.user});
+                navigation.navigate("Mobile", { user: user?.user });
               }}
               style={{ paddingTop: 0 }}
               icon={call}
               title={"Phone"}
               value={user?.user?.phone}
-              type={user?.user?.hidePhone?"Private":"Public"}
+              type={user?.user?.hidePhone ? "Private" : "Public"}
             />
             <FlatCart
               onPress={() => {
-                navigation.navigate("Email",{user:user?.user});
+                navigation.navigate("Email", { user: user?.user });
               }}
               icon={email}
               title={"Email"}
               value={user?.user?.email}
-              type={user?.user?.hideEmail?"Private":"Public"}
+              type={user?.user?.hideEmail ? "Private" : "Public"}
             />
             <FlatCart
               onPress={() => {
@@ -1376,94 +1407,95 @@ const MainProfile = (props) => {
               }}
               icon={location}
               title={"Address"}
-              value={user?.user?.address?`${user?.user?.address.division}, ${user?.user?.address?.district}`:null}
-              type={user?.user?.hideAddress?"Private":"Public"}
+              value={
+                user?.user?.address
+                  ? `${user?.user?.address.division}, ${user?.user?.address?.district}`
+                  : null
+              }
+              type={user?.user?.hideAddress ? "Private" : "Public"}
             />
-            <FlatCart
-              onPress={() => {
-                navigation.navigate("WebViews", {
-                  url: "https://duty.com.bd/about",
-                  title: "About Us",
-                });
-              }}
-              icon={info}
-              title={"Company"}
-              value={"Transforming the future"}
-              type={""}
-            />
-            <FlatCart
-              onPress={() => {
-                navigation.navigate("WebViews", {
-                  url: "https://duty.com.bd/legal/app/privacy-policy",
-                  title: "Privacy Policy",
-                });
-              }}
-              icon={agreement}
-              title={"Privacy policy"}
-              value={"Review our agreement"}
-              type={""}
-            />
-            <FlatCart
-              onPress={() => {
-                navigation.navigate("WebViews", {
-                  url: "https://duty.com.bd/legal/app/terms-and-conditions",
-                  title: "Terms & Conditions",
-                });
-              }}
-              icon={terms}
-              title={"Terms & condition"}
-              value={"Comply with our rules"}
-              type={""}
-            />
-            <FlatCart
-              onPress={() => {
-                navigation.navigate("WebViews", {
-                  url: "https://duty.com.bd/legal/app/order-policy",
-                  title: "Order Policy",
-                });
-              }}
-              icon={order}
-              title={"Order policy"}
-              value={"Order like a pro, enjoy the benefits!"}
-              type={""}
-            />
-            <FlatCart
-              onPress={() => {
-                navigation.navigate("WebViews", {
-                  url: "https://duty.com.bd/legal/app/refund-policy",
-                  title: "Refund Policy",
-                });
-              }}
-              icon={refund}
-              title={"Refund policy"}
-              value={"No hassle, just refunds!"}
-              type={""}
-            />
-            
-            <FlatCart
-              onPress={() => {
-                navigation.navigate("WebViews", {
-                  url: "https://duty.com.bd/legal/app/withdraw-policy",
-                  title: "Withdrawal Policy",
-                });
-              }}
-              icon={withdrawal}
-              title={"Withdrawal policy"}
-              value={"Easy withdrawals, your funds your way!"}
-              type={""}
-            />
-            <FlatCart
-              // onPress={()=>{
-              //   navigation.navigate("WebViews",{url:"https://duty.com.bd/profile/support",title:"Support"})
-              // }}
-              onPress={() => {
-                navigation.navigate("Support");
-              }}
-              style={{ borderBottomWidth: 0, paddingBottom: 0 }}
-              icon={support}
-              title={"Support"}
-              value={"Talk to us"}
-              type={""}
+            <ComponentDropDown h={400}
+              component={
+                <>
+                  <FlatCart
+                    onPress={() => {
+                      navigation.navigate("WebViews", {
+                        url: "https://duty.com.bd/about",
+                        title: "About Us",
+                      });
+                    }}
+                    icon={info}
+                    title={"Company"}
+                    value={"Transforming the future"}
+                    type={""}
+                  />
+                  <FlatCart
+                    onPress={() => {
+                      navigation.navigate("WebViews", {
+                        url: "https://duty.com.bd/legal/app/privacy-policy",
+                        title: "Privacy Policy",
+                      });
+                    }}
+                    icon={agreement}
+                    title={"Privacy policy"}
+                    value={"Review our agreement"}
+                    type={""}
+                  />
+                  <FlatCart
+                    onPress={() => {
+                      navigation.navigate("WebViews", {
+                        url: "https://duty.com.bd/legal/app/terms-and-conditions",
+                        title: "Terms & Conditions",
+                      });
+                    }}
+                    icon={terms}
+                    title={"Terms & condition"}
+                    value={"Comply with our rules"}
+                    type={""}
+                  />
+                  <FlatCart
+                    onPress={() => {
+                      navigation.navigate("WebViews", {
+                        url: "https://duty.com.bd/legal/app/order-policy",
+                        title: "Order Policy",
+                      });
+                    }}
+                    icon={order}
+                    title={"Order policy"}
+                    value={"Order like a pro, enjoy the benefits!"}
+                    type={""}
+                  />
+                  <FlatCart
+                    onPress={() => {
+                      navigation.navigate("WebViews", {
+                        url: "https://duty.com.bd/legal/app/refund-policy",
+                        title: "Refund Policy",
+                      });
+                    }}
+                    icon={refund}
+                    title={"Refund policy"}
+                    value={"No hassle, just refunds!"}
+                    type={""}
+                  />
+
+                  <FlatCart
+                    onPress={() => {
+                      navigation.navigate("WebViews", {
+                        url: "https://duty.com.bd/legal/app/withdraw-policy",
+                        title: "Withdrawal Policy",
+                      });
+                    }}
+                    style={{ borderBottomWidth: 0, paddingBottom: 0 }}
+                    icon={withdrawal}
+                    title={"Withdrawal policy"}
+                    value={"Easy withdrawals, your funds your way!"}
+                    type={""}
+                  />
+                </>
+              }
+              icon={legal}
+              title={"Legal"}
+              value={"Your rights, our legal duty!"}
             />
           </View>
           <View style={[styles.subContainer, { marginBottom: 20 }]}>
@@ -1478,22 +1510,22 @@ const MainProfile = (props) => {
               type={""}
             />
             <FlatCart
-              onPress={async() => {
-                
-                setLoader(true)
+              onPress={async () => {
+                setLoader(true);
                 setLogOut(true);
                 logOut();
                 logoutVendor();
-                try{
-                  deviceToken&&await removeDeviceToken(user?.token,deviceToken)
-                  console.log(deviceToken)
-                }catch(e){
-                  console.log(e.message)
+                try {
+                  deviceToken &&
+                    (await removeDeviceToken(user?.token, deviceToken));
+                  console.log(deviceToken);
+                } catch (e) {
+                  console.log(e.message);
                 }
                 dispatch({ type: "SET_VENDOR", playload: false });
                 dispatch({ type: "SET_USER", playload: [] });
                 dispatch({ type: "SET_VENDOR_INFO", playload: false });
-                setLoader(false)
+                setLoader(false);
                 navigation.navigate("Feed");
               }}
               style={{ borderBottomWidth: 0, paddingBottom: 0 }}
@@ -1501,6 +1533,25 @@ const MainProfile = (props) => {
               title={"Logout"}
               value={"Leave session"}
               disableGo={true}
+              type={""}
+            />
+          </View>
+          <View
+            style={[
+              styles.subContainer,
+              { marginBottom: 20, marginTop: 0, paddingTop: 0 },
+            ]}>
+            <FlatCart
+              // onPress={()=>{
+              //   navigation.navigate("WebViews",{url:"https://duty.com.bd/profile/support",title:"Support"})
+              // }}
+              onPress={() => {
+                navigation.navigate("Support");
+              }}
+              style={{ borderBottomWidth: 0, paddingBottom: 0 }}
+              icon={support}
+              title={"Support"}
+              value={"Talk to us"}
               type={""}
             />
           </View>
@@ -1515,6 +1566,11 @@ export default Profile;
 {
   //new icons
 }
+const legal = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="28" height="28" rx="4" fill="#8E8E93"/>
+<path d="M9.96836 5.38522C9.58164 5.49069 9.25351 5.76413 9.10117 6.10788C9.0582 6.20554 8.99961 6.47507 8.97226 6.70554C8.89414 7.33444 8.68711 7.70944 8.26133 7.98288C7.95273 8.17819 7.76914 8.22507 7.19492 8.25632C6.72617 8.28366 6.63633 8.29929 6.44101 8.39304C6.03867 8.59225 5.76914 8.93991 5.66758 9.40475C5.61289 9.67429 5.65195 11.229 5.73398 11.9321C6.21054 15.9712 8.42539 19.5493 11.8121 21.7485C12.402 22.1313 12.9957 22.4594 13.277 22.5649C13.609 22.6899 14.3824 22.6899 14.7145 22.5649C15.023 22.4516 15.6168 22.1157 16.2809 21.6782C19.4801 19.5688 21.6441 16.1626 22.1988 12.3618C22.3434 11.354 22.4059 9.76022 22.316 9.36179C22.2184 8.93991 21.9332 8.58054 21.5465 8.39304C21.3551 8.29929 21.2652 8.28366 20.7965 8.25632C20.2223 8.22507 20.0387 8.17819 19.7301 7.98288C19.3043 7.70944 19.0973 7.33444 19.0191 6.69772C18.9332 6.01804 18.7262 5.68991 18.2184 5.45163L17.9996 5.35007L14.0738 5.34225C11.0465 5.33835 10.109 5.34616 9.96836 5.38522ZM17.3785 7.32272C17.6402 8.72897 18.8785 9.84225 20.2809 9.92819L20.648 9.95163L20.6246 10.7173C20.6129 11.1391 20.5738 11.686 20.5387 11.9321C20.3434 13.3188 19.898 14.7133 19.2809 15.8774C18.9215 16.5532 19.0035 16.5258 18.5895 16.0883C18.3941 15.8813 18.0895 15.5923 17.9098 15.4477C17.5582 15.1665 16.9254 14.7758 16.5699 14.6235L16.3512 14.5298L16.5348 14.3266C16.9332 13.8891 17.2145 13.3344 17.3434 12.7329C17.4176 12.3813 17.3941 11.5063 17.3004 11.1704C17.2105 10.8383 16.9293 10.2758 16.7145 9.99069C16.2496 9.37741 15.5074 8.90866 14.7457 8.7446C14.3902 8.67038 13.6324 8.67429 13.2887 8.75241C12.0465 9.03366 11.0855 9.96335 10.7496 11.2094C10.6363 11.6196 10.6285 12.4477 10.7262 12.8305C10.8707 13.3774 11.1168 13.8618 11.4527 14.2563C11.5621 14.3813 11.652 14.4985 11.652 14.5102C11.652 14.5219 11.5504 14.5727 11.4254 14.6235C11.0699 14.7719 10.4371 15.1626 10.0816 15.4477C9.90195 15.5923 9.59726 15.8813 9.40195 16.0883C8.99179 16.5219 9.06601 16.5376 8.74961 15.9555C8.46054 15.4243 8.1832 14.7719 7.96054 14.1001C7.58164 12.9594 7.40195 11.9555 7.36679 10.7368L7.34336 9.95163L7.71054 9.92819C8.72226 9.86569 9.69492 9.25241 10.2301 8.33835C10.402 8.04538 10.5738 7.59225 10.6168 7.30319C10.6324 7.21725 10.648 7.1235 10.6559 7.09616C10.6715 7.0571 11.359 7.04929 14.0035 7.0571L17.3316 7.06882L17.3785 7.32272ZM14.398 10.4282C15.0855 10.6079 15.5582 11.1196 15.6832 11.8149C15.7887 12.4321 15.4488 13.1469 14.8902 13.4829C14.023 13.9985 12.941 13.6548 12.4996 12.7251C12.3863 12.479 12.3746 12.4282 12.3746 12.0688C12.3785 11.7524 12.3941 11.6352 12.4684 11.4516C12.773 10.6821 13.6324 10.229 14.398 10.4282ZM14.9059 15.8813C15.8082 16.061 16.6754 16.5454 17.3004 17.2173C17.566 17.5063 17.8629 17.9087 17.8629 17.9868C17.8629 18.0649 16.5621 19.3383 16.1598 19.6587C15.3551 20.2876 14.2379 20.9673 13.9957 20.9673C13.6988 20.9673 12.4059 20.1469 11.5074 19.3852C11.152 19.0844 10.1285 18.0415 10.1285 17.9829C10.1285 17.9087 10.4332 17.4985 10.6949 17.2133C11.4098 16.4399 12.4957 15.9087 13.566 15.8032C13.9918 15.7602 14.4215 15.7876 14.9059 15.8813Z" fill="white"/>
+</svg>
+`;
 const cart = `<svg width="57" height="52" viewBox="0 0 57 52" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M0.5 8C0.5 3.58172 4.08172 0 8.5 0H48.5C52.9183 0 56.5 3.58172 56.5 8V44C56.5 48.4183 52.9183 52 48.5 52H8.5C4.08172 52 0.5 48.4183 0.5 44V8Z" fill="#4ADE80"/>
 <path d="M27.6251 12.1185C28.6007 11.9495 29.6027 11.9614 30.5733 12.1534C31.544 12.3455 32.4642 12.714 33.281 13.2376C34.0979 13.7613 34.7952 14.4298 35.333 15.2048C35.8708 15.9798 36.2384 16.8459 36.4147 17.7533C36.5288 18.4959 36.5693 19.2466 36.5358 19.9961C37.9862 19.9998 39.4362 19.9934 40.8862 19.9988C41.44 20.015 41.9663 20.2267 42.3579 20.5909C42.7495 20.9552 42.9769 21.4444 42.9938 21.959C43.001 26.0952 43.0019 30.2318 42.9967 34.3687C42.9866 35.254 43.0736 36.1699 42.7295 37.0167C42.3952 37.8747 41.7893 38.6186 40.9914 39.1506C40.1934 39.6825 39.2409 39.9777 38.2591 39.9972C32.0861 40.0009 25.9128 40.0009 19.7391 39.9972C18.5 39.9518 17.3249 39.4742 16.4481 38.6595C15.5712 37.8448 15.0571 36.753 15.0083 35.6017C14.9983 31.0586 14.9973 26.5148 15.0055 21.9704C15.0138 21.4695 15.2242 20.9898 15.5949 20.6261C15.9657 20.2624 16.4699 20.0413 17.0077 20.0065C18.4933 19.9888 19.98 20.0045 21.4659 19.9981C21.4452 19.3683 21.4655 18.7379 21.5267 18.1104C21.7293 16.6403 22.429 15.2679 23.525 14.1911C24.621 13.1142 26.0567 12.3885 27.6251 12.1185ZM26.535 14.5614C25.8461 14.892 25.242 15.3569 24.7642 15.9243C24.2864 16.4917 23.9461 17.1483 23.7666 17.8492C23.626 18.5568 23.577 19.2776 23.6206 19.9961C27.2078 19.9979 30.7945 19.9979 34.3808 19.9961C34.4299 19.2411 34.3704 18.4833 34.2039 17.7429C34.0012 17.0174 33.6253 16.3436 33.1042 15.7715C32.583 15.1993 31.9299 14.7435 31.1933 14.4378C30.4567 14.1322 29.6555 13.9845 28.8491 14.0057C28.0427 14.0269 27.2518 14.2165 26.535 14.5604M22.2159 23.0634C22.013 23.1226 21.8339 23.237 21.7017 23.3919C21.5695 23.5467 21.4904 23.7348 21.4746 23.9319C21.3869 24.9926 21.4989 26.0594 21.8053 27.0844C22.3161 28.6114 23.3741 29.93 24.8035 30.8207C26.2329 31.7113 27.9474 32.1204 29.6619 31.9799C31.3763 31.8393 32.9872 31.1576 34.2266 30.0481C35.4661 28.9387 36.2593 27.4683 36.4743 25.8818C36.5276 25.267 36.5405 24.6497 36.5128 24.0335C36.5181 23.7746 36.4144 23.524 36.2237 23.3351C36.033 23.1463 35.7705 23.0341 35.4921 23.0225C35.2137 23.0108 34.9414 23.1007 34.7333 23.2729C34.5252 23.4451 34.3976 23.686 34.3779 23.9443C34.3527 24.6949 34.4243 25.4589 34.2132 26.1928C33.9094 27.3509 33.17 28.3699 32.1284 29.0657C31.0868 29.7616 29.8117 30.0885 28.5334 29.9873C27.2551 29.8862 26.0579 29.3636 25.1579 28.5141C24.258 27.6646 23.7146 26.5441 23.626 25.355C23.5825 24.8539 23.6393 24.3485 23.5901 23.8467C23.5643 23.707 23.5067 23.5739 23.4212 23.4565C23.3356 23.3391 23.2241 23.24 23.094 23.1658C22.9639 23.0916 22.8183 23.0441 22.6669 23.0265C22.5154 23.0088 22.3617 23.0214 22.2159 23.0634Z" fill="white"/>
@@ -1577,8 +1633,8 @@ const refund = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmln
 <path d="M8.74171 9.97313C8.03077 10.2036 7.53468 10.7114 7.35499 11.4028C7.26905 11.7427 7.26514 16.2544 7.35499 16.5903C7.53077 17.2739 8.04639 17.8247 8.69093 18.0239C8.94093 18.102 9.0464 18.102 13.9761 18.102C18.9058 18.102 19.0112 18.102 19.2612 18.0239C19.9058 17.8247 20.4214 17.2739 20.5972 16.5903C20.687 16.2544 20.6831 11.7427 20.5972 11.4028C20.4175 10.7231 19.9487 10.2231 19.2769 9.99656L18.98 9.89891L13.9683 9.90281C9.27296 9.90281 8.94483 9.90672 8.74171 9.97313ZM19.0073 11.3755C19.0776 11.4263 19.1675 11.5356 19.2105 11.6216C19.2886 11.77 19.2886 11.8403 19.2808 14.0513L19.2691 16.3325L19.1558 16.477C18.9448 16.7544 19.3003 16.7388 13.9292 16.727L9.07374 16.7153L8.92921 16.6177C8.62843 16.4145 8.64405 16.563 8.64405 13.9966V11.7114L8.74171 11.5669C8.79249 11.4927 8.89796 11.3911 8.97608 11.3481C9.1128 11.2661 9.13233 11.2661 13.9956 11.2778L18.8784 11.2856L19.0073 11.3755Z" fill="white"/>
 <path d="M13.4565 11.8755C12.4917 12.1059 11.7886 13.0044 11.7886 14.0005C11.7886 15.2036 12.7729 16.188 13.9761 16.188C14.3198 16.188 14.6753 16.0981 14.9956 15.9302C15.3472 15.7466 15.5737 15.5434 15.7886 15.2192C16.3745 14.3364 16.2573 13.1763 15.5034 12.438C14.9722 11.9184 14.1792 11.6997 13.4565 11.8755ZM14.3901 13.3169C14.9097 13.6216 14.9019 14.3833 14.3745 14.6919C13.6753 15.102 12.8706 14.3052 13.2847 13.602C13.519 13.2036 13.9878 13.0825 14.3901 13.3169Z" fill="white"/>
 </svg>
-`
-const order=`<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+`;
+const order = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="28" height="28" rx="4" fill="#A356D7"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M18.7551 4L18.9632 4.10156C19.0759 4.15625 19.2146 4.23828 19.2666 4.28516C19.3229 4.33203 19.4226 4.44922 19.6003 4.72266L19.622 12.4766L22.7646 12.4961L23.0247 12.6055C23.1678 12.6641 23.3671 12.7891 23.4712 12.8789C23.5752 12.9688 23.7009 13.1055 23.7529 13.1797C23.8006 13.2539 23.8786 13.4219 23.922 13.5508C23.9913 13.7656 24 13.9844 24 16.0898C24 18.2773 23.9957 18.4102 23.909 18.707C23.8613 18.8789 23.7616 19.125 23.6836 19.2539C23.6055 19.3789 23.4582 19.5703 23.3498 19.6719C23.2414 19.7734 22.5999 20.2539 21.9194 20.7383C21.2388 21.2227 20.5756 21.6641 20.4456 21.7227C20.3156 21.7812 20.0772 21.8477 19.6264 21.9102L19.6134 22.5938C19.6003 23.2539 19.596 23.2852 19.4833 23.4531C19.4226 23.5508 19.3229 23.668 19.2666 23.7148C19.2146 23.7617 19.0759 23.8438 18.7551 24H4.88427L4.6762 23.9062C4.5635 23.8555 4.41179 23.7539 4.33377 23.6797C4.25574 23.6094 4.15171 23.4648 4 23.1602L4.00867 7.76953L4.12137 7.68359C4.18205 7.63281 4.27742 7.59375 4.32943 7.59375C4.38578 7.58984 4.47681 7.625 4.64586 7.74219L4.66753 15.457C4.68487 22.2344 4.69788 23.1758 4.75423 23.2383C4.7889 23.2734 4.87126 23.332 4.94062 23.3594C5.04031 23.4062 6.15865 23.4141 11.8197 23.4141C17.7451 23.4141 18.599 23.4062 18.7117 23.3555C18.7811 23.3242 18.8721 23.2422 18.9068 23.1797C18.9588 23.0898 18.9718 22.9141 18.9675 21.7539L18.7204 21.6094C18.586 21.5273 18.3303 21.3555 18.1612 21.2266C17.8968 21.0312 17.8448 20.9727 17.8448 20.875C17.8448 20.8047 17.8838 20.7188 17.9532 20.6602C18.0095 20.6055 18.1092 20.5625 18.1699 20.5625C18.2393 20.5625 18.417 20.6641 18.6814 20.8516C18.8981 21.0078 19.1495 21.1719 19.2319 21.2109C19.3359 21.2617 19.4746 21.2852 19.687 21.2852C19.9341 21.2852 20.0295 21.2656 20.1855 21.1875C20.2939 21.1328 20.9484 20.6797 21.6376 20.1836C22.5566 19.5234 22.9293 19.2305 23.0334 19.0898C23.1071 18.9883 23.2024 18.8203 23.2371 18.7148C23.2978 18.5547 23.3065 18.2109 23.3065 16.1172C23.3065 13.875 23.2978 13.6953 23.2241 13.5508C23.1808 13.4648 23.0767 13.3359 22.99 13.2695C22.899 13.1992 22.756 13.125 22.6693 13.1016C22.5652 13.0781 21.3949 13.0664 19.505 13.0742C16.5834 13.082 16.5054 13.0859 16.3884 13.1602C16.3277 13.2031 16.2323 13.2891 16.1803 13.3477C16.0893 13.457 16.0893 13.4688 16.0893 18.6289L16.2107 18.8633C16.2757 18.9922 16.4057 19.1641 16.4924 19.2461C16.5791 19.3281 16.7785 19.4883 16.9302 19.5977C17.0819 19.7109 17.225 19.8438 17.2466 19.8984C17.2726 19.9648 17.2683 20.0352 17.2293 20.1094C17.199 20.1719 17.1296 20.2383 17.0776 20.2539C17.0212 20.2734 16.9519 20.2891 16.9259 20.2891C16.8955 20.2891 16.7395 20.2031 16.2844 19.8984H9.43563L9.34894 19.793C9.29692 19.7305 9.25791 19.6602 9.26225 19.6367C9.26225 19.6094 9.28392 19.5469 9.30559 19.5C9.3316 19.4492 9.39662 19.3867 9.4573 19.3633C9.53966 19.3242 10.2679 19.3125 15.7208 19.3125L15.6385 19.1484C15.5908 19.0547 15.5215 18.875 15.4868 18.7461C15.4348 18.5742 15.4174 18.3203 15.4174 17.0859H9.43563L9.34894 16.9805C9.29692 16.918 9.25791 16.8398 9.26225 16.8047C9.26225 16.7656 9.30993 16.6875 9.47031 16.5195L15.4174 16.5V14.3125L9.47031 14.293L9.36628 14.1875C9.30993 14.125 9.26225 14.0469 9.26225 14.0117C9.25791 13.9727 9.29692 13.8945 9.43563 13.7266H15.4174V13.6211C15.4174 13.5586 15.4434 13.4258 15.4781 13.3164C15.5215 13.1875 15.6125 13.0469 15.7512 12.9102C15.8639 12.7969 16.059 12.6562 16.3927 12.4961L18.9718 12.4766V8.70703C18.9718 5.43359 18.9632 4.92188 18.9068 4.82031C18.8721 4.75781 18.7811 4.67578 18.7117 4.64453C18.599 4.59375 17.7495 4.58594 4.91894 4.60547L4.66753 4.85938V6.53906L4.53749 6.65625C4.4378 6.74609 4.38145 6.76953 4.28609 6.75391C4.22107 6.74219 4.13437 6.69141 4.09103 6.64453C4.02167 6.56641 4.013 6.46875 4.01734 5.67969C4.01734 4.83984 4.02167 4.79297 4.12137 4.60547C4.17772 4.5 4.29042 4.35547 4.36844 4.28906C4.4508 4.21875 4.59384 4.12891 4.68921 4.08594C4.86259 4.00391 4.8756 4.00391 18.7551 4V4ZM21.5943 15.0703C21.7113 15.0781 21.8717 15.1094 21.941 15.1445C22.0104 15.1758 22.1274 15.2539 22.1968 15.3125C22.2618 15.375 22.3485 15.4805 22.3875 15.543C22.4265 15.6094 22.4569 15.7578 22.4569 15.8945C22.4612 16.043 22.4352 16.1797 22.3875 16.2656C22.3442 16.3398 21.8197 16.8438 21.2172 17.3828C20.2202 18.2773 20.0988 18.3711 19.8604 18.4531C19.6654 18.5234 19.5137 18.543 19.2536 18.543C18.9935 18.543 18.8418 18.5234 18.6467 18.4531C18.4213 18.375 18.2956 18.2812 17.7451 17.793C17.3897 17.4805 17.0603 17.1523 17.0082 17.0664C16.9519 16.9648 16.9215 16.8359 16.9215 16.6953C16.9215 16.5664 16.9519 16.4258 16.9996 16.3438C17.0386 16.2695 17.1166 16.1641 17.1686 16.1172C17.2163 16.0664 17.329 15.9922 17.4114 15.9531C17.4937 15.9141 17.6324 15.8711 17.7148 15.8555C17.8101 15.8398 17.9532 15.8516 18.1049 15.8906C18.313 15.9414 18.3953 16 18.7768 16.3438C19.0152 16.5586 19.2276 16.7344 19.2536 16.7344C19.2796 16.7344 19.687 16.3828 20.1638 15.9531C20.7967 15.3828 21.0785 15.1562 21.2042 15.1133C21.3082 15.0781 21.4686 15.0586 21.5943 15.0703Z" fill="#1A1A1A"/>
 <path d="M22.1147 13.25C22.054 13.168 22.0064 13.0938 22.0064 13.082C22.0064 13.0703 22.1191 13.0625 22.2534 13.0625C22.3921 13.0625 22.5785 13.082 22.6652 13.1016C22.7563 13.125 22.8993 13.1992 22.9903 13.2656C23.077 13.3359 23.181 13.4648 23.2244 13.5508C23.2981 13.6953 23.3068 13.875 23.3068 16.1172C23.3068 18.2109 23.2981 18.5547 23.2374 18.7148C23.2027 18.8203 23.1074 18.9883 23.0337 19.0898C22.9296 19.2305 22.5569 19.5234 21.6379 20.1836C20.9487 20.6797 20.3029 21.1289 20.2075 21.1758C20.1121 21.2266 19.9257 21.2773 19.7957 21.2891C19.6657 21.3008 19.5183 21.2969 19.4663 21.2773C19.3882 21.25 19.527 21.1406 20.5022 20.4453C21.1178 20.0039 21.7116 19.5625 21.8156 19.457C21.9197 19.3555 22.0627 19.1641 22.1364 19.0312C22.2058 18.8945 22.2838 18.6875 22.3098 18.5703C22.3358 18.4531 22.3531 17.9062 22.3531 17.3594C22.3488 16.6836 22.3618 16.3242 22.3965 16.2461C22.4268 16.1836 22.4572 16.0664 22.4702 15.9922C22.4875 15.9141 22.4658 15.7656 22.4225 15.6484C22.3661 15.4883 22.3531 15.2773 22.3531 14.6172C22.3531 13.9844 22.3401 13.7383 22.2881 13.5898C22.2534 13.4844 22.1754 13.3281 22.1147 13.25Z" fill="#D1D1D1"/>
@@ -1600,7 +1656,7 @@ const order=`<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="
 <path d="M11.4251 10.2539V9.45312V8.65234H12.2054V10.2539H11.4251Z" fill="#DFF6FD"/>
 <path d="M12.8512 9.47656C12.8469 9.05078 12.8599 8.69141 12.8772 8.67578C12.8989 8.66406 13.0853 8.65234 13.6791 8.65234V10.2539H12.8556L12.8512 9.47656Z" fill="#DFF6FD"/>
 </svg>
-`
+`;
 const support = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="28" height="28" rx="4" fill="#F19A37"/>
 <path d="M20.6667 4H7.33333C5.48889 4 4 5.33083 4 6.97186V17.8887C4 19.5297 5.48889 20.8605 7.33333 20.8605H8.17778C9.06667 20.8605 9.91111 21.1707 10.5333 21.7311L12.4333 23.4221C13.3 24.1926 14.7111 24.1926 15.5778 23.4221L17.4778 21.7311C18.1 21.1707 18.9556 20.8605 19.8333 20.8605H20.6667C22.5111 20.8605 24 19.5297 24 17.8887V6.97186C24 5.33083 22.5111 4 20.6667 4ZM12.2 15.0169C12.6556 15.0169 13.0333 15.3571 13.0333 15.7674C13.0333 16.1776 12.6556 16.5178 12.2 16.5178H9.22222C8.73333 16.5178 8.27778 16.3077 7.98889 15.9475C7.71111 15.6073 7.64444 15.187 7.77778 14.7867C8.16667 13.7161 9.12222 13.1357 9.96667 12.6154C10.8556 12.075 11.3556 11.7348 11.3556 11.1545C11.3556 10.6341 10.8889 10.2139 10.3111 10.2139C9.73333 10.2139 9.27778 10.6442 9.27778 11.1645C9.27778 11.5747 8.9 11.9149 8.44444 11.9149C7.98889 11.9149 7.61111 11.5747 7.61111 11.1645C7.61111 9.82364 8.82222 8.72295 10.3222 8.72295C11.8222 8.72295 13.0333 9.81363 13.0333 11.1645C13.0333 12.5754 11.8556 13.2958 10.9111 13.8762C10.3222 14.2364 9.76667 14.5766 9.48889 15.0269H12.2V15.0169ZM19.5556 15.0869H19.3222V15.7774C19.3222 16.1876 18.9444 16.5278 18.4889 16.5278C18.0333 16.5278 17.6556 16.1876 17.6556 15.7774V15.0869H15.4667C14.9222 15.0869 14.4222 14.8268 14.1444 14.4065C13.8667 13.9762 13.8667 13.4459 14.1444 13.0256C14.9 11.8549 15.7778 10.5241 16.5778 9.36335C16.9333 8.85303 17.6111 8.62289 18.2444 8.78299C18.8778 8.9531 19.3222 9.47342 19.3111 10.0738V13.596H19.5556C20.0111 13.596 20.3889 13.9362 20.3889 14.3465C20.3889 14.7567 20.0111 15.0869 19.5556 15.0869Z" fill="white"/>
@@ -1630,10 +1686,10 @@ const openbusiness = `<svg width="28" height="32" viewBox="0 0 28 32" fill="none
 <path d="M13.5238 11.6476C11.5524 11.6476 9.95239 13.2476 9.95239 15.2191C9.95239 17.1524 11.4667 18.7238 13.4762 18.781H13.6476C14.5721 18.7506 15.4486 18.362 16.0919 17.6974C16.7352 17.0327 17.095 16.144 17.0952 15.2191C17.0952 13.2476 15.4952 11.6476 13.5238 11.6476Z" fill="white"/>
 </svg>
 `;
-const withdrawal=`<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+const withdrawal = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect y="0.00152588" width="28.0003" height="27.997" rx="4" fill="#8C31FF"/>
 <path d="M5.69938 4.07269C5.07438 4.25238 4.51579 4.71722 4.24235 5.29144C4.15641 5.47113 4.06657 5.71332 4.04313 5.8266C4.01188 5.97113 4.00016 7.66644 4.00016 11.3539C4.00016 17.2602 3.98454 16.8735 4.26188 17.436C4.4611 17.8344 4.85172 18.225 5.25016 18.4243C5.75016 18.6703 5.85954 18.686 7.25016 18.686H8.49235V17.8852V17.0883L7.28922 17.0766C6.09 17.0649 6.08219 17.0649 5.94547 16.9711C5.87125 16.9203 5.76579 16.8149 5.715 16.7407L5.62125 16.6L5.60954 13.1508L5.60172 9.7016H14.0002H22.3986L22.3908 13.1508L22.3791 16.6L22.2853 16.7407C22.2345 16.8149 22.1291 16.9203 22.0548 16.9711C21.9181 17.0649 21.9103 17.0649 20.7306 17.0766L19.547 17.0883V17.8852V18.686H20.7697C22.1369 18.686 22.2502 18.6703 22.7502 18.4243C23.1486 18.225 23.5392 17.8344 23.7384 17.436C24.0158 16.8735 24.0002 17.2602 24.0002 11.3539C24.0002 7.66644 23.9884 5.97113 23.9572 5.8266C23.7892 5.0141 23.0744 4.27191 22.258 4.06097C22.0392 4.00629 21.1955 3.99847 13.9767 4.00238C6.48063 4.00238 5.91813 4.01019 5.69938 4.07269ZM22.0158 5.68988C22.1291 5.75629 22.2384 5.86176 22.3009 5.96722C22.3947 6.12738 22.3986 6.16254 22.3986 6.72504V7.31879H14.0002H5.60172V6.72504C5.60172 6.16644 5.60563 6.12347 5.69938 5.96722C5.80094 5.79144 6.00016 5.64691 6.20329 5.59613C6.26969 5.58051 9.81266 5.57269 14.0783 5.57269L21.8322 5.58051L22.0158 5.68988Z" fill="white"/>
 <path d="M6.65637 11.6352V12.436H11.8126H16.9689V11.6352V10.8344H11.8126H6.65637V11.6352Z" fill="white"/>
 <path d="M13.2189 17.7953V20.9711L12.1642 19.9164L11.1095 18.8618L10.5431 19.4282L9.97668 19.9946L11.9767 21.9946C13.0782 23.0961 13.9962 23.9985 14.0197 23.9985C14.0704 23.9985 18.0236 20.0453 18.0236 19.9946C18.0236 19.9438 16.9611 18.8813 16.9103 18.8813C16.8907 18.8813 16.4025 19.35 15.8282 19.9243L14.7814 20.9711V17.7953V14.6235H14.0001H13.2189V17.7953Z" fill="white"/>
 </svg>
-`
+`;
