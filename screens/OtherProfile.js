@@ -71,6 +71,7 @@ import SellerInformation from "./SellerProfile/SellerInformation";
 import ServiceTab from "./SellerProfile/ServiceTab";
 import ReadMore from "../components/ReadMore";
 import PictureViewer from "./SellerProfile/PictureViewer";
+import customStyle from "../assets/stylesheet";
 
 const { width, height } = Dimensions.get("window");
 const OtherProfile = (props) => {
@@ -316,12 +317,7 @@ const OtherProfile = (props) => {
   //console.log(Loader)
 
   if (
-    Loader ||
-    !Data ||
-    !Array.isArray(FixedService) ||
-    !Array.isArray(PackageService) ||
-    !RelatedServices ||
-    !UnRelatedServices
+    !Data
   ) {
     return <ProfileSkeleton />;
   }
@@ -514,7 +510,7 @@ const RatingArea = ({
           backgroundColor: primaryColor,
           marginTop: 0,
         }}>
-        {RelatedServices.length > 0 && (
+        {RelatedServices?.length > 0 && (
           <View>
             <Text
               style={{
@@ -528,24 +524,30 @@ const RatingArea = ({
             </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={{ width: 10 }} />
-              {RelatedServices.map((doc, i) => (
-                <TopSellerCard
-                  style={{}}
-                  onPress={() => {
-                    navigation.navigate("OtherProfile", {
-                      serviceId: doc ? doc.service.id : null,
-                      data: doc,
-                    });
-                  }}
-                  key={i}
-                  data={doc}
-                />
-              ))}
+              {RelatedServices &&
+                RelatedServices.map((doc, i) => (
+                  <TopSellerCard
+                    style={{}}
+                    onPress={() => {
+                      navigation.navigate("OtherProfile", {
+                        serviceId: doc ? doc.service.id : null,
+                        data: doc,
+                      });
+                    }}
+                    key={i}
+                    data={doc}
+                  />
+                ))}
+              {!RelatedServices && (
+                <View style={[customStyle.fullBox, { height: 220 }]}>
+                  <ActivityLoader />
+                </View>
+              )}
             </ScrollView>
           </View>
         )}
 
-        {UnRelatedServices.length > 0 && (
+        {UnRelatedServices && UnRelatedServices.length > 0 && (
           <View>
             <Text
               style={{
@@ -559,24 +561,30 @@ const RatingArea = ({
             </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={{ width: 10 }} />
-              {UnRelatedServices.map((doc, i) => (
-                // <RelatedService
-                //   data={doc}
-                //   key={i}
-                //   navigation={navigation}
-                // />
-                <TopSellerCard
-                  style={{}}
-                  onPress={() => {
-                    navigation.navigate("OtherProfile", {
-                      serviceId: doc ? doc.service.id : null,
-                      data: doc,
-                    });
-                  }}
-                  key={i}
-                  data={doc}
-                />
-              ))}
+              {UnRelatedServices &&
+                UnRelatedServices.map((doc, i) => (
+                  // <RelatedService
+                  //   data={doc}
+                  //   key={i}
+                  //   navigation={navigation}
+                  // />
+                  <TopSellerCard
+                    style={{}}
+                    onPress={() => {
+                      navigation.navigate("OtherProfile", {
+                        serviceId: doc ? doc.service.id : null,
+                        data: doc,
+                      });
+                    }}
+                    key={i}
+                    data={doc}
+                  />
+                ))}
+              {!UnRelatedServices && (
+                <View style={[customStyle.fullBox, { height: 220 }]}>
+                  <ActivityLoader />
+                </View>
+              )}
               <View style={{ width: 10 }} />
             </ScrollView>
           </View>
@@ -604,7 +612,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
   const Data = params.Data;
   const Price = params.Price;
   const startingHeight = 120;
-  const fullHeight = calculateHeight(Description, 25);
+  //const fullHeight = calculateHeight(Description, 25);
   const animatedHeight = React.useRef(
     new Animation.Value(startingHeight)
   ).current;
@@ -612,13 +620,13 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
   const gigs = Data.service.gigs.filter((d) => d.type == "STARTING");
   const [modalVisible, setModalVisible] = useState(false);
   //console.log(Data);
-  React.useEffect(() => {
-    Animation.spring(animatedHeight, {
-      speed: 1100,
-      toValue: NewLines != 3 ? fullHeight : startingHeight,
-      useNativeDriver: false,
-    }).start();
-  }, [NewLines]);
+  // React.useEffect(() => {
+  //   Animation.spring(animatedHeight, {
+  //     speed: 1100,
+  //     toValue: NewLines != 3 ? fullHeight : startingHeight,
+  //     useNativeDriver: false,
+  //   }).start();
+  // }, [NewLines]);
 
   //console.log(newHeight);
 
@@ -659,7 +667,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
             <Pressable
               onPress={() => {
                 setModalVisible(Images[index]);
-                console.log(Images[index])
+                console.log(Images[index]);
               }}>
               <Image
                 style={{
@@ -719,10 +727,11 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
         )}
       </View>
       {component}
-      <Modal animationType="slide"
+      <Modal
+        animationType="slide"
         visible={Boolean(modalVisible)}
         onRequestClose={() => setModalVisible()}>
-        <PictureViewer onClose={()=>setModalVisible()} url={modalVisible} />
+        <PictureViewer onClose={() => setModalVisible()} url={modalVisible} />
       </Modal>
     </View>
   );
@@ -767,7 +776,7 @@ const FixedScreen = ({ navigation, route, params }) => {
                 <ServiceCart onPress={() => onPress(doc)} key={i} data={doc} />
               )
           )}
-        {Active && FixedService.length > content && (
+        {Active && FixedService && FixedService.length > content && (
           <View
             style={{
               justifyContent: "center",
@@ -787,7 +796,7 @@ const FixedScreen = ({ navigation, route, params }) => {
             />
           </View>
         )}
-        {!Active && FixedService.length > 0 && (
+        {!Active && FixedService && FixedService.length > 0 && (
           <Animated.View
             style={{
               flexDirection: "row",
@@ -813,7 +822,7 @@ const FixedScreen = ({ navigation, route, params }) => {
             </View>
           </Animated.View>
         )}
-        {FixedService.length == 0 && (
+        {FixedService && FixedService.length == 0 && (
           <Animated.View
             style={{
               flexDirection: "row",
@@ -838,13 +847,18 @@ const FixedScreen = ({ navigation, route, params }) => {
               />
             </View>
           </Animated.View>
+        )}
+        {!FixedService && (
+          <View style={customStyle.fullBox}>
+            <ActivityLoader />
+          </View>
         )}
         <View
           style={{
             backgroundColor: primaryColor,
             marginTop: 0,
           }}>
-          {RelatedServices.length > 2 && (
+          {RelatedServices?.length > 2 && (
             <View>
               <Text
                 style={{
@@ -861,29 +875,35 @@ const FixedScreen = ({ navigation, route, params }) => {
                   flexDirection: "row",
                   flexWrap: "wrap",
                 }}>
-                {RelatedServices.map((doc, i) =>
-                  i < 6 ? (
-                    <TopSellerCard
-                      style={{
-                        width: width / 2 - 22,
-                        height: 260,
-                      }}
-                      onPress={() => {
-                        navigation.navigate("OtherProfile", {
-                          serviceId: doc ? doc.service.id : null,
-                          data: doc,
-                        });
-                      }}
-                      key={i}
-                      data={doc}
-                    />
-                  ) : null
+                {RelatedServices &&
+                  RelatedServices.map((doc, i) =>
+                    i < 6 ? (
+                      <TopSellerCard
+                        style={{
+                          width: width / 2 - 22,
+                          height: 260,
+                        }}
+                        onPress={() => {
+                          navigation.navigate("OtherProfile", {
+                            serviceId: doc ? doc.service.id : null,
+                            data: doc,
+                          });
+                        }}
+                        key={i}
+                        data={doc}
+                      />
+                    ) : null
+                  )}
+                {!RelatedServices && (
+                  <View style={[customStyle.fullBox, { height: 220 }]}>
+                    <ActivityLoader />
+                  </View>
                 )}
               </View>
             </View>
           )}
 
-          {UnRelatedServices.length > 0 && (
+          {UnRelatedServices && UnRelatedServices.length > 0 && (
             <View>
               <Text
                 style={{
@@ -919,6 +939,11 @@ const FixedScreen = ({ navigation, route, params }) => {
                   ) : null
                 )}
               </View>
+            </View>
+          )}
+          {!UnRelatedServices && (
+            <View style={[customStyle.fullBox, { height: 220 }]}>
+              <ActivityLoader />
             </View>
           )}
         </View>
@@ -959,7 +984,7 @@ const PackageScreen = ({ navigation, route, params }) => {
           flexWrap: "wrap",
           marginVertical: 20,
         }}>
-        {Active &&
+        {Active &&PackageService&&
           PackageService.map(
             (doc, i) =>
               i < content && (
@@ -974,7 +999,7 @@ const PackageScreen = ({ navigation, route, params }) => {
                 />
               )
           )}
-        {Active && PackageService.length > content && (
+        {Active &&PackageService&& PackageService.length > content && (
           <View
             style={{
               justifyContent: "center",
@@ -994,7 +1019,7 @@ const PackageScreen = ({ navigation, route, params }) => {
             />
           </View>
         )}
-        {PackageService.length == 0 && (
+        {PackageService&&PackageService.length == 0 && (
           <Animated.View
             style={{
               flexDirection: "row",
@@ -1020,7 +1045,7 @@ const PackageScreen = ({ navigation, route, params }) => {
             </View>
           </Animated.View>
         )}
-        {PackageService.length > 0 && !Active && (
+        {PackageService&&PackageService.length > 0 && !Active && (
           <Animated.View
             style={{
               flexDirection: "row",
@@ -1045,13 +1070,18 @@ const PackageScreen = ({ navigation, route, params }) => {
               />
             </View>
           </Animated.View>
+        )}
+        {!PackageService && (
+          <View style={customStyle.fullBox}>
+            <ActivityLoader />
+          </View>
         )}
         <View
           style={{
             backgroundColor: primaryColor,
             marginTop: 0,
           }}>
-          {RelatedServices.length > 2 && (
+          {RelatedServices && RelatedServices.length > 2 && (
             <View>
               <Text
                 style={{
@@ -1068,29 +1098,35 @@ const PackageScreen = ({ navigation, route, params }) => {
                   flexDirection: "row",
                   flexWrap: "wrap",
                 }}>
-                {RelatedServices.map((doc, i) =>
-                  i < 6 ? (
-                    <TopSellerCard
-                      style={{
-                        width: width / 2 - 22,
-                        height: 260,
-                      }}
-                      onPress={() => {
-                        navigation.navigate("OtherProfile", {
-                          serviceId: doc ? doc.service.id : null,
-                          data: doc,
-                        });
-                      }}
-                      key={i}
-                      data={doc}
-                    />
-                  ) : null
+                {RelatedServices &&
+                  RelatedServices.map((doc, i) =>
+                    i < 6 ? (
+                      <TopSellerCard
+                        style={{
+                          width: width / 2 - 22,
+                          height: 260,
+                        }}
+                        onPress={() => {
+                          navigation.navigate("OtherProfile", {
+                            serviceId: doc ? doc.service.id : null,
+                            data: doc,
+                          });
+                        }}
+                        key={i}
+                        data={doc}
+                      />
+                    ) : null
+                  )}
+                {!RelatedServices && (
+                  <View style={[customStyle.fullBox, { height: 220 }]}>
+                    <ActivityLoader />
+                  </View>
                 )}
               </View>
             </View>
           )}
 
-          {UnRelatedServices.length > 0 && (
+          {UnRelatedServices && UnRelatedServices.length > 0 && (
             <View>
               <Text
                 style={{
@@ -1126,6 +1162,11 @@ const PackageScreen = ({ navigation, route, params }) => {
                   ) : null
                 )}
               </View>
+            </View>
+          )}
+          {!UnRelatedServices && (
+            <View style={[customStyle.fullBox, { height: 220 }]}>
+              <ActivityLoader />
             </View>
           )}
         </View>

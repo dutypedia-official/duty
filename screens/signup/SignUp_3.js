@@ -37,7 +37,7 @@ export default function SignUp_3({ navigation, route }) {
   const [check, setCheck] = useState(false);
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
-  var regName = /^[a-zA-Z ]+$/;
+  var regName = /^[a-zA-Z0-9]+$/;
   const openMenu = () => setVisible(true);
   //console.log("df")
   const closeMenu = () => setVisible(false);
@@ -59,7 +59,7 @@ export default function SignUp_3({ navigation, route }) {
       return;
     }
     if (!regName.test(userName)) {
-      setUserNameError("Invalid name");
+      setUserNameError("Use alphabet & number");
       return;
     }
     if (userName.split("")?.length < 4) {
@@ -79,31 +79,27 @@ export default function SignUp_3({ navigation, route }) {
       return;
     }
     setLoader(true);
-    try {
-      await registerUser(token, name, userName, password, age, gender)
-        .catch((err) => {
-          //console.log()
-          setUserNameError(err.response.data.msg);
-        })
-        .then((res) => {
-          userLogin(userName, password)
-            .then((res) => {
-              setLoader(false);
-              //console.log(res);
-              if (res) {
-                dispatch({ type: "SET_USER", playload: res });
-                navigation.navigate("Feed");
-              }
-            })
-            .catch((err) => {
-              setLoader(false);
-              Alert.alert(err.response.data.msg);
-            });
-        });
-    } catch (err) {
-      setLoader(false);
-      console.log(err.message);
-    }
+    registerUser(token, name, userName, password, age, gender)
+      .then((res) => {
+        userLogin(userName, password)
+          .then((res) => {
+            setLoader(false);
+            //console.log(res);
+            if (res) {
+              dispatch({ type: "SET_USER", playload: res });
+              navigation.navigate("Feed");
+            }
+          })
+          .catch((err) => {
+            setLoader(false);
+            Alert.alert(err.response.data.msg);
+          });
+      })
+      .catch((err) => {
+        //console.log()
+        setLoader(false);
+        setUserNameError(err.response.data.msg);
+      });
   };
   if (loader) {
     return (
@@ -266,7 +262,7 @@ export default function SignUp_3({ navigation, route }) {
             <Text
               style={{
                 fontWeight: "500",
-               
+
                 fontSize: 14,
               }}>
               I agree with all of Duty's{" "}

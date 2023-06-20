@@ -1207,8 +1207,14 @@ export const AddScreen = ({ navigation, route }) => {
           </View>
           <View style={{ marginHorizontal: 20 }}>
             <Input
+            level={"Max 20 character"}
               value={Name}
-              onChange={(e) => setName(e)}
+              onChange={(e) => {
+                if(e?.split("")?.length>20){
+                  return
+                }
+                setName(e)
+              }}
               error={NameError}
               style={{
                 borderWidth: 1,
