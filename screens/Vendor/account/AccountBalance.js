@@ -44,7 +44,7 @@ export default function AccountBalance({ navigation }) {
   useEffect(() => {
     getAccountInfo(user.token, vendor.service.id)
       .then((res) => {
-        console.log(res.data)
+        //console.log(res.data)
         setData(res.data);
       })
       .catch((err) => {
