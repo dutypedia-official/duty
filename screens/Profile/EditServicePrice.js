@@ -7,6 +7,7 @@ import {
   Text,
   Pressable,
   TextInput,
+  Alert,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import Input from "../../components/Input";
@@ -40,10 +41,10 @@ export default function EditServicePrice({ navigation, route }) {
   const data = route?.params?.data;
   const gigs = route?.params?.gigs;
   const [priceError, setPriceError] = useState();
-  const [Loader,setLoader]=useState(false)
-  const [images,setImages]=useState()
-  const user=useSelector(state=>state.user)
-  const vendor=useSelector(state=>state.vendor)
+  const [Loader, setLoader] = useState(false);
+  const [images, setImages] = useState();
+  const user = useSelector((state) => state.user);
+  const vendor = useSelector((state) => state.vendor);
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -61,44 +62,62 @@ export default function EditServicePrice({ navigation, route }) {
   }, [isFocused]);
 
   const updateData = async () => {
-    
     setLoader(true);
-    if(data.images){
-      let arr=[]
-      data?.images?.map((doc,i)=>{
-        arr.push(fileFromURL(doc))
+    let img = [];
+    if (data.images) {
+      let arr = [];
+      data?.images?.map((doc, i) => {
+        if (doc?.fileName) {
+          arr.push(fileFromURL(doc));
+        } else {
+          img.push(doc?.uri);
+        }
+      });
+      const res = await uploadFile(arr, user.token);
+      setImages(res);
+      res?.map((doc)=>{
+        img.push(doc)
       })
-      const res=await uploadFile(arr,user.token);
-      setImages(res)
     }
-    updateGigsData(user.token,{
-      gigId:gigs.id,
-      title:data?.serviceTitle,
-      description:data?.serviceDescription,
-      price:price?parseInt(price):undefined,
-      images:images,
-    }).then(res=>{
-      updateVendorInfo()
-    }).catch(err=>{
-      setLoader(false)
-      console.error(err.response.data.msg)
-    })
+    // console.log(img)
+    // return
+
+    try {
+      await updateGigsData(user.token, {
+        gigId: gigs.id,
+        title: data?.serviceTitle,
+        description: data?.serviceDescription,
+        price: price ? parseInt(price) : undefined,
+        images: img,
+      })
+      updateVendorInfo();
+    } catch (e) {
+      setLoader(false);
+      console.error(e.message)
+      Alert.alert("Ops!","Something is went wrong")
+    }
+    // }).then(res=>{
+    //   updateVendorInfo()
+    // }).catch(err=>{
+    //   setLoader(false)
+    //   console.error(err.response.data.msg)
+    // })
   };
-  const updateVendorInfo=async()=>{
-    const res=await getService(user.token,vendor.service.id);
-    if(res){
-      setLoader(false)
+  const updateVendorInfo = async () => {
+    const res = await getService(user.token, vendor.service.id);
+    if (res) {
+      setLoader(false);
       dispatch({ type: "SET_VENDOR", playload: res.data });
       navigation.navigate("VendorProfile");
     }
-  }
+  };
   const toEn = (n) => n.replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
-  if(Loader){
-    return(
-        <View style={customStyle.fullBox}>
-            <ActivityLoader/>
-        </View>
-    )
+  if (Loader) {
+    return (
+      <View style={customStyle.fullBox}>
+        <ActivityLoader />
+      </View>
+    );
   }
   return (
     <KeyboardAvoidingView
@@ -208,7 +227,7 @@ export default function EditServicePrice({ navigation, route }) {
                 return;
               }
 
-             updateData()
+              updateData();
             }}
             style={styles.button}
             title={"Update"}
