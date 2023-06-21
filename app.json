@@ -3,7 +3,7 @@
     "name": "Duty",
     "scheme": "duty",
     "slug": "duty",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -35,7 +35,7 @@
     ],
     "ios": {
       "associatedDomains": ["applinks:duty.com.bd"],
-      "buildNumber": "3",
+      "buildNumber": "4",
       "supportsTablet": false,
       "infoPlist": {},
       "bitcode": false,
@@ -65,7 +65,7 @@
       ],
       "googleServicesFile": "./google-services.json",
       "package": "com.duty.bd",
-      "versionCode": 2,
+      "versionCode": 3,
       "permissions": [
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.BLUETOOTH",

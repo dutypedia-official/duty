@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -39,6 +39,7 @@ import {
   getRelatedServices,
   getUnRelatedServices,
   getDashboardReviews,
+  getServiceJust,
 } from "../Class/service";
 import { useSelector, useDispatch } from "react-redux";
 import { convertServerFacilities, serverToLocal } from "../Class/dataConverter";
@@ -79,7 +80,6 @@ const OtherProfile = (props) => {
   const newUser = useSelector((state) => state.user);
   const [image, setImage] = React.useState(null);
   const [backgroundImage, setBackgroundImage] = React.useState(null);
-  const [Lines, setLines] = React.useState(3);
   const navigation = props.navigation;
   const initialState = [
     {
@@ -109,11 +109,6 @@ const OtherProfile = (props) => {
     // },
   ];
   const { handleScroll, showButton } = useHandleScroll();
-  const [Active, setActive] = React.useState("Bargaining");
-  const [Facilities, setFacilities] = React.useState([]);
-  const [NewDataList, setNewDataList] = React.useState(null);
-  const [ServiceList, setServiceList] = React.useState([]);
-  const [SubServiceList, setSubServiceList] = React.useState([]);
   const serviceId =
     props.route && props.route.params.serviceId
       ? props.route.params.serviceId
@@ -125,32 +120,22 @@ const OtherProfile = (props) => {
   const dispatch = useDispatch();
   const [ActiveServiceData, setActiveServiceData] = React.useState(null);
   const [FixedService, setFixedService] = React.useState(null);
-  const vendor = useSelector((state) => state.vendor);
-  const [Click, setClick] = React.useState(false);
   const [Title, setTitle] = React.useState();
   const [Description, setDescription] = React.useState();
   const [Price, setPrice] = React.useState();
   const [Category, setCategory] = React.useState();
-  const [Bargaining, setBargaining] = React.useState(false);
-  const [refreshing, setRefreshing] = React.useState(false);
   const [Refresh, setRefresh] = React.useState(false);
   const [RelatedServices, setRelatedServices] = React.useState();
   const [UnRelatedServices, setUnRelatedServices] = React.useState();
   const [PackageService, setPackageService] = React.useState();
-  const scrollRef = React.useRef();
   const [specialtyHeight, setSpecialtyHeight] = React.useState(75);
   const [specialtyAnimation, setSpecialtyAnimation] = React.useState(
     new Animation.Value(specialtyHeight)
   );
-  const [aboutHeight, setAboutHeight] = React.useState(120);
-
   const params = props.route.params;
   const data = params.data;
-  const [newNavigation, setNewNavigation] = React.useState(1100);
-  const scroll = React.useRef();
   const [scrollEnabled, setScrollEnabled] = React.useState(false);
   const [offset, setOffset] = React.useState();
-  const [statusBarHeight, setStatusBarHeight] = React.useState(0);
   const isFocused = useIsFocused();
   const [userInfo, setUserInfo] = useState();
   const [individualRating, setIndividualRating] = useState();
@@ -181,23 +166,23 @@ const OtherProfile = (props) => {
       setUnRelatedServices(null);
       setFixedService(null);
       setPackageService(null);
-      getService(newUser.token, serviceId)
+      getServiceJust(newUser.token, serviceId)
         .then((response) => {
           if (response.data) {
             setLoader(false);
-            const gigs = response.data.service.gigs.filter(
-              (d) => d.type == "STARTING"
-            );
+            // const gigs = response.data.service.gigs.filter(
+            //   (d) => d.type == "STARTING"
+            // );
             setData(response.data);
 
             setBackgroundImage(response.data.service.wallPhoto);
             setImage(response.data.service.profilePhoto);
-            setImages(gigs[0].images);
-            setPrice(gigs[0].price);
-            setTitle(gigs[0].title);
-            setDescription(gigs[0].description);
+            // setImages(gigs[0].images);
+            // setPrice(gigs[0].price);
+            // setTitle(gigs[0].title);
+            // setDescription(gigs[0].description);
             //setNewDataList(response.data.service.gigs[0].services.options)
-            setFacilities(convertServerFacilities(gigs[0].facilites));
+            //setFacilities(convertServerFacilities(gigs[0].facilites));
             //console.log(convertServerFacilities(gigs[0].facilites))
             let arr = initialState;
             response.data.service.activeServiceTypes.forEach((doc) => {
@@ -224,49 +209,23 @@ const OtherProfile = (props) => {
           console.warn(error.response.data);
         });
     }
-  }, [serviceId + data, Refresh]);
+  }, [serviceId, data, Refresh]);
 
   React.useEffect(() => {
-    if (newUser && Data) {
-      getOtherServices(newUser.token, data.service.id, "ONETIME")
-        .then((res) => {
-          setFixedService(res.data.gigs);
-          //console.log(res.data.gigs);
-        })
-        .catch((err) => {
-          setFixedService([]);
-          console.warn(err.response.data);
-        });
-    }
-  }, [Active + data + newUser + serviceId + Data]);
-  React.useEffect(() => {
     if (newUser && data) {
-      getOtherServices(newUser.token, data.service.id, "PACKAGE")
-        .then((res) => {
-          setPackageService(res.data.gigs);
-          //console.log(res.data.gigs);
-        })
-        .catch((err) => {
-          setPackageService([]);
-          console.warn(err.response.data);
-        });
-    }
-  }, [data + newUser + serviceId + Data, Refresh]);
-  React.useEffect(() => {
-    if (newUser && data) {
-      //setLoader(true);
+  
       getRelatedServices(newUser.token, data.service.id, data.service.dashboard)
         .then((response) => {
           if (response.data) {
-            setLoader(false);
+  
             setRelatedServices(response.data.gigs);
           }
         })
         .catch((err) => {
           console.warn(err.response);
-          setLoader(false);
+  
         });
-      setLoader(true);
+  
       getUnRelatedServices(
         newUser.token,
         data.service.id,
@@ -274,17 +233,17 @@ const OtherProfile = (props) => {
       )
         .then((response) => {
           if (response.data) {
-            setLoader(false);
+  
             //console.log(response.data.gigs[0])
             setUnRelatedServices(response.data.gigs);
           }
         })
         .catch((err) => {
-          setLoader(false);
+  
           console.warn(err.response);
         });
     }
-  }, [data + serviceId + Data, Refresh]);
+  }, [data, serviceId,Data, Refresh]);
   React.useEffect(() => {
     if (data) {
       getDashboardReviews(newUser.token, data?.service?.id)
@@ -316,9 +275,7 @@ const OtherProfile = (props) => {
   }, [specialtyHeight]);
   //console.log(Loader)
 
-  if (
-    !Data
-  ) {
+  if (Loader) {
     return <ProfileSkeleton />;
   }
   //return <ProfileSkeleton />;
@@ -413,29 +370,25 @@ const OtherProfile = (props) => {
                 navigation={navigation}
                 params={{
                   Data: Data,
-                  Price: Price,
-                  Description: Description,
-                  Facilities: Facilities,
-                  Title: Title,
-                  Images: Images,
+                  newUser: newUser,
                 }}
               />,
+
               <FixedScreen
                 navigation={navigation}
                 params={{
                   Data: Data,
-                  FixedService: FixedService,
                   onPress: clickFixed,
                   RelatedServices: RelatedServices,
                   UnRelatedServices: UnRelatedServices,
                 }}
               />,
+
               <PackageScreen
                 navigation={navigation}
                 params={{
                   Data: Data,
                   onPress: clickPackage,
-                  PackageService: PackageService,
                   RelatedServices: RelatedServices,
                   UnRelatedServices: UnRelatedServices,
                 }}
@@ -590,6 +543,11 @@ const RatingArea = ({
           </View>
         )}
       </View>
+      {!UnRelatedServices&&(
+        <View style={[customStyle.fullBox,{height:300}]}>
+          <ActivityLoader/>
+        </View>
+      )}
       <View style={{ height: 90 }} />
     </>
   );
@@ -608,7 +566,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
   const Title = params.Title;
   const [NewLines, setNewLines] = React.useState(3);
   const Description = params.Description;
-  const Facilities = params.Facilities;
+  const [Facilities, setFacilities] = useState();
   const Data = params.Data;
   const Price = params.Price;
   const startingHeight = 120;
@@ -617,18 +575,30 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
     new Animation.Value(startingHeight)
   ).current;
   const newUser = useSelector((state) => state.user);
-  const gigs = Data.service.gigs.filter((d) => d.type == "STARTING");
+  const [gigs, setGigs] = useState();
+  //const gigs = Data?.service?.gigs?.filter((d) => d.type == "STARTING");
   const [modalVisible, setModalVisible] = useState(false);
-  //console.log(Data);
-  // React.useEffect(() => {
-  //   Animation.spring(animatedHeight, {
-  //     speed: 1100,
-  //     toValue: NewLines != 3 ? fullHeight : startingHeight,
-  //     useNativeDriver: false,
-  //   }).start();
-  // }, [NewLines]);
+  useEffect(() => {
+    if (Data ) {
+      getOtherServices(newUser?.token, Data.service.id, "STARTING")
+        .then((res) => {
+          setGigs(res.data.gigs[0]);
+          //console.log(res.data.gigs[0])
+          setFacilities(convertServerFacilities(res.data.gigs[0].facilites));
+        })
+        .catch((err) => {
+          console.warn(err.response.data);
+        });
+    }
+  }, [Data?.service?.id]);
 
-  //console.log(newHeight);
+  if (!gigs) {
+    return (
+      <View style={[customStyle.fullBox, { height: 300, width: width }]}>
+        <ActivityLoader />
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -641,7 +611,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
             paddingHorizontal: 20,
             marginTop: 20,
           }}>
-          {Title}
+          {gigs?.title}
         </Text>
 
         <View
@@ -650,7 +620,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
             marginVertical: 15,
           }}>
           {/* <AnimatedHeight button={true} text={Description} /> */}
-          <ReadMore content={Description} />
+          <ReadMore content={gigs?.description} />
         </View>
         <Carousel
           panGestureHandlerProps={{
@@ -660,28 +630,28 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
           width={width}
           height={width + 30}
           autoPlay={false}
-          data={Images}
+          data={gigs?.images}
           scrollAnimationDuration={500}
           onSnapToItem={(index) => {}}
           renderItem={({ index }) => (
             <Pressable
               onPress={() => {
-                setModalVisible(Images[index]);
-                console.log(Images[index]);
+                setModalVisible(gigs?.images[index]);
+                console.log(gigs?.images[index]);
               }}>
               <Image
                 style={{
                   width: width,
                   height: width + 30,
                 }}
-                source={{ uri: Images[index] }}
+                source={{ uri: gigs?.images[index] }}
               />
             </Pressable>
           )}
         />
       </View>
       <ServiceListViewer
-        skills={gigs[0].skills}
+        skills={gigs?.skills}
         serviceCategory={{ name: Data?.service?.category }}
         facilities={Facilities}
       />
@@ -699,7 +669,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
             color: textColor,
             fontFamily: "Poppins-SemiBold",
           }}>
-          From {Price} ৳
+          From {gigs?.price} ৳
         </Text>
       </View>
       <View style={{ backgroundColor: primaryColor }}>
@@ -739,14 +709,14 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
 
 const FixedScreen = ({ navigation, route, params }) => {
   //const params = route.params;
-  const FixedService = params.FixedService;
+  const [FixedService, setFixedService] = useState();
   const onPress = params.onPress;
   const RelatedServices = params.RelatedServices;
   const UnRelatedServices = params.UnRelatedServices;
   const [content, setContent] = React.useState(2);
   const data = params.Data;
   const [Active, setActive] = React.useState(false);
-
+  const newUser = useSelector((state) => state.user);
   React.useEffect(() => {
     if (data) {
       data.service.activeServiceTypes.map((doc, i) => {
@@ -758,8 +728,28 @@ const FixedScreen = ({ navigation, route, params }) => {
       });
     }
   }, [data]);
+  React.useEffect(() => {
+    if ( data) {
+      getOtherServices(newUser?.token, data.service.id, "ONETIME")
+        .then((res) => {
+          setFixedService(res.data.gigs);
+          //console.log(res.data.gigs);
+        })
+        .catch((err) => {
+          setFixedService([]);
+          console.warn(err.response.data);
+        });
+    }
+  }, [data?.service?.id]);
 
   //console.log(FixedService?.length);
+  if (!FixedService) {
+    return (
+      <View style={[customStyle.fullBox, { width: width, height: 300 }]}>
+        <ActivityLoader />
+      </View>
+    );
+  }
   return (
     <View>
       <View
@@ -848,11 +838,7 @@ const FixedScreen = ({ navigation, route, params }) => {
             </View>
           </Animated.View>
         )}
-        {!FixedService && (
-          <View style={customStyle.fullBox}>
-            <ActivityLoader />
-          </View>
-        )}
+
         <View
           style={{
             backgroundColor: primaryColor,
@@ -941,27 +927,27 @@ const FixedScreen = ({ navigation, route, params }) => {
               </View>
             </View>
           )}
-          {!UnRelatedServices && (
-            <View style={[customStyle.fullBox, { height: 220 }]}>
-              <ActivityLoader />
-            </View>
-          )}
         </View>
       </View>
+      {!UnRelatedServices && (
+        <View style={[customStyle.fullBox, { height: 220 }]}>
+          <ActivityLoader />
+        </View>
+      )}
       <View style={{ height: 70 }} />
     </View>
   );
 };
 const PackageScreen = ({ navigation, route, params }) => {
   //const params = route.params;
-  const PackageService = params.PackageService;
+  const [PackageService, setPackageService] = useState();
   const onPress = params.onPress;
   const RelatedServices = params.RelatedServices;
   const UnRelatedServices = params.UnRelatedServices;
   const [content, setContent] = React.useState(2);
   const data = params.Data;
   const [Active, setActive] = React.useState(false);
-
+  const newUser=useSelector(state=>state.newUser)
   //console.log(FixedService)
   React.useEffect(() => {
     if (data) {
@@ -974,6 +960,26 @@ const PackageScreen = ({ navigation, route, params }) => {
       });
     }
   }, [data]);
+  React.useEffect(() => {
+    if ( data) {
+      getOtherServices(newUser?.token, data.service.id, "PACKAGE")
+        .then((res) => {
+          setPackageService(res.data.gigs);
+          console.log(res.data.gigs);
+        })
+        .catch((err) => {
+          setPackageService([]);
+          console.warn(err.response.data);
+        });
+    }
+  }, [data?.service?.id]);
+  if (!PackageService) {
+    return (
+      <View style={[customStyle.fullBox,{height:300,width:width}]}>
+        <ActivityLoader />
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -984,7 +990,8 @@ const PackageScreen = ({ navigation, route, params }) => {
           flexWrap: "wrap",
           marginVertical: 20,
         }}>
-        {Active &&PackageService&&
+        {Active &&
+          PackageService &&
           PackageService.map(
             (doc, i) =>
               i < content && (
@@ -999,7 +1006,7 @@ const PackageScreen = ({ navigation, route, params }) => {
                 />
               )
           )}
-        {Active &&PackageService&& PackageService.length > content && (
+        {Active && PackageService && PackageService.length > content && (
           <View
             style={{
               justifyContent: "center",
@@ -1019,7 +1026,7 @@ const PackageScreen = ({ navigation, route, params }) => {
             />
           </View>
         )}
-        {PackageService&&PackageService.length == 0 && (
+        {PackageService && PackageService.length == 0 && (
           <Animated.View
             style={{
               flexDirection: "row",
@@ -1045,7 +1052,7 @@ const PackageScreen = ({ navigation, route, params }) => {
             </View>
           </Animated.View>
         )}
-        {PackageService&&PackageService.length > 0 && !Active && (
+        {PackageService && PackageService.length > 0 && !Active && (
           <Animated.View
             style={{
               flexDirection: "row",
@@ -1071,11 +1078,7 @@ const PackageScreen = ({ navigation, route, params }) => {
             </View>
           </Animated.View>
         )}
-        {!PackageService && (
-          <View style={customStyle.fullBox}>
-            <ActivityLoader />
-          </View>
-        )}
+
         <View
           style={{
             backgroundColor: primaryColor,
@@ -1164,13 +1167,14 @@ const PackageScreen = ({ navigation, route, params }) => {
               </View>
             </View>
           )}
-          {!UnRelatedServices && (
+         
+        </View>
+      </View>
+      {!UnRelatedServices && (
             <View style={[customStyle.fullBox, { height: 220 }]}>
               <ActivityLoader />
             </View>
           )}
-        </View>
-      </View>
       <View style={{ height: 70 }} />
     </View>
   );

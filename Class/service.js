@@ -106,6 +106,12 @@ export const getService = async (token, id) => {
   });
   return result;
 };
+export const getServiceJust = async (token, id) => {
+  const result = await axios.get(`${url}/server/services/get-just/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return result;
+};
 export const getServiceBySlug = async (token, slug) => {
   const result = await axios.get(`${url}/server/services/get-by-slug/${slug}`, {
     headers: { Authorization: `Bearer ${token}` },
