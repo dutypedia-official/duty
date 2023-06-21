@@ -680,6 +680,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
               navigation.navigate("ServiceOrder", {
                 data: Data,
                 type: "STARTING",
+                price:gigs?.price
               });
             }}
             style={{

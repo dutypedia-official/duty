@@ -9,6 +9,7 @@ import OfferNow from "../Seller/OfferNow";
 export default function ServiceOrder({ navigation, route }) {
   const data = route?.params?.data;
   const type = route.params?.type;
+  const price=route?.params?.price
   const serviceList = route?.params?.serviceList;
   const facilities = route?.params?.facilities;
   const selectedPackage = route?.params?.selectedPackage;
@@ -47,7 +48,7 @@ export default function ServiceOrder({ navigation, route }) {
         }
       />
       {type == "STARTING" && (
-        <OfferNow navigation={navigation} type={type} data={data} />
+        <OfferNow navigation={navigation} type={type} price={price} data={data} />
       )}
       {type == "ONETIME" && (
         <OfferNow

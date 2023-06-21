@@ -368,8 +368,8 @@ const OfferNow = (props) => {
                   fontSize: 16,
                   fontWeight: "400",
                 }}>
-                {starting
-                  ? starting?.price
+                {params?.price
+                  ? params?.price
                   : type == "ONETIME"
                   ? gigs?.price
                   : selectedPackage?.price}
@@ -411,12 +411,12 @@ const OfferNow = (props) => {
                   value={Price}
                   keyboardType={"number-pad"}
                   onChange={(e) => {
-                    if (parseInt(e) >= starting.price) {
+                    if (parseInt(e) >= params.price) {
                       setPrice(parseInt(e));
                       setPriceError(null);
                     } else {
                       setPriceError(
-                        `Price can be large or equal to ${starting.price}৳`
+                        `Price can be large or equal to ${params.price}৳`
                       );
                     }
                   }}
