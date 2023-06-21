@@ -93,12 +93,12 @@ export default function ProfileSkeleton() {
           width={width / 2 - 68}
         />
       </View>
-      <Gap height={32} />
+      {/* <Gap height={32} />
       <Skeleton colorMode={colorMode} radius="round" height={17} width={230} />
       <Gap height={32} />
       <Skeleton colorMode={colorMode} radius="round" height={11} width={276} />
-      <Gap height={32} />
-      <View
+      <Gap height={32} /> */}
+      {/* <View
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -116,7 +116,7 @@ export default function ProfileSkeleton() {
           height={11}
           width={138}
         />
-      </View>
+      </View> */}
       {/* 
         
        

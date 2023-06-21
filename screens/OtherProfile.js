@@ -213,19 +213,16 @@ const OtherProfile = (props) => {
 
   React.useEffect(() => {
     if (newUser && data) {
-  
       getRelatedServices(newUser.token, data.service.id, data.service.dashboard)
         .then((response) => {
           if (response.data) {
-  
             setRelatedServices(response.data.gigs);
           }
         })
         .catch((err) => {
           console.warn(err.response);
-  
         });
-  
+
       getUnRelatedServices(
         newUser.token,
         data.service.id,
@@ -233,17 +230,15 @@ const OtherProfile = (props) => {
       )
         .then((response) => {
           if (response.data) {
-  
             //console.log(response.data.gigs[0])
             setUnRelatedServices(response.data.gigs);
           }
         })
         .catch((err) => {
-  
           console.warn(err.response);
         });
     }
-  }, [data, serviceId,Data, Refresh]);
+  }, [data, serviceId, Data, Refresh]);
   React.useEffect(() => {
     if (data) {
       getDashboardReviews(newUser.token, data?.service?.id)
@@ -276,7 +271,11 @@ const OtherProfile = (props) => {
   //console.log(Loader)
 
   if (Loader) {
-    return <ProfileSkeleton />;
+    return (
+      <View style={customStyle.fullBox}>
+        <ActivityLoader />
+      </View>
+    );
   }
   //return <ProfileSkeleton />;
   return (
@@ -543,9 +542,9 @@ const RatingArea = ({
           </View>
         )}
       </View>
-      {!UnRelatedServices&&(
-        <View style={[customStyle.fullBox,{height:300}]}>
-          <ActivityLoader/>
+      {!UnRelatedServices && (
+        <View style={[customStyle.fullBox, { height: 300 }]}>
+          <ActivityLoader />
         </View>
       )}
       <View style={{ height: 90 }} />
@@ -579,7 +578,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
   //const gigs = Data?.service?.gigs?.filter((d) => d.type == "STARTING");
   const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
-    if (Data ) {
+    if (Data) {
       getOtherServices(newUser?.token, Data.service.id, "STARTING")
         .then((res) => {
           setGigs(res.data.gigs[0]);
@@ -680,7 +679,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
               navigation.navigate("ServiceOrder", {
                 data: Data,
                 type: "STARTING",
-                price:gigs?.price
+                price: gigs?.price,
               });
             }}
             style={{
@@ -730,7 +729,7 @@ const FixedScreen = ({ navigation, route, params }) => {
     }
   }, [data]);
   React.useEffect(() => {
-    if ( data) {
+    if (data) {
       getOtherServices(newUser?.token, data.service.id, "ONETIME")
         .then((res) => {
           setFixedService(res.data.gigs);
@@ -948,7 +947,7 @@ const PackageScreen = ({ navigation, route, params }) => {
   const [content, setContent] = React.useState(2);
   const data = params.Data;
   const [Active, setActive] = React.useState(false);
-  const newUser=useSelector(state=>state.newUser)
+  const newUser = useSelector((state) => state.newUser);
   //console.log(FixedService)
   React.useEffect(() => {
     if (data) {
@@ -962,11 +961,11 @@ const PackageScreen = ({ navigation, route, params }) => {
     }
   }, [data]);
   React.useEffect(() => {
-    if ( data) {
+    if (data) {
       getOtherServices(newUser?.token, data.service.id, "PACKAGE")
         .then((res) => {
           setPackageService(res.data.gigs);
-          console.log(res.data.gigs);
+          //console.log(res.data.gigs);
         })
         .catch((err) => {
           setPackageService([]);
@@ -976,7 +975,7 @@ const PackageScreen = ({ navigation, route, params }) => {
   }, [data?.service?.id]);
   if (!PackageService) {
     return (
-      <View style={[customStyle.fullBox,{height:300,width:width}]}>
+      <View style={[customStyle.fullBox, { height: 300, width: width }]}>
         <ActivityLoader />
       </View>
     );
@@ -1168,31 +1167,16 @@ const PackageScreen = ({ navigation, route, params }) => {
               </View>
             </View>
           )}
-         
         </View>
       </View>
       {!UnRelatedServices && (
-            <View style={[customStyle.fullBox, { height: 220 }]}>
-              <ActivityLoader />
-            </View>
-          )}
+        <View style={[customStyle.fullBox, { height: 220 }]}>
+          <ActivityLoader />
+        </View>
+      )}
       <View style={{ height: 70 }} />
     </View>
   );
-};
-const calculateHeight = (text, plus, minus) => {
-  let textLength = text.split("").length;
-  textLength = parseInt(textLength);
-  let lineHeight = Platform.OS == "ios" ? 26 : 26;
-  let letterWidth = Platform.OS == "ios" ? 8 : 8;
-  let height = ((textLength * letterWidth) / (width - 40)) * lineHeight;
-  if (plus) {
-    return height + plus;
-  }
-  if (minus) {
-    return height - minus;
-  }
-  return height;
 };
 
 const refreshIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="14.646" height="12.902" viewBox="0 0 14.646 12.902">
