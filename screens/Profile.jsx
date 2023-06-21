@@ -137,6 +137,7 @@ import EditServiceCategory from "./Profile/EditServiceCategory";
 import EditSkills from "./Profile/EditSkills";
 import SignUp_3 from "./signup/SignUp_3";
 import ComponentDropDown from "../Hooks/DropDown";
+import { useState } from "react";
 //import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
@@ -1060,6 +1061,7 @@ const MainProfile = (props) => {
       // dispatch(setHideBottomBar(true));
     }
   }, [isFocused]);
+  const [layoutHeight,setLayoutHeight]=useState(0)
 
   const styles = StyleSheet.create({
     backgroundContainer: {
@@ -1414,9 +1416,12 @@ const MainProfile = (props) => {
               }
               type={user?.user?.hideAddress ? "Private" : "Public"}
             />
-            <ComponentDropDown h={400}
+            <ComponentDropDown h={416}
               component={
-                <>
+                <View  onLayout={e=>{
+                  //console.log(e.nativeEvent.layout)
+                  setLayoutHeight(e.nativeEvent.layout.height)
+                }}>
                   <FlatCart
                     onPress={() => {
                       navigation.navigate("WebViews", {
@@ -1491,7 +1496,7 @@ const MainProfile = (props) => {
                     value={"Easy withdrawals, your funds your way!"}
                     type={""}
                   />
-                </>
+                </View>
               }
               icon={legal}
               title={"Legal"}

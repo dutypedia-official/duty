@@ -422,13 +422,13 @@ export default function StackRoute() {
           name="WithdrawFinal"
           component={WithdrawFinal}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           options={{
             headerShown: false,
           }}
           name="ServiceScreen"
           component={ServiceScreen}
-        />
+        /> */}
         {
           //new service account screens
         }

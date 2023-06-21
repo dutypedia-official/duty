@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MotiView, MotiText } from "moti";
 import { Dimensions, Pressable, View, Text } from "react-native";
 import { SvgXml } from "react-native-svg";
@@ -12,39 +12,44 @@ export default function ComponentDropDown({
   style,
   component,
   h,
-  noHide
+  noHide,
 }) {
   const [height, setHeight] = useState(0);
-  const [open,setOpen]=useState(noHide)
-  useEffect(()=>{
-    if(noHide){
-        return
+  const [open, setOpen] = useState(noHide);
+  const [layoutHeight,setLayoutHeight]=useState(0)
+  const el=useRef()
+  
+  useEffect(() => {
+    if (noHide) {
+      return;
     }
-    if(height==(h?h:412)){
-        setOpen(true)
-        return
+    if (height == (h ? h : 412)) {
+      setOpen(true);
+      return;
     }
-    setTimeout(()=>{
-        if(height==0){
-            setOpen(false)
-        }else{
-            setOpen(true)
-        }
-    },350)
-  },[height])
+    setTimeout(() => {
+      if (height == 0) {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
+    }, 350);
+  }, [height]);
   return (
     <View>
       <Pressable
         onPress={() => {
-          setHeight((v) => (v == 0 ? (h?h:412) : 0));
+          console.log(layoutHeight)
+          
+          setHeight((v) => (v == 0 ? (layoutHeight>0 ?layoutHeight  : 440) : 0));
         }}
         style={[
           {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            borderBottomWidth:!open?0: 1,
-            paddingBottom:!open?0: 16,
+            borderBottomWidth: !open ? 0 : 1,
+            paddingBottom: !open ? 0 : 16,
             paddingTop: 16,
             paddingRight: 16,
             borderBottomColor: "#E6E6E6",
@@ -90,7 +95,7 @@ export default function ComponentDropDown({
         </View>
         <MotiView
           animate={{
-            rotate:height==0?"0deg":"450deg"
+            rotate: height == 0 ? "0deg" : "450deg",
           }}
           transition={{
             type: "timing",
@@ -117,7 +122,11 @@ export default function ComponentDropDown({
           type: "timing",
           duration: 350,
         }}>
-        {component}
+        <View onLayout={e=>{
+          if(e.nativeEvent.layout.height>400){
+            setLayoutHeight(e.nativeEvent.layout.height)
+          }
+        }}>{component}</View>
       </MotiView>
     </View>
   );

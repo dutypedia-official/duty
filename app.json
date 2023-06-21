@@ -34,8 +34,10 @@
       "assets/*"
     ],
     "ios": {
-      "associatedDomains": ["applinks:duty.com.bd"],
-      "buildNumber": "4",
+      "associatedDomains": [
+        "applinks:duty.com.bd"
+      ],
+      "buildNumber": "3",
       "supportsTablet": false,
       "infoPlist": {},
       "bitcode": false,
@@ -60,7 +62,10 @@
               "pathPrefix": "/feed/service"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "googleServicesFile": "./google-services.json",

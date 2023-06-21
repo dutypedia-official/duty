@@ -87,6 +87,7 @@ import SignUp_1 from "./screens/signup/SignUp_1";
 import SignUp_2 from "./screens/signup/SignUp_2";
 import SignUp_3 from "./screens/signup/SignUp_3";
 import Reset from "./screens/signup/Reset";
+import ServiceScreen from "./screens/ServiceScreen";
 
 const Stack = createStackNavigator();
 
@@ -435,6 +436,13 @@ const HomeRoute = ({ navigation }) => {
           options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
           name="SignUp_3"
           component={SignUp_3}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="ServiceScreen"
+          component={ServiceScreen}
         />
     </Stack.Navigator>
   );
