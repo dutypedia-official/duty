@@ -39,7 +39,6 @@
         "applinks:duty.com.bd"
       ],
       "buildNumber": "3",
-      "supportsTablet": false,
       "infoPlist": {},
       "bitcode": false,
       "bundleIdentifier": "com.duty.bd",
