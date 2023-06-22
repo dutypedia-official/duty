@@ -71,8 +71,8 @@ const TextArea = ({
             }
           }}
           style={[{
-            fontFamily: "Poppins-Light",
             fontSize: 16,
+            color:"#000"
           },fontStyle]}
           onFocus={() => {
             setFocus(true);

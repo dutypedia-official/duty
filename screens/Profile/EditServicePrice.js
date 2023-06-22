@@ -67,7 +67,7 @@ export default function EditServicePrice({ navigation, route }) {
     if (data.images) {
       let arr = [];
       data?.images?.map((doc, i) => {
-        if (doc?.fileName) {
+        if (doc?.type) {
           arr.push(fileFromURL(doc));
         } else {
           img.push(doc?.uri);

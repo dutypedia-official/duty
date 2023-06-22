@@ -1531,7 +1531,7 @@ const MainProfile = (props) => {
                 dispatch({ type: "SET_USER", playload: [] });
                 dispatch({ type: "SET_VENDOR_INFO", playload: false });
                 setLoader(false);
-                navigation.navigate("Feed");
+                //navigation.navigate("Feed");
               }}
               style={{ borderBottomWidth: 0, paddingBottom: 0 }}
               icon={logouts}
