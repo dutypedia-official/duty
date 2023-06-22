@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import {
   NavigationContainer,
@@ -106,6 +106,8 @@ import UserProfile from "./screens/UserProfile";
 import WebViews from "./screens/WebViews";
 import * as Linking from "expo-linking";
 import SellerProfile from "./screens/SellerProfile";
+import customStyle from "./assets/stylesheet";
+import ActivityLoader from "./components/ActivityLoader";
 
 export default function StackRoute() {
   const user = useSelector((state) => state.user);
@@ -130,16 +132,16 @@ export default function StackRoute() {
     },
   };
   const pr = Linking.createURL("/duty.com.bd");
-  console.log(pr)
+  console.log(pr);
   const linking = {
     prefixes: [pr],
     config: {
       screens: {
         SellerProfile: {
           path: "feed/service/:slug",
-          parse:{
-            slug:(id)=>id
-          }
+          parse: {
+            slug: (id) => id,
+          },
         },
       },
     },
@@ -148,7 +150,11 @@ export default function StackRoute() {
   return (
     <NavigationContainer
       linking={linking}
-      fallback={<Text>Loading...</Text>}
+      fallback={
+        <View style={customStyle.fullBox}>
+          <ActivityLoader />
+        </View>
+      }
       theme={MyTheme}>
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
