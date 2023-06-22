@@ -123,7 +123,9 @@ export default function ComponentDropDown({
           duration: 350,
         }}>
         <View onLayout={e=>{
-          if(e.nativeEvent.layout.height>400){
+          //console.log(e.nativeEvent.layout.height)
+          if(e.nativeEvent.layout.height>380){
+            
             setLayoutHeight(e.nativeEvent.layout.height)
           }
         }}>{component}</View>

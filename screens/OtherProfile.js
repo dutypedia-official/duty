@@ -676,6 +676,10 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
           <IconButton
             onPress={() => {
               //params?.onOpen();
+              if(!newUser?.token){
+                navigation.navigate("LogIn")
+                return
+              }
               navigation.navigate("ServiceOrder", {
                 data: Data,
                 type: "STARTING",
