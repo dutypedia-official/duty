@@ -46,10 +46,7 @@ export default function SignUp_3({ navigation, route }) {
     setUserNameError();
     setPasswordError();
     setRePasswordError();
-    if (!regName.test(name)) {
-      setNameError("Invalid name");
-      return;
-    }
+
     if (name.split("")?.length < 4) {
       setNameError("Name is too small");
       return;
@@ -238,47 +235,46 @@ export default function SignUp_3({ navigation, route }) {
             error={RePasswordError}
             value={RePassword}
             onChange={setRePassword}
-            //secureTextEntry={true}
+            secureTextEntry={true}
             style={[styles.input, styles.mt8]}
             placeholder={"Retype password"}
           />
         </View>
         <View
           style={{
-            paddingVertical: 20,
-            paddingHorizontal: 20,
+            flexDirection: "row",
+            marginBottom: 10,
+            flex: 1,
+            maxHeight: 50,
+            paddingHorizontal:20,
+            marginTop:24,
+            
           }}>
-          <View
+          <CheckBox
+            value={check}
+            onChange={() => {
+              setCheck((v) => !v);
+            }}
+          />
+          <Text
             style={{
-              flexDirection: "row",
-              marginBottom: 10,
+              fontWeight: "500",
+              flex: 1,
+              fontSize: 14,
             }}>
-            <CheckBox
-              value={check}
-              onChange={() => {
-                setCheck((v) => !v);
-              }}
-            />
-            <Text
-              style={{
-                fontWeight: "500",
-
-                fontSize: 14,
-              }}>
-              I agree with all of Duty's{" "}
-              <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-                Terms of Service
-              </Text>
-              ,{" "}
-              <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-                Privacy Policy
-              </Text>
-              , and{" "}
-              <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-                Refund Policy
-              </Text>
+            I agree with all of Duty's{" "}
+            <Text style={{ color: "#7566FF", fontWeight: "400" }}>
+              Terms of Service
             </Text>
-          </View>
+            ,{" "}
+            <Text style={{ color: "#7566FF", fontWeight: "400" }}>
+              Privacy Policy
+            </Text>
+            , and{" "}
+            <Text style={{ color: "#7566FF", fontWeight: "400" }}>
+              Refund Policy
+            </Text>
+          </Text>
         </View>
         <IconButton
           onPress={verify}

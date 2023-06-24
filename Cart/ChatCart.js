@@ -86,7 +86,7 @@ const ChatCart = ({ navigation, active, data, number, readOnly }) => {
       //console.log(data)
       getCount(data.id)
       data.users.map((doc) => {
-        if (doc.user.id != user.user.id) {
+        if (doc.user.id != user?.user?.id) {
           setUserInfo(doc.user);
         }
       });
