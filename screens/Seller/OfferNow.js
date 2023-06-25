@@ -170,7 +170,7 @@ const OfferNow = (props) => {
       setPriceError("Invalid price");
       return;
     }
-
+//console.log(`${params?.id} ${params?.title}`)
     setLoader(true);
     let urls;
     if (Document) {
@@ -187,7 +187,7 @@ const OfferNow = (props) => {
         ? parseInt(selectedPackage.price)
         : gigs
         ? parseInt(gigs.price)
-        : data.service.gigs.filter((d) => d.type == type)[0].price,
+        : parseInt(params?.price),
       Description,
       Price ? parseInt(Price) : 0,
       From,
@@ -201,10 +201,10 @@ const OfferNow = (props) => {
       data.subsData ? data.subsData : undefined,
       data.installmentData ? data.installmentData : undefined,
       urls ? urls[0] : undefined,
-      gigs ? gigs.id : data.service.gigs.filter((d) => d.type == type)[0]?.id,
+      gigs ? gigs.id : params?.id,
       gigs
         ? gigs?.title
-        : data.service.gigs.filter((d) => d.type == type)[0]?.title
+        : params?.title
     )
       .then((res) => {
         getNewOrderUser(res);

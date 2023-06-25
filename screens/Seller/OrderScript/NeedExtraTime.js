@@ -82,29 +82,27 @@ export default function NeedExtraTime({ navigation, route }) {
             Icon={() => <SvgXml xml={calender} />}
             title={dates ? convertDate(dates) : "dd/mm/yy"}
           />
-          <Modal transparent={true} visible={visible}>
-            <DateTimePickerModal
-              date={new Date()}
-              isVisible={true}
-              themeVariant="light"
-              mode="date"
-              onConfirm={(e) => {
-                if (dateDifference(data.deliveryDateTo, e) > 0) {
-                  setDate(e);
-                  setVisible(false);
-                } else {
-                  setVisible(false);
-                  Alert.alert(
-                    "Opps!",
-                    "You need to select upcoming date from delivery"
-                  );
-                }
-              }}
-              onCancel={() => {
+          <DateTimePickerModal
+            date={new Date()}
+            isVisible={visible}
+            themeVariant="light"
+            mode="date"
+            onConfirm={(e) => {
+              if (dateDifference(data.deliveryDateTo, e) > 0) {
+                setDate(e);
                 setVisible(false);
-              }}
-            />
-          </Modal>
+              } else {
+                setVisible(false);
+                Alert.alert(
+                  "Opps!",
+                  "You need to select upcoming date from delivery"
+                );
+              }
+            }}
+            onCancel={() => {
+              setVisible(false);
+            }}
+          />
         </View>
         <IconButton
           onPress={confirm}

@@ -684,6 +684,8 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
                 data: Data,
                 type: "STARTING",
                 price: gigs?.price,
+                title:gigs?.title,
+                id:gigs?.id
               });
             }}
             style={{

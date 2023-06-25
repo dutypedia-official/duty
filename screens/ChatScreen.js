@@ -46,6 +46,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import uuid from "react-native-uuid";
 import ChatSkeleton from "../components/ChatSkeleton";
+import { Linking } from "react-native";
+import Hyperlink from "react-native-hyperlink";
 //import { EvilIcons } from '@expo/vector-icons';
 
 const ChatScreen = (props) => {
@@ -134,7 +136,6 @@ const ChatScreen = (props) => {
   }, [isFocused]);
 
   React.useEffect(() => {
-    
     //console.log(data?.serviceId);
     if (data) {
       data.users.map((doc) => {
@@ -148,7 +149,7 @@ const ChatScreen = (props) => {
       //setMessages(data.messages);
       //setLastMessage(data.messages[data.messages.length-1])
     }
-   // console.log(user?.user?.id)
+    // console.log(user?.user?.id)
   }, [data]);
   React.useEffect(() => {
     if (username && UserInfo && user) {
@@ -207,9 +208,9 @@ const ChatScreen = (props) => {
   }, [message]);
 
   const send = async (message, image) => {
-    if(!UserInfo){
-      Alert.alert("Invalid")
-      return
+    if (!UserInfo) {
+      Alert.alert("Invalid");
+      return;
     }
     const id = uuid.v1();
     if (image) {
@@ -283,7 +284,7 @@ const ChatScreen = (props) => {
 
   if (!Messages) {
     return (
-      <View style={{ flex: 1, }}>
+      <View style={{ flex: 1 }}>
         <ChatSkeleton />
       </View>
     );
@@ -295,6 +296,8 @@ const ChatScreen = (props) => {
   const RenderBubble = (props) => {
     const currentMessage = props?.item;
     //console.log(currentMessage?.user?._id)
+    const regex = /((http|https|ftp):\/\/[^\s]+)/g;
+
     if (!currentMessage) {
       return null;
     }
@@ -304,6 +307,7 @@ const ChatScreen = (props) => {
       let newArr = arr[arr.length - 1]?.split(".");
       let type = newArr[newArr.length - 1];
       let three = newArr[0].split("")?.slice(-3)?.join("");
+
       return (
         <Pressable
           onPress={() => {
@@ -344,13 +348,20 @@ const ChatScreen = (props) => {
             </Text>
           </View>
           {currentMessage && (
-            <Text
-              style={[
-                newStyles.text,
-                { marginHorizontal: 8, marginBottom: 3 },
-              ]}>
-              {currentMessage?.text}
-            </Text>
+            <Hyperlink
+              linkStyle={{
+                color: "#000",
+                textDecorationLine: "underline",
+              }}
+              linkDefault={true}>
+              <Text
+                style={[
+                  newStyles.text,
+                  { marginHorizontal: 8, marginBottom: 3 },
+                ]}>
+                {currentMessage?.text}
+              </Text>
+            </Hyperlink>
           )}
         </Pressable>
       );
@@ -411,7 +422,14 @@ const ChatScreen = (props) => {
               ? currentMessage.user.name
               : data?.service?.serviceCenterName}
           </Text>
-          <Text style={newStyles.text}>{currentMessage?.text}</Text>
+          <Hyperlink
+            linkStyle={{
+              color: "blue",
+              textDecorationLine: "underline",
+            }}
+            linkDefault={true}>
+            <Text style={[newStyles.text]}>{currentMessage?.text}</Text>
+          </Hyperlink>
           <Text style={newStyles.dateText}>
             {dateDifference(new Date(), currentMessage.createdAt) == 0
               ? timeConverter(currentMessage.createdAt)
@@ -433,9 +451,17 @@ const ChatScreen = (props) => {
           marginVertical: 8,
         }}>
         <View style={newStyles.receiverBox}>
-          <Text style={[newStyles.text, { color: "white" }]}>
-            {currentMessage?.text}
-          </Text>
+          <Hyperlink
+            linkStyle={{
+              color: "#000",
+              textDecorationLine: "underline",
+            }}
+            linkDefault={true}>
+            <Text style={[newStyles.text, { color: "white" }]}>
+              {currentMessage?.text}
+            </Text>
+          </Hyperlink>
+
           <Text style={[newStyles.dateText, { color: "white" }]}>
             {dateDifference(new Date(), currentMessage.createdAt) == 0
               ? timeConverter(currentMessage.createdAt)
