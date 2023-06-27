@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ChatHead from "../components/ChatHead";
 import ActivityLoader from "../components/ActivityLoader";
 import { createConversation, seenMessage, sendMessage } from "../Class/message";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import CameraScreen from "../components/CameraScreen";
 import {
@@ -297,6 +297,7 @@ const ChatScreen = (props) => {
     const currentMessage = props?.item;
     //console.log(currentMessage?.user?._id)
     const regex = /((http|https|ftp):\/\/[^\s]+)/g;
+    const navigation=useNavigation()
 
     if (!currentMessage) {
       return null;
@@ -348,12 +349,14 @@ const ChatScreen = (props) => {
             </Text>
           </View>
           {currentMessage && (
-            <Hyperlink
+            <Hyperlink onPress={(url,text)=>{
+              navigation.navigate("WebViews",{url:url,title:""})
+            }}
               linkStyle={{
                 color: "#000",
                 textDecorationLine: "underline",
               }}
-              linkDefault={true}>
+              linkDefault={false}>
               <Text
                 style={[
                   newStyles.text,
@@ -422,12 +425,14 @@ const ChatScreen = (props) => {
               ? currentMessage.user.name
               : data?.service?.serviceCenterName}
           </Text>
-          <Hyperlink
+          <Hyperlink onPress={(url,text)=>{
+              navigation.navigate("WebViews",{url:url,title:""})
+            }}
             linkStyle={{
               color: "blue",
               textDecorationLine: "underline",
             }}
-            linkDefault={true}>
+            >
             <Text style={[newStyles.text]}>{currentMessage?.text}</Text>
           </Hyperlink>
           <Text style={newStyles.dateText}>
@@ -451,12 +456,14 @@ const ChatScreen = (props) => {
           marginVertical: 8,
         }}>
         <View style={newStyles.receiverBox}>
-          <Hyperlink
+          <Hyperlink onPress={(url,text)=>{
+              navigation.navigate("WebViews",{url:url,title:""})
+            }}
             linkStyle={{
               color: "#000",
               textDecorationLine: "underline",
             }}
-            linkDefault={true}>
+            >
             <Text style={[newStyles.text, { color: "white" }]}>
               {currentMessage?.text}
             </Text>

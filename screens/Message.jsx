@@ -38,6 +38,7 @@ import SignUp_1 from "./signup/SignUp_1";
 import Reset from "./signup/Reset";
 import Recovery from "./signup/Recovery";
 import Login from "./Login";
+import WebViews from "./WebViews";
 const Stack = createStackNavigator();
 
 const Message = (props) => {
@@ -73,7 +74,11 @@ const Message = (props) => {
           }}
           component={ChatScreen}
         />
-
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="WebViews"
+          component={WebViews}
+        />
         <Stack.Screen
           options={{
             headerStyle: {
@@ -110,9 +115,13 @@ const Message = (props) => {
           }}
           component={SupportForm}
         />
-        
+
         <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
+          options={{
+            header: (props) => (
+              <SubHeader title={"User information"} {...props} />
+            ),
+          }}
           name="SignUp_3"
           component={SignUp_3}
         />

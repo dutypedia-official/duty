@@ -62,7 +62,10 @@ export default function SignUp_1({ navigation, route }) {
             error={error}
             keyboardType={"number-pad"}
             value={number}
-            onChange={setNumber}
+            onChange={e=>{
+              setNumber(e)
+              setError()
+            }}
             style={[signUpStyle.input, signUpStyle.mt18]}
             placeholder={"01*********"}
           />
@@ -74,11 +77,11 @@ export default function SignUp_1({ navigation, route }) {
         onPress={() => {
           let arr = number.split("");
           if (arr.length != 11) {
-            setError("*Number must is not valid");
+            setError("*Number is not valid");
             return;
           }
           if (arr[0] != "0" || arr[1] != "1") {
-            setError("*Number must is not valid");
+            setError("*Number is not valid");
             return;
           }
           sendOtp();

@@ -40,6 +40,7 @@ import {
   getUnRelatedServices,
   getDashboardReviews,
   getServiceJust,
+  getServiceBySlug,
 } from "../Class/service";
 import { useSelector, useDispatch } from "react-redux";
 import { convertServerFacilities, serverToLocal } from "../Class/dataConverter";
@@ -140,8 +141,12 @@ const OtherProfile = (props) => {
   const [userInfo, setUserInfo] = useState();
   const [individualRating, setIndividualRating] = useState();
   const [reviews, setReviews] = useState();
+  const slug =
+  props.route && props.route.params.slug
+    ? props.route.params.slug
+    : null;
 
-  //console.log(SeeMore)
+  //console.log(SeeMore) 
 
   React.useEffect(() => {
     if (isFocused) {
@@ -208,8 +213,56 @@ const OtherProfile = (props) => {
           setLoader(false);
           console.warn(error.response.data);
         });
+    }else if(slug){
+      setActiveServiceData(null);
+      setRelatedServices(null);
+      setUnRelatedServices(null);
+      setFixedService(null);
+      setPackageService(null);
+      getServiceBySlug(newUser?.token, slug)
+        .then((response) => {
+          if (response.data) {
+            setLoader(false);
+            // const gigs = response.data.service.gigs.filter(
+            //   (d) => d.type == "STARTING"
+            // );
+            setData(response.data);
+
+            setBackgroundImage(response.data.service.wallPhoto);
+            setImage(response.data.service.profilePhoto);
+            // setImages(gigs[0].images);
+            // setPrice(gigs[0].price);
+            // setTitle(gigs[0].title);
+            // setDescription(gigs[0].description);
+            //setNewDataList(response.data.service.gigs[0].services.options)
+            //setFacilities(convertServerFacilities(gigs[0].facilites));
+            //console.log(convertServerFacilities(gigs[0].facilites))
+            let arr = initialState;
+            response.data.service.activeServiceTypes.forEach((doc) => {
+              arr = arr.map((d) => {
+                if (d.type == doc) {
+                  //console.log(doc);
+                  return {
+                    title: d.title,
+                    value: true,
+                    type: d.type,
+                  };
+                } else {
+                  return d;
+                }
+              });
+            });
+            setCategory(data?.services?.category);
+            setActiveServiceData(arr);
+            setUserInfo(response.data.service.user);
+          }
+        })
+        .catch((error) => {
+          setLoader(false);
+          console.warn(error.response.data);
+        });
     }
-  }, [serviceId, data, Refresh]);
+  }, [serviceId, data, Refresh,slug]);
 
   React.useEffect(() => {
     if (newUser && data) {

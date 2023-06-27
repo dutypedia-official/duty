@@ -83,6 +83,11 @@ import OrderDelivery from "../Seller/OrderScript/OrderDelivery";
 import ServiceAgreement from "../Seller/OrderScript/ServiceAgreement";
 import OrderDeliveryRequirements from "../Seller/OrderScript/OrderDeliveryRequirements";
 import NeedExtraTime from "../Seller/OrderScript/NeedExtraTime";
+import OtherProfile from "../OtherProfile";
+import FixedService from "../FixedService";
+import PackageService from "../PackageService";
+import CompanyCalendar from "../Seller/CompanyCalendar";
+import UserNotice from "../UserNotice";
 const Tab = createMaterialTopTabNavigator();
 
 const Stack = createStackNavigator();
@@ -90,10 +95,30 @@ const Stack = createStackNavigator();
 const Order = () => {
   return (
     <Stack.Navigator>
+     
       <Stack.Screen
         options={{ headerShown: false }}
         name="VendorOrder"
         component={VendorOrder}
+      />
+       <Stack.Screen
+        options={{ headerShown: false }}
+        name="Feed"
+        component={VendorOrder}
+      />
+      <Stack.Screen
+        name="Company Calender"
+        options={{
+          header: (props) => <SubHeader {...props} title={"Working Time"} />,
+        }}
+        component={CompanyCalendar}
+      />
+      <Stack.Screen
+        name="UserNotice"
+        options={{
+          headerShown: false,
+        }}
+        component={UserNotice}
       />
       <Stack.Screen
         options={{ headerShown: false }}
@@ -219,6 +244,26 @@ const Order = () => {
         options={{ headerShown:false}}
         name="ServiceAgreement"
         component={ServiceAgreement}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "green",
+          },
+          headerShown: false,
+        }}
+        name="OtherProfile"
+        component={OtherProfile}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="FixedService"
+        component={FixedService}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="PackageService"
+        component={PackageService}
       />
     </Stack.Navigator>
   );

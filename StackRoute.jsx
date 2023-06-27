@@ -111,6 +111,7 @@ import ActivityLoader from "./components/ActivityLoader";
 
 export default function StackRoute() {
   const user = useSelector((state) => state.user);
+  const vendor=useSelector(state=>state.vendor);
   const vendorInfo = useSelector((state) => state.vendorInfo);
   const [load, setLoad] = React.useState(false);
   const [Vendor, setVendor] = React.useState(false);
@@ -137,10 +138,20 @@ export default function StackRoute() {
     prefixes: [pr],
     config: {
       screens: {
-        SellerProfile: {
-          path: "feed/service/:slug",
-          parse: {
-            slug: (id) => id,
+        Dashboard: {
+          initialRouteName: "Home",
+          screens: {
+            Home: {
+              initialRouteName:vendor?"VendorOrder":"Feed",
+              screens: {
+                OtherProfile: {
+                  path: "feed/service/:slug",
+                  parse: {
+                    slug: (id) => id,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -174,16 +185,7 @@ export default function StackRoute() {
           name="Dashboard"
           component={TabRoute}
         />
-        <Stack.Screen
-          options={{
-            headerStyle: {
-              backgroundColor: "green",
-            },
-            headerShown: false,
-          }}
-          name="SellerProfile"
-          component={SellerProfile}
-        />
+
         <Stack.Screen
           options={{
             headerShown: false,
