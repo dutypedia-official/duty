@@ -3,6 +3,7 @@
     "name": "Duty",
     "scheme": "duty",
     "slug": "duty",
+
     "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
