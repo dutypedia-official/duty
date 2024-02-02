@@ -30,6 +30,7 @@ import { AllData } from "../Data/AllData";
 import { SvgXml } from "react-native-svg";
 import { Color } from "../assets/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import useLang from "../Hooks/UseLang";
 
 const SearchScreen = (props) => {
   const params = props.route.params;
@@ -45,13 +46,16 @@ const SearchScreen = (props) => {
   const textColor = colors.getTextColor();
   const assentColor = colors.getAssentColor();
   const backgroundColor = colors.getBackgroundColor();
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {}, [search]);
 
   return (
-    <SafeAreaView style={{
-      flex:1
-    }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}
+    >
       <View
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : null}
@@ -92,7 +96,7 @@ const SearchScreen = (props) => {
                 color: textColor,
               }}
             >
-              Top Searches
+              {isBn ? "বেশি খুঁজা হয়েছে" : "Top Searches"}
             </Text>
             <View
               style={{
@@ -136,7 +140,7 @@ const SearchScreen = (props) => {
                 color: textColor,
               }}
             >
-              Browse Categories
+              {isBn ? "ক্যাটাগরি গুলো ব্রাউজ করুন" : "Browse Categories"}
             </Text>
             {AllData &&
               AllData.map((doc, i) => (
@@ -171,6 +175,8 @@ const styles = StyleSheet.create({
   },
 });
 const Searches = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <Animated.ScrollView
       entering={SlideInRight}
@@ -191,10 +197,14 @@ const Searches = () => {
       >
         Recent Visit
       </Text>
-     <Text style={{
-      fontSize:18,
-      marginVertical:5
-     }}>No Result Found!</Text>
+      <Text
+        style={{
+          fontSize: 18,
+          marginVertical: 5,
+        }}
+      >
+        No Result Found!
+      </Text>
       {/* <SearchItem /> */}
     </Animated.ScrollView>
   );

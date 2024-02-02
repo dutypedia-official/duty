@@ -1,10 +1,13 @@
 import React from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { primaryColor,textColor } from "./../assets/colors";
+import { primaryColor, textColor } from "./../assets/colors";
+import useLang from "../Hooks/UseLang";
 
 const Appointment = ({ navigation }) => {
   const [Options, setOptions] = React.useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <ScrollView>
       <Text
@@ -12,30 +15,30 @@ const Appointment = ({ navigation }) => {
           marginVertical: 15,
           marginHorizontal: 20,
           fontSize: 20,
-          fontFamily: 'Poppins-SemiBold'
+          fontFamily: "Poppins-SemiBold",
         }}
       >
-        Appointment
+        {isBn ? "অ্যাপয়েন্টমেন্ট" : "Appointment"}
       </Text>
       <ListView
         onPress={() => {
           navigation.navigate("Upcoming");
         }}
-        title="Upcoming"
+        title={isBn ? "সামনের" : "Upcoming"}
         number={2}
       />
       <ListView
         onPress={() => {
           navigation.navigate("Previous");
         }}
-        title="Previous"
+        title={isBn ? "আগের" : "Previous"}
         number={5}
       />
       <ListView2
         onPress={() => {
           navigation.navigate("Request");
         }}
-        title="Request"
+        title={isBn ? "অনুরুধ" : "Request"}
         number={0}
       />
     </ScrollView>
@@ -45,6 +48,8 @@ const Appointment = ({ navigation }) => {
 export default Appointment;
 
 export const ListView = ({ onPress, title, number }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <TouchableOpacity
       style={{
@@ -74,7 +79,7 @@ export const ListView = ({ onPress, title, number }) => {
         <Text
           style={{
             fontSize: 17,
-            fontFamily: "Poppins-Medium"
+            fontFamily: "Poppins-Medium",
           }}
         >
           {title}
@@ -86,10 +91,14 @@ export const ListView = ({ onPress, title, number }) => {
             justifyContent: "space-between",
           }}
         >
-          <Text style={{
-            fontFamily: "Poppins-Medium",
-            color:textColor
-          }}>{number}</Text>
+          <Text
+            style={{
+              fontFamily: "Poppins-Medium",
+              color: textColor,
+            }}
+          >
+            {number}
+          </Text>
           <AntDesign name="right" size={24} color="black" />
         </View>
       </View>
@@ -125,7 +134,7 @@ const ListView2 = ({ onPress, title, number }) => {
           style={{
             flex: 1,
             fontSize: 17,
-            fontFamily:'Poppins-Medium'
+            fontFamily: "Poppins-Medium",
           }}
         >
           {title}
@@ -141,13 +150,14 @@ const ListView2 = ({ onPress, title, number }) => {
             <Text
               style={{
                 marginLeft: "50%",
-                fontFamily: "Poppins-Medium"
+                fontFamily: "Poppins-Medium",
               }}
             >
-              Sent
+              {isBn ? "আপনি পাঠিয়েছেন" : "Sent"}
             </Text>
-            <Text style={{ marginLeft: 10,
-            fontFamily: "Poppins-Medium" }}>{number}</Text>
+            <Text style={{ marginLeft: 10, fontFamily: "Poppins-Medium" }}>
+              {number}
+            </Text>
           </View>
         </View>
         <View
@@ -161,13 +171,14 @@ const ListView2 = ({ onPress, title, number }) => {
             <Text
               style={{
                 marginLeft: "22%",
-                fontFamily: "Poppins-Medium"
+                fontFamily: "Poppins-Medium",
               }}
             >
-              Receive
+              {isBn ? "আপনাকে পাঠিয়েছে" : "Receive"}
             </Text>
-            <Text style={{ marginLeft: 10, 
-            fontFamily: "Poppins-Medium"}}>{number}</Text>
+            <Text style={{ marginLeft: 10, fontFamily: "Poppins-Medium" }}>
+              {number}
+            </Text>
           </View>
           <AntDesign name="right" size={24} color="black" />
         </View>

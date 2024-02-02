@@ -2,89 +2,145 @@ import React from "react";
 import { ScrollView, View, Text, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
+import useLang from "../../Hooks/UseLang";
 
-export default function SupportCenter({navigation,route}) {
+export default function SupportCenter({ navigation, route }) {
   const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
         flex: 1,
         paddingTop: inset?.top,
-      }}>
+      }}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             alignItems: "center",
             marginTop: 20,
             marginBottom: 24,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontWeight: "500",
               fontSize: 24,
-              
+
               alignItems: "center",
-            }}>
-            FAQ & Support Center
+            }}
+          >
+            {isBn ? "সাহায্য এবং সহায়তা কেন্দ্র" : "FAQ & Support Center"}
           </Text>
         </View>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vector} />
           <Text
             style={{
               color: "#4D4E4F",
               fontSize: 16,
-              
+
               fontWeight: "400",
               marginTop: 24,
-            }}>
-            Explore our FAQs to find quick answers to your questions.
+            }}
+          >
+            {isBn
+              ? "আপনার প্রশ্নের দ্রুত উত্তর খুঁজতে আমাদের প্রায়শই জিজ্ঞাসিত প্রশ্নগুলি দেখুন৷"
+              : "Explore our FAQs to find quick answers to your questions."}
           </Text>
           <Text
             style={{
               fontSize: 16,
-              
+
               fontWeight: "400",
               marginTop: 32,
-            }}>
-            If you have any questions that are not covered in this section,
-            please feel free to contact our
+            }}
+          >
+            {isBn
+              ? "আপনার যদি এমন কোনো প্রশ্ন থাকে যা এই বিভাগে কভার করা হয়নি। আপনি আমাদের সহায়তা টিমের সাথে যোগাযোগ করতে পারেন। আপনি আমাদের ফর্ম ব্যবহার করে আমাদের বার্তা পাঠাতে পারেন।"
+              : "If you have any questions that are not covered in this section, please feel free to contact our"}
           </Text>
-          <Text onPress={()=>{
-            navigation.navigate("SupportForm")
-          }}
+          <Text
+            onPress={() => {
+              navigation.navigate("SupportForm");
+            }}
             style={{
               fontSize: 16,
-              
+
               fontWeight: "400",
               color: "#4ADE80",
-            }}>
-            support team for assistance.
+            }}
+          >
+            {isBn
+              ? "সহায়তার জন্য সাপোর্ট টিম"
+              : "support team for assistance."}
           </Text>
           <View style={{ height: 12 }} />
-          <Cart onPress={(e)=>{
-            navigation.navigate("SupportDescription",{index:1,title:e})
-          }} title={"As a buyer How to cancel my order ?"} />
-          <Cart onPress={(e)=>{
-            navigation.navigate("SupportDescription",{index:2,title:e})
-          }} title={"As a seller how to deliver my online service ?"} />
-          <Cart onPress={(e)=>{
-            navigation.navigate("SupportDescription",{index:3,title:e})
-          }} title={"As a seller how to deliver physical service ?"} />
-          <Cart onPress={(e)=>{
-            navigation.navigate("SupportDescription",{index:4,title:e})
-          }} title={"As a buyer how to receive a refund for my money?"} />
-          <Cart onPress={(e)=>{
-            navigation.navigate("SupportDescription",{index:5,title:e})
-          }}
-            title={"As a seller Can I deliver my order using courier service?"}
+          <Cart
+            onPress={(e) => {
+              navigation.navigate("SupportDescription", { index: 1, title: e });
+            }}
+            title={
+              isBn
+                ? "একজন ক্রেতা হিসেবে কিভাবে আমার অর্ডার বাতিল করব?"
+                : "As a buyer How to cancel my order ?"
+            }
           />
-          <Cart onPress={(e)=>{
-            navigation.navigate("SupportDescription",{index:6,title:e})
-          }} title={"As a seller, how do I withdraw my money?"} />
+          <Cart
+            onPress={(e) => {
+              navigation.navigate("SupportDescription", { index: 2, title: e });
+            }}
+            title={
+              isBn
+                ? "একজন বিক্রেতা হিসেবে কিভাবে আমার অনলাইন সেবা প্রদান করব?"
+                : "As a seller how to deliver my online service ?"
+            }
+          />
+          <Cart
+            onPress={(e) => {
+              navigation.navigate("SupportDescription", { index: 3, title: e });
+            }}
+            title={
+              isBn
+                ? "একজন বিক্রেতা হিসেবে কিভাবে ফিজিক্যাল ভাবে সেবা প্রদান করব ?"
+                : "As a seller how to deliver physical service ?"
+            }
+          />
+          <Cart
+            onPress={(e) => {
+              navigation.navigate("SupportDescription", { index: 4, title: e });
+            }}
+            title={
+              isBn
+                ? "একজন ক্রেতা হিসেবে কিভাবে আমার টাকা ফেরত পাব?"
+                : "As a buyer how to receive a refund for my money?"
+            }
+          />
+          <Cart
+            onPress={(e) => {
+              navigation.navigate("SupportDescription", { index: 5, title: e });
+            }}
+            title={
+              isBn
+                ? "একজন বিক্রেতা হিসাবে আমি কি কুরিয়ার সার্ভিস ব্যবহার করে আমার অর্ডার সরবরাহ করতে পারি?"
+                : "As a seller Can I deliver my order using courier service?"
+            }
+          />
+          <Cart
+            onPress={(e) => {
+              navigation.navigate("SupportDescription", { index: 6, title: e });
+            }}
+            title={
+              isBn
+                ? "একজন বিক্রেতা হিসাবে, আমি কিভাবে আমার টাকা উত্তোলন করব?"
+                : "As a seller, how do I withdraw my money?"
+            }
+          />
           <View style={{ height: 56 }} />
         </View>
       </ScrollView>
@@ -283,26 +339,30 @@ const vector = `<svg width="297" height="188" viewBox="0 0 297 188" fill="none" 
 `;
 const Cart = ({ title, description, onPress }) => {
   return (
-    <Pressable onPress={()=>{
-        if(onPress){
-            onPress(title)
+    <Pressable
+      onPress={() => {
+        if (onPress) {
+          onPress(title);
         }
-    }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
           marginTop: 24,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 16,
             fontWeight: "500",
-            
+
             flex: 1,
             marginRight: 20,
-          }}>
+          }}
+        >
           {title}
         </Text>
         <SvgXml xml={right} />

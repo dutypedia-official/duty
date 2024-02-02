@@ -26,24 +26,27 @@ import { setSaveList } from "../../Reducers/saveList";
 import { useNavigation } from "@react-navigation/native";
 import ActivityLoader from "../ActivityLoader";
 import { getJson, storeData, storeJson } from "../../Class/storage";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
-export default function TopSeller({ onMore, title,navigation,refresh }) {
+export default function TopSeller({ onMore, title, navigation, refresh }) {
   const [data, setData] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
-   if(title){
-    fetchSuggest()
-    getSuggest()
-   }else{
-    fetchData()
-    getData();
-   }
+    if (title) {
+      fetchSuggest();
+      getSuggest();
+    } else {
+      fetchData();
+      getData();
+    }
   }, [refresh]);
   const getData = async () => {
     try {
       const { data } = await getTopServices();
       setData(data?.gigs);
-      await storeJson("top_seller",data?.gigs)
+      await storeJson("top_seller", data?.gigs);
     } catch (err) {
       console.error(err.message);
     }
@@ -52,7 +55,7 @@ export default function TopSeller({ onMore, title,navigation,refresh }) {
     try {
       const { data } = await getSuggestServices();
       setData(data?.gigs);
-      await storeJson("some_suggest",data?.gigs)
+      await storeJson("some_suggest", data?.gigs);
     } catch (err) {
       console.error(err.message);
     }
@@ -79,24 +82,32 @@ export default function TopSeller({ onMore, title,navigation,refresh }) {
         style={[
           customStyle.flexBox,
           { marginTop: 20, marginBottom: 18, marginHorizontal: 20 },
-        ]}>
+        ]}
+      >
         <Text style={customStyle.landingHeadLine}>
-          {title ? title : "Top Seller"}
+          {title ? title : isBn ? "সেরা বিক্রেতা" : "Top Seller"}
         </Text>
         <TouchableOpacity onPress={() => onMore(data)}>
-          <Text style={customStyle.landingButtonText}>See all</Text>
+          <Text style={customStyle.landingButtonText}>
+            {isBn ? "আরও দেখুন" : "See all"}
+          </Text>
         </TouchableOpacity>
       </View>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
         <View style={{ width: 14 }} />
         {data &&
           data.map((doc, i) => (
-            <TopSellerCard onPress={() => {
-              navigation?.navigate("OtherProfile", {
-                serviceId: doc?.service?.id,
-                data: doc,
-              });
-            }} key={i} data={doc} avatar={true} />
+            <TopSellerCard
+              onPress={() => {
+                navigation?.navigate("OtherProfile", {
+                  serviceId: doc?.service?.id,
+                  data: doc,
+                });
+              }}
+              key={i}
+              data={doc}
+              avatar={true}
+            />
           ))}
         {!data && (
           <View style={[customStyle.fullBox, { height: 220 }]}>
@@ -165,7 +176,8 @@ export const TopSellerCard = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.container, width ? st.width : null, style]}>
+      style={[styles.container, width ? st.width : null, style]}
+    >
       <View>
         <Image
           style={[
@@ -189,7 +201,8 @@ export const TopSellerCard = ({
               }
               addToSaveList();
               setLike((t) => !t);
-            }}>
+            }}
+          >
             <AntDesign
               name={like ? "heart" : "hearto"}
               size={16}
@@ -211,14 +224,15 @@ export const TopSellerCard = ({
               marginTop: 8,
               justifyContent: "space-between",
               alignItems: "flex-end",
-              
             },
-          ]}>
+          ]}
+        >
           <View
             style={{
               flexDirection: "row",
               flex: 2,
-            }}>
+            }}
+          >
             {avatar && (
               <View>
                 <Avatar
@@ -234,9 +248,10 @@ export const TopSellerCard = ({
             <View
               style={{
                 flex: 1,
-              }}>
+              }}
+            >
               <Text style={styles.smallText} numberOfLines={1}>
-              {data
+                {data
                   ? `${data?.service?.providerInfo?.name}`
                   : "Easin Arafat It consulting center"}
               </Text>
@@ -251,7 +266,8 @@ export const TopSellerCard = ({
           <View
             style={{
               alignItems: "center",
-            }}>
+            }}
+          >
             <View style={styles.chipContainer}>
               <SvgXml width={"8"} height={"7"} xml={star} />
               <Text style={styles.chipText}>
@@ -306,7 +322,8 @@ export const TopSellerCardLike = ({ width, style, height, data, onPress }) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.container, width ? st.width : null, style]}>
+      style={[styles.container, width ? st.width : null, style]}
+    >
       <View>
         <Image
           style={[
@@ -326,7 +343,8 @@ export const TopSellerCardLike = ({ width, style, height, data, onPress }) => {
             onPress={() => {
               addToSaveList();
               setLike((t) => !t);
-            }}>
+            }}
+          >
             <AntDesign
               name={like ? "heart" : "hearto"}
               size={16}
@@ -348,14 +366,15 @@ export const TopSellerCardLike = ({ width, style, height, data, onPress }) => {
               marginTop: 8,
               justifyContent: "space-between",
               alignItems: "flex-end",
-              
             },
-          ]}>
+          ]}
+        >
           <View
             style={{
               flexDirection: "row",
               flex: 2,
-            }}>
+            }}
+          >
             <View>
               <Avatar
                 style={styles.avatar}
@@ -369,7 +388,8 @@ export const TopSellerCardLike = ({ width, style, height, data, onPress }) => {
             <View
               style={{
                 flex: 1,
-              }}>
+              }}
+            >
               <Text style={styles.smallText} numberOfLines={1}>
                 {data
                   ? `${data.service.user.firstName} ${data.service.user.lastName}`
@@ -386,7 +406,8 @@ export const TopSellerCardLike = ({ width, style, height, data, onPress }) => {
           <View
             style={{
               alignItems: "center",
-            }}>
+            }}
+          >
             <View style={styles.chipContainer}>
               <SvgXml width={"8"} xml={star} />
               <Text style={styles.chipText}>
@@ -444,7 +465,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginLeft: 4,
     color: "white",
-    lineHeight:11
+    lineHeight: 11,
   },
   smallText: {
     fontSize: 10,

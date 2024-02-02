@@ -6,7 +6,7 @@ import {
   Text,
   Dimensions,
   Pressable,
-  Image
+  Image,
 } from "react-native";
 import Svg, { SvgXml } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
@@ -19,7 +19,12 @@ import {
   getVendorAppointment,
 } from "../../../Class/appointment";
 import { Color } from "../../../assets/colors";
-import { changeTime, dateDifference, serverTimeToLocalDate, timeConverter } from "../../../action";
+import {
+  changeTime,
+  dateDifference,
+  serverTimeToLocalDate,
+  timeConverter,
+} from "../../../action";
 import Avatar from "../../../components/Avatar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -64,9 +69,9 @@ export default function MemberAppointment({ navigation, route }) {
 
   const [Upcoming, setUpcoming] = React.useState();
   const [Previous, setPrevious] = React.useState();
-  const list = ["Upcoming", "Previous",];
-  const user=route.params.user;
-  const offline=route.params.offline;
+  const list = ["Upcoming", "Previous"];
+  const user = route.params.user;
+  const offline = route.params.offline;
   //console.log(offline)
 
   //console.log(data.service.serviceCenterName)
@@ -79,22 +84,21 @@ export default function MemberAppointment({ navigation, route }) {
             backgroundColor: "#767676",
             height: 2,
           },
-          
-        }}>
+        }}
+      >
         {list.map((doc, i) => (
           <Tab.Screen
             key={i}
             initialParams={{
               backgroundColor: backgroundColor,
-              offline:offline,
-              user:user
+              offline: offline,
+              user: user,
             }}
             name={doc}
             component={Screen}
           />
         ))}
       </Tab.Navigator>
-      
     </SafeAreaView>
   );
 }
@@ -107,14 +111,11 @@ const Screen = ({ navigation, route }) => {
   const vendor = useSelector((state) => state.vendor);
   // console.log(name)
   const isFocused = useIsFocused();
-  const User=route.params.user;
-  const offline=route.params.offline;
+  const User = route.params.user;
+  const offline = route.params.offline;
   useEffect(() => {
-    
     if (isFocused && name == "All") {
-      
       (async () => {
-        
         let arr = [];
         const res = await getVendorAppointment(
           user.token,
@@ -122,9 +123,9 @@ const Screen = ({ navigation, route }) => {
           vendor.service.id
         );
         res.data.appointments.forEach((e) => {
-            if(e.user.id==User.id){
-                arr.push(e);
-            }
+          if (e.user.id == User.id) {
+            arr.push(e);
+          }
         });
         const ress = await getVendorAppointment(
           user.token,
@@ -132,27 +133,32 @@ const Screen = ({ navigation, route }) => {
           vendor.service.id
         );
         ress.data.appointments.forEach((e) => {
-            if(e.user.id==User.id){
-                arr.push(e);
-            }
-          
+          if (e.user.id == User.id) {
+            arr.push(e);
+          }
         });
         setData(arr);
       })();
-    } else if (isFocused && name!="Request") {
+    } else if (isFocused && name != "Request") {
       (async () => {
         const res = await getVendorAppointment(
           user.token,
           name.toLowerCase(),
           vendor.service.id
         );
-        
-        setData(res.data.appointments.filter(e=>e.user.id==User.id));
+
+        setData(res.data.appointments.filter((e) => e.user.id == User.id));
       })();
     }
   }, [isFocused]);
-  if(isFocused&&name=="Request"){
-    return <MemberRequestAppointment navigation={navigation} newUser={User}  offline={offline}/>
+  if (isFocused && name == "Request") {
+    return (
+      <MemberRequestAppointment
+        navigation={navigation}
+        newUser={User}
+        offline={offline}
+      />
+    );
   }
   if (!Data) {
     return (
@@ -161,42 +167,42 @@ const Screen = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size={"small"} color={backgroundColor} />
       </View>
     );
   }
-  if(Data&&Data.length==0){
-    return <NoAppointment />
+  if (Data && Data.length == 0) {
+    return <NoAppointment />;
   }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-         <View style={{height:8}}/>
-    {Data.map((doc, i) => (
-      <Cart
-        key={i}
-        onPress={() => {
-          //console.log(doc)
-          navigation.navigate("VendorAppointmentListDetails", {
-            data: doc,
-          });
-        }}
-        status={
-          status.filter((s) => s.title.toUpperCase().match(doc.status))[0]
-        }
-        title={doc.title}
-        date={doc.date}
-        startTime={doc?.startTime}
-        endTime={doc?.endTime}
-        type={name?.toUpperCase()}
-        name={`${doc.user.name}`}
-        image={doc.user.profilePhoto}
-        username={doc.user.username}
-
-      />
-    ))}
-     <View style={{height:8}}/>
-  </ScrollView>
+      <View style={{ height: 8 }} />
+      {Data.map((doc, i) => (
+        <Cart
+          key={i}
+          onPress={() => {
+            //console.log(doc)
+            navigation.navigate("VendorAppointmentListDetails", {
+              data: doc,
+            });
+          }}
+          status={
+            status.filter((s) => s.title.toUpperCase().match(doc.status))[0]
+          }
+          title={doc.title}
+          date={doc.date}
+          startTime={doc?.startTime}
+          endTime={doc?.endTime}
+          type={name?.toUpperCase()}
+          name={`${doc.user.name}`}
+          image={doc.user.profilePhoto}
+          username={doc.user.username}
+        />
+      ))}
+      <View style={{ height: 8 }} />
+    </ScrollView>
   );
 };
 export const Cart = ({
@@ -209,60 +215,73 @@ export const Cart = ({
   username,
   startTime,
   endTime,
-  type
+  type,
 }) => {
   //console.log(status)
-  const diff= dateDifference(new Date(),date);
+  const diff = dateDifference(new Date(), date);
   return (
-    <Pressable style={{
-      flexDirection:"row",
-      justifyContent:"space-between",
-      paddingHorizontal:20,
-      marginVertical:8,
-      paddingVertical:4,
-      alignItems:"center",
-      
-    }} onPress={onPress}>
+    <Pressable
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 20,
+        marginVertical: 8,
+        paddingVertical: 4,
+        alignItems: "center",
+      }}
+      onPress={onPress}
+    >
       <View
         style={{
           flexDirection: "row",
-          alignItems:"center"
-        }}>
+          alignItems: "center",
+        }}
+      >
         <Avatar
           style={{
             width: 48,
             height: 48,
-            borderColor:"#e5e5e5"
+            borderColor: "#e5e5e5",
           }}
           source={{ uri: image }}
         />
         <View
           style={{
             marginLeft: 12,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 16,
               fontWeight: "400",
             }}
-            numberOfLines={1}>
+            numberOfLines={1}
+          >
             {name ? name : "Easin Arafat"}
           </Text>
-          <Text style={{
-            marginTop:4,
-            fontSize:12,
-            fontWeight:"400",
-            color:"#767676"
-          }}>
-          {diff==0?"Today":diff==1&&type=="UPCOMING"?"Tomorrow":diff==-1&&type=="PREVIOUS"?"Yesterday":serverTimeToLocalDate(date)}
+          <Text
+            style={{
+              marginTop: 4,
+              fontSize: 12,
+              fontWeight: "400",
+              color: "#767676",
+            }}
+          >
+            {diff == 0
+              ? "Today"
+              : diff == 1 && type == "UPCOMING"
+              ? "Tomorrow"
+              : diff == -1 && type == "PREVIOUS"
+              ? "Yesterday"
+              : serverTimeToLocalDate(date)}
 
-          {"  "}
-          {changeTime(startTime)}{" - "}
-          {changeTime(endTime)}
+            {"  "}
+            {changeTime(startTime)}
+            {" - "}
+            {changeTime(endTime)}
           </Text>
         </View>
       </View>
-      
     </Pressable>
   );
   return (
@@ -279,7 +298,8 @@ export const Cart = ({
         alignItems: "center",
         marginTop: 10,
         borderRadius: 5,
-      }}>
+      }}
+    >
       <Avatar
         style={{
           width: 40,
@@ -295,19 +315,22 @@ export const Cart = ({
       <View
         style={{
           flex: 0.5,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 12,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           {name ? name : "Easin Arafat"}
         </Text>
         <Text
           style={{
             fontSize: 12,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           @{username ? username : "easinarafat"}
         </Text>
       </View>
@@ -323,16 +346,19 @@ export const Cart = ({
         style={{
           flex: 1.5,
           marginLeft: 5,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
-          }}>
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontSize: 12,
-            }}>
+            }}
+          >
             {date}
           </Text>
           <Text
@@ -341,13 +367,15 @@ export const Cart = ({
               color: status ? status.color : "red",
               fontSize: 12,
               marginLeft: 10,
-            }}>{`(${status ? status.title : "Invalid"})`}</Text>
+            }}
+          >{`(${status ? status.title : "Invalid"})`}</Text>
         </View>
         <Text
           style={{
             fontSize: 14,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           {title ? title : "Invalid"}
         </Text>
       </View>
@@ -383,36 +411,46 @@ const Chip = ({ title, active, onPress, style }) => {
           alignItems: "center",
         },
         style,
-      ]}>
+      ]}
+    >
       <Text
         style={{
           color: active ? "white" : "black",
-        }}>
+        }}
+      >
         {title}
       </Text>
     </TouchableOpacity>
   );
 };
-import appointment from "../../../assets/appointment.jpeg"
+import appointment from "../../../assets/appointment.jpeg";
+import useLang from "../../../Hooks/UseLang";
 const NoAppointment = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
-    <View 
+    <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-      }}>
-      <Image source={appointment} style={{
-        height:200,
-        width:200
-      }} />
+      }}
+    >
+      <Image
+        source={appointment}
+        style={{
+          height: 200,
+          width: 200,
+        }}
+      />
       <Text
         style={{
           fontSize: 16,
           fontFamily: "Poppins-Medium",
           marginTop: 24,
-        }}>
-        No Appointment Found
+        }}
+      >
+        {isBn ? "কোনও অ্যাপয়েন্টমেন্ট নেই" : "No Appointment Found"}
       </Text>
     </View>
   );

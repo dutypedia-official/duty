@@ -14,16 +14,19 @@ import MenuItem from "../../components/Profile/MenuItem";
 import ViewMore from "../../Hooks/ViewMore";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { styles } from "../create_dashboard/BusinessTitle";
+import useLang from "../../Hooks/UseLang";
 
-export default function Mobile({navigation,route}) {
+export default function Mobile({ navigation, route }) {
   const [type, setType] = useState("Only me");
   const [visible, setVisible] = React.useState(false);
   const [layoutHeight, setLayoutHeight] = useState(0);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const user=route?.params?.user;
-  const newUser=useSelector(state=>state.user)
-  const [loader,setLoader]=useState(false)
+  const user = route?.params?.user;
+  const newUser = useSelector((state) => state.user);
+  const [loader, setLoader] = useState(false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(number)
 
   const openMenu = () => setVisible(true);
@@ -41,16 +44,16 @@ export default function Mobile({navigation,route}) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  useEffect(()=>{
-    if(user){
-      setType(user.hidePhone?"Only me":"Public")
+  useEffect(() => {
+    if (user) {
+      setType(user.hidePhone ? "Only me" : "Public");
     }
-  },[user])
+  }, [user]);
 
   const updateUser = async (types) => {
-    setLoader(true)
+    setLoader(true);
     updateUserData(newUser.token, {
-      hidePhone:types=="Only me"?true:false
+      hidePhone: types == "Only me" ? true : false,
     })
       .then((res) => {
         //console.log(res.data)
@@ -58,13 +61,13 @@ export default function Mobile({navigation,route}) {
         console.warn("Upload Successful");
       })
       .catch((err) => {
-        setLoader(false)
+        setLoader(false);
         console.error(err.response.data.msg);
       });
   };
   const getUser = async (token) => {
     const res = await getUserInfo(newUser.token, newUser.user.id);
-    setLoader(false)
+    setLoader(false);
     storeJson("user", {
       token: token,
       user: res.data.user,
@@ -76,22 +79,23 @@ export default function Mobile({navigation,route}) {
         user: res.data.user,
       },
     });
-    navigation.goBack()
+    navigation.goBack();
   };
-  if(loader){
-    return(
+  if (loader) {
+    return (
       <View style={customStyle.fullBox}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <StatusBar backgroundColor="white"/>
+      <StatusBar backgroundColor="white" />
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <SvgXml
           width={"100%"}
           style={{
@@ -103,16 +107,18 @@ export default function Mobile({navigation,route}) {
           style={{
             flexDirection: "row",
             marginTop: 36,
-          }}>
+          }}
+        >
           <SvgXml xml={phone} />
           <Text
             style={{
               marginLeft: 10,
               fontWeight: "500",
-              
+
               fontSize: 20,
               flex: 1,
-            }}>
+            }}
+          >
             {user?.phone}
           </Text>
         </View>
@@ -120,11 +126,12 @@ export default function Mobile({navigation,route}) {
           style={{
             alignItems: "flex-end",
             marginTop: 12,
-          }}>
+          }}
+        >
           <MenuItem
-            onChange={(e)=>{
-              setType(e)
-              updateUser(e)
+            onChange={(e) => {
+              setType(e);
+              updateUser(e);
             }}
             visible={visible}
             onClose={closeMenu}
@@ -149,12 +156,15 @@ export default function Mobile({navigation,route}) {
             <Text
               style={{
                 fontWeight: "500",
-                
+
                 fontSize: 24,
                 marginLeft: 8,
                 flex: 1,
-              }}>
-              Why We Require Your Mobile Number on Our Platform?
+              }}
+            >
+              {isBn
+                ? "কেন আমাদের প্ল্যাটফর্মে আপনার মোবাইল নম্বর প্রয়োজন?"
+                : "Why We Require Your Mobile Number on Our Platform?"}
             </Text>
           </View>
           <ViewMore
@@ -164,20 +174,23 @@ export default function Mobile({navigation,route}) {
             width={"37%"}
             height={layoutHeight}
             component={
-              <Text onLayout={e=>setLayoutHeight(e.nativeEvent.layout.height)} style={[styles.spText, { marginTop: 1 }]}>
+              <Text
+                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                style={[styles.spText, { marginTop: 1 }]}
+              >
                 At Duty, we understand that your mobile number is a crucial part
                 of your account registration process. Your mobile number is used
                 for verification purposes, and in case you forget your password
-                or ID, it helps to retrieve your account information.{"\n"} We take
-                the security of your mobile number very seriously, and we want
-                to assure you that we do not share any codes or information sent
-                to your mobile number with anyone. Additionally, we provide an
-                option for you to keep your mobile number private, so no one can
-                see it without your consent.{"\n"} Please be assured that we will do
-                our best to protect your mobile number and keep it secure at all
-                times. Thank you for choosing Duty as your preferred online
-                platform, and we look forward to providing you with a secure and
-                convenient user experience
+                or ID, it helps to retrieve your account information.{"\n"} We
+                take the security of your mobile number very seriously, and we
+                want to assure you that we do not share any codes or information
+                sent to your mobile number with anyone. Additionally, we provide
+                an option for you to keep your mobile number private, so no one
+                can see it without your consent.{"\n"} Please be assured that we
+                will do our best to protect your mobile number and keep it
+                secure at all times. Thank you for choosing Duty as your
+                preferred online platform, and we look forward to providing you
+                with a secure and convenient user experience
               </Text>
             }
           />

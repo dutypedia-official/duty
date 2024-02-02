@@ -24,6 +24,7 @@ import {
 } from "../../../Class/service";
 import customStyle from "../../../assets/stylesheet";
 import ActivityLoader from "../../../components/ActivityLoader";
+import useLang from "../../../Hooks/UseLang";
 
 export default function ThirdStepVerification({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -34,6 +35,8 @@ export default function ThirdStepVerification({ navigation, route }) {
   const user = useSelector((state) => state.user);
   const [loader, setLoader] = useState(false);
   const vendor = useSelector((state) => state.vendor);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(data)
   React.useEffect(() => {
     if (isFocused) {
@@ -104,8 +107,10 @@ export default function ThirdStepVerification({ navigation, route }) {
       submitVerificationIndividual(user.token, {
         serviceId: vendor.service.id,
         firstName: data.name.split(" ")[0],
-        lastName: data.name.split(" ")[1]?data.name.split(" ")[1]:data.name.split(" ")[0],
-        name:data.name,
+        lastName: data.name.split(" ")[1]
+          ? data.name.split(" ")[1]
+          : data.name.split(" ")[0],
+        name: data.name,
         dob: localTimeToServerDate(data.date),
         gender: data.gender,
         presentDivision: data.presentAddress.division,
@@ -141,24 +146,39 @@ export default function ThirdStepVerification({ navigation, route }) {
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
-     
       <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginHorizontal: 28,
             marginVertical: 32,
-          }}>
-          <Text style={styles.headLine}>Identity Verification*</Text>
-          <Text style={[styles.text, { marginTop: 28 }]}>
-            Upload{" "}
-            <Text style={{ color: "#7566FF" }}>
-              {data?.type == "Company"
-                ? "Trade license/ company Tax certificate"
-                : "Birth certificate/ Passport/NID/Driving License"}
-            </Text>
+          }}
+        >
+          <Text style={styles.headLine}>
+            {isBn ? "পরিচয় যাচাইকরণ*" : "Identity Verification*"}
           </Text>
+          {isBn ? (
+            <Text style={[styles.text, { marginTop: 28 }]}>
+              আপলোড{" "}
+              <Text style={{ color: "#7566FF" }}>
+                {data?.type == "Company"
+                  ? "জন্ম নিবন্ধন সার্টিফিকেট / পাসপোর্ট /ভোটার আইডি কার্ড /ড্রাইভিং লাইসেন্স"
+                  : "ট্রেড লাইসেন্স / কোম্পানি ট্যাক্স সার্টিফিকেট"}
+              </Text>
+            </Text>
+          ) : (
+            <Text style={[styles.text, { marginTop: 28 }]}>
+              Upload{" "}
+              <Text style={{ color: "#7566FF" }}>
+                {data?.type == "Company"
+                  ? "Trade license/ company Tax certificate"
+                  : "Birth certificate/ Passport/NID/Driving License"}
+              </Text>
+            </Text>
+          )}
           <Text style={[styles.text, { color: "#EC2700", marginTop: 20 }]}>
-            At least one document is required
+            {isBn
+              ? "অন্তত একটি ডকুমেন্ট প্রয়োজন"
+              : "At least one document is required"}
           </Text>
           {identity.map((doc, i) => (
             <ExtButton
@@ -177,7 +197,9 @@ export default function ThirdStepVerification({ navigation, route }) {
           ))}
 
           <Text style={[styles.exSmall, { marginTop: 12 }]}>
-            Per file size limit (Maximum 2 MB)
+            {isBn
+              ? "প্রতি ফাইলের সাইজের সীমা (সর্বোচ্চ 2 এমবি)"
+              : "Per file size limit (Maximum 2 MB)"}
           </Text>
           {identity.length < 3 && (
             <Pressable
@@ -188,21 +210,43 @@ export default function ThirdStepVerification({ navigation, route }) {
                 flexDirection: "row",
                 alignItems: "center",
                 marginTop: 20,
-              }}>
+              }}
+            >
               <SvgXml xml={plus} />
               <Text style={[styles.small, { marginLeft: 8 }]}>
-                Add more file
+                {isBn ? "আরও ফাইল অ্যাড করুন" : "Add more file"}
               </Text>
             </Pressable>
           )}
           <View style={styles.step} />
-          <Text style={[styles.headLine]}>Address verification</Text>
+          <Text style={[styles.headLine]}>
+            {isBn ? "ঠিকানা যাচাই" : "Address verification"}
+          </Text>
           {data?.type == "Company" ? (
+            isBn ? (
+              <Text style={[styles.text, { marginTop: 28 }]}>
+                ঠিকানা যাচাইয়ের জন্য অনুগ্রহ করে আপনার{" "}
+                <Text style={{ fontWeight: "500" }}>
+                  কোম্পানির ব্যাংক স্টেটমেন্ট বা যেকোনো ইউটিলিটি বিল, যেমন:
+                  গ্যাস বিল, পানির বিল বা বর্তমান বিল আপলোড করুন৷।
+                </Text>
+              </Text>
+            ) : (
+              <Text style={[styles.text, { marginTop: 28 }]}>
+                Please upload{" "}
+                <Text style={{ fontWeight: "500" }}>
+                  your company's bank statement or any utility bill, such as a
+                  gas bill, water bill, or current bill, for address
+                  verification.
+                </Text>
+              </Text>
+            )
+          ) : isBn ? (
             <Text style={[styles.text, { marginTop: 28 }]}>
-              Please upload{" "}
-              <Text style={{ fontWeight: "500" }}>
-                your company's bank statement or any utility bill, such as a gas
-                bill, water bill, or current bill, for address verification.
+              ঠিকানা যাচাইয়ের জন্য অনুগ্রহ করে আপনার{" "}
+              <Text style={{ color: "#7566FF" }}>
+                ব্যাংক স্টেটমেন্ট বা যেকোনো ইউটিলিটি বিল, যেমন: গ্যাস বিল, পানির
+                বিল বা বর্তমান বিল আপলোড করুন৷।
               </Text>
             </Text>
           ) : (
@@ -216,13 +260,17 @@ export default function ThirdStepVerification({ navigation, route }) {
           )}
 
           <Text style={[styles.text, { color: "#EC2700" }]}>
-            *note{" "}
+            {isBn ? "*নোট" : "*note"}{" "}
             <Text style={{ color: "#000000" }}>
-              (Document address and input address must be match)
+              {isBn
+                ? "ডকুমেন্ট ঠিকানা এবং ইনপুট ঠিকানা অবশ্যই মিল থাকতে হবে)৷"
+                : "(Document address and input address must be match)"}
             </Text>
           </Text>
           <Text style={[styles.text, { color: "#EC2700", marginTop: 20 }]}>
-            At least one document is required
+            {isBn
+              ? "অন্তত একটি ডকুমেন্ট প্রয়োজন"
+              : "At least one document is required"}
           </Text>
           {address.map((doc, i) => (
             <ExtButton
@@ -240,7 +288,9 @@ export default function ThirdStepVerification({ navigation, route }) {
             />
           ))}
           <Text style={[styles.exSmall, { marginTop: 12 }]}>
-            Per file size limit (Maximum 2 MB)
+            {isBn
+              ? "প্রতি ফাইলের সাইজের সীমা (সর্বোচ্চ 2 এমবি)"
+              : "Per file size limit (Maximum 2 MB)"}
           </Text>
           {address.length < 3 && (
             <Pressable
@@ -251,10 +301,11 @@ export default function ThirdStepVerification({ navigation, route }) {
                 flexDirection: "row",
                 alignItems: "center",
                 marginTop: 20,
-              }}>
+              }}
+            >
               <SvgXml xml={plus} />
               <Text style={[styles.small, { marginLeft: 8 }]}>
-                Add more file
+                {isBn ? "আরও ফাইল অ্যাড করুন" : "Add more file"}
               </Text>
             </Pressable>
           )}
@@ -263,7 +314,7 @@ export default function ThirdStepVerification({ navigation, route }) {
               confirm();
             }}
             style={styles.button}
-            title={"confirm"}
+            title={isBn ? "নিশ্চিত করুন" : "confirm"}
           />
         </View>
       </ScrollView>
@@ -288,7 +339,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: "400",
-    
   },
   small: {
     fontSize: 14,
@@ -336,13 +386,15 @@ const ExtButton = ({ onClose, file, onChange, index }) => {
         alignItems: "center",
         marginTop: 20,
         justifyContent: "space-between",
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           flex: 1,
-        }}>
+        }}
+      >
         <IconButton
           onPress={pickImage}
           style={[styles.smButton]}
@@ -350,7 +402,8 @@ const ExtButton = ({ onClose, file, onChange, index }) => {
         />
         <Text
           numberOfLines={1}
-          style={[styles.small, { marginLeft: 12, flex: 1 }]}>
+          style={[styles.small, { marginLeft: 12, flex: 1 }]}
+        >
           {image ? image[image.length - 1] : "No file chosen"}
         </Text>
       </View>

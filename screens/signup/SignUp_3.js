@@ -18,8 +18,11 @@ import IconButton from "../../components/IconButton";
 import { registerUser, userLogin } from "../../Class/auth";
 import { useDispatch } from "react-redux";
 import ActivityLoader from "../../components/ActivityLoader";
+import useLang from "../../Hooks/UseLang";
 
 export default function SignUp_3({ navigation, route }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [visible, setVisible] = React.useState(false);
   const [gender, setGender] = useState();
   const token = route?.params?.token;
@@ -48,31 +51,37 @@ export default function SignUp_3({ navigation, route }) {
     setRePasswordError();
 
     if (name.split("")?.length < 4) {
-      setNameError("Name is too small");
+      setNameError(isBn ? "নাম খুব ছোট" : "Name is too small");
       return;
     }
     if (name.split("")?.length > 20) {
-      setNameError("Name is too large");
+      setNameError(isBn ? "নাম খুব বড়" : "Name is too large");
       return;
     }
     if (!regName.test(userName)) {
-      setUserNameError("Use alphabet & number");
+      setUserNameError(
+        isBn
+          ? "ইংরেজি বর্ণমালা এবং সংখ্যা ব্যবহার করুন( কোনও স্পেস দিবেন না )"
+          : "Use alphabet & number"
+      );
       return;
     }
     if (userName.split("")?.length < 4) {
-      setUserNameError("Name is too small");
+      setUserNameError(isBn ? "নাম খুব ছোট" : "Name is too small");
       return;
     }
     if (userName.split("")?.length > 20) {
-      setUserNameError("Name is too large");
+      setUserNameError(isBn ? "নাম খুব বড়" : "Name is too large");
       return;
     }
     if (password.split("")?.length < 8) {
-      setPasswordError("Minimum 8 character");
+      setPasswordError(
+        isBn ? "সর্বনিম্ন যেকোনো ৮ অক্ষর" : "Minimum 8 character"
+      );
       return;
     }
     if (password !== RePassword) {
-      setRePasswordError("Password not matched");
+      setRePasswordError(isBn ? "পাসওয়ার্ড মেলে না" : "Password not matched");
       return;
     }
     setLoader(true);
@@ -109,30 +118,37 @@ export default function SignUp_3({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={[styles.mt37, { paddingHorizontal: 20 }]}>
-          <Text style={styles.label}>Your name</Text>
+          <Text style={styles.label}>{isBn ? "আপনার নাম" : "Your name"}</Text>
           <Input
             onChange={(e) => {
               setName(e);
             }}
             value={name}
-            placeholder={"Type your name"}
+            placeholder={isBn ? "আপনার নাম লিখুন" : "Type your name"}
             style={[styles.input, styles.mt8]}
           />
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <Text
               style={{
                 color: "red",
-              }}>
+              }}
+            >
               {nameError}
             </Text>
-            <Text>min 4 max 20 character</Text>
+            <Text>
+              {isBn
+                ? "সর্বনিম্ন 4 সর্বাধিক 20 অক্ষর"
+                : "min 4 max 20 character"}
+            </Text>
           </View>
           <View
             style={[
@@ -141,12 +157,14 @@ export default function SignUp_3({ navigation, route }) {
                 justifyContent: "space-between",
               },
               styles.mt20,
-            ]}>
+            ]}
+          >
             <View
               style={{
                 width: width / 2 - 36,
-              }}>
-              <Text style={styles.label}>Gender</Text>
+              }}
+            >
+              <Text style={styles.label}>{isBn ? "লিঙ্গ" : "Gender"}</Text>
               <Menu
                 contentStyle={{
                   backgroundColor: "white",
@@ -158,86 +176,102 @@ export default function SignUp_3({ navigation, route }) {
                     error={genderError}
                     onPress={openMenu}
                     style={[styles.input, styles.mt8]}
-                    placeholder={"Select"}
+                    placeholder={isBn ? "নির্বাচন করুন" : "Select"}
                     value={gender}
                   />
-                }>
+                }
+              >
                 <Menu.Item
                   onPress={() => {
                     setGender("Male");
                     closeMenu();
                   }}
-                  title="Male"
+                  title={isBn ? "পুরুষ" : "Male"}
                 />
                 <Menu.Item
                   onPress={() => {
                     setGender("Female");
                     closeMenu();
                   }}
-                  title="Female"
+                  title={isBn ? "মহিলা" : "Female"}
                 />
                 <Menu.Item
                   onPress={() => {
                     setGender("Other");
                     closeMenu();
                   }}
-                  title="Other"
+                  title={isBn ? "অন্যকিছু" : "Other"}
                 />
               </Menu>
             </View>
             <View
               style={{
                 width: width / 2 - 36,
-              }}>
-              <Text style={styles.label}>Age</Text>
+              }}
+            >
+              <Text style={styles.label}>
+                {isBn ? "বয়স ( ইংরেজিতে নম্বরে )" : "Age"}
+              </Text>
               <Input
                 value={age}
                 onChange={setAge}
                 error={ageError}
                 keyboardType={"number-pad"}
                 style={[styles.input, styles.mt8]}
-                placeholder={"12"}
+                placeholder={isBn ? "সর্বনিম্ন ১২ বয়স থেকে" : "12"}
               />
             </View>
           </View>
-          <Text style={[styles.label, styles.mt20]}>Create a username</Text>
+          <Text style={[styles.label, styles.mt20]}>
+            {isBn ? "একটি ইউজার নেম তৈরি করুন" : "Create a username"}
+          </Text>
           <Input
             autoCapitalize={"none"}
             value={userName}
             onChange={setUserName}
-            placeholder={"Type your username"}
+            placeholder={isBn ? "আপনার ইউজার লিখুন" : "Type your username"}
             style={[styles.input, styles.mt8]}
           />
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <Text
               style={{
                 color: "red",
-              }}>
+              }}
+            >
               {userNameError}
             </Text>
-            <Text>min 4 max 20 character</Text>
+            <Text>
+              {isBn
+                ? "সর্বনিম্ন 4 সর্বাধিক 20 অক্ষর"
+                : "min 4 max 20 character"}
+            </Text>
           </View>
-          <Text style={[styles.label, styles.mt20]}>Password</Text>
+          <Text style={[styles.label, styles.mt20]}>
+            {isBn ? "পাসওয়ার্ড" : "Password"}
+          </Text>
           <Input
             error={passwordError}
             value={password}
             onChange={setPassword}
             secureTextEntry={true}
             style={[styles.input, styles.mt8]}
-            placeholder={"Type password"}
+            placeholder={isBn ? "পাসওয়ার্ড লিখুন" : "Type password"}
           />
-          <Text style={[styles.label, styles.mt20]}>Retype</Text>
+          <Text style={[styles.label, styles.mt20]}>
+            {isBn ? "পুনরায় লিখুন" : "Retype"}
+          </Text>
           <Input
             error={RePasswordError}
             value={RePassword}
             onChange={setRePassword}
             secureTextEntry={true}
             style={[styles.input, styles.mt8]}
-            placeholder={"Retype password"}
+            placeholder={isBn ? "পুনরায় পাসওয়ার্ড লিখুন" : "Retype password"}
           />
         </View>
         <View
@@ -246,10 +280,10 @@ export default function SignUp_3({ navigation, route }) {
             marginBottom: 10,
             flex: 1,
             maxHeight: 50,
-            paddingHorizontal:20,
-            marginTop:24,
-            
-          }}>
+            paddingHorizontal: 20,
+            marginTop: 24,
+          }}
+        >
           <CheckBox
             value={check}
             onChange={() => {
@@ -261,19 +295,21 @@ export default function SignUp_3({ navigation, route }) {
               fontWeight: "500",
               flex: 1,
               fontSize: 14,
-            }}>
-            I agree with all of Duty's{" "}
+            }}
+          >
+            {isBn ? "আমি ডিউটির সমস্ত সার্ভিসের" : "I agree with all of Duty's"}{" "}
             <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-              Terms of Service
+              {isBn ? "শর্তাবলী" : "Terms of Service"}
             </Text>
             ,{" "}
             <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-              Privacy Policy
+              {isBn ? "গোপনীয়তা নীতি" : "Privacy Policy"}
             </Text>
-            , and{" "}
+            , {isBn ? "এবং" : "and"}{" "}
             <Text style={{ color: "#7566FF", fontWeight: "400" }}>
-              Refund Policy
+              {isBn ? "রিফান্ড নীতির" : "Refund Policy"}
             </Text>
+            {isBn && <Text> সাথে একমত</Text>}
           </Text>
         </View>
         <IconButton
@@ -292,7 +328,7 @@ export default function SignUp_3({ navigation, route }) {
             marginHorizontal: 20,
             marginVertical: 20,
           }}
-          title={"Confirm"}
+          title={isBn ? "নিশ্চিত করুন" : "Confirm"}
         />
       </ScrollView>
     </KeyboardAvoidingView>

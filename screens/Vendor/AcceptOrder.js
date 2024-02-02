@@ -25,7 +25,10 @@ import {
   getOfflineOrders,
   getOrders,
 } from "../../Class/service";
-import { convertServerFacilities, localOptionsToServer } from "../../Class/dataConverter";
+import {
+  convertServerFacilities,
+  localOptionsToServer,
+} from "../../Class/dataConverter";
 import Animated, { FadeIn, StretchInY } from "react-native-reanimated";
 import { socket } from "../../Class/socket";
 import { setOfflineOrders } from "../../Reducers/offlineOrders";
@@ -33,6 +36,7 @@ import ActivityLoader from "../../components/ActivityLoader";
 import SubHeader from "../../components/SubHeader";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { useIsFocused } from "@react-navigation/native";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 const AcceptOrder = (props) => {
@@ -59,6 +63,8 @@ const AcceptOrder = (props) => {
   const params = props.route.params;
   const [Loader, setLoader] = React.useState(true);
   const navigation = props.navigation;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [DeliverMethod, setDeliverMethod] = React.useState({
     online: [
       "Online File Share",
@@ -144,32 +150,44 @@ const AcceptOrder = (props) => {
     setConfirmation_2Error(null);
     //console.log(Description);
     if (!Service) {
-      setServiceError("This field is required");
+      setServiceError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 10 });
       return;
     }
     if (Service == "Other" && !OtherService) {
-      setServiceError("This field is required");
+      setServiceError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 10 });
       return;
     }
     if (!Deliver || !Select) {
-      setDeliverError("This field is required");
+      setDeliverError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 400 });
       return;
     }
     if (Select == "My Self ") {
-      setDeliverError("This field is required");
+      setDeliverError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 400 });
       return;
     }
     if (Select == "Courier Service" && !CourierServiceName) {
-      setDeliverError("This field is required with typing");
+      setDeliverError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 400 });
       return;
     }
     if (Select == "Courier Service" && !CourierServiceAddress) {
-      setDeliverError("This field is required with typing");
+      setDeliverError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 400 });
       return;
     }
@@ -179,12 +197,16 @@ const AcceptOrder = (props) => {
       Select != "My Self" &&
       !Description
     ) {
-      setDeliverError("This field is required with typing");
+      setDeliverError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 400 });
       return;
     }
     if (SubSelect == "Other" && !Description) {
-      setDeliverError("This field is required with typing");
+      setDeliverError(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       ref.current.scrollTo({ y: 400 });
       return;
     }
@@ -197,12 +219,18 @@ const AcceptOrder = (props) => {
     //   return;
     // }
     if (!Condition_1 || !Condition_2 || !Condition_3) {
-      setConfirmation_1Error("Be agree with all conditions");
+      setConfirmation_1Error(
+        isBn
+          ? "পরবর্তী তে যেতে হলে আমাদের সকল শর্তে সম্মতি দেয়া আবশ্যক"
+          : "Before continue you must agree to all of our conditions"
+      );
       ref.current.scrollTo({ y: 900 });
       return;
     }
     if (!Condition_4) {
-      setConfirmation_2Error("This field is required");
+      setConfirmation_2Error(
+        isBn ? "এখানে তথ্য দেয়া আবশ্যক" : "This field is required"
+      );
       return;
     }
     if (!params.facilities || !params.id) {
@@ -316,7 +344,8 @@ const AcceptOrder = (props) => {
     // return
     acceptOrder(user.token, {
       orderId: params.id,
-      selectedServices: data?.type=="STARTING"? params?.skills:data.selectedServices,
+      selectedServices:
+        data?.type == "STARTING" ? params?.skills : data.selectedServices,
       deliverBy: Deliver,
       serviceType: Service,
       deliverMethodPhysical: Select,
@@ -383,23 +412,27 @@ const AcceptOrder = (props) => {
         fontStyle={{
           fontSize: 20,
         }}
-        title={"Information collection"}
+        title={isBn ? "তথ্য সংগ্রহ" : "Information collection"}
         {...props}
       />
       <ScrollView ref={ref} showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
               marginTop: 32,
               flex: 1,
-            }}>
+            }}
+          >
             <SvgXml xml={info} />
             <Text style={[styles.text, { flex: 1 }]}>
-              What Type Of Service/Item You Want To provide?
+              {isBn
+                ? "আপনি কি ধরনের পরিষেবা বা আইটেম প্রদান করতে চান?"
+                : "What Type Of Service/Item You Want To provide?"}
             </Text>
           </View>
           {ServiceError && (
@@ -417,7 +450,7 @@ const AcceptOrder = (props) => {
                 setService("Teaching/Tutorial");
               }}
               value={Service == "Teaching/Tutorial" ? true : false}
-              title="Teaching/Tutorial"
+              title={isBn ? "পাঠদান/টিউটোরিয়াল" : "Teaching/Tutorial"}
             />
           </View>
           <View style={styles.box}>
@@ -429,7 +462,7 @@ const AcceptOrder = (props) => {
                 setService("Consultation");
               }}
               value={Service == "Consultation" ? true : false}
-              title="Consultation"
+              title={isBn ? "পরামর্শ সেবা" : "Consultation"}
             />
           </View>
           <View style={styles.box}>
@@ -441,7 +474,7 @@ const AcceptOrder = (props) => {
                 setService("Manufacture");
               }}
               value={Service == "Manufacture" ? true : false}
-              title="Manufacture"
+              title={isBn ? "ম্যানুফ্যাকচারিং" : "Manufacture"}
             />
           </View>
           <View style={styles.box}>
@@ -453,7 +486,7 @@ const AcceptOrder = (props) => {
                 setService("Fixing");
               }}
               value={Service == "Fixing" ? true : false}
-              title="Fixing"
+              title={isBn ? "মেরামত" : "Fixing"}
             />
           </View>
           <View style={styles.box}>
@@ -465,7 +498,7 @@ const AcceptOrder = (props) => {
                 setService("Recover");
               }}
               value={Service == "Recover" ? true : false}
-              title="Recover"
+              title={isBn ? "পুনরুদ্ধার করুন" : "Recover"}
             />
           </View>
           <View style={styles.box}>
@@ -477,7 +510,7 @@ const AcceptOrder = (props) => {
                 setService("Build");
               }}
               value={Service == "Build" ? true : false}
-              title="Build/Development"
+              title={isBn ? "নির্মাণ/উন্নয়ন" : "Build/Development"}
             />
           </View>
           <View style={styles.box}>
@@ -489,7 +522,7 @@ const AcceptOrder = (props) => {
                 setService("Maintenance");
               }}
               value={Service == "Maintenance" ? true : false}
-              title="Maintenance"
+              title={isBn ? "রক্ষণাবেক্ষণ" : "Maintenance"}
             />
           </View>
           <View style={styles.box}>
@@ -501,7 +534,7 @@ const AcceptOrder = (props) => {
                 setService("Other");
               }}
               value={Service == "Other" ? true : false}
-              title="Other Service"
+              title={isBn ? "অন্যান্য পরিষেবা" : "Other Service"}
             />
           </View>
           {Service == "Other" && (
@@ -513,7 +546,7 @@ const AcceptOrder = (props) => {
               onChange={(e) => {
                 setOtherService(e);
               }}
-              placeholder="Describe here"
+              placeholder={isBn ? "এখানে লিখুন" : "Describe here"}
             />
           )}
           <View
@@ -521,10 +554,13 @@ const AcceptOrder = (props) => {
               flexDirection: "row",
               marginTop: 32,
               flex: 1,
-            }}>
+            }}
+          >
             <SvgXml xml={info} />
             <Text style={[styles.text, { flex: 1 }]}>
-              How would you like the service to be delivered ?
+              {isBn
+                ? "আপনি কীভাবে পরিষেবাটি ডেলিভারি চান?"
+                : "How would you like the service to be delivered ?"}
             </Text>
           </View>
           {DeliverError && <Text style={{ color: "red" }}>{DeliverError}</Text>}
@@ -533,7 +569,8 @@ const AcceptOrder = (props) => {
               flexDirection: "row",
               marginTop: 24,
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <Button
               onPress={() => {
                 setDeliver("Online");
@@ -543,7 +580,7 @@ const AcceptOrder = (props) => {
               }}
               LeftIcon={Deliver == "Online" ? onlineAc : onlineDc}
               value={Deliver == "Online" ? true : false}
-              title="Online"
+              title={isBn ? "অনলাইন" : "Online"}
             />
             <Button
               onPress={() => {
@@ -554,7 +591,7 @@ const AcceptOrder = (props) => {
               }}
               LeftIcon={Deliver == "Physical" ? offlineAc : offlineDc}
               value={Deliver == "Physical" ? true : false}
-              title="Physical"
+              title={isBn ? "ফিজিক্যাল" : "Physical"}
             />
           </View>
           {Deliver == "Online" ? (
@@ -563,11 +600,12 @@ const AcceptOrder = (props) => {
                 style={{
                   flexDirection: "row",
                   marginTop: 32,
-                }}>
+                }}
+              >
                 <SvgXml xml={info} />
                 <View style={{ marginLeft: 10 }}>
                   <Text style={[styles.text, { marginLeft: 0 }]}>
-                    Delivery method ?
+                    {isBn ? "ডেলিভারি পদ্ধতি?" : "Delivery method ?"}
                   </Text>
                 </View>
               </View>
@@ -605,24 +643,26 @@ const AcceptOrder = (props) => {
                 style={{
                   flexDirection: "row",
                   marginTop: 32,
-                }}>
+                }}
+              >
                 <SvgXml xml={info} />
                 <View style={{ marginLeft: 10, flex: 1 }}>
                   <Text style={[styles.text, { marginLeft: 0 }]}>
-                    Delivery method ?
+                    {isBn ? "ডেলিভারি পদ্ধতি?" : "Delivery method ?"}
                   </Text>
                   <Text
                     style={{
                       fontSize: 16,
-                      
+
                       fontWeight: "400",
                       color: "#EC2700",
                       marginBottom: 12,
                       flex: 1,
-                    }}>
-                    For physical services, you are required to deliver your
-                    service in person, face to face with the buyer. For more
-                    details, please refer to our{" "}
+                    }}
+                  >
+                    {isBn
+                      ? "ফিজিক্যাল সার্ভিসগুলির জন্য আপনাকে ক্রেতার সাথে মুখোমুখি ব্যক্তিগতভাবে আপনার পরিষেবা ডেলিভারি করতে হবে৷ আরো বিস্তারিত জানার জন্য, অনুগ্রহ করে আমাদের"
+                      : "For physical services, you are required to deliver your service in person, face to face with the buyer. For more details, please refer to our"}{" "}
                     <Text
                       onPress={() => {
                         navigation.navigate("WebViewsGlobal", {
@@ -630,8 +670,11 @@ const AcceptOrder = (props) => {
                           title: "Order Policy",
                         });
                       }}
-                      style={{ color: "#0003FF" }}>
-                      Order & delivery Policy section
+                      style={{ color: "#0003FF" }}
+                    >
+                      {isBn
+                        ? "অর্ডার এবং ডেলিভারি নীতি বিভাগ দেখুন"
+                        : "Order & delivery Policy section"}
                     </Text>
                   </Text>
                 </View>
@@ -657,7 +700,8 @@ const AcceptOrder = (props) => {
                           flexDirection: "row",
                           flexWrap: "wrap",
                           marginHorizontal: 30,
-                        }}>
+                        }}
+                      >
                         {doc.options &&
                           doc.options.map((doc, i) => (
                             <RadioButton
@@ -676,7 +720,7 @@ const AcceptOrder = (props) => {
                         <Input
                           value={Description}
                           onChange={(e) => setDescription(e)}
-                          placeholder="Type here"
+                          placeholder={isBn ? "এখানে লিখুন" : "Type here"}
                         />
                       )}
                     </View>
@@ -687,12 +731,18 @@ const AcceptOrder = (props) => {
                         <Input
                           value={CourierServiceName}
                           onChange={(e) => setCourierServiceName(e)}
-                          placeholder="Courier Service Name"
+                          placeholder={
+                            isBn
+                              ? "কুরিয়ার সার্ভিস এর নাম"
+                              : "Courier Service Name"
+                          }
                         />
                         <Input
                           value={CourierServiceAddress}
                           onChange={(e) => setCourierServiceAddress(e)}
-                          placeholder="Branch or Area Name"
+                          placeholder={
+                            isBn ? "ব্রাঞ্চ এর নাম" : "Branch or Area Name"
+                          }
                         />
                       </View>
                     )}
@@ -702,7 +752,7 @@ const AcceptOrder = (props) => {
                       onChange={(e) => {
                         setDescription(e);
                       }}
-                      placeholder="Type here"
+                      placeholder={isBn ? "এখানে লিখুন" : "Type here"}
                     />
                   )}
                 </View>
@@ -716,10 +766,13 @@ const AcceptOrder = (props) => {
               flexDirection: "row",
               marginTop: 32,
               flex: 1,
-            }}>
+            }}
+          >
             <SvgXml xml={info} />
             <Text style={[styles.text, { flex: 1 }]}>
-              If you agree, please indicate by checking the box below.
+              {isBn
+                ? "আপনি যদি সম্মত হন, অনুগ্রহ করে নীচের বাক্সে চেক করে নির্দেশ করুন৷"
+                : "If you agree, please indicate by checking the box below."}
             </Text>
           </View>
           {Confirmation_1Error && (
@@ -734,9 +787,12 @@ const AcceptOrder = (props) => {
               marginTop: 24,
               fontSize: 16,
               alignItems: "flex-start",
-              
             }}
-            title="Yes, I have collected all the necessary information and understand what my customer wants."
+            title={
+              isBn
+                ? "হ্যাঁ, আমি সমস্ত প্রয়োজনীয় তথ্য সংগ্রহ করেছি এবং বুঝতে পেরেছি যে আমার গ্রাহক কী চায়৷"
+                : "Yes, I have collected all the necessary information and understand what my customer wants."
+            }
           />
           <CheckBox
             value={Condition_2}
@@ -747,9 +803,12 @@ const AcceptOrder = (props) => {
               marginTop: 12,
               fontSize: 16,
               alignItems: "flex-start",
-              
             }}
-            title="If I provide a physical service, I will deliver it face to face and use a mask."
+            title={
+              isBn
+                ? "যদি আমি ফিজিক্যাল সার্ভিস প্রদান করি, আমি ক্রেতার সাথে মুখোমুখি হয়ে ডেলিভারি করব এবং ডেলিভারির সময় মুখে সেফটি মাস্ক পরিধান করব।"
+                : "If I provide a physical service, I will deliver it face to face and use a mask."
+            }
           />
           <CheckBox
             value={Condition_3}
@@ -760,9 +819,12 @@ const AcceptOrder = (props) => {
               marginTop: 12,
               fontSize: 16,
               alignItems: "flex-start",
-              
             }}
-            title="I will save all delivery proof documents for future inquiries"
+            title={
+              isBn
+                ? "আমি ভবিষ্যতের অনুসন্ধানের জন্য সমস্ত ডেলিভারি প্রমাণ নথি সংরক্ষণ রাখব"
+                : "I will save all delivery proof documents for future inquiries"
+            }
           />
         </View>
       </ScrollView>
@@ -771,11 +833,13 @@ const AcceptOrder = (props) => {
           paddingTop: 20,
           paddingHorizontal: 20,
           paddingBottom: 12,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
-          }}>
+          }}
+        >
           <CheckBox
             style={{ fontSize: 14 }}
             value={Condition_4}
@@ -783,32 +847,72 @@ const AcceptOrder = (props) => {
               setCondition_4((val) => !val);
             }}
           />
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "400",
-            }}>
-            I agree with all the{" "}
-            <Text onPress={() => {
-              navigation.navigate("WebViewsGlobal", {
-                url: "https://duty.com.bd/legal/app/order-policy",
-                title: "Order Policy",
-              });
-            }} style={{ color: "#0003FF" }}>
-              Order
-            </Text>
-            {" "}&{" "}
+          {isBn ? (
             <Text
-              onPress={() => {
-                navigation.navigate("WebViewsGlobal", {
-                  url: "https://duty.com.bd/legal/app/refund-policy",
-                  title: "Refund policy",
-                });
+              style={{
+                fontSize: 16,
+                fontWeight: "400",
               }}
-              style={{ color: "#0003FF" }}>
-              refund policy
+            >
+              আমি ডিউটির সমস্ত{" "}
+              <Text
+                onPress={() => {
+                  navigation.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/order-policy",
+                    title: "Order Policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                অর্ডার
+              </Text>{" "}
+              এবং{" "}
+              <Text
+                onPress={() => {
+                  navigation.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/refund-policy",
+                    title: "Refund policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                ফেরত নীতির
+              </Text>{" "}
+              সাথে একমত
             </Text>
-          </Text>
+          ) : (
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "400",
+              }}
+            >
+              I agree with all the{" "}
+              <Text
+                onPress={() => {
+                  navigation.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/order-policy",
+                    title: "Order Policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                Order
+              </Text>{" "}
+              &{" "}
+              <Text
+                onPress={() => {
+                  navigation.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/refund-policy",
+                    title: "Refund policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                refund policy
+              </Text>
+            </Text>
+          )}
         </View>
         {Confirmation_2Error && (
           <Text style={{ color: "red" }}>{Confirmation_2Error}</Text>
@@ -846,7 +950,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "500",
     fontSize: 16,
-    
+
     marginLeft: 10,
   },
 });
@@ -864,7 +968,8 @@ const Button = ({ value, onPress, LeftIcon, title }) => {
         height: 60,
         flexDirection: "row",
         backgroundColor: value ? "#535353" : "#ffffff",
-      }}>
+      }}
+    >
       <SvgXml xml={LeftIcon} />
       <Text
         style={{
@@ -872,7 +977,8 @@ const Button = ({ value, onPress, LeftIcon, title }) => {
           fontWeight: "400",
           marginLeft: 12,
           color: value ? "#ffffff" : "#000000",
-        }}>
+        }}
+      >
         {title}
       </Text>
     </Pressable>

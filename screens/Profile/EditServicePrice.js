@@ -31,6 +31,8 @@ import { getService } from "../../Class/service";
 import { updateGigsData } from "../../Class/update";
 import ActivityLoader from "../../components/ActivityLoader";
 import { uploadFile } from "../../Class/upload";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function EditServicePrice({ navigation, route }) {
   const businessForm = useSelector((state) => state.businessForm);
@@ -45,6 +47,8 @@ export default function EditServicePrice({ navigation, route }) {
   const [images, setImages] = useState();
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -75,9 +79,9 @@ export default function EditServicePrice({ navigation, route }) {
       });
       const res = await uploadFile(arr, user.token);
       setImages(res);
-      res?.map((doc)=>{
-        img.push(doc)
-      })
+      res?.map((doc) => {
+        img.push(doc);
+      });
     }
     // console.log(img)
     // return
@@ -89,12 +93,12 @@ export default function EditServicePrice({ navigation, route }) {
         description: data?.serviceDescription,
         price: price ? parseInt(price) : undefined,
         images: img,
-      })
+      });
       updateVendorInfo();
     } catch (e) {
       setLoader(false);
-      console.error(e.message)
-      Alert.alert("Ops!","Something is went wrong")
+      console.error(e.message);
+      Alert.alert("Ops!", "Something is went wrong");
     }
     // }).then(res=>{
     //   updateVendorInfo()
@@ -123,20 +127,23 @@ export default function EditServicePrice({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -144,64 +151,35 @@ export default function EditServicePrice({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for set up the price
+              {isBn
+                ? "মূল্য সেট আপ করার জন্য টিপস:"
+                : "Tips for set up the price"}
             </Text>
           </View>
 
-          <ViewMore
-            view={true}
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={77}
-            width={167}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <View
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}>
-                <TextOp
-                  style={{ marginTop: 0, minHeight: 0 }}
-                  number={"1."}
-                  text={"Determine your value and research market rates."}
-                />
-                <TextOp
-                  style={{ marginTop: 5, minHeight: 20 }}
-                  number={"2."}
-                  text={
-                    "Consider your target audience and set a starting fee that is competitive but not undervaluing your services."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5, minHeight: 20 }}
-                  number={"3."}
-                  text={
-                    "Communicate your starting fee clearly to potential buyers, and explain any additional charges based on the scope of the project."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"4."}
-                  text={
-                    "Allow for flexibility in your pricing based on the specific needs of each buyer."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"5."}
-                  text={
-                    "Regularly evaluate and adjust your pricing strategy to remain competitive in the market."
-                  }
-                />
-              </View>
+            content={
+              isBn
+                ? `1. আপনি মার্কেট রিসার্চ করে আপনার মূল্য তালিকা তৈরি করুন৷।
+2. আপনি ক্রেতাদের কথা চিন্তা করে একটি স্টার্টিং ফি সেট করুন যা প্রতিযোগিতামূলক এবং আপনার সার্ভিসগুলোকেও সঠিক মূল্য দিবে৷।
+3. ক্রেতাদের সাথে কথা বলে আপনার স্টার্টিং ফি নির্ধারণ করুন এবং ব্যাখ্যা করুন কোন প্রকল্পের উপর ভিত্তি করে অতিরিক্ত মূল্য নির্ধারণ করা হয়েছে৷।
+4. প্রতিটি ক্রেতার চাহিদার উপর ভিত্তি করে আপনার মূল্য নির্ধারণ করুন৷।              
+5. বাজার প্রতিযোগিতায় টিকে থাকার জন্য আপনার মূল্য নির্ধারণের সিস্টেম প্রতিনিয়ত পরিবর্তন করুন এবং সমান রাখুন৷।
+              `
+                : `1. Determine your value and research market rates.
+2. Consider your target audience and set a starting fee that is competitive but not undervaluing your services.
+3. Communicate your starting fee clearly to potential buyers, and explain any additional charges based on the scope of the project.
+4. Allow for flexibility in your pricing based on the specific needs of each buyer.
+5. Regularly evaluate and adjust your pricing strategy to remain competitive in the market.
+                `
             }
           />
 
           <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Starting price
+            {isBn ? "দাম শুরু" : "Starting price"}
           </Text>
           <Input
             error={priceError}
@@ -217,7 +195,9 @@ export default function EditServicePrice({ navigation, route }) {
             style={styles.input}
             placeholder={"00.00 ৳"}
           />
-          <Text style={styles.text}>Minimum 50.00 ৳ </Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বনিম্ন ৫০.০০ ৳ থেকে শুরু করতে হবে" : "Minimum 50.00 ৳"}{" "}
+          </Text>
           <IconButton
             disabled={price ? false : true}
             active={price ? true : false}
@@ -230,7 +210,7 @@ export default function EditServicePrice({ navigation, route }) {
               updateData();
             }}
             style={styles.button}
-            title={"Update"}
+            title={isBn ? "আপডেট করুন" : "Update"}
           />
         </View>
       </ScrollView>

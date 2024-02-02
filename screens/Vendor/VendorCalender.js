@@ -5,17 +5,16 @@ import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { primaryColor, textColor, backgroundColor } from "../../assets/colors";
 import { useSelector, useDispatch } from "react-redux";
+import useLang from "../../Hooks/UseLang";
 
 const VendorCalender = () => {
   const vendorInfo = useSelector((state) => state.vendorInfo);
-  const vendor = useSelector(state=>state.vendor);
+  const vendor = useSelector((state) => state.vendor);
   const [Times, setTimes] = React.useState(false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
-    if (
-      vendor &&
-      vendor.service &&
-      vendor.service.workingTime.length == 0
-    ) {
+    if (vendor && vendor.service && vendor.service.workingTime.length == 0) {
       setTimes(true);
     }
   }, [vendor]);
@@ -40,7 +39,7 @@ const VendorCalender = () => {
         }}
       >
         <View style={styles.view}>
-          <Text style={styles.text}>Day</Text>
+          <Text style={styles.text}>{isBn ? "দিন" : "Day"}</Text>
         </View>
         <View
           style={[
@@ -50,7 +49,7 @@ const VendorCalender = () => {
             },
           ]}
         >
-          <Text style={styles.text}>Working Time</Text>
+          <Text style={styles.text}>{isBn ? "কাজের সময়" : "Working Time"}</Text>
         </View>
       </View>
       <View
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-const Cart = ({ value,day }) => {
+const Cart = ({ value, day }) => {
   return (
     <View
       style={{
@@ -101,7 +100,7 @@ const Cart = ({ value,day }) => {
             marginLeft: 5,
           }}
         >
-          {value?value.day:day}
+          {value ? value.day : day}
         </Text>
       </View>
       <View
@@ -120,16 +119,18 @@ const Cart = ({ value,day }) => {
             marginLeft: 5,
           }}
         >
-          {value?`${convertTime(value.open)} - ${convertTime(value.close)}`:'24/7 open'}
+          {value
+            ? `${convertTime(value.open)} - ${convertTime(value.close)}`
+            : "24/7 open"}
         </Text>
       </View>
     </View>
   );
 };
-const convertTime=(time) => {
-    let newTime=time.split(':')
-    if(newTime[0]>12){
-      return `${parseInt(newTime[0])-12}:${newTime[1]} PM`
-    }
-    return `${newTime[0]}:${newTime[1]} AM`
-}
+const convertTime = (time) => {
+  let newTime = time.split(":");
+  if (newTime[0] > 12) {
+    return `${parseInt(newTime[0]) - 12}:${newTime[1]} PM`;
+  }
+  return `${newTime[0]}:${newTime[1]} AM`;
+};

@@ -64,20 +64,10 @@ import SignUp_1 from "./signup/SignUp_1";
 import Reset from "./signup/Reset";
 import Recovery from "./signup/Recovery";
 import Login from "./Login";
+import useLang from "../Hooks/UseLang";
 
 const Stack = createNativeStackNavigator();
-const formatOrderNotificationMessage = (item) => {
-  switch (item.notificationType) {
-    case "PAYMENT_ORDER":
-      return `<b>${item.userFrom.name}</b> has completed the payment - you can now begin processing the service.`;
 
-    case "PAYMENT_ORDER_USER":
-      return `Payment Received - <b>${item.userFrom.name}</b> starting processing your service`;
-
-    default:
-      return `${item.message}`;
-  }
-};
 const NotificationScreen = ({ navigation, route }) => {
   const user = useSelector((state) => state.user);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -104,23 +94,23 @@ const NotificationScreen = ({ navigation, route }) => {
       getVendorNotification(user.token, vendor.service.id).then((res) => {
         setReadNotification(res.data.notifications);
       });
-      return
+      return;
     }
     getUnreadCount(user?.token)
-        .then((res) => {
-          setUnreadCount(res.data.count);
-          dispatch(storeNotificationCount(res.data.count));
-        })
-        .catch((err) => {
-          console.error(err.response.data.msg);
-        });
-      getUnreadNotification(user.token).then((res) => {
-        setUnreadCount(res.data.notifications);
+      .then((res) => {
+        setUnreadCount(res.data.count);
+        dispatch(storeNotificationCount(res.data.count));
+      })
+      .catch((err) => {
+        console.error(err.response.data.msg);
       });
-      getNotification(user.token).then((res) => {
-        setReadNotification(res.data.notifications);
-      });
-  }, [isFocused, user, vendor,unReadNotification]);
+    getUnreadNotification(user.token).then((res) => {
+      setUnreadCount(res.data.notifications);
+    });
+    getNotification(user.token).then((res) => {
+      setReadNotification(res.data.notifications);
+    });
+  }, [isFocused, user, vendor, unReadNotification]);
   // useEffect(() => {
   //   socket.on("notificationReceived", (e) => {
   //     if (vendor) {
@@ -230,7 +220,8 @@ const NotificationScreen = ({ navigation, route }) => {
           style={{
             marginVertical: 10,
             textAlign: "center",
-          }}>
+          }}
+        >
           No Notification Found!
         </Text>
       )}
@@ -292,12 +283,16 @@ const Notification = ({ navigation, route }) => {
         }}
         component={AllWithdraws}
       />
-      
-        <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
-          name="SignUp_3"
-          component={SignUp_3}
-        />
+
+      <Stack.Screen
+        options={{
+          header: (props) => (
+            <SubHeader title={"User information"} {...props} />
+          ),
+        }}
+        name="SignUp_3"
+        component={SignUp_3}
+      />
     </Stack.Navigator>
   );
 };
@@ -323,6 +318,26 @@ const NotificationCart = ({
   const user = useSelector((state) => state.user);
   const arr = data.notificationType.split("_");
   const actionType = arr[arr.length - 1];
+  const { language } = useLang();
+  const isBn = language == "Bn";
+
+  const formatOrderNotificationMessage = (item) => {
+    switch (item.notificationType) {
+      case "PAYMENT_ORDER":
+        return isBn
+          ? `<b>${item.userFrom.name}</b> পেমেন্ট সম্পন্ন করেছে - আপনি এখন পরিষেবাটি প্রক্রিয়াকরণ শুরু করতে পারেন৷`
+          : `<b>${item.userFrom.name}</b> has completed the payment - you can now begin processing the service.`;
+
+      case "PAYMENT_ORDER_USER":
+        return isBn
+          ? `<b>${item.userFrom.name}</b> পেমেন্ট পেয়েছে এবং আপনার কাজটি প্রক্রিয়াকরণ শুরু করেছে।`
+          : `Payment Received - <b>${item.userFrom.name}</b> starting processing your service`;
+
+      default:
+        return `${item.message}`;
+    }
+  };
+
   let msg = formatOrderNotificationMessage(data).replace("<b>", "/");
   msg = msg.replace("</b>", "/");
   msg = msg.split("/");
@@ -333,7 +348,7 @@ const NotificationCart = ({
     if (msg?.length > 0) {
       setFirst(msg[0]);
       setSecond(msg[1]);
-      if(msg.length>1){
+      if (msg.length > 1) {
         setThird(msg[2]);
       }
     } else {
@@ -341,17 +356,22 @@ const NotificationCart = ({
     }
   }, [data, user, vendor, icon]);
   const [order, setOrder] = useState();
-  
 
   return (
     <Pressable
       onPress={() => {
-        if(data.notificationType=="VERIFICATION_REJECTED"||data.notificationType=="VERIFICATION_ACCEPTED"){
+        if (
+          data.notificationType == "VERIFICATION_REJECTED" ||
+          data.notificationType == "VERIFICATION_ACCEPTED"
+        ) {
           navigation.navigate("VendorAccountBalance");
           return;
         }
-        if(data.notificationType=="NEW_APPOINTMENT"){
-          navigation.navigate(vendor?"VendorAppointmentListDetails":"UserAppointmentDetails",{appointmentId:data?.entityId});
+        if (data.notificationType == "NEW_APPOINTMENT") {
+          navigation.navigate(
+            vendor ? "VendorAppointmentListDetails" : "UserAppointmentDetails",
+            { appointmentId: data?.entityId }
+          );
           return;
         }
         if (data.notificationType == "REVIEW_ORDER") {
@@ -359,7 +379,9 @@ const NotificationCart = ({
           return;
         }
         if (data.notificationType.includes("ORDER") && vendor) {
-          navigation.navigate("VendorOrderDetails_1", { orderId: data?.entityId });
+          navigation.navigate("VendorOrderDetails_1", {
+            orderId: data?.entityId,
+          });
         }
         if (data.notificationType.includes("ORDER") && !vendor) {
           navigation.navigate("OrderDetails_1", { orderId: data?.entityId });
@@ -376,7 +398,8 @@ const NotificationCart = ({
           navigation.navigate("ManageOrder");
         }
       }}
-      style={[styles.cart_container, !data.opened ? styles.active : null]}>
+      style={[styles.cart_container, !data.opened ? styles.active : null]}
+    >
       {icon ? (
         <SvgXml xml={icon} width={"62"} height={"62"} />
       ) : (
@@ -386,7 +409,8 @@ const NotificationCart = ({
         style={{
           flex: 1,
           marginLeft: 12,
-        }}>
+        }}
+      >
         <Text style={styles.text}>
           {dateConverter(data.createdAt)} {timeConverter(data.createdAt)}
         </Text>
@@ -395,7 +419,8 @@ const NotificationCart = ({
           style={{
             flexDirection: "row",
             alignItems: "baseline",
-          }}>
+          }}
+        >
           {/* <WebView
             style={{
               width:120,
@@ -408,7 +433,8 @@ const NotificationCart = ({
             <Text
               style={{
                 fontWeight: "700",
-              }}>
+              }}
+            >
               {second}
             </Text>
             {third}
@@ -582,11 +608,9 @@ const styles = StyleSheet.create({
   text: {
     color: "#4D4E4F",
     fontSize: 16,
-    
   },
   descriptionText: {
     fontSize: 16,
-    
   },
   bold: {
     fontWeight: "600",

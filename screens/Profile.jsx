@@ -138,6 +138,7 @@ import EditSkills from "./Profile/EditSkills";
 import SignUp_3 from "./signup/SignUp_3";
 import ComponentDropDown from "../Hooks/DropDown";
 import { useState } from "react";
+import useLang from "../Hooks/UseLang";
 //import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
@@ -963,6 +964,8 @@ const MainProfile = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [Refresh, setRefresh] = React.useState(false);
   const userOrders = useSelector((state) => state.userOrders);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
@@ -1061,7 +1064,7 @@ const MainProfile = (props) => {
       // dispatch(setHideBottomBar(true));
     }
   }, [isFocused]);
-  const [layoutHeight,setLayoutHeight]=useState(0)
+  const [layoutHeight, setLayoutHeight] = useState(0);
 
   const styles = StyleSheet.create({
     backgroundContainer: {
@@ -1158,7 +1161,8 @@ const MainProfile = (props) => {
       <View
         style={{
           flex: 1,
-        }}>
+        }}
+      >
         <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
         <StatusBar
           style="dark"
@@ -1175,13 +1179,15 @@ const MainProfile = (props) => {
                 onRefresh();
               }}
             />
-          }>
+          }
+        >
           <View style={styles.container}>
             <Avatar containerStyle={{ marginTop: 12 }} edit={false} />
             <Text
               numberOfLines={1}
-              style={[styles.headLine, { marginTop: 28 }]}>
-              Viewing as a guest
+              style={[styles.headLine, { marginTop: 28 }]}
+            >
+              {isBn ? "গেস্ট হিসাবে দেখছেন" : "Viewing as a guest"}
             </Text>
 
             <View style={[styles.subContainer, { marginTop: 28 }]}>
@@ -1191,8 +1197,10 @@ const MainProfile = (props) => {
                 }}
                 style={{ borderBottomWidth: 1, paddingTop: 0 }}
                 icon={logins}
-                title={"Login"}
-                value={"Login to discover more"}
+                title={isBn ? "লগইন করুন" : "Login"}
+                value={
+                  isBn ? "প্রতিটি দিন কাউণ্ট করুন!" : "Make each day count!"
+                }
                 disableGo={true}
                 type={""}
               />
@@ -1202,13 +1210,19 @@ const MainProfile = (props) => {
                 }}
                 style={{ paddingBottom: 0, borderBottomWidth: 0 }}
                 icon={openbusiness}
-                title={"Create an account"}
-                value={"Grow your business"}
+                title={isBn ? "একটি অ্যাকাউন্ট তৈরি করুন" : "Create an account"}
+                value={
+                  isBn
+                    ? "আপনার সম্পূর্ণ সম্ভাবনা আনলক করুন"
+                    : "Unlock your full potential"
+                }
                 type={""}
               />
             </View>
             <View style={[styles.subContainer, { marginBottom: 20 }]}>
-              <ComponentDropDown noHide={true} style={{ paddingTop: 0 }}
+              <ComponentDropDown
+                noHide={true}
+                style={{ paddingTop: 0 }}
                 component={
                   <>
                     <FlatCart
@@ -1219,10 +1233,13 @@ const MainProfile = (props) => {
                         });
                       }}
                       icon={info}
-                      title={"About duty"}
-                      value={"Transforming the future"}
+                      title={isBn ? "ডিউটি সম্পর্কে" : "About duty"}
+                      value={
+                        isBn
+                          ? "ভবিষ্যতকে রূপান্তরিত করুন"
+                          : "Transforming the future"
+                      }
                       type={""}
-                      
                     />
                     <FlatCart
                       onPress={() => {
@@ -1232,8 +1249,12 @@ const MainProfile = (props) => {
                         });
                       }}
                       icon={agreement}
-                      title={"Privacy Policy"}
-                      value={"Review our agreements"}
+                      title={isBn ? "গোপনীয়তা নীতি" : "Privacy Policy"}
+                      value={
+                        isBn
+                          ? "আমাদের চুক্তি পর্যালোচনা করুন"
+                          : "Review our agreements"
+                      }
                       type={""}
                     />
                     <FlatCart
@@ -1244,8 +1265,12 @@ const MainProfile = (props) => {
                         });
                       }}
                       icon={terms}
-                      title={"Terms & condition"}
-                      value={"Comply with our rules"}
+                      title={isBn ? "শর্তাবলী" : "Terms & condition"}
+                      value={
+                        isBn
+                          ? "আমাদের নিয়মকানুন মেনে চলুন"
+                          : "Comply with our rules"
+                      }
                       type={""}
                     />
                     <FlatCart
@@ -1256,8 +1281,12 @@ const MainProfile = (props) => {
                         });
                       }}
                       icon={order}
-                      title={"Order policy"}
-                      value={"Order like a pro, enjoy the benefits!"}
+                      title={isBn ? "অর্ডার নীতি" : "Order policy"}
+                      value={
+                        isBn
+                          ? "একজন পেশাদারের মতো অর্ডার করুন এবং সুবিধাগুলি উপভোগ করুন!"
+                          : "Order like a pro, enjoy the benefits!"
+                      }
                       type={""}
                     />
                     <FlatCart
@@ -1268,12 +1297,15 @@ const MainProfile = (props) => {
                         });
                       }}
                       icon={refund}
-                      title={"Refund policy"}
-                      value={"No hassle, just refunds!"}
+                      title={isBn ? "রিফান্ড নীতি" : "Refund policy"}
+                      value={
+                        isBn
+                          ? "কোন ঝামেলা নেই, শুধু রিফান্ড করুন!"
+                          : "No hassle, just refunds!"
+                      }
                       type={""}
                     />
                     <FlatCart
-                      
                       onPress={() => {
                         navigation.navigate("WebViews", {
                           url: "https://duty.com.bd/legal/app/withdraw-policy",
@@ -1281,15 +1313,23 @@ const MainProfile = (props) => {
                         });
                       }}
                       icon={withdrawal}
-                      title={"Withdrawal policy"}
-                      value={"Easy withdrawals, your funds your way!"}
+                      title={isBn ? "প্রত্যাহার নীতি" : "Withdrawal policy"}
+                      value={
+                        isBn
+                          ? "সহজ প্রত্যাহার, আপনার তহবিল আপনার সংস্থান!"
+                          : "Easy withdrawals, your funds your way!"
+                      }
                       type={""}
                     />
                   </>
                 }
                 icon={legal}
-                title={"Legal"}
-                value={"Your rights, our legal duty!"}
+                title={isBn ? "আইনসম্মত" : "Legal"}
+                value={
+                  isBn
+                    ? "আপনার অধিকার, আমাদের আইনগত দায়িত্ব!"
+                    : "Your rights, our legal duty!"
+                }
               />
               <FlatCart
                 // onPress={()=>{
@@ -1300,12 +1340,11 @@ const MainProfile = (props) => {
                 }}
                 style={{ borderBottomWidth: 0, paddingBottom: 0 }}
                 icon={support}
-                title={"Support"}
-                value={"Talk to us"}
+                title={isBn ? "সাপোর্ট" : "Support"}
+                value={isBn ? "আমাদের সাথে কথা বলুন" : "Talk to us"}
                 type={""}
               />
             </View>
-            
           </View>
         </ScrollView>
       </View>
@@ -1315,7 +1354,8 @@ const MainProfile = (props) => {
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <View style={{ height: inset?.top, backgroundColor: "#F2F2F6" }} />
       <StatusBar
         style="dark"
@@ -1332,7 +1372,8 @@ const MainProfile = (props) => {
               onRefresh();
             }}
           />
-        }>
+        }
+      >
         <View style={styles.container}>
           <Avatar
             onEdit={() => {
@@ -1356,12 +1397,13 @@ const MainProfile = (props) => {
             style={{
               flexDirection: "row",
               marginTop: 20,
-            }}>
+            }}
+          >
             <SquireCart
               onPress={() => {
                 navigation.navigate("ManageOrder");
               }}
-              title={"Your Order"}
+              title={isBn ? "আপনার অর্ডার" : "Your Order"}
               icon={cart}
             />
             <SquireCart
@@ -1371,14 +1413,14 @@ const MainProfile = (props) => {
               style={{
                 marginHorizontal: 24,
               }}
-              title={"Appointment"}
+              title={isBn ? "অ্যাপয়েন্টমেন্ট" : "Appointment"}
               icon={calender}
             />
             <SquireCart
               onPress={() => {
                 navigation.navigate("SaveList");
               }}
-              title={"Favorite"}
+              title={isBn ? "ফেভারিট" : "Favorite"}
               icon={love}
             />
           </View>
@@ -1389,7 +1431,7 @@ const MainProfile = (props) => {
               }}
               style={{ paddingTop: 0 }}
               icon={call}
-              title={"Phone"}
+              title={isBn ? "মোবাইল" : "Phone"}
               value={user?.user?.phone}
               type={user?.user?.hidePhone ? "Private" : "Public"}
             />
@@ -1398,7 +1440,7 @@ const MainProfile = (props) => {
                 navigation.navigate("Email", { user: user?.user });
               }}
               icon={email}
-              title={"Email"}
+              title={isBn ? "ই-মেইল" : "Email"}
               value={user?.user?.email}
               type={user?.user?.hideEmail ? "Private" : "Public"}
             />
@@ -1408,7 +1450,7 @@ const MainProfile = (props) => {
                 navigation.navigate("UserLocation");
               }}
               icon={location}
-              title={"Address"}
+              title={isBn ? "ঠিকানা" : "Address"}
               value={
                 user?.user?.address
                   ? `${user?.user?.address.division}, ${user?.user?.address?.district}`
@@ -1416,70 +1458,93 @@ const MainProfile = (props) => {
               }
               type={user?.user?.hideAddress ? "Private" : "Public"}
             />
-            <ComponentDropDown h={416}
+            <ComponentDropDown
+              h={416}
               component={
-                <View  onLayout={e=>{
-                  //console.log(e.nativeEvent.layout)
-                  setLayoutHeight(e.nativeEvent.layout.height)
-                }}>
+                <View
+                  onLayout={(e) => {
+                    //console.log(e.nativeEvent.layout)
+                    setLayoutHeight(e.nativeEvent.layout.height);
+                  }}
+                >
                   <FlatCart
                     onPress={() => {
                       navigation.navigate("WebViews", {
                         url: "https://duty.com.bd/about",
-                        title: "About Us",
+                        title: isBn ? "ডিউটি সম্পর্কে" : "About Us",
                       });
                     }}
                     icon={info}
-                    title={"Company"}
-                    value={"Transforming the future"}
+                    title={isBn ? "ডিউটি সম্পর্কে" : "About Duty"}
+                    value={
+                      isBn
+                        ? "ভবিষ্যতকে রূপান্তরিত করুন"
+                        : "Transforming the future"
+                    }
                     type={""}
                   />
                   <FlatCart
                     onPress={() => {
                       navigation.navigate("WebViews", {
                         url: "https://duty.com.bd/legal/app/privacy-policy",
-                        title: "Privacy Policy",
+                        title: isBn ? "গোপনীয়তা নীতি" : "Privacy Policy",
                       });
                     }}
                     icon={agreement}
-                    title={"Privacy policy"}
-                    value={"Review our agreement"}
+                    title={isBn ? "গোপনীয়তা নীতি" : "Privacy policy"}
+                    value={
+                      isBn
+                        ? "আমাদের চুক্তি পর্যালোচনা করুন"
+                        : "Review our agreement"
+                    }
                     type={""}
                   />
                   <FlatCart
                     onPress={() => {
                       navigation.navigate("WebViews", {
                         url: "https://duty.com.bd/legal/app/terms-and-conditions",
-                        title: "Terms & Conditions",
+                        title: isBn ? "শর্তাবলী" : "Terms & Conditions",
                       });
                     }}
                     icon={terms}
-                    title={"Terms & condition"}
-                    value={"Comply with our rules"}
+                    title={isBn ? "শর্তাবলী" : "Terms & condition"}
+                    value={
+                      isBn
+                        ? "আমাদের নিয়মকানুন মেনে চলুন"
+                        : "Comply with our rules"
+                    }
                     type={""}
                   />
                   <FlatCart
                     onPress={() => {
                       navigation.navigate("WebViews", {
                         url: "https://duty.com.bd/legal/app/order-policy",
-                        title: "Order Policy",
+                        title: isBn ? "অর্ডার নীতি" : "Order Policy",
                       });
                     }}
                     icon={order}
-                    title={"Order policy"}
-                    value={"Order like a pro, enjoy the benefits!"}
+                    title={isBn ? "অর্ডার নীতি" : "Order policy"}
+                    value={
+                      isBn
+                        ? "একজন পেশাদারের মতো অর্ডার করুন এবং সুবিধাগুলি উপভোগ করুন!"
+                        : "Order like a pro, enjoy the benefits!"
+                    }
                     type={""}
                   />
                   <FlatCart
                     onPress={() => {
                       navigation.navigate("WebViews", {
                         url: "https://duty.com.bd/legal/app/refund-policy",
-                        title: "Refund Policy",
+                        title: isBn ? "রিফান্ড নীতি" : "Refund Policy",
                       });
                     }}
                     icon={refund}
-                    title={"Refund policy"}
-                    value={"No hassle, just refunds!"}
+                    title={isBn ? "রিফান্ড নীতি" : "Refund policy"}
+                    value={
+                      isBn
+                        ? "কোন ঝামেলা ছাড়া রিফান্ড করুন!"
+                        : "No hassle, just refunds!"
+                    }
                     type={""}
                   />
 
@@ -1487,20 +1552,28 @@ const MainProfile = (props) => {
                     onPress={() => {
                       navigation.navigate("WebViews", {
                         url: "https://duty.com.bd/legal/app/withdraw-policy",
-                        title: "Withdrawal Policy",
+                        title: isBn ? "প্রত্যাহার নীতি" : "Withdrawal Policy",
                       });
                     }}
                     style={{ borderBottomWidth: 0, paddingBottom: 0 }}
                     icon={withdrawal}
-                    title={"Withdrawal policy"}
-                    value={"Easy withdrawals, your funds your way!"}
+                    title={isBn ? "প্রত্যাহার নীতি" : "Withdrawal policy"}
+                    value={
+                      isBn
+                        ? "সহজ প্রত্যাহার, আপনার তহবিল আপনার সংস্থান!"
+                        : "Easy withdrawals, your funds your way!"
+                    }
                     type={""}
                   />
                 </View>
               }
               icon={legal}
-              title={"Legal"}
-              value={"Your rights, our legal duty!"}
+              title={isBn ? "আইনসম্মত" : "Legal"}
+              value={
+                isBn
+                  ? "আপনার অধিকার, আমাদের আইনগত দায়িত্ব!"
+                  : "Your rights, our legal duty!"
+              }
             />
           </View>
           <View style={[styles.subContainer, { marginBottom: 20 }]}>
@@ -1510,8 +1583,8 @@ const MainProfile = (props) => {
               }}
               style={{ paddingTop: 0 }}
               icon={business}
-              title={"Business account"}
-              value={"Grow your business"}
+              title={isBn ? "ব্যবসায়ী অ্যাকাউন্ট" : "Business account"}
+              value={isBn ? "আপনার ব্যবসা বৃদ্ধি করুন" : "Grow your business"}
               type={""}
             />
             <FlatCart
@@ -1535,8 +1608,8 @@ const MainProfile = (props) => {
               }}
               style={{ borderBottomWidth: 0, paddingBottom: 0 }}
               icon={logouts}
-              title={"Logout"}
-              value={"Leave session"}
+              title={isBn ? "লগআউট" : "Logout"}
+              value={isBn ? "প্রস্থান করুন" : "Leave session"}
               disableGo={true}
               type={""}
             />
@@ -1545,7 +1618,8 @@ const MainProfile = (props) => {
             style={[
               styles.subContainer,
               { marginBottom: 20, marginTop: 0, paddingTop: 0 },
-            ]}>
+            ]}
+          >
             <FlatCart
               // onPress={()=>{
               //   navigation.navigate("WebViews",{url:"https://duty.com.bd/profile/support",title:"Support"})
@@ -1555,8 +1629,8 @@ const MainProfile = (props) => {
               }}
               style={{ borderBottomWidth: 0, paddingBottom: 0 }}
               icon={support}
-              title={"Support"}
-              value={"Talk to us"}
+              title={isBn ? "সাপোর্ট" : "Support"}
+              value={isBn ? "আমাদের সাথে কথা বলুন" : "Talk to us"}
               type={""}
             />
           </View>

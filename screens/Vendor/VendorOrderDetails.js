@@ -41,7 +41,10 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Barcode from "./../../components/Barcode";
 import IconButton from "./../../components/IconButton";
 import { AntDesign } from "@expo/vector-icons";
-import { convertServerFacilities, serverToLocal } from "../../Class/dataConverter";
+import {
+  convertServerFacilities,
+  serverToLocal,
+} from "../../Class/dataConverter";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { CheckBox } from "../Seller/Pricing";
 import {
@@ -59,6 +62,7 @@ import InfoCart from "../Seller/OrderScript/InfoCart";
 import OrderInfo from "../Seller/OrderScript/OrderInfo";
 import StatusCart from "../Seller/OrderScript/StatusCart";
 import ReceiptSkeleton from "../../components/ReceiptSkeleton";
+import useLang from "../../Hooks/UseLang";
 
 const OrderDetails = ({ navigation, route }) => {
   const orderId = route?.params?.orderId;
@@ -106,38 +110,40 @@ const OrderDetails = ({ navigation, route }) => {
   const type = route?.params?.type;
   const sOrder =
     route.params && route.params.subsOrder ? route.params.subsOrder : null;
-  const [refreshing,setRefreshing]=useState(false)
+  const [refreshing, setRefreshing] = useState(false);
   const [MemberId, setMemberId] = React.useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    if(!data||!data?.selectedServices){
-      setListData([])
-      dispatch({type:"SET_LIST_SELECTION",playload:[]})
+    if (!data || !data?.selectedServices) {
+      setListData([]);
+      dispatch({ type: "SET_LIST_SELECTION", playload: [] });
     }
-    if(!data?.facilites){
-      setFacilities([])
+    if (!data?.facilites) {
+      setFacilities([]);
     }
     wait(1000).then(() => setRefreshing(false));
-  }, []);  
-  const isFocused=useIsFocused()
+  }, []);
+  const isFocused = useIsFocused();
   useFocusEffect(
     React.useCallback(() => {
       return setListData(ListSelection);
     }, [ListSelection])
   );
   useEffect(() => {
-    if (orderId&&isFocused) {
+    if (orderId && isFocused) {
       setLoader(false);
       dataLoader(orderId);
-    }else{
+    } else {
       setLoader(false);
     }
-  }, [orderId,refreshing,isFocused]);
+  }, [orderId, refreshing, isFocused]);
   React.useEffect(() => {
     //console.log(data.selectedServices);
     //console.warn(subsOrder)
     if (data) {
-     setListData(data.selectedServices)
+      setListData(data.selectedServices);
     }
     if (
       data &&
@@ -170,7 +176,11 @@ const OrderDetails = ({ navigation, route }) => {
     //   return;
     // }
     if (ListData.length == 0) {
-      setServiceError("*There at list one service required");
+      setServiceError(
+        isBn
+          ? "*এখানে অন্তত একটি সার্ভিস অ্যাড করা আবশ্যক"
+          : "*There at list one service required"
+      );
       ref?.current?.scrollTo({ y: 200 });
       return;
     }
@@ -178,7 +188,7 @@ const OrderDetails = ({ navigation, route }) => {
       facilities: Facilities,
       id: data.id,
       data: data,
-      skills:ListData
+      skills: ListData,
     });
   };
   React.useState(() => {
@@ -209,7 +219,7 @@ const OrderDetails = ({ navigation, route }) => {
   };
   React.useEffect(() => {
     socket.on("updateOrder", (e) => {
-      if(orderId){
+      if (orderId) {
         dataLoader(orderId);
       }
     });
@@ -218,12 +228,12 @@ const OrderDetails = ({ navigation, route }) => {
     };
   }, []);
   const addService = () => {
-    setServiceError()
+    setServiceError();
     const gigs = data.service.gigs.filter((d) => d.type == "STARTING");
-    
+
     navigation.navigate("AddServiceList", {
-      skills:gigs[0].skills,
-      category:vendor?.service?.category,
+      skills: gigs[0].skills,
+      category: vendor?.service?.category,
       facilites: gigs[0].facilites.selectedOptions,
       setListData: setListData,
       name: "VendorOrderDetails",
@@ -258,16 +268,20 @@ const OrderDetails = ({ navigation, route }) => {
   //console.log(data?.orderedBy)
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView refreshControl={
+      <ScrollView
+        refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => {
               //setPageChange(true);
-              setLoader(true)
+              setLoader(true);
               onRefresh();
             }}
           />
-        } ref={ref} showsVerticalScrollIndicator={false}>
+        }
+        ref={ref}
+        showsVerticalScrollIndicator={false}
+      >
         <InfoCart
           vendor={true}
           onClick={() => {
@@ -303,7 +317,9 @@ const OrderDetails = ({ navigation, route }) => {
         <View style={styles.textContainer}>
           <Text style={styles.text}>
             {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
-            {data?.type=="PACKAGE"?`- ${data?.selectedPackage?.name}`:"service"}
+            {data?.type == "PACKAGE"
+              ? `- ${data?.selectedPackage?.name}`
+              : "service"}
           </Text>
         </View>
         <OrderInfo
@@ -355,7 +371,7 @@ const OrderDetails = ({ navigation, route }) => {
         />
         {data?.status == "ACCEPTED" && (
           <Text style={[styles.font, { marginBottom: 8, color: "#4ADE80" }]}>
-            Order accepted
+            {isBn ? "অর্ডারটি গ্রহণ হয়েছে" : "Order accepted"}
           </Text>
         )}
         {data?.status == "DELIVERED" ||
@@ -367,11 +383,19 @@ const OrderDetails = ({ navigation, route }) => {
         {data?.cancelledBy ? (
           <Text style={styles.font}>
             {data.cancelledBy == "USER"
-              ? "Buyer canceled this order"
+              ? isBn
+                ? "ক্রেতা অর্ডারটি বাতিল করেছে"
+                : "Buyer canceled this order"
+              : isBn
+              ? "আপনি অর্ডারটি বাতিল করেছেন"
               : "You cancelled the order"}
           </Text>
         ) : !data.cancelledBy && exporters(data?.status).title == "Failed" ? (
-          <Text style={styles.font}>Delivery date has expired</Text>
+          <Text style={styles.font}>
+            {isBn
+              ? "ডেলিভারির তারিখ অতিক্রম হয়েছে"
+              : "Delivery date has expired"}
+          </Text>
         ) : (
           <></>
         )}
@@ -380,27 +404,35 @@ const OrderDetails = ({ navigation, route }) => {
             onPress={validate}
             active={true}
             style={[styles.button, { marginBottom: 0 }]}
-            title={"Accept order"}
+            title={isBn ? "অর্ডারটি গ্রহণ করুন" : "Accept order"}
           />
         )}
         {data?.status == "PROCESSING" && (
           <View>
-            <Text
-              style={[
-                styles.text,
-                { marginBottom: 12, marginHorizontal: 20, textAlign: "left" },
-              ]}>
-              click <Text style={{ color: "#4CD964" }}>yes i delivered</Text> if
-              you already delivered your order
-            </Text>
-            <IconButton
-              onPress={() => {
-                navigation.navigate("OrderDelivery", { order: data });
-              }}
-              active={true}
-              style={[styles.button, { marginBottom: 0 }]}
-              title={"Yes I delivered"}
-            />
+            {isBn ? (
+              <Text
+                style={[
+                  styles.text,
+                  { marginBottom: 12, marginHorizontal: 20, textAlign: "left" },
+                ]}
+              >
+                আপনি যদি ইতিমধ্যে আপনার অর্ডারটি ডেলিভারি করে থাকেন, তবে{" "}
+                <Text style={{ color: "#4CD964" }}>
+                  হ্যাঁ আমি ডেলিভারি করেছি
+                </Text>{" "}
+                বুতামে ক্লিক করুন
+              </Text>
+            ) : (
+              <Text
+                style={[
+                  styles.text,
+                  { marginBottom: 12, marginHorizontal: 20, textAlign: "left" },
+                ]}
+              >
+                click <Text style={{ color: "#4CD964" }}>yes i delivered</Text>{" "}
+                if you already delivered your order
+              </Text>
+            )}
           </View>
         )}
         {data?.status == "PROCESSING" && !data.requestedDeliveryDate && (
@@ -409,7 +441,7 @@ const OrderDetails = ({ navigation, route }) => {
               navigation.navigate("NeedExtraTIme", { data: data });
             }}
             style={[styles.button, { marginTop: 12, marginBottom: 0 }]}
-            title={"Need extra time"}
+            title={isBn ? "অতিরিক্ত সময় প্রয়োজন" : "Need extra time"}
           />
         )}
         {data?.status == "WAITING_FOR_ACCEPT" ||
@@ -423,7 +455,7 @@ const OrderDetails = ({ navigation, route }) => {
               });
             }}
             style={[styles.button, { marginTop: 12 }]}
-            title={"Cancel order"}
+            title={isBn ? "অর্ডারটি বাতিল করুন" : "Cancel order"}
           />
         ) : null}
       </ScrollView>

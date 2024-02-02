@@ -33,6 +33,8 @@ import customStyle from "../../assets/stylesheet";
 import ActivityLoader from "../../components/ActivityLoader";
 import { updateGigsData } from "../../Class/update";
 import { getService } from "../../Class/service";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 //import PageChip from "./components/PageChip";
 const { width, height } = Dimensions.get("window");
 
@@ -50,10 +52,49 @@ export default function EditSkills({ navigation, route }) {
   const user = useSelector((state) => state.user);
   const [loader, setLoader] = useState(false);
   const vendor = useSelector((state) => state.vendor);
-  const gigs = vendor.service.gigs.filter(
-    (d) => d.type == "STARTING"
-  );
-  const facilities=route?.params?.facilities;
+  const { language } = useLang();
+  const isBn = language == "Bn";
+  const gigs = vendor.service.gigs.filter((d) => d.type == "STARTING");
+  const facilities = route?.params?.facilities;
+
+  const content = !isBn
+    ? `Maximize Your Profile Impact with ${serviceCategory?.name} Skills: Stand Out and Connect with Ease
+
+Choosing the right ${serviceCategory?.name} skills is crucial to effectively showcase your expertise and connect with potential buyers. Here are some key tips to optimize your profile:
+
+1. Define Your Expertise: Clearly specify the services you offer within the ${serviceCategory?.name} service category. Whether you're an individual or representing a company, take the time to highlight the key areas that align with your expertise. For example, if you specialize in ${serviceCategory?.name}, ensure that your profile reflects that focus.
+
+2. Use Clear and Precise Language: Help buyers find you easily by using specific terms to describe what you offer within your ${serviceCategory?.name} skillset. By utilizing descriptive and targeted language, you increase the chances of attracting the right audience and conveying the value you bring.
+
+3. Prioritize Your Strengths: Showcase your top ${serviceCategory?.name} skills prominently on your profile. By listing your best capabilities first, you capture the attention of potential buyers and emphasize your expertise within your chosen service category. This prioritization can make a significant impact on their decision-making process.
+
+4. Stay Updated and Relevant: Regularly update your skills list to reflect any new experiences or additional ${serviceCategory?.name} skills you acquire. This demonstrates your commitment to growth and ensures that buyers see the most accurate representation of your abilities. By staying current, you increase your chances of attracting new clients seeking your specific ${serviceCategory?.name} skills.
+
+5. Foster Trust with Honesty: Represent your abilities accurately and honestly. Buyers rely on your skills to make informed decisions, so it's crucial to provide an authentic portrayal of what you can deliver. Building trust through transparency establishes a solid foundation for successful business relationships.
+
+By optimizing your profile with these strategies, you can enhance your visibility, attract the right buyers, and unlock new opportunities for your business.
+
+Thank you for taking the time to maximize your profile and showcase your expertise within your chosen ${serviceCategory?.name} service. We wish you continued success in connecting with and serving your clients!"  
+`
+    : `${serviceCategory?.name} দক্ষতা সঙ্গে আপনার প্রোফাইল মাক্সিমাইজ করুন: স্ট্যান্ড আউট সহজে সংযোগ করুন৷।
+
+ক্রেতাদের সাথে সংযোগ স্থাপন করার জন্য এবং আপনার দক্ষতা প্রদর্শন করার জন্য সঠিক ${serviceCategory?.name} স্কিলগুলি চয়েজ করা অত্যন্ত গুরুত্বপূর্ণ৷ এখানে আপনার প্রোফাইলটি অপ্টিমাইজ করার জন্য কিছু টিপস রয়েছে:
+
+1. আপনার দক্ষতা নির্ধারণ করুন: আপনি ${serviceCategory?.name} সার্ভিস ক্যাটাগরির মধ্যে সরবরাহকারী সার্ভিসগুলি স্পষ্টভাবে উল্লেখ করুন৷ আপনি যদি একজন ব্যক্তি বা একটি কোম্পানির রিপ্রেজেন্ট করে থাকেন তাহলে টাইম নিয়ে আপনার দক্ষতা গুলো সারিবদ্ধভাবে হাইলাইট করুন৷ উদাহরণস্বরূপ, আপনি যদি ${serviceCategory?.name} এ স্পেশালাইজড হয়ে থাকেন তবে নিশ্চিত করুন আপনার প্রোফাইলে ফোকাস রিফ্লেক্ট হয়েছে কিনা৷।
+
+2. পরিষ্কার এবং সুনির্দিষ্ট ভাষা ব্যবহার করুন: আপনি আপনার ${serviceCategory?.name} দক্ষতা মধ্যে কি অফার করেছেন তা বর্ণনা করার জন্য নির্দিষ্ট টার্ম ব্যবহার করুন এটা ক্রেতাদের আপনাকে খুঁজে পেতে সাহায্য করে৷।
+আপনার অধিকার অ্যাট্রাক্টিং করার সম্ভাবনা বৃদ্ধি, শ্রোতা এবং আপনার ভ্যালু ঠিক রাখার জন্য বর্ণনামূলক এবং লক্ষ্যযুক্ত ভাষা ব্যবহার করুন৷।
+
+3. আপনার শক্তির অগ্রাধিকার: আপনার প্রোফাইলে আপনার টপ ${serviceCategory?.name} স্কিলগুলো প্রদর্শন করুন৷ প্রথমে আপনার বেস্ট কেপাবিলিটিস গুলো তালিকাভুক্ত করুন, আপনি আপনার ক্রেতাদের উপর এবং আপনার চয়েজ করা সার্ভিসের ক্যাটাগরির মধ্যে আপনার স্কিলের উপর জোর দেন৷ এই সিদ্ধান্ত গ্রহণ অগ্রাধিকার প্রক্রিয়ার উপর একটি উল্লেখযোগ্য প্রভাব ফেলতে পারে৷।
+
+4. আপডেট এবং প্রাসঙ্গিক থাকুন: আপনার যে কোনও নতুন অভিজ্ঞতা বা স্কিলগুলি রিফ্লেক্ট করতে আপনার দক্ষতার লিস্টটি আপডেট করুন৷ এটি বৃদ্ধির জন্য যে ক্রেতারা আপনার অ্যাবিলিটির সবচেয়ে সঠিক রিপ্রেজেন্টেশনটি দেখতে পায় তা নিশ্চিত করুন৷ এর মাধ্যেমে আপনি আপনার নির্দিষ্ট ${serviceCategory?.name} স্কিল গুলো দিয়ে আপনার নতুন ক্লায়েন্টদের আকৃষ্ট করার সম্ভাবনা বৃদ্ধি করুন৷।
+
+5. সততা সঙ্গে ফস্টার ট্রাস্ট: আপনার ক্ষমতা এবং সততা সঠিকভাবে রিপ্রেজেন্ট করুন৷ ক্রেতারা আপনার দক্ষতার উপর নির্ভর করে সিদ্ধান্ত নিবে, তাই আপনি কী প্রোভাইড করতে পারেন তার একটি লিস্ট প্রদান করা অত্যন্ত গুরুত্বপূর্ণ৷ স্বচ্ছতার মাধ্যমে বিশ্বাস গড়ে তোলা সফল ব্যবসায়িক সম্পর্কের জন্য একটি শক্ত ভিত্তি স্থাপন করে৷।
+
+এই কৌশলগুলির সাথে আপনার প্রোফাইলটি অপ্টিমাইজ করে, আপনি আপনার ভিজিবিলিটি উন্নত করতে পারেন, এবং সঠিক ক্রেতাদের আকর্ষণ করতে আপনার ব্যবসার জন্য নতুন সুযোগ আনলক করুন৷।
+
+আপনার প্রোফাইলটি মাক্সিমাইজ করার জন্য এবং আপনার চয়েজ করা ${serviceCategory?.name} সার্ভিসটির মধ্যে আপনার দক্ষতা প্রদর্শন করার জন্য আপনাকে ধন্যবাদ৷ আমরা উইশ করি আপনি সাকসেস হন এবং আপনার ক্লায়েন্টদের সাথে কানেক্টিং থেকে তাদের সার্ভিস দিয়ে যান!
+`;
 
   useEffect(() => {
     setLength(skills.length);
@@ -75,7 +116,7 @@ export default function EditSkills({ navigation, route }) {
     setLoader(true);
     updateGigsData(user.token, {
       gigId: gigs[0]?.id,
-      skills: skills
+      skills: skills,
     })
       .then((res) => {
         updateVendorInfo();
@@ -105,13 +146,15 @@ export default function EditSkills({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 0,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <Image
             style={{
               width: width - 40,
@@ -124,86 +167,39 @@ export default function EditSkills({ navigation, route }) {
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
               }}
               xml={icon}
             />
-            <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for {serviceCategory?.name} skill
-            </Text>
+            {isBn ? (
+              <Text style={[styles.headLine, { flex: 1 }]}>
+                {serviceCategory?.name} দক্ষতার জন্য টিপস
+              </Text>
+            ) : (
+              <Text style={[styles.headLine, { flex: 1 }]}>
+                Tips for {serviceCategory?.name} skill
+              </Text>
+            )}
           </View>
-          <ViewMore
-            view={true}
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={70}
-            width={135}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <View
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}>
-                <Text style={[styles.spText, { marginTop: 0 }]}>
-                  Maximize Your Profile Impact with {serviceCategory?.name}{" "}
-                  Skills:{"\n"}Stand Out and Connect with Ease
-                </Text>
-                <Text style={[styles.spText, { marginTop: 20 }]}>
-                  Choosing the right {serviceCategory?.name} skills is crucial
-                  to effectively showcase your expertise and connect with
-                  potential buyers. Here are some key tips to optimize your
-                  profile:
-                </Text>
-                <TextOp
-                  style={{ marginTop: 20 }}
-                  text={`Define Your Expertise: Clearly specify the services you offer within the ${serviceCategory?.name} service category. Whether you're an individual or representing a company, take the time to highlight the key areas that align with your expertise. For example, if you specialize in ${serviceCategory?.name}, ensure that your profile reflects that focus.`}
-                  number={"1."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Use Clear and Precise Language: Help buyers find you easily by using specific terms to describe what you offer within your ${serviceCategory?.name} skillset. By utilizing descriptive and targeted language, you increase the chances of attracting the right audience and conveying the value you bring.`}
-                  number={"2."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Prioritize Your Strengths: Showcase your top ${serviceCategory?.name} skills prominently on your profile. By listing your best capabilities first, you capture the attention of potential buyers and emphasize your expertise within your chosen service category. This prioritization can make a significant impact on their decision-making process.`}
-                  number={"3."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={` Stay Updated and Relevant: Regularly update your skills list to reflect any new experiences or additional ${serviceCategory?.name} skills you acquire. This demonstrates your commitment to growth and ensures that buyers see the most accurate representation of your abilities. By staying current, you increase your chances of attracting new clients seeking your specific ${serviceCategory?.name} skills.`}
-                  number={"4."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={
-                    " Foster Trust with Honesty: Represent your abilities accurately and honestly. Buyers rely on your skills to make informed decisions, so it's crucial to provide an authentic portrayal of what you can deliver. Building trust through transparency establishes a solid foundation for successful business relationships."
-                  }
-                  number={"5."}
-                />
-                <Text style={[styles.spText, { marginTop: 20 }]}>
-                  By optimizing your profile with these strategies, you can
-                  enhance your visibility, attract the right buyers, and unlock
-                  new opportunities for your business.
-                </Text>
-                <Text style={[styles.spText, { marginTop: 20 }]}>
-                  Thank you for taking the time to maximize your profile and
-                  showcase your expertise within your chosen{" "}
-                  {serviceCategory?.name} service. We wish you continued success
-                  in connecting with and serving your clients!"
-                </Text>
-              </View>
-            }
+            content={content}
           />
-          <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Add {serviceCategory?.name} Skill
-          </Text>
+          {isBn ? (
+            <Text style={[styles.headLine, { marginTop: 36 }]}>
+              {serviceCategory?.name} স্কিল অ্যাড করুন
+            </Text>
+          ) : (
+            <Text style={[styles.headLine, { marginTop: 36 }]}>
+              Add {serviceCategory?.name} Skill
+            </Text>
+          )}
           {/* 
          
            */}
@@ -216,10 +212,14 @@ export default function EditSkills({ navigation, route }) {
             onPress={() => setModalVisible(true)}
             style={styles.input}
             placeholder={
-              "Example: web development, mobile apps, hair cutting, facial wash"
+              isBn
+                ? "ওয়েব ডেভেলপমেন্ট, মোবাইল অ্যাপস ইত্যাদি"
+                : "web development, mobile apps etc."
             }
           />
-          <Text style={styles.text}>Max 25 character </Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বোচ্চ ২৫ টি অক্ষর" : "Max 25 character"}{" "}
+          </Text>
           {skills && skills.length > 0 && (
             <View
               style={{
@@ -227,7 +227,8 @@ export default function EditSkills({ navigation, route }) {
                 flexDirection: "row",
                 flexWrap: "wrap",
                 marginHorizontal: -4,
-              }}>
+              }}
+            >
               {skills.map((doc, i) => (
                 <BT
                   onDelete={() => {
@@ -243,13 +244,12 @@ export default function EditSkills({ navigation, route }) {
             active={length > 0 ? true : false}
             disabled={length > 0 ? false : true}
             onPress={() => {
-             //updateData()
-             navigation?.navigate("EditExtraFacilities",{
-              skills:skills,
-              gigs:gigs[0],
-              facilities:facilities,
-              
-             })
+              //updateData()
+              navigation?.navigate("EditExtraFacilities", {
+                skills: skills,
+                gigs: gigs[0],
+                facilities: facilities,
+              });
             }}
             style={styles.button}
             title={"Continue"}
@@ -259,7 +259,8 @@ export default function EditSkills({ navigation, route }) {
       <Modal
         animationType="slide"
         visible={modalVisible}
-        onRequestClose={setModalVisible}>
+        onRequestClose={setModalVisible}
+      >
         <SkillAdd
           oldSkills={skills}
           category={serviceCategory?.key}
@@ -285,7 +286,8 @@ const AddBox = ({ onChange }) => {
         alignItems: "center",
         borderColor: "#A3A3A3",
         marginTop: 24,
-      }}>
+      }}
+    >
       <TextInput
         value={text}
         onChangeText={(e) => {
@@ -319,13 +321,15 @@ const AddBox = ({ onChange }) => {
           alignItems: "center",
           borderLeftWidth: 1,
           borderLeftColor: "#A3A3A3",
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 14,
 
             color: text ? "#ffffff" : "#767676",
-          }}>
+          }}
+        >
           Add
         </Text>
       </Pressable>
@@ -341,7 +345,8 @@ const BT = ({ title, onDelete }) => {
         borderRadius: 4,
         padding: 8,
         margin: 4,
-      }}>
+      }}
+    >
       <SvgXml
         onPress={onDelete}
         style={{

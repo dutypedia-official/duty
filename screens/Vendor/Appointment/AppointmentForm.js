@@ -34,6 +34,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { Color } from "../../../assets/colors";
 import { socket } from "../../../Class/socket";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useLang from "../../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 export default function AppointmentForm({ navigation, route }) {
@@ -60,22 +61,24 @@ export default function AppointmentForm({ navigation, route }) {
   const colors = new Color(isDark);
   const backgroundColor = colors.getBackgroundColor();
   const inset = useSafeAreaInsets();
-  const [updateDate,setUpdateDate]=useState()
+  const [updateDate, setUpdateDate] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const validate = () => {
     setDateError("");
     setFromTimeError("");
     setTitleError("");
     if (!date) {
-      setDateError("Date is required");
+      setDateError(isBn ? "তারিখ দেয়া আবশ্যক" : "Date is required");
       return;
     }
-    if (!FromTime || !ToTime||!updateDate) {
-      setFromTimeError("Time is required");
+    if (!FromTime || !ToTime || !updateDate) {
+      setFromTimeError(isBn ? "সময় দেয়া আবশ্যক" : "Time is required");
       return;
     }
     if (!Title) {
-      setTitleError("Title is required");
+      setTitleError(isBn ? "বিষয় দেয়া আবশ্যক" : "Title is required");
       return;
     }
     if (!user || !data || !vendor) {
@@ -103,12 +106,12 @@ export default function AppointmentForm({ navigation, route }) {
             receiverId: res.data?.receiverId,
           });
           //console.log(res.data.appointment)
-          navigation.navigate("Search")
-          setTimeout(()=>{
-            navigation.navigate("VendorAppointmentListDetails",{
-              data:res.data.appointment
+          navigation.navigate("Search");
+          setTimeout(() => {
+            navigation.navigate("VendorAppointmentListDetails", {
+              data: res.data.appointment,
             });
-          },10)
+          }, 10);
         })
         .catch((err) => {
           setLoader(false);
@@ -145,7 +148,8 @@ export default function AppointmentForm({ navigation, route }) {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size={"small"} color={backgroundColor} />
       </View>
     );
@@ -155,17 +159,20 @@ export default function AppointmentForm({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1, paddingTop: inset?.top }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Pressable onPress={()=>{
-          navigation.goBack()
-        }}
+        <Pressable
+          onPress={() => {
+            navigation.goBack();
+          }}
           style={{
             position: "absolute",
             top: 12,
-            zIndex:100,
-            left:20,
-          }}>
+            zIndex: 100,
+            left: 20,
+          }}
+        >
           <SvgXml xml={back} />
         </Pressable>
         <View
@@ -173,7 +180,8 @@ export default function AppointmentForm({ navigation, route }) {
             paddingHorizontal: 20,
             marginTop: 12,
             alignItems: "center",
-          }}>
+          }}
+        >
           <View
             style={{
               borderWidth: 0.5,
@@ -184,7 +192,8 @@ export default function AppointmentForm({ navigation, route }) {
               justifyContent: "center",
               alignItems: "center",
               overflow: "hidden",
-            }}>
+            }}
+          >
             {data && data.user && data.user.profilePhoto ? (
               <Image
                 style={{
@@ -209,12 +218,14 @@ export default function AppointmentForm({ navigation, route }) {
             style={{
               marginTop: 20,
               alignItems: "center",
-            }}>
+            }}
+          >
             <Text
               style={{
                 fontSize: 24,
                 fontWeight: "400",
-              }}>
+              }}
+            >
               {data && data.user ? `${data.user.name}` : data.name}
             </Text>
             <Text
@@ -223,7 +234,8 @@ export default function AppointmentForm({ navigation, route }) {
                 fontWeight: "400",
                 color: "#767676",
                 marginTop: 10,
-              }}>
+              }}
+            >
               {`${data?.user?.gender.toUpperCase()}`}
             </Text>
           </View>
@@ -232,13 +244,15 @@ export default function AppointmentForm({ navigation, route }) {
           style={{
             paddingHorizontal: 20,
             marginTop: 36,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 16,
               fontWeight: "400",
-            }}>
-            Select date
+            }}
+          >
+            {isBn ? "অ্যাপয়েন্টমেন্ট জন্য তারিখ নির্বাচন করুন" : "Select date"}
           </Text>
           <IconButton
             onPress={() => {
@@ -259,7 +273,11 @@ export default function AppointmentForm({ navigation, route }) {
             onConfirm={(e) => {
               setDateError("");
               if (dateDifference(newDate, e) < 0) {
-                setDateError("Please select upcoming date");
+                setDateError(
+                  isBn
+                    ? "দয়াকরে সামনের তারিখ নির্বাচন করুন"
+                    : "Please select upcoming date"
+                );
                 return;
               }
               setDate(dateConverter(e));
@@ -274,7 +292,8 @@ export default function AppointmentForm({ navigation, route }) {
             <Text
               style={{
                 color: "red",
-              }}>
+              }}
+            >
               {DateError}
             </Text>
           )}
@@ -283,8 +302,9 @@ export default function AppointmentForm({ navigation, route }) {
               fontSize: 16,
               fontWeight: "400",
               marginTop: 24,
-            }}>
-            Select time
+            }}
+          >
+            {isBn ? "সময় নির্বাচন করুন" : "Select time"}
           </Text>
           <View
             style={{
@@ -292,12 +312,15 @@ export default function AppointmentForm({ navigation, route }) {
               justifyContent: "flex-start",
               alignItems: "center",
               marginTop: 12,
-            }}>
+            }}
+          >
             <IconButton
               onPress={() => {
-                if(!date){
-                  Alert.alert("Select date first")
-                  return
+                if (!date) {
+                  Alert.alert(
+                    isBn ? "আগে তারিখ নির্বাচন করুন" : "Select date first"
+                  );
+                  return;
                 }
                 setFromTimeVisible(!FromTimeVisible);
               }}
@@ -316,11 +339,15 @@ export default function AppointmentForm({ navigation, route }) {
               onConfirm={(e) => {
                 setFromTimeError("");
                 let newTime = allTimeConverter(e);
-                if(e<new Date()){
-                  setFromTimeError("Please select upcoming time");
+                if (e < new Date()) {
+                  setFromTimeError(
+                    isBn
+                      ? "দয়াকরে সামনের সময় নির্বাচন করুন"
+                      : "Please select upcoming time"
+                  );
                   return;
                 }
-                
+
                 setFromTime(allTimeConverter(e));
                 setFromTimeVisible(!FromTimeVisible);
               }}
@@ -335,14 +362,17 @@ export default function AppointmentForm({ navigation, route }) {
                 fontWeight: "400",
                 marginHorizontal: 12,
                 width: 20,
-              }}>
+              }}
+            >
               To
             </Text>
             <IconButton
               onPress={() => {
-                if(!date){
-                  Alert.alert("Select date first")
-                  return
+                if (!date) {
+                  Alert.alert(
+                    isBn ? "আগে তারিখ নির্বাচন করুন" : "Select date first"
+                  );
+                  return;
                 }
                 setToTimeVisible(!ToTimeVisible);
               }}
@@ -364,38 +394,51 @@ export default function AppointmentForm({ navigation, route }) {
                 //console.log(newTime.split(":")[1])
                 if (!FromTime) {
                   setFromTimeError(
-                    "Please select upcoming time from start time."
-                  );
-                  return;
-                }
-                if (parseInt(FromTime.split(":")[0]) > parseInt(time.split(":")[0])) {
-                  setFromTimeError(
-                    "Please select upcoming time from start time."
+                    isBn
+                      ? "দয়াকরে এখনকার সময় থেকে সামনের সময় নির্বাচন করুন"
+                      : "Please select upcoming time from start time."
                   );
                   return;
                 }
                 if (
-                  parseInt(FromTime.split(":")[0]) == parseInt(time.split(":")[0]) &&
+                  parseInt(FromTime.split(":")[0]) >
+                  parseInt(time.split(":")[0])
+                ) {
+                  setFromTimeError(
+                    isBn
+                      ? "দয়াকরে এখনকার সময় থেকে সামনের সময় নির্বাচন করুন"
+                      : "Please select upcoming time from start time."
+                  );
+                  return;
+                }
+                if (
+                  parseInt(FromTime.split(":")[0]) ==
+                    parseInt(time.split(":")[0]) &&
                   parseInt(FromTime.split(":")[1]) >
                     parseInt(time.split(":")[1])
                 ) {
                   setFromTimeError(
-                    "Please select upcoming time from start time."
+                    isBn
+                      ? "দয়াকরে এখনকার সময় থেকে সামনের সময় নির্বাচন করুন"
+                      : "Please select upcoming time from start time."
                   );
                   return;
                 }
                 if (
-                  parseInt(FromTime.split(":")[0]) == parseInt(time.split(":")[0]) &&
+                  parseInt(FromTime.split(":")[0]) ==
+                    parseInt(time.split(":")[0]) &&
                   parseInt(FromTime.split(":")[1]) ==
                     parseInt(time.split(":")[1])
                 ) {
                   setFromTimeError(
-                    "Please select upcoming time from start time."
+                    isBn
+                      ? "দয়াকরে এখনকার সময় থেকে সামনের সময় নির্বাচন করুন"
+                      : "Please select upcoming time from start time."
                   );
                   return;
                 }
-                
-                setUpdateDate(e)
+
+                setUpdateDate(e);
                 setToTime(allTimeConverter(e));
                 setToTimeVisible(!ToTimeVisible);
               }}
@@ -409,7 +452,8 @@ export default function AppointmentForm({ navigation, route }) {
               style={{
                 color: "red",
                 marginTop: 5,
-              }}>
+              }}
+            >
               {FromTimeError}
             </Text>
           )}
@@ -419,21 +463,24 @@ export default function AppointmentForm({ navigation, route }) {
               justifyContent: "space-between",
               marginTop: 24,
               alignItems: "center",
-            }}>
+            }}
+          >
             <Text
               style={{
                 fontSize: 16,
                 fontWeight: "400",
-              }}>
-              Subject
+              }}
+            >
+              {isBn ? "বিষয় লিখুন" : "Subject"}
             </Text>
             <Text
               style={{
                 fontSize: 14,
                 fontWeight: "400",
                 color: "#767676",
-              }}>
-              Max 50 character
+              }}
+            >
+              {isBn ? "সর্বোচ্চ ৫০ অক্ষর" : "Max 50 character"}
             </Text>
           </View>
 
@@ -447,7 +494,7 @@ export default function AppointmentForm({ navigation, route }) {
               borderWidth: 1,
               marginTop: 12,
             }}
-            placeholder={"Subject"}
+            placeholder={isBn ? "বিষয়" : "Subject"}
           />
           <View
             style={{
@@ -455,21 +502,24 @@ export default function AppointmentForm({ navigation, route }) {
               justifyContent: "space-between",
               marginTop: 24,
               alignItems: "center",
-            }}>
+            }}
+          >
             <Text
               style={{
                 fontSize: 16,
                 fontWeight: "400",
-              }}>
-              Describe
+              }}
+            >
+              {isBn ? "বিবরণ" : "Describe"}
             </Text>
             <Text
               style={{
                 fontSize: 14,
                 fontWeight: "400",
                 color: "#767676",
-              }}>
-              Max 1000 character
+              }}
+            >
+              {isBn ? "সর্বোচ্চ ১০০০ অক্ষর" : "Max 1000 character"}
             </Text>
           </View>
           <TextArea
@@ -485,21 +535,20 @@ export default function AppointmentForm({ navigation, route }) {
         </View>
         <View
           style={{
-            
             marginHorizontal: 20,
             marginTop: 22,
-            marginBottom:32
-          }}>
+            marginBottom: 32,
+          }}
+        >
           <IconButton
             onPress={validate}
             style={{
               backgroundColor: "#4ADE80",
               color: "white",
             }}
-            title={"Create Now"}
+            title={isBn ? "অ্যাপয়েন্টমেন্ট তৈরি করুন" : "Create Now"}
           />
           <View style={{ width: 20 }} />
-          
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

@@ -6,34 +6,43 @@ import IconButton from "../../../components/IconButton";
 import AnimatedHeight from "../../../Hooks/AnimatedHeight";
 import ViewMore from "../../../Hooks/ViewMore";
 import { styles } from "../../create_dashboard/BusinessTitle";
+import useLang from "../../../Hooks/UseLang";
+import ReadMore from "../../../components/ReadMore";
 
 export default function PaymentStatus({ navigation, route }) {
   const type = route?.params?.type;
   const order = route?.params?.order;
   const [layoutHeight, setLayoutHeight] = useState(0);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   return (
     <View
       style={{
         flex: 1,
         paddingHorizontal: 20,
-      }}>
+      }}
+    >
       {type ? (
         <View
           style={{
             marginTop: "20%",
             flex: 1,
             alignItems: "center",
-          }}>
+          }}
+        >
           <SvgXml xml={success} />
           <Text
             style={{
               fontSize: 24,
-              
+
               fontWeight: "400",
               marginTop: 32,
-            }}>
-            Your transaction has been completed successfully.
+            }}
+          >
+            {isBn
+              ? "আপনার লেনদেন সফলভাবে সম্পন্ন হয়েছে৷"
+              : "Your transaction has been completed successfully."}
           </Text>
         </View>
       ) : (
@@ -42,7 +51,8 @@ export default function PaymentStatus({ navigation, route }) {
             style={{
               alignItems: "center",
               flex: 1,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginTop: 32,
@@ -53,55 +63,86 @@ export default function PaymentStatus({ navigation, route }) {
               style={{
                 marginTop: 32,
                 fontSize: 20,
-                
+
                 fontWeight: "400",
                 textAlign: "center",
-              }}>
-              We're sorry,We were unable to process your payment. Please check
-              your payment details and try again.
-            </Text>
-            <ViewMore
-              style={{
-                marginTop: 36,
-                marginBottom: 60,
               }}
-              width={"37%"}
-              height={layoutHeight}
-              component={
-                <Text
-                  onLayout={(e) => {
-                    setLayoutHeight(e.nativeEvent.layout.height);
-                  }}
-                  style={[
-                    styles.spText,
-                    { marginTop: 0, textAlign: "center" },
-                  ]}>
-                  We apologize, but we are currently unable to process your
-                  payment. There may be a number of reasons why this has
-                  occurred, including issues with your account balance, problems
-                  with the payment gateway, or technical difficulties on our
-                  end.{"\n"} Please check your payment details and account
-                  balance, and try again. If the problem persists, please
-                  contact{" "}
-                  <Text style={{ color: "#4ADE80" }}>customer support</Text> for
-                  assistance in resolving the issue. We appreciate your patience
-                  and understanding as we work to resolve this matter.
-                </Text>
-              }
-            />
+            >
+              {isBn
+                ? "আমরা দুঃখিত, আমরা আপনার অর্থপ্রদান প্রক্রিয়া করতে অক্ষম হয়েছি। অনুগ্রহ করে আপনার পেমেন্টের তথ্যগুলো চেক করুন এবং আবার চেষ্টা করুন।"
+                : "We're sorry,We were unable to process your payment. Please check your payment details and try again."}
+            </Text>
+            {isBn ? (
+              <ReadMore
+                containerStyle={{
+                  marginTop: 36,
+                  marginBottom: 60,
+                }}
+                content={
+                  <Text
+                    style={[
+                      styles.spText,
+                      { marginTop: 0, textAlign: "center" },
+                    ]}
+                  >
+                    আমরা ক্ষমাপ্রার্থী, আমরা বর্তমানে আপনার অর্থপ্রদান
+                    প্রক্রিয়া করতে অক্ষম হয়েছি। আপনার অ্যাকাউন্টের ব্যালেন্সের
+                    সমস্যা, পেমেন্ট গেটওয়েতে সমস্যা বা আমাদের দিক থেকে
+                    প্রযুক্তিগত সমস্যা সহ এটি হওয়ার অনেক কারণ থাকতে পারে।
+                    অনুগ্রহ করে আপনার পেমেন্টের বিশদ বিবরণ এবং অ্যাকাউন্ট
+                    ব্যালেন্স চেক করুন এবং আবার চেষ্টা করুন। সমস্যাটি থেকে গেলে,
+                    সমস্যা সমাধানে সহায়তার জন্য অনুগ্রহ করে{" "}
+                    <Text style={{ color: "#4ADE80" }}>কাস্টমার সাপোর্টে</Text>{" "}
+                    সাথে যোগাযোগ করুন। আমরা আপনার ধৈর্য এবং বিচারবুদ্ধির প্রশংসা
+                    করি কারণ আমরা এই বিষয়টি সমাধান করার জন্য কাজ করি৷
+                  </Text>
+                }
+              />
+            ) : (
+              <ReadMore
+                containerStyle={{
+                  marginTop: 36,
+                  marginBottom: 60,
+                }}
+                content={
+                  <Text
+                    style={[
+                      styles.spText,
+                      { marginTop: 0, textAlign: "center" },
+                    ]}
+                  >
+                    We apologize, but we are currently unable to process your
+                    payment. There may be a number of reasons why this has
+                    occurred, including issues with your account balance,
+                    problems with the payment gateway, or technical difficulties
+                    on our end.{"\n"} Please check your payment details and
+                    account balance, and try again. If the problem persists,
+                    please contact{" "}
+                    <Text style={{ color: "#4ADE80" }}>customer support</Text>{" "}
+                    for assistance in resolving the issue. We appreciate your
+                    patience and understanding as we work to resolve this
+                    matter.
+                  </Text>
+                }
+              />
+            )}
           </View>
         </ScrollView>
       )}
       <IconButton
         onPress={() => {
-          navigation.navigate("OrderDetails", {data:order,orderId:order?.id,type:order.type});
+          navigation.navigate("OrderDetails", {
+            data: order,
+            orderId: order?.id,
+            type: order.type,
+          });
           socket.emit("updateOrder", {
             receiverId: order?.service?.user?.id,
-            order: order
+            order: order,
           });
           socket.emit("updateOrder", {
             receiverId: order.user.id,
-            order: order
+            order: order,
           });
         }}
         active={true}
@@ -111,7 +152,7 @@ export default function PaymentStatus({ navigation, route }) {
           marginTop: 20,
           backgroundColor: type ? "#4ADE80" : "#EC2700",
         }}
-        title={"Back to order"}
+        title={isBn ? "অর্ডারে ফিরে যান" : "Back to order"}
       />
     </View>
   );

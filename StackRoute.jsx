@@ -108,10 +108,11 @@ import * as Linking from "expo-linking";
 import SellerProfile from "./screens/SellerProfile";
 import customStyle from "./assets/stylesheet";
 import ActivityLoader from "./components/ActivityLoader";
+import useLang from "./Hooks/UseLang";
 
 export default function StackRoute() {
   const user = useSelector((state) => state.user);
-  const vendor=useSelector(state=>state.vendor);
+  const vendor = useSelector((state) => state.vendor);
   const vendorInfo = useSelector((state) => state.vendorInfo);
   const [load, setLoad] = React.useState(false);
   const [Vendor, setVendor] = React.useState(false);
@@ -124,7 +125,8 @@ export default function StackRoute() {
   const backgroundColor = colors.getBackgroundColor();
   const secondaryColor = colors.getSecondaryColor();
   const [userId, setUserId] = React.useState();
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const MyTheme = {
     ...DefaultTheme,
     colors: {
@@ -142,7 +144,7 @@ export default function StackRoute() {
           initialRouteName: "Home",
           screens: {
             Home: {
-              initialRouteName:vendor?"VendorOrder":"Feed",
+              initialRouteName: vendor ? "VendorOrder" : "Feed",
               screens: {
                 OtherProfile: {
                   path: "feed/service/:slug",
@@ -166,7 +168,8 @@ export default function StackRoute() {
           <ActivityLoader />
         </View>
       }
-      theme={MyTheme}>
+      theme={MyTheme}
+    >
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
           gestureEnabled: true,
@@ -174,7 +177,8 @@ export default function StackRoute() {
             open: TransitionSpecs.TransitionIOSSpec,
             close: TransitionSpecs.TransitionIOSSpec,
           },
-        })}>
+        })}
+      >
         <Stack.Screen
           options={{
             presentation: "modal",
@@ -212,7 +216,9 @@ export default function StackRoute() {
           /> */}
         <Stack.Screen
           options={{
-            header: (props) => <SubHeader title={"Login"} {...props} />,
+            header: (props) => (
+              <SubHeader title={isBn ? "লগইন করুন" : "Login"} {...props} />
+            ),
           }}
           name="LogIn"
           component={Login}
@@ -220,7 +226,12 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <SubHeader title={"Phone number verification"} {...props} />
+              <SubHeader
+                title={
+                  isBn ? "ফোন নম্বর যাচাইকরণ" : "Phone number verification"
+                }
+                {...props}
+              />
             ),
           }}
           name="Recovery"
@@ -229,7 +240,10 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <SubHeader title={"Password reset"} {...props} />
+              <SubHeader
+                title={isBn ? "পাসওয়ার্ড রিসেট করুন" : "Password reset"}
+                {...props}
+              />
             ),
           }}
           name="Reset"
@@ -238,7 +252,12 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <SubHeader title={"Phone number verification"} {...props} />
+              <SubHeader
+                title={
+                  isBn ? "ফোন নম্বর যাচাইকরণ" : "Phone number verification"
+                }
+                {...props}
+              />
             ),
           }}
           name="SignUp_1"
@@ -247,7 +266,12 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <SubHeader title={"Phone number verification"} {...props} />
+              <SubHeader
+                title={
+                  isBn ? "ফোন নম্বর যাচাইকরণ" : "Phone number verification"
+                }
+                {...props}
+              />
             ),
           }}
           name="SignUp_2"
@@ -256,7 +280,10 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <SubHeader title={"User information"} {...props} />
+              <SubHeader
+                title={isBn ? "ব্যবহারকারীর তথ্য" : "User information"}
+                {...props}
+              />
             ),
           }}
           name="SignUp_3"
@@ -273,7 +300,9 @@ export default function StackRoute() {
         <Stack.Screen
           name="Review"
           options={{
-            header: (props) => <SubHeader title="Review" {...props} />,
+            header: (props) => (
+              <SubHeader title={isBn ? "রিভিও" : "Review"} {...props} />
+            ),
           }}
           component={Review}
         />
@@ -287,7 +316,12 @@ export default function StackRoute() {
         <Stack.Screen
           name="Service List"
           options={{
-            header: (props) => <SubHeader title="Service List" {...props} />,
+            header: (props) => (
+              <SubHeader
+                title={isBn ? "সার্ভিস এর লিস্ট" : "Service List"}
+                {...props}
+              />
+            ),
           }}
           component={AllServiceList}
         />
@@ -295,7 +329,10 @@ export default function StackRoute() {
           name="Service List_1"
           options={{
             header: (props) => (
-              <SubHeader title="Your Service List" {...props} />
+              <SubHeader
+                title={isBn ? "আপনার সার্ভিস এর লিস্ট" : "Your Service List"}
+                {...props}
+              />
             ),
           }}
           component={AllService}
@@ -304,14 +341,18 @@ export default function StackRoute() {
         <Stack.Screen
           name="Vendor Address"
           options={{
-            header: (props) => <SubHeader title="Address" {...props} />,
+            header: (props) => (
+              <SubHeader title={isBn ? "ঠিকানা" : "Address"} {...props} />
+            ),
           }}
           component={VendorAddress}
         />
         <Stack.Screen
           name="Support_1"
           options={{
-            header: (props) => <SubHeader title="Report" {...props} />,
+            header: (props) => (
+              <SubHeader title={isBn ? "রিপোর্ট" : "Report"} {...props} />
+            ),
           }}
           component={Support}
         />
@@ -328,7 +369,10 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <AppointmentHeader title={"Appointment"} {...props} />
+              <AppointmentHeader
+                title={isBn ? "অ্যাপয়েন্টমেন্ট" : "Appointment"}
+                {...props}
+              />
             ),
           }}
           name="AppointmentList"
@@ -372,7 +416,10 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <AppointmentHeader title={"Appointment"} {...props} />
+              <AppointmentHeader
+                title={isBn ? "অ্যাপয়েন্টমেন্ট" : "Appointment"}
+                {...props}
+              />
             ),
           }}
           name="RequestAppointmentList"
@@ -389,7 +436,10 @@ export default function StackRoute() {
         <Stack.Screen
           options={{
             header: (props) => (
-              <AppointmentHeader title={"Appointment"} {...props} />
+              <AppointmentHeader
+                title={isBn ? "অ্যাপয়েন্টমেন্ট" : "Appointment"}
+                {...props}
+              />
             ),
           }}
           name="UserRequestAppointment"
@@ -411,14 +461,18 @@ export default function StackRoute() {
         />
         <Stack.Screen
           options={{
-            header: (props) => <AccountHeader title={"Withdraw"} {...props} />,
+            header: (props) => (
+              <AccountHeader title={isBn ? "উত্তোলন" : "Withdraw"} {...props} />
+            ),
           }}
           name="WithdrawFirst"
           component={WithdrawFirst}
         />
         <Stack.Screen
           options={{
-            header: (props) => <AccountHeader title={"Withdraw"} {...props} />,
+            header: (props) => (
+              <AccountHeader title={isBn ? "উত্তোলন" : "Withdraw"} {...props} />
+            ),
           }}
           name="WithdrawSecond"
           component={WithdrawSecond}

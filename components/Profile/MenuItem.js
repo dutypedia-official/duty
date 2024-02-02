@@ -2,8 +2,11 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Menu } from "react-native-paper";
+import useLang from "../../Hooks/UseLang";
 
 export default function MenuItem({ visible, onClose, button, onChange }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <Menu
       contentStyle={{
@@ -11,7 +14,8 @@ export default function MenuItem({ visible, onClose, button, onChange }) {
       }}
       visible={visible}
       onDismiss={onClose}
-      anchor={button}>
+      anchor={button}
+    >
       <View>
         <Pressable
           onPress={() => {
@@ -20,9 +24,10 @@ export default function MenuItem({ visible, onClose, button, onChange }) {
               onClose();
             }
           }}
-          style={styles.container}>
+          style={styles.container}
+        >
           <SvgXml xml={onlyme} />
-          <Text style={styles.text}>Only me</Text>
+          <Text style={styles.text}>{isBn ? "শুধু আমি দেখব" : "Only me"}</Text>
         </Pressable>
         <View
           style={{
@@ -38,9 +43,10 @@ export default function MenuItem({ visible, onClose, button, onChange }) {
               onClose();
             }
           }}
-          style={styles.container}>
+          style={styles.container}
+        >
           <SvgXml xml={pub} />
-          <Text style={styles.text}>Public</Text>
+          <Text style={styles.text}>{isBn ? "সবাই দেখবে" : "Public"}</Text>
         </Pressable>
       </View>
     </Menu>

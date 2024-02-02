@@ -15,16 +15,16 @@ import { CheckBox } from "./Seller/Pricing";
 import IconButton from "../components/IconButton";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../Reducers/hideBottomBar";
+import useLang from "../Hooks/UseLang";
 const Tab = createMaterialTopTabNavigator();
 const { width, height } = Dimensions.get("window");
 
 const AddServiceList = (props) => {
-  
   const params = props.route.params;
   const facilities = params?.facilities;
   const skills = params?.skills;
   const category = params?.category;
-  const selected=params?.selected;
+  const selected = params?.selected;
 
   const ListSelection = useSelector((state) => state.ListSelection);
   const isDark = useSelector((state) => state.isDark);
@@ -33,9 +33,11 @@ const AddServiceList = (props) => {
   const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
   const dispatch = useDispatch();
-  const [Data, setData] = React.useState(selected?selected:[]);
+  const [Data, setData] = React.useState(selected ? selected : []);
   const [DataError, setDataError] = React.useState();
   const [Facilities, setFacilities] = React.useState([]);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const styles = StyleSheet.create({
     view: {
       marginHorizontal: 20,
@@ -66,25 +68,22 @@ const AddServiceList = (props) => {
     setData(ListSelection);
   }, [ListSelection]);
 
-  
-
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator tabBar={(props) => <TopTabBar {...props} />}>
         <Tab.Screen
-          name={"Service List"}
+          name={isBn ? "সার্ভিস লিস্ট" : "Service List"}
           component={ComponentScreen}
           initialParams={{
             setData: setData,
             Data: Data,
-            category:category,
-            skills:skills,
-
+            category: category,
+            skills: skills,
           }}
         />
         {facilities && (
           <Tab.Screen
-            name={"Extra Facilities"}
+            name={isBn ? "অতিরিক্ত সুবিধা" : "Extra Facilities"}
             initialParams={{
               facilites: params.facilites,
               setData: setFacilities,
@@ -96,7 +95,8 @@ const AddServiceList = (props) => {
       <View
         style={{
           paddingVertical: 12,
-        }}>
+        }}
+      >
         {DataError && (
           <Text style={{ color: "red", textAlign: "center" }}>{DataError}</Text>
         )}
@@ -113,7 +113,11 @@ const AddServiceList = (props) => {
                 //console.log(ListSelection);
               } else {
                 if (Data.length == 0) {
-                  setDataError("You must need at least one service");
+                  setDataError(
+                    isBn
+                      ? "আপনাকে অন্তত একটি সার্ভিস আইটেম অ্যাড করতে হবে"
+                      : "You must need to add at least one service"
+                  );
                   return;
                 }
                 if (params.data == "PACKAGE") {
@@ -122,8 +126,7 @@ const AddServiceList = (props) => {
                   });
                   return;
                 }
-                
-               
+
                 navigation.navigate("Service", {
                   direct: params.data,
                   data: Data,
@@ -140,7 +143,15 @@ const AddServiceList = (props) => {
             marginHorizontal: 20,
             width: width - 40,
           }}
-          title={!params.setListData ? "Next" : "Done"}
+          title={
+            !params.setListData
+              ? isBn
+                ? "পরবর্তী"
+                : "Next"
+              : isBn
+              ? "সম্পন্ন"
+              : "Done"
+          }
         />
       </View>
     </View>
@@ -151,11 +162,11 @@ export default AddServiceList;
 const ComponentScreen = (props) => {
   const params = props.route.params;
   //console.log(params);
-  const skills=params?.skills;
-  const category=params?.category;
-  const Data=params?.Data;
-  const setData=params?.setData;
-//console.log(skills)
+  const skills = params?.skills;
+  const category = params?.category;
+  const Data = params?.Data;
+  const setData = params?.setData;
+  //console.log(skills)
   const styles = StyleSheet.create({
     view: {
       marginHorizontal: 20,
@@ -167,10 +178,9 @@ const ComponentScreen = (props) => {
     },
   });
 
-  
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={[styles.view]} >
+      <View style={[styles.view]}>
         <Text style={styles.text}>{category}</Text>
 
         {skills &&
@@ -183,21 +193,13 @@ const ComponentScreen = (props) => {
               }}
               key={i}
               value={
-                Array.isArray(Data) &&
-                Data.filter(
-                  (d) =>
-                    d == doc
-                    
-                ).length > 0
+                Array.isArray(Data) && Data.filter((d) => d == doc).length > 0
                   ? true
                   : false
               }
               onChange={(e) => {
                 try {
-                  let arr = Data.filter(
-                    (d) =>
-                      d==e
-                  );
+                  let arr = Data.filter((d) => d == e);
                   //console.log(arr);
                   if (arr.length > 0) {
                     //console.log(e);

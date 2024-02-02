@@ -24,6 +24,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 const Tab = createMaterialTopTabNavigator();
@@ -66,8 +67,8 @@ export default function VendorServiceList({ navigation, route }) {
     <View
       style={{
         flex: 1,
-       
-      }}>
+      }}
+    >
       <StatusBar style="dark" backgroundColor="#ffffff" />
       <View
         style={{
@@ -83,8 +84,8 @@ export default function VendorServiceList({ navigation, route }) {
           tabBarStyle: {
             backgroundColor: "#ffffff",
           },
-          
-        }}>
+        }}
+      >
         {initialState.map((doc, i) => (
           <Tab.Screen
             options={{
@@ -95,12 +96,14 @@ export default function VendorServiceList({ navigation, route }) {
                     fontSize: 16,
 
                     color: focused ? "#000000" : "#A3A3A3",
-                  }}>
+                  }}
+                >
                   {`${initialState[i].name} `}
                   <Text
                     style={{
                       fontSize: 12,
-                    }}>
+                    }}
+                  >
                     {serviceCount[i]}
                   </Text>
                 </Text>
@@ -136,6 +139,8 @@ const Screens = ({ navigation, route }) => {
   const offline = route.params.offline;
   const setServiceCount = route?.params?.setServiceCount;
   const index = route?.params?.index;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(userId)
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -166,7 +171,6 @@ const Screens = ({ navigation, route }) => {
   if (Loader) {
     return <ActivityLoader />;
   }
-  
 
   if (!Data) {
     return (
@@ -175,7 +179,8 @@ const Screens = ({ navigation, route }) => {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-        }}>
+        }}
+      >
         <SvgXml xml={emptyIcon} width="80%" />
         <FAB
           color="#FFFFFF"
@@ -236,7 +241,8 @@ const Screens = ({ navigation, route }) => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+    >
       <Text
         style={{
           fontSize: 24,
@@ -245,16 +251,17 @@ const Screens = ({ navigation, route }) => {
           marginHorizontal: 20,
           marginVertical: 16,
           marginTop: 32,
-
-        }}>
-        Select Service
+        }}
+      >
+        {isBn ? "সার্ভিস নির্বাচন করুন" : "Select Service"}
       </Text>
       <View
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
           paddingHorizontal: 12,
-        }}>
+        }}
+      >
         {Data.map((doc, i) => (
           <ServiceCart
             onPress={() => {

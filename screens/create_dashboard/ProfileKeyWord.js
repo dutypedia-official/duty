@@ -22,6 +22,8 @@ import ViewMore from "../../Hooks/ViewMore";
 import TextOp from "./TextOp";
 import Input from "../../components/Input";
 import IconButton from "../../components/IconButton";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 const { width, height } = Dimensions.get("window");
 
 export default function ProfileKeyWord({ navigation, route }) {
@@ -34,6 +36,8 @@ export default function ProfileKeyWord({ navigation, route }) {
   );
   const [length, setLength] = useState(0);
   const data = route?.params?.data;
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   useEffect(() => {
     setLength(keywords.length);
@@ -55,14 +59,16 @@ export default function ProfileKeyWord({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <PageChip currentPage={10} totalPage={14} />
         <View
           style={{
             marginTop: 0,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <Image
             style={{
               width: width - 40,
@@ -75,7 +81,8 @@ export default function ProfileKeyWord({ navigation, route }) {
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -83,69 +90,42 @@ export default function ProfileKeyWord({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for Add Keywords Your Profile for Improved Visibility.
+              {isBn
+                ? "কীওয়ার্ড এর জন্য টিপস"
+                : "Tips for Add Keywords Your Profile for Improved Visibility."}
             </Text>
           </View>
-          <ViewMore
-            view={true}
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={70}
-            width={135}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <View
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}>
-                <Text style={[styles.spText, { marginTop: 0 }]}>
-                  Enhance your profile visibility by adding relevant keywords!
-                  Keywords help potential customers find your profile easily
-                  when they search for specific services. Here are some
-                  guidelines for adding keywords to your profile:
-                </Text>
+            content={
+              isBn
+                ? `প্রাসঙ্গিক কীওয়ার্ড যোগ করে আপনার প্রোফাইলের ভিসিবিলিটি বাড়ান! সম্ভাব্য গ্রাহকরা যখন নির্দিষ্ট সার্ভিসগুলির জন্য সার্চ করে তখন কীওয়ার্ডগুলি তাদের সহজেই আপনার প্রোফাইল খুঁজে পেতে সহায়তা করে৷ আপনার প্রোফাইলে কীওয়ার্ড যোগ করার জন্য এখানে কিছু নির্দেশিকা রয়েছে:
 
-                <TextOp
-                  style={{ marginTop: 20 }}
-                  text={`Think about the services you offer and the skills you possess. These can be specific services, areas of expertise, or industry-related terms.`}
-                  number={"1."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Consider the common search terms or phrases that potential customers might use to find businesses like yours.`}
-                  number={"2."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Include both broad and specific keywords to cover a range of search queries.`}
-                  number={"3."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Use terms that accurately represent your offerings and reflect your strengths.`}
-                  number={"4."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={
-                    "Avoid excessive or irrelevant keywords that may confuse or mislead users."
-                  }
-                  number={"5."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={
-                    "Keep your keywords up to date and relevant as your business evolves. Remember, using the right keywords will increase your chances of being discovered by potential customers."
-                  }
-                  number={"6."}
-                />
-              </View>
+1.আপনি যে সার্ভিসগুলি অফার করেন এবং আপনার যে স্কিল রয়েছে সে সম্পর্কে চিন্তা করুন। এগুলি নির্দিষ্ট সার্ভিস, দক্ষতার ক্ষেত্র বা ইন্ডাস্ট্রি-সম্পর্কিত টার্মস হতে পারে৷।
+2.সম্ভাব্য গ্রাহকরা আপনার মত ব্যবসা খুঁজতে ব্যবহার করতে পারে এমন সাধারণ সার্চ শব্দ বা বাক্যাংশ চয়েজ করুন৷।
+3.সার্চ কোয়েরিগুলির একটি পরিসর কভার করতে বিস্তৃত এবং নির্দিষ্ট কীওয়ার্ড উভয়ই অন্তর্ভুক্ত করুন৷।
+4.এমন টার্ম ব্যবহার করুন যা আপনার অফারগুলিকে সঠিকভাবে রিপ্রেজেন্ট করে এবং আপনার শক্তি প্রতিফলিত করে৷।
+5.অত্যধিক বা অপ্রাসঙ্গিক কীওয়ার্ড এড়িয়ে চলুন যা ব্যবহারকারীদের বিভ্রান্ত করতে পারে৷।
+6.আপনার ব্যবসার বিকাশের সাথে সাথে আপনার কীওয়ার্ডগুলি আপডেট এবং প্রাসঙ্গিক রাখুন৷।
+•মনে রাখবেন, সঠিক কীওয়ার্ড ব্যবহার করলে আপনাকে আপনার গ্রাহকরা অতি সহজেই খুঁজে পাবে৷।
+              `
+                : `Enhance your profile visibility by adding relevant keywords! Keywords help potential customers find your profile easily when they search for specific services. Here are some guidelines for adding keywords to your profile:
+
+1. Think about the services you offer and the skills you possess. These can be specific services, areas of expertise, or industry-related terms.
+2. Consider the common search terms or phrases that potential customers might use to find businesses like yours.
+3. Include both broad and specific keywords to cover a range of search queries.
+4. Use terms that accurately represent your offerings and reflect your strengths.
+5. Avoid excessive or irrelevant keywords that may confuse or mislead users.
+6. Keep your keywords up to date and relevant as your business evolves.
+Remember, using the right keywords will increase your chances of being discovered by potential customers.
+                `
             }
           />
-          <Text style={[styles.headLine, { marginTop: 36 }]}>Add Keyword</Text>
+          <Text style={[styles.headLine, { marginTop: 36 }]}>
+            {isBn ? "কীওয়ার্ড অ্যাড করুন" : "Add Keyword"}
+          </Text>
 
           {keywords && keywords.length < 25 && (
             <AddBox
@@ -163,9 +143,14 @@ export default function ProfileKeyWord({ navigation, route }) {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-            }}>
-            <Text style={styles.text}>Max 25 character </Text>
-            <Text style={styles.text}>Max 25 Tag </Text>
+            }}
+          >
+            <Text style={styles.text}>
+              {isBn ? "সর্বোচ্চ ২৫ টি অক্ষর" : "Max 25 character"}{" "}
+            </Text>
+            <Text style={styles.text}>
+              {isBn ? "সর্বোচ্চ ২৫ টি কীওয়ার্ড" : "Max 25 Tag"}{" "}
+            </Text>
           </View>
           {keywords && keywords.length > 0 && (
             <View
@@ -174,7 +159,8 @@ export default function ProfileKeyWord({ navigation, route }) {
                 flexDirection: "row",
                 flexWrap: "wrap",
                 marginHorizontal: -4,
-              }}>
+              }}
+            >
               {keywords.map((doc, i) => (
                 <BT
                   onDelete={() => {
@@ -187,9 +173,9 @@ export default function ProfileKeyWord({ navigation, route }) {
             </View>
           )}
           <Text style={[styles.text, { marginTop: 32 }]}>
-            Example : Bridge Builder, Business Plans, Graphic design, Events
-            Items, Bike repair, photographer, Baby Care, Business lawyers,
-            Cooking Lessons, Dj Mixing{" "}
+            {isBn
+              ? "উদাহরণ: ব্রিজ বিল্ডার, ব্যবসায়িক পরিকল্পনা, গ্রাফিক ডিজাইন, ইভেন্ট আইটেম, বাইক মেরামত, ফটোগ্রাফার, বেবি কেয়ার, ব্যবসায়িক আইনজীবী, রান্নার পাঠ, ডিজে মিক্সিং ইত্যাদি।"
+              : "Example : Bridge Builder, Business Plans, Graphic design, Events Items, Bike repair, photographer, Baby Care, Business lawyers, Cooking Lessons, Dj Mixing"}
           </Text>
           <IconButton
             active={length > 0 ? true : false}
@@ -215,7 +201,7 @@ export default function ProfileKeyWord({ navigation, route }) {
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>
@@ -224,7 +210,8 @@ export default function ProfileKeyWord({ navigation, route }) {
 }
 const AddBox = ({ onChange, onWrite, value }) => {
   const [text, setText] = useState(value);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
@@ -236,8 +223,10 @@ const AddBox = ({ onChange, onWrite, value }) => {
         alignItems: "center",
         borderColor: "#A3A3A3",
         marginTop: 24,
-      }}>
-      <TextInput returnKeyType="done"
+      }}
+    >
+      <TextInput
+        returnKeyType="done"
         onEndEditing={() => {
           if (!text) {
             return;
@@ -257,7 +246,7 @@ const AddBox = ({ onChange, onWrite, value }) => {
         style={{
           flex: 1,
         }}
-        placeholder="Type Skill"
+        placeholder={isBn ? "কীওয়ার্ড লিখুন" : "Type Skill"}
       />
       <Pressable
         onPress={() => {
@@ -280,15 +269,17 @@ const AddBox = ({ onChange, onWrite, value }) => {
           borderLeftWidth: 1,
           borderLeftColor: "#A3A3A3",
           flexDirection: "row",
-        }}>
+        }}
+      >
         <SvgXml xml={addIcon} />
         <Text
           style={{
             fontSize: 14,
             marginLeft: 5,
             color: text ? "#ffffff" : "#767676",
-          }}>
-          Add
+          }}
+        >
+          {isBn ? "অ্যাড" : "Add"}
         </Text>
       </Pressable>
     </View>
@@ -304,7 +295,8 @@ const BT = ({ title, onDelete }) => {
         padding: 8,
         margin: 4,
         backgroundColor: "#4ADE80",
-      }}>
+      }}
+    >
       <SvgXml
         onPress={onDelete}
         style={{

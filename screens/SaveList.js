@@ -44,6 +44,7 @@ import { setSaveList } from "../Reducers/saveList";
 import customStyle from "../assets/stylesheet";
 import noAp from "../assets/Images/noAp.png";
 import { setHideBottomBar } from "../Reducers/hideBottomBar";
+import useLang from "../Hooks/UseLang";
 
 const PARALLAX_HEIGHT = 330;
 const HEADER_BAR_HEIGHT = Platform.OS == "ios" ? 55 : 45;
@@ -56,7 +57,9 @@ const SaveList = ({ navigation }) => {
   const [data, setData] = useState();
   const isFocused = useIsFocused();
   const user = useSelector((state) => state.user);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -76,7 +79,8 @@ const SaveList = ({ navigation }) => {
         flex: 1,
         paddingTop: inset?.top,
         paddingHorizontal: 20,
-      }}>
+      }}
+    >
       <StatusBar backgroundColor="white" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <SvgXml
@@ -88,8 +92,12 @@ const SaveList = ({ navigation }) => {
         <View style={{ height: 28 }} />
         <AnimatedHeight
           button={true}
-          title={"See More"}
-          text={`"Welcome to your favorite list page! Here, you can manage all the services you've saved for easy access later. You can remove any service you no longer need by clicking on the '❤️' button. Don't forget to update your list regularly to keep it organized and relevant to your needs. Happy browsing on Duty Marketplace!"`}
+          title={isBn ? "আরও দেখুন" : "See More"}
+          text={
+            isBn
+              ? `"আপনার পছন্দের তালিকার পেইজ এ আপনাকে স্বাগতম! এখানে, আপনি সহজ এক্সেসের মাধ্যমে আপনার প্রয়োজনীয় সব সার্ভিসগুলো পরিচালনা করতে পারবেন৷ আপনি ❤️  বাটনে ক্লিক করে আপনার অপ্রয়োজনীয় যে কোন সার্ভিস রিমুভ করতে পারবেন৷ আপনার পছন্দের তালিকা নিয়মিত আপডেট করুন এবং এটিকে আপনার প্রয়োজন মতো সাজিয়ে রাখুন৷ ডিউটি ​​মার্কেটপ্লেসের পক্ষ থেকে শুভ কামনা !"`
+              : `"Welcome to your favorite list page! Here, you can manage all the services you've saved for easy access later. You can remove any service you no longer need by clicking on the '❤️' button. Don't forget to update your list regularly to keep it organized and relevant to your needs. Happy browsing on Duty Marketplace!"`
+          }
         />
         <Text
           style={{
@@ -98,9 +106,9 @@ const SaveList = ({ navigation }) => {
             marginLeft: 5,
             fontWeight: "600",
             fontSize: 24,
-            
-          }}>
-          Save List
+          }}
+        >
+          {isBn ? "আপনার সংরক্ষণের তালিকা" : "Your Save List"}
         </Text>
         <View
           style={{
@@ -108,8 +116,8 @@ const SaveList = ({ navigation }) => {
             flexWrap: "wrap",
             marginHorizontal: -6,
             marginVertical: 22,
-            
-          }}>
+          }}
+        >
           {saveList &&
             saveList.map((doc, i) => (
               <TopSellerCardLike
@@ -132,10 +140,10 @@ const SaveList = ({ navigation }) => {
                 {
                   alignItems: "center",
                   justifyContent: "center",
-                  height:"80%",
-                 
+                  height: "80%",
                 },
-              ]}>
+              ]}
+            >
               {/* <Image style={{
                 width:width-40,
                 height:height/2
@@ -144,9 +152,11 @@ const SaveList = ({ navigation }) => {
                 style={{
                   fontSize: 20,
                   fontWeight: "500",
-                  
-                }}>
-                You did not add any list
+                }}
+              >
+                {isBn
+                  ? "আপনার এখন পর্জন্ত কোনও সার্ভিস অ্যাড করা হয়নি"
+                  : "You did not add any list"}
               </Text>
             </View>
           )}

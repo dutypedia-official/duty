@@ -33,6 +33,7 @@ import ActivityLoader from "../../../components/ActivityLoader";
 import SubHeader from "../../../components/SubHeader";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
 import { useIsFocused } from "@react-navigation/native";
+import useLang from "../../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 const ServiceAgreement = (props) => {
@@ -50,6 +51,8 @@ const ServiceAgreement = (props) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const data = props?.route?.params?.data;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(data);
   //console.log(userId)
   //console.log(data)
@@ -88,24 +91,29 @@ const ServiceAgreement = (props) => {
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
               marginTop: 32,
               flex: 1,
-              alignItems:"center"
-            }}>
+              alignItems: "center",
+            }}
+          >
             <SvgXml xml={info} />
             <Text style={[styles.text, { flex: 1 }]}>
-              What Type Of Service/Item You Want To provide?
+              {isBn
+                ? "আপনি কি ধরনের পরিষেবা বা আইটেম প্রদান করতে চান?"
+                : "What Type Of Service/Item You Want To provide?"}
             </Text>
           </View>
 
           <View
             style={{
               flexDirection: "row",
-            }}>
+            }}
+          >
             <Pressable style={styles.box}>
               <RadioButton
                 dark={true}
@@ -133,12 +141,15 @@ const ServiceAgreement = (props) => {
             style={{
               flexDirection: "row",
               marginTop: 32,
-              alignItems:"center",
-              flex:1
-            }}>
+              alignItems: "center",
+              flex: 1,
+            }}
+          >
             <SvgXml xml={info} />
-            <Text style={[styles.text,{flex:1}]}>
-              How would you like the service to be delivered ?
+            <Text style={[styles.text, { flex: 1 }]}>
+              {isBn
+                ? "আপনি কীভাবে পরিষেবাটি ডেলিভারি চান?"
+                : "How would you like the service to be delivered ?"}
             </Text>
           </View>
 
@@ -147,7 +158,8 @@ const ServiceAgreement = (props) => {
               flexDirection: "row",
               marginTop: 24,
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <Button
               LeftIcon={Deliver == "Online" ? onlineAc : offlineAc}
               value={true}
@@ -159,27 +171,31 @@ const ServiceAgreement = (props) => {
               style={{
                 flexDirection: "row",
                 marginTop: 32,
-              }}>
+              }}
+            >
               <SvgXml xml={info} />
               <View style={{ marginLeft: 10, flex: 1 }}>
                 <Text style={[styles.text, { marginLeft: 0 }]}>
-                  Delivery method ?
+                  {isBn ? "ডেলিভারি পদ্ধতি?" : "Delivery method ?"}
                 </Text>
                 {Deliver == "Physical" && (
                   <Text
                     style={{
                       fontSize: 16,
-                      
+
                       fontWeight: "400",
                       color: "#EC2700",
                       marginBottom: 12,
                       flex: 1,
-                    }}>
-                    For physical services, you are required to deliver your
-                    service in person, face to face with the buyer. For more
-                    details, please refer to our{" "}
+                    }}
+                  >
+                    {isBn
+                      ? "ফিজিক্যাল সার্ভিসগুলির জন্য আপনাকে ক্রেতার সাথে মুখোমুখি ব্যক্তিগতভাবে আপনার পরিষেবা ডেলিভারি করতে হবে৷ আরো বিস্তারিত জানার জন্য, অনুগ্রহ করে আমাদের"
+                      : "For physical services, you are required to deliver your service in person, face to face with the buyer. For more details, please refer to our"}{" "}
                     <Text style={{ color: "#0003FF" }}>
-                      Order & delivery Policy section
+                      {isBn
+                        ? "অর্ডার এবং ডেলিভারি নীতি বিভাগ দেখুন"
+                        : "Order & delivery Policy section"}
                     </Text>
                   </Text>
                 )}
@@ -211,32 +227,39 @@ const ServiceAgreement = (props) => {
             style={{
               flexDirection: "row",
               marginTop: 32,
-              flex:1,
-              alignItems:"center"
-            }}>
+              flex: 1,
+              alignItems: "center",
+            }}
+          >
             <SvgXml xml={info} />
-            <Text style={[styles.text,{flex:1}]}>
-              If you agree, please indicate by checking the box below.
+            <Text style={[styles.text, { flex: 1 }]}>
+              {isBn
+                ? "আপনি যদি সম্মত হন, অনুগ্রহ করে নীচের বাক্সে চেক করে নির্দেশ করুন৷"
+                : "If you agree, please indicate by checking the box below."}
             </Text>
           </View>
           <View style={[styles.flexBox, { marginTop: 24 }]}>
             <SvgXml style={styles.icon} xml={tick} />
             <Text style={styles.font}>
-              Yes, I have collected all the necessary information and understand
-              what my customer wants.
+              {isBn
+                ? "হ্যাঁ, আমি সমস্ত প্রয়োজনীয় তথ্য সংগ্রহ করেছি এবং বুঝতে পেরেছি যে আমার গ্রাহক কী চায়৷"
+                : "Yes, I have collected all the necessary information and understand what my customer wants."}
             </Text>
           </View>
           <View style={[styles.flexBox, { marginTop: 12 }]}>
             <SvgXml style={styles.icon} xml={tick} />
             <Text style={styles.font}>
-              If I provide a physical service, I will deliver it face to face
-              and use a mask.
+              {isBn
+                ? "যদি আমি ফিজিক্যাল সার্ভিস প্রদান করি, আমি ক্রেতার সাথে মুখোমুখি হয়ে ডেলিভারি করব এবং ডেলিভারির সময় মুখে সেফটি মাস্ক পরিধান করব।"
+                : "If I provide a physical service, I will deliver it face to face and use a mask."}
             </Text>
           </View>
           <View style={[styles.flexBox, { marginTop: 12 }]}>
             <SvgXml style={styles.icon} xml={tick} />
             <Text style={styles.font}>
-              I will save all delivery proof documents for future inquiries
+              {isBn
+                ? "আমি ভবিষ্যতের অনুসন্ধানের জন্য সমস্ত ডেলিভারি প্রমাণ নথি সংরক্ষণ রাখব"
+                : "I will save all delivery proof documents for future inquiries"}
             </Text>
           </View>
         </View>
@@ -259,7 +282,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "500",
     fontSize: 16,
-    
+
     marginLeft: 10,
   },
   flexBox: {
@@ -268,7 +291,7 @@ const styles = StyleSheet.create({
   },
   font: {
     fontSize: 16,
-    
+
     fontWeight: "400",
     color: "#1A1A1A",
     flex: 1,
@@ -292,7 +315,8 @@ const Button = ({ value, onPress, LeftIcon, title }) => {
         height: 60,
         flexDirection: "row",
         backgroundColor: value ? "#535353" : "#ffffff",
-      }}>
+      }}
+    >
       <SvgXml xml={LeftIcon} />
       <Text
         style={{
@@ -300,7 +324,8 @@ const Button = ({ value, onPress, LeftIcon, title }) => {
           fontWeight: "400",
           marginLeft: 12,
           color: value ? "#ffffff" : "#000000",
-        }}>
+        }}
+      >
         {title}
       </Text>
     </Pressable>

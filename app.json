@@ -1,1 +1,91 @@
-
+{
+  "expo": {
+    "name": "Duty",
+    "scheme": "duty",
+    "slug": "duty",
+    "version": "1.0.3",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "sdkVersion": "49.0.0",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      ["react-native-background-fetch"],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["assets/*"],
+    "ios": {
+      "associatedDomains": ["applinks:duty.com.bd"],
+      "supportsTablet": true,
+      "buildNumber": "5",
+      "infoPlist": {},
+      "bitcode": false,
+      "bundleIdentifier": "com.duty.bd",
+      "runtimeVersion": {
+        "policy": "sdkVersion"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "duty",
+              "host": "duty.com.bd",
+              "pathPrefix": "/feed/service"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "googleServicesFile": "./google-services.json",
+      "package": "com.duty.bd",
+      "versionCode": 4,
+      "permissions": [
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.BLUETOOTH",
+        "android.permission.CAMERA",
+        "android.permission.INTERNET",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "81b891e3-f2d8-4658-961f-3fa315ee1ba4"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/81b891e3-f2d8-4658-961f-3fa315ee1ba4",
+      "enabled": true
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  }
+}

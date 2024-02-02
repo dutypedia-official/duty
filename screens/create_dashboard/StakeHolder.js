@@ -15,14 +15,18 @@ import ViewMore from "../../Hooks/ViewMore";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { icon, styles } from "./BusinessTitle";
 import PageChip from "./components/PageChip";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
-export default function StakeHolder({ navigation,route }) {
-  const [layoutHeight,setLayoutHeight]=useState(0)
-  const businessForm=useSelector(state=>state.businessForm)
-  const dispatch=useDispatch()
-  const [number,setNumber]=useState(businessForm?.teamNumber)
-  const data=route?.params?.data;
-  const isFocused=useIsFocused()
+export default function StakeHolder({ navigation, route }) {
+  const [layoutHeight, setLayoutHeight] = useState(0);
+  const businessForm = useSelector((state) => state.businessForm);
+  const dispatch = useDispatch();
+  const [number, setNumber] = useState(businessForm?.teamNumber);
+  const data = route?.params?.data;
+  const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -35,76 +39,113 @@ export default function StakeHolder({ navigation,route }) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  const toEn = n => n.replace(/[০-৯]/g, d => "০১২৩৪৫৬৭৮৯".indexOf(d));
+  const toEn = (n) => n.replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
-      <PageChip currentPage={6} totalPage={14}/>
+        <PageChip currentPage={6} totalPage={14} />
         <View
           style={{
             marginTop: 24,
             marginHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View style={{ flexDirection: "row", marginTop: 36 }}>
             <SvgXml style={{ marginRight: 8 }} xml={icon} />
             <Text style={styles.headLine}>
-              Tips for set up number of employees/team member{" "}
+              {isBn
+                ? "কর্মচারী টিমের সদস্য সংখ্যা সেট আপ করার জন্য টিপস :"
+                : "Tips for set up number of employees/team member"}{" "}
             </Text>
           </View>
-          <ViewMore style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            width={145}
-            height={layoutHeight}
-             component={<Text onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-              style={[styles.spText,{marginTop:0}]}>
-              If you are a <Text style={{fontWeight:"700"}}>company</Text>, please provide the number of team members or
-              workers that you have. <Text style={{fontWeight:"700"}}>If you are an individual with freelancers</Text>,
-              you can enter the number of freelancers that you work with. If you
-              don't have any team members or workers, please enter '1' to
-              indicate that you work alone. We require at least one input in
-              this section to ensure transparency and accuracy in our platform.
-              This will help us match you with the right buyers and ensure a
-              smooth experience for everyone.
-            </Text>}/>
-          <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Number of employees/team member
-          </Text>
-          <Input value={number}
-          onChange={(e)=>{
-            if(e?.split("")?.length>8){
-              return
+            content={
+              isBn ? (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  আপনি একটি <Text style={{ fontWeight: "700" }}>কোম্পানি</Text>,
+                  হলে, আপনার টিমের সদস্য বা কর্মীদের সংখ্যা প্রদান করুন৷ আপনি
+                  যদি একজন{" "}
+                  <Text style={{ fontWeight: "700" }}>ফ্রিল্যান্সার </Text>
+                  হন তবে আপনি যে ফ্রিল্যান্সারদের সাথে কাজ করেন তাদের সংখ্যা
+                  লিখতে পারেন৷ আর যদি আপনার কোনো সদস্য বা কর্মী না থাকে, তাহলে
+                  অনুগ্রহ করে '1' লিখুন যাতে বুঝা যায় আপনি একা কাজ করেন। আমাদের
+                  প্ল্যাটফর্মে সৌন্দর্য এবং নির্ভুলতা নিশ্চিত করতে আমাদের এই
+                  সেকশনে অন্তত একটি ইনপুট প্রয়োজন৷ এটি আপনাকে সঠিক ক্রেতাদের
+                  সাথে মেলাতে এবং প্রত্যেকের জন্য একটি সুন্দর অভিজ্ঞতা অর্জন
+                  করতে আমাদের সাহায্য করবে৷
+                </Text>
+              ) : (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  If you are a{" "}
+                  <Text style={{ fontWeight: "700" }}>company</Text>, please
+                  provide the number of team members or workers that you have.{" "}
+                  <Text style={{ fontWeight: "700" }}>
+                    If you are an individual with freelancers
+                  </Text>
+                  , you can enter the number of freelancers that you work with.
+                  If you don't have any team members or workers, please enter
+                  '1' to indicate that you work alone. We require at least one
+                  input in this section to ensure transparency and accuracy in
+                  our platform. This will help us match you with the right
+                  buyers and ensure a smooth experience for everyone.
+                </Text>
+              )
             }
-            setNumber(toEn(e))
-          }}
+          />
+          <Text style={[styles.headLine, { marginTop: 36 }]}>
+            {isBn
+              ? "কর্মচারী / টিমের সদস্য সংখ্যা"
+              : "Number of employees/team member"}
+          </Text>
+          <Input
+            value={number}
+            onChange={(e) => {
+              if (e?.split("")?.length > 8) {
+                return;
+              }
+              setNumber(toEn(e));
+            }}
             keyboardType={"number-pad"}
             style={styles.input}
             placeholder={"0"}
           />
-          <Text style={styles.text}>Minimum 1 require</Text>
-          <IconButton active={parseInt(number)>0?true:false}
-          disabled={parseInt(number)>0?false:true}
+          <Text style={styles.text}>
+            {isBn ? "সর্বনিম্ন 1 আবশ্যক" : "Minimum 1 require"}
+          </Text>
+          <IconButton
+            active={parseInt(number) > 0 ? true : false}
+            disabled={parseInt(number) > 0 ? false : true}
             onPress={() => {
               dispatch({ type: "TEAM_NUMBER", playload: number });
-              navigation.navigate("Established",{
-                data:{
+              navigation.navigate("Established", {
+                data: {
                   serviceCenterName: data.serviceCenterName,
                   providerName: data.providerName,
                   gender: data.gender,
                   position: data.position,
-                  numberOfTeam:number,
-                  serviceCategory:data?.serviceCategory,
-                  skills:data?.skills,
-                  facilities:data?.facilities,
-                }
+                  numberOfTeam: number,
+                  serviceCategory: data?.serviceCategory,
+                  skills: data?.skills,
+                  facilities: data?.facilities,
+                },
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>

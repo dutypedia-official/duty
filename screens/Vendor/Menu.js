@@ -39,6 +39,7 @@ import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import Avatar from "../../components/Profile/Avatar";
 import { serverToLocalNew } from "../../Class/dataConverter";
 import ProfileSkeleton from "../../components/ProfileSkeleton";
+import useLang from "../../Hooks/UseLang";
 
 const Menu = ({ navigation }) => {
   const vendorInfo = useSelector((state) => state.vendorInfo);
@@ -55,10 +56,10 @@ const Menu = ({ navigation }) => {
   const user = useSelector((state) => state.user);
   const isFocused = useIsFocused();
   const inset = useSafeAreaInsets();
-  const [late,setLate]=useState(false)
-
+  const [late, setLate] = useState(false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
-   
     if (user) {
       getDashboardInfo(user.token, vendor.service.id)
         .then((res) => {
@@ -72,7 +73,7 @@ const Menu = ({ navigation }) => {
   }, []);
   React.useEffect(() => {
     if (isFocused) {
-      setLate(false)
+      setLate(false);
       //console.log("hidden")
       dispatch(setHideBottomBar(false));
       setTimeout(() => {
@@ -83,7 +84,6 @@ const Menu = ({ navigation }) => {
       //dispatch(setHideBottomBar(true));
     }
   }, [isFocused]);
-  
 
   return (
     <View style={{ flex: 1 }}>
@@ -114,8 +114,8 @@ const Menu = ({ navigation }) => {
               marginTop: 24,
               fontWeight: "800",
               fontSize: 20,
-              
-            }}>
+            }}
+          >
             {vendor && vendor.service && vendor.service.serviceCenterName
               ? vendor.service.serviceCenterName
               : "Easin Arafat It Service"}
@@ -125,10 +125,10 @@ const Menu = ({ navigation }) => {
               marginTop: 12,
               fontSize: 16,
               fontWeight: "500",
-              
+
               color: "#767676",
-            }}>
-            
+            }}
+          >
             {vendor &&
             vendor.service &&
             vendor.service.providerInfo &&
@@ -138,26 +138,27 @@ const Menu = ({ navigation }) => {
           </Text>
         </View>
         <View
-          style={{ paddingHorizontal: 28, paddingTop: 31, paddingBottom: 52 }}>
+          style={{ paddingHorizontal: 28, paddingTop: 31, paddingBottom: 52 }}
+        >
           <Cart
-            onPress={() =>{
+            onPress={() => {
               //navigation.navigate("Member")
-              navigation.navigate("VendorProfile")
+              navigation.navigate("VendorProfile");
             }}
             Icon={icon}
-            title={"View Profile"}
+            title={isBn ? "প্রোফাইল দেখুন" : "View Profile"}
             text={`${info?.services ? info?.services : "0"} Services`}
           />
           <Cart
             onPress={() => navigation.navigate("Member")}
             Icon={member}
-            title={"Member List"}
+            title={isBn ? "সদস্য তালিকা" : "Member List"}
             text={`${info?.members > 9 ? info?.members : `0${info?.members}`}`}
           />
           <Cart
             onPress={() => navigation.navigate("VendorAccountBalance")}
             Icon={account}
-            title={"Account Balance"}
+            title={isBn ? "আ্যকাউন্ট ব্যালেন্স" : "Account Balance"}
             text={`${info?.balance}৳`}
           />
           <Cart
@@ -165,19 +166,19 @@ const Menu = ({ navigation }) => {
               navigation.navigate("CustomerReview");
             }}
             Icon={review}
-            title={"Customer Review"}
+            title={isBn ? "গ্রাহকের রিভিউ" : "Customer Review"}
             text={`${info?.reviews} review`}
           />
           <Cart
             onPress={() => navigation.navigate("UserNotice")}
             Icon={notice}
-            title={"Manage Notice"}
+            title={isBn ? "বিজ্ঞপ্তি" : "Manage Notice"}
             text={`${info?.notices > 9 ? info?.notices : `0${info?.notices}`}`}
           />
           <Cart
             onPress={() => navigation.navigate("Support")}
             Icon={support}
-            title={"Support"}
+            title={isBn ? "সাপোর্ট" : "Support"}
           />
           <Cart
             onPress={() => {
@@ -186,7 +187,7 @@ const Menu = ({ navigation }) => {
               //navigation.navigate("Home");
             }}
             Icon={logout}
-            title={"Logout"}
+            title={isBn ? "লগ আউট করুন" : "Logout"}
           />
         </View>
       </ScrollView>
@@ -236,7 +237,8 @@ const Cart = ({ title, Icon, onPress, text }) => {
         if (onPress) {
           onPress();
         }
-      }}>
+      }}
+    >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <SvgXml height={"24"} width={"24"} xml={Icon} />
         <Text
@@ -244,8 +246,8 @@ const Cart = ({ title, Icon, onPress, text }) => {
             marginLeft: 10,
             fontSize: 14,
             fontWeight: "500",
-            
-          }}>
+          }}
+        >
           {title}
         </Text>
       </View>
@@ -256,8 +258,8 @@ const Cart = ({ title, Icon, onPress, text }) => {
             color: "#A3A3A3",
             fontWeight: "400",
             fontSize: 14,
-            
-          }}>
+          }}
+        >
           {text}
         </Text>
         <SvgXml xml={right} height={"10"} width={"6"} />

@@ -1,17 +1,27 @@
 import { useIsFocused } from "@react-navigation/native";
 import React, { useState } from "react";
-import { ScrollView, View, Text, StyleSheet, StatusBar, SafeAreaView } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import IconButton from "../../../components/IconButton";
 import RadioButton from "../../../components/RadioButton";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
+import useLang from "../../../Hooks/UseLang";
 
 export default function FirstStepVerification({ navigation }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [type, setType] = useState();
   const [error, setError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -25,43 +35,76 @@ export default function FirstStepVerification({ navigation }) {
   }, [isFocused]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginVertical: 32,
             marginHorizontal: 28,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vector} />
-          <Text style={[styles.text, { marginTop: 32 }]}>
-            Identity verification is a process that compares the identity that a
-            person claims to have with the supporting data they possess. Confirm
-            your identity with ease and accuracy.
-          </Text>
+          {isBn ? (
+            <Text style={[styles.text, { marginTop: 32 }]}>
+              আইডেন্টিটি ভেরিফিকেশন হল এমন একটি প্রক্রিয়া যা একজন ব্যক্তি যে
+              পরিচয় দাবি করে তার সাথে তার থাকা সমর্থনকারী ডেটার সাথে তুলনা
+              করে৷।সহজে এবং নির্ভুলতার সাথে আপনার পরিচয় নিশ্চিত করে৷।
+            </Text>
+          ) : (
+            <Text style={[styles.text, { marginTop: 32 }]}>
+              Identity verification is a process that compares the identity that
+              a person claims to have with the supporting data they possess.
+              Confirm your identity with ease and accuracy.
+            </Text>
+          )}
           <View style={[styles.view, { marginTop: 32 }]}>
-            <Text style={styles.headLine}>Individual</Text>
+            <Text style={styles.headLine}>
+              {isBn ? "ইন্ডিভিজুয়াল" : "Individual"}
+            </Text>
           </View>
-          <Text style={[styles.text, { marginTop: 32 }]}>
-            An individual account is for people who want to use the platform for
-            their personal services or as a sole proprietor. If you are a
-            freelancer, independent contractor, or self-employed, you can use an
-            individual account. You will need to provide your personal
-            information, such as your name, date of birth, and government-issued
-            ID, to verify your identity.
-          </Text>
+          {isBn ? (
+            <Text style={[styles.text, { marginTop: 32 }]}>
+              একটি স্বতন্ত্র অ্যাকাউন্ট এমন লোকেদের জন্য যারা তাদের ব্যক্তিগত
+              সার্ভিসের জন্য বা একমাত্র মালিক হিসাবে প্ল্যাটফর্মটি ব্যবহার করতে
+              চান৷। আপনি যদি একজন ফ্রিল্যান্সার, স্বাধীন ঠিকাদার বা স্ব-নিযুক্ত
+              হন তবে আপনি একটি পৃথক অ্যাকাউন্ট ব্যবহার করতে পারেন৷।আপনার পরিচয়
+              যাচাই করার জন্য আপনাকে আপনার ব্যক্তিগত তথ্য প্রদান করতে হবে, যেমন
+              আপনার নাম, জন্মতারিখ এবং সরকার কর্তৃক ইস্যু করা আইডি৷।
+            </Text>
+          ) : (
+            <Text style={[styles.text, { marginTop: 32 }]}>
+              An individual account is for people who want to use the platform
+              for their personal services or as a sole proprietor. If you are a
+              freelancer, independent contractor, or self-employed, you can use
+              an individual account. You will need to provide your personal
+              information, such as your name, date of birth, and
+              government-issued ID, to verify your identity.
+            </Text>
+          )}
           <View style={[styles.view, { marginTop: 32 }]}>
-            <Text style={styles.headLine}>Company</Text>
+            <Text style={styles.headLine}>{isBn ? "কোম্পানি" : "Company"}</Text>
           </View>
-          <Text style={[styles.text, { marginTop: 32 }]}>
-            A company account is for businesses or organizations that want to
-            use the platform to offer services. If you are registering as a
-            company, you will need to provide your business name, tax ID, and
-            other relevant information to verify your identity. You may also
-            need to provide documentation, such as articles of incorporation, to
-            prove that you are authorized to act on behalf of the company.
-          </Text>
+          {isBn ? (
+            <Text style={[styles.text, { marginTop: 32 }]}>
+              একটি কোম্পানির অ্যাকাউন্ট এমন ব্যবসা বা প্রতিষ্ঠানের জন্য যারা
+              প্ল্যাটফর্ম ব্যবহার করে সার্ভিস অফার করতে চায়৷।আপনি যদি একটি
+              কোম্পানি হিসাবে নিবন্ধন করেন, তাহলে আপনার পরিচয় যাচাই করার জন্য
+              আপনাকে আপনার ব্যবসার নাম, ট্যাক্স আইডি এবং অন্যান্য প্রাসঙ্গিক
+              তথ্য প্রদান করতে হবে৷ আপনি কোম্পানীর পক্ষে কাজ করার জন্য অনুমোদিত
+              তা প্রমাণ করার জন্য আপনাকে দলিলপত্র প্রদান করতে হতে পারে, যেমন
+              নিগমকরণের নিবন্ধ৷
+            </Text>
+          ) : (
+            <Text style={[styles.text, { marginTop: 32 }]}>
+              A company account is for businesses or organizations that want to
+              use the platform to offer services. If you are registering as a
+              company, you will need to provide your business name, tax ID, and
+              other relevant information to verify your identity. You may also
+              need to provide documentation, such as articles of incorporation,
+              to prove that you are authorized to act on behalf of the company.
+            </Text>
+          )}
           <Text style={[styles.text, { fontSize: 20, marginTop: 32 }]}>
-            Select account type
+            {isBn ? "আপনার অ্যাকাউন্ট নির্বাচন করুন" : "Select account type"}
           </Text>
           <View style={{ marginVertical: 32 }}>
             <RadioButton
@@ -71,7 +114,7 @@ export default function FirstStepVerification({ navigation }) {
                 setType("Individual");
               }}
               value={type == "Individual" ? true : false}
-              title={"Individual"}
+              title={isBn ? "ইন্ডিভিজুয়াল" : "Individual"}
               style={{
                 width: 16,
                 height: 16,
@@ -89,7 +132,7 @@ export default function FirstStepVerification({ navigation }) {
                 setType("Company");
               }}
               value={type == "Company" ? true : false}
-              title={"Company"}
+              title={isBn ? "কোম্পানি" : "Company"}
               style={{
                 width: 16,
                 height: 16,
@@ -107,7 +150,11 @@ export default function FirstStepVerification({ navigation }) {
             onPress={() => {
               setType();
               if (!type) {
-                setError("*Required account type");
+                setError(
+                  isBn
+                    ? "*অ্যাকাউন্ট নির্বাচন করা আবশ্যক"
+                    : "*Required account type"
+                );
                 return;
               }
               navigation.navigate("SecondStepVerification", { type: type });
@@ -117,7 +164,7 @@ export default function FirstStepVerification({ navigation }) {
               borderRadious: 4,
               color: "white",
             }}
-            title={"Next"}
+            title={isBn ? "পরবর্তী" : "Next"}
           />
         </View>
       </ScrollView>
@@ -133,12 +180,10 @@ const styles = StyleSheet.create({
   headLine: {
     fontSize: 24,
     fontWeight: "500",
-    
   },
   text: {
     fontSize: 16,
     fontWeight: "400",
-    
   },
 });
 const vector = `<svg width="337" height="280" viewBox="0 0 337 280" fill="none" xmlns="http://www.w3.org/2000/svg">

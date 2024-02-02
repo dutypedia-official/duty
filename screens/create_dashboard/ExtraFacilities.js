@@ -25,15 +25,18 @@ import customStyle from "../../assets/stylesheet";
 import Input from "../../components/Input";
 import ReadMore from "../../components/ReadMore";
 const { width, height } = Dimensions.get("window");
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
+import useLang from "../../Hooks/UseLang";
 
 export default function ExtraFacilities({ navigation, route }) {
   const isFocused = useIsFocused();
-  const businessForm=useSelector(state=>state.businessForm)
+  const businessForm = useSelector((state) => state.businessForm);
   const dispatch = useDispatch();
   const [layoutHeight, setLayoutHeight] = useState(0);
   const serviceCategory = route?.params?.serviceCategory;
   const skills = route?.params?.skills;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [Service, setService] = React.useState([
     {
       id: 1,
@@ -53,11 +56,32 @@ export default function ExtraFacilities({ navigation, route }) {
   ]);
   const [buttonVisible, setButtonVisible] = React.useState(false);
   const [ServiceError, setServiceError] = React.useState();
- 
+
+  const content = isBn
+    ? `1. ইউনিক অফারগুলি আইডেন্টিফাই করুন: ক্লায়েন্টদের কাছে আপনি যে ভ্যালুতে অফার করতে চান তা উন্নত করার জন্য আপনি যে সার্ভিস বা বৈশিষ্ট্যগুলি সরবরাহ করতে পারেন সে সম্পর্কে চিন্তা করুন৷ আপনার ব্যবসায়ের স্পেশালিটি কী এবং আপনি ক্রেতাদের চাহিদা মেটানোর জন্য কত টুক দূরত্বে যেতে পারেন তা বিবেচনা করুন৷।
+
+2. আপনার ইউনিক বিষয় গুলা দেখান: গ্রাহকদের এটেনশন পেতে আপনার ক্যাটাগরি গুলো আলাদা করার জন্য আপনি যে ইউনিক সুবিধাগুলি প্রদান করেন তা হাইলাইট করুন৷। এটি একটি ফ্রি কনসালটেশন, 24/7 কাস্টমার সাপোর্ট, অথবা পার্সোনালাইজড সলিউশন যাইহোক না কেন, নিশ্চিত করুন যে আপনার সার্ভিসগুলি বেছে নেওয়ার মাধ্যমে গ্রাহকরা সকল সুবিধাগুলি উপভোগ করতে পারবে ৷
+  
+3. পরিষ্কার এবং সংক্ষিপ্ত হোন: আপনার এক্সট্রা সুবিধা গুলো বর্ণনা করার সময়, তাদের মূল্য বোঝাতে পরিষ্কার এবং সংক্ষিপ্ত ভাষা ব্যবহার করুন৷ তারা যে নির্দিষ্ট সুবিধাগুলি নিয়ে আসে এবং কীভাবে তারা আপনার ব্যবসার সাথে ক্লায়েন্টদের অভিজ্ঞতাকে পজিটিভলি প্রভাবিত করতে পারে তার উপর ফোকাস করুন৷।
+  
+4. এটি প্রাসঙ্গিক রাখুন: নিশ্চিত করুন যে আপনি যে এক্সট্রা ফ্যাসিলিটিজ অফার করেন তা আপনার দক্ষতার সাথে প্রাসঙ্গিক এবং আপনার সমস্ত অফার করা সার্ভিসগুলির সাথে সামঞ্জস্য৷ এটি ক্লায়েন্টদের সাথে সমকম্পিত হয়ে একটি সমন্বিত এবং আকর্ষিক প্রোফাইল তৈরি করতে সাহায্য করবে৷।
+  
+5. প্রয়োজন অনুযায়ী আপডেট করুন: আপনার ব্যবসার বিকাশের সাথে সাথে আপনার দেওয়া এক্সট্রা ফ্যাসিলিটিজগুলি পুনরায় দেখুন এবং আপডেট করুন৷ বাজারের ট্রেন্ডস এবং ক্লায়েন্টের ডিমান্ডের প্রতি সংবেদনশীল থাকুন এবং একটি প্রতিযোগিতামূলক প্রান্ত বজায় রাখতে সেই অনুযায়ী আপনার অফারগুলিকে মেইনটেইন করুন৷।
+`
+    : `1. Identify Unique Offerings: Think about the additional services or features you can provide to enhance the value you offer to potential clients. Consider what makes your business special and how you can go the extra mile to meet their needs.
+
+2. Showcase Your Differentiators: Highlight the unique facilities you provide to attract attention and stand out in your category. Whether it's offering a free consultation, 24/7 customer support, or personalized solutions, make sure to emphasize the benefits clients can enjoy by choosing your services.
+
+3. Be Clear and Concise: When describing your extra facilities, use clear and concise language to convey their value. Focus on the specific advantages they bring and how they can positively impact clients' experiences with your business.
+
+4. Keep it Relevant: Ensure that the extra facilities you offer are relevant to your skills and align with your overall service offerings. This will help create a cohesive and compelling profile that resonates with potential clients.
+
+5. Update as Needed: As your business evolves, revisit and update the extra facilities you provide. Stay responsive to market trends and client demands, and adapt your offerings accordingly to maintain a competitive edge.`;
+
   React.useEffect(() => {
-    if(businessForm?.facilities){
-        setService(businessForm.facilities)
-      }
+    if (businessForm?.facilities) {
+      setService(businessForm.facilities);
+    }
     if (isFocused) {
       //console.log("hidden")
       dispatch(setHideBottomBar(true));
@@ -73,14 +97,16 @@ export default function ExtraFacilities({ navigation, route }) {
     <View
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <PageChip currentPage={3} totalPage={14} />
         <View
           style={{
             marginTop: 10,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <Image
             style={{
               width: width - 40,
@@ -93,7 +119,8 @@ export default function ExtraFacilities({ navigation, route }) {
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -101,63 +128,24 @@ export default function ExtraFacilities({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for Extra Facilities
+              {isBn
+                ? "অতিরিক্ত সুবিধা অ্যাড করার সম্পর্কে টিপস:"
+                : "Tips for Extra Facilities"}
             </Text>
           </View>
-          {/* <ViewMore
-            view={true}
-            style={{
-              marginTop: 24,
-            }}
-            lowHeight={70}
-            width={135}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <View
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}>
-                <TextOp
-                  style={{ marginTop: 0 }}
-                  text={`Identify Unique Offerings: Think about the additional services or features you can provide to enhance the value you offer to potential clients. Consider what makes your business special and how you can go the extra mile to meet their needs.`}
-                  number={"1."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Showcase Your Differentiators: Highlight the unique facilities you provide to attract attention and stand out in your category. Whether it's offering a free consultation, 24/7 customer support, or personalized solutions, make sure to emphasize the benefits clients can enjoy by choosing your services.`}
-                  number={"2."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Be Clear and Concise: When describing your extra facilities, use clear and concise language to convey their value. Focus on the specific advantages they bring and how they can positively impact clients' experiences with your business.`}
-                  number={"3."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={`Keep it Relevant: Ensure that the extra facilities you offer are relevant to your skills and align with your overall service offerings. This will help create a cohesive and compelling profile that resonates with potential clients.`}
-                  number={"4."}
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={
-                    "Update as Needed: As your business evolves, revisit and update the extra facilities you provide. Stay responsive to market trends and client demands, and adapt your offerings accordingly to maintain a competitive edge."
-                  }
-                  number={"5."}
-                />
-              </View>
-            }
-          /> */}
-          <ReadMore containerStyle={{marginTop:24}} content={content}/>
+
+          <ReadMore containerStyle={{ marginTop: 24 }} content={content} />
           <View>
             <Text
               style={{
                 fontSize: 20,
                 fontWeight: "400",
                 marginTop: 36,
-              }}>
-              Extra facilities ( Optional )
+              }}
+            >
+              {isBn
+                ? "অতিরিক্ত সুবিধা ( আবশ্যক না)"
+                : "Extra facilities ( Optional )"}
             </Text>
             {Array.isArray(Service) &&
               Service.map((doc, i) => (
@@ -190,7 +178,8 @@ export default function ExtraFacilities({ navigation, route }) {
                   fontFamily: "Poppins-Light",
                   color: "red",
                   marginTop: 3,
-                }}>
+                }}
+              >
                 {ServiceError}
               </Text>
             )}
@@ -203,11 +192,11 @@ export default function ExtraFacilities({ navigation, route }) {
                 style={{
                   flexDirection: "row",
                   borderWidth: 0,
-                  width: 100,
+                  width: 130,
                   marginTop: 20,
                 }}
                 LeftIcon={() => <SvgXml xml={plus} />}
-                title={"Add More"}
+                title={isBn ? "আরও অ্যাড করুন" : "Add More"}
               />
             )}
           </View>
@@ -220,18 +209,19 @@ export default function ExtraFacilities({ navigation, route }) {
               navigation.navigate("BusinessTitle", {
                 serviceCategory: serviceCategory,
                 skills: skills,
-                facilities:Service?.filter(d=>d?.checked)
+                facilities: Service?.filter((d) => d?.checked),
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>
       <Modal
         transparent={true}
         visible={buttonVisible}
-        onRequestClose={() => setButtonVisible(false)}>
+        onRequestClose={() => setButtonVisible(false)}
+      >
         <AddCard
           onSelect={(e) => {
             setService((d) => [
@@ -253,12 +243,15 @@ export default function ExtraFacilities({ navigation, route }) {
 const AddCard = ({ onClose, onSelect }) => {
   const [text, setText] = useState();
   const [textError, setTextError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+    >
       <View style={[customStyle.fullBox, { backgroundColor: "#0000001e" }]}>
         <View
           style={[
@@ -270,32 +263,43 @@ const AddCard = ({ onClose, onSelect }) => {
               padding: 20,
             },
             customStyle.shadow,
-          ]}>
+          ]}
+        >
           <Text
             style={{
               fontSize: 20,
               fontWeight: "500",
               textAlign: "center",
-            }}>
-            Add Feature
+            }}
+          >
+            {isBn ? "অতিরিক্ত সুবিধাগুলি অ্যাড করুন" : "Add Feature"}
           </Text>
           <Input
             error={textError}
             value={text}
             onChange={setText}
             style={[styles.input]}
+            placeholder={isBn ? "এখানে লিখুন" : "Type here"}
           />
-          <Text style={styles.text}>Max 40 character</Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বোচ্চ ৪০ টি অক্ষর" : "Max 40 character"}
+          </Text>
           <View style={{ flexDirection: "row" }}>
             <IconButton
               onPress={() => {
                 setTextError();
                 if (!text) {
-                  setTextError("*Text is required");
+                  setTextError(
+                    isBn ? "*কিছু লিখা আবশ্যক" : "*Text is required"
+                  );
                   return;
                 }
                 if (text && text.split("").length > 40) {
-                  setTextError("*Text must be less then 40 character");
+                  setTextError(
+                    isBn
+                      ? "অক্ষর অবশ্যই 40 অক্ষরের কম হতে হবে"
+                      : "*Text must be less then 40 character"
+                  );
                   return;
                 }
                 if (onSelect) {
@@ -310,13 +314,13 @@ const AddCard = ({ onClose, onSelect }) => {
                   color: "#ffffff",
                 },
               ]}
-              title={"Add"}
+              title={isBn ? "অ্যাড করুন" : "Add"}
             />
             <View style={{ width: 20 }} />
             <IconButton
               onPress={onClose}
               style={newStyles.button}
-              title={"Cancel"}
+              title={isBn ? "বাদ দিন" : "Cancel"}
             />
           </View>
         </View>
@@ -334,12 +338,3 @@ const plus = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns=
 <path d="M1 9H17M9 17V1" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
-const content=`1. Identify Unique Offerings: Think about the additional services or features you can provide to enhance the value you offer to potential clients. Consider what makes your business special and how you can go the extra mile to meet their needs.
-
-2. Showcase Your Differentiators: Highlight the unique facilities you provide to attract attention and stand out in your category. Whether it's offering a free consultation, 24/7 customer support, or personalized solutions, make sure to emphasize the benefits clients can enjoy by choosing your services.
-
-3. Be Clear and Concise: When describing your extra facilities, use clear and concise language to convey their value. Focus on the specific advantages they bring and how they can positively impact clients' experiences with your business.
-
-4. Keep it Relevant: Ensure that the extra facilities you offer are relevant to your skills and align with your overall service offerings. This will help create a cohesive and compelling profile that resonates with potential clients.
-
-5. Update as Needed: As your business evolves, revisit and update the extra facilities you provide. Stay responsive to market trends and client demands, and adapt your offerings accordingly to maintain a competitive edge.`

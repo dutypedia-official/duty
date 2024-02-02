@@ -1,17 +1,20 @@
 import { useIsFocused } from "@react-navigation/native";
 import React from "react";
-import { View,Text } from "react-native";
+import { View, Text } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
+import useLang from "../../../Hooks/UseLang";
 
-export default function ConfirmationScreen({navigation}) {
-  const isFocused=useIsFocused()
-  const dispatch=useDispatch()
+export default function ConfirmationScreen({ navigation }) {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
-       dispatch(setHideBottomBar(true));
+      dispatch(setHideBottomBar(true));
     } else {
       dispatch(setHideBottomBar(false));
     }
@@ -26,35 +29,43 @@ export default function ConfirmationScreen({navigation}) {
         justifyContent: "center",
         alignItems: "center",
         paddingHorizontal: 28,
-      }}>
+      }}
+    >
       <SvgXml xml={icon} />
-      <Text style={{
-        marginTop:32,
-        color:"#4CD964",
-        fontSize:24
-      }}>Request Successfully sent</Text>
-      <Text style={{
-        marginTop:24,
-        fontSize:16,
-        fontWeight:"400",
-        color:"#484848",
-        
-      }}>
-        Thank you for submitting your verification documents. We are now
-        reviewing your information and will notify you of the verification
-        status via our in-app chat on your mobile device or via our chat feature
-        on the desktop website. If we need any additional information, we will
-        contact you directly via chat. Thank you for your patience and for being
-        a part of our community.
+      <Text
+        style={{
+          marginTop: 32,
+          color: "#4CD964",
+          fontSize: 24,
+        }}
+      >
+        {isBn ? "অনুরোধ সফলভাবে পাঠানো হয়েছে" : "Request Successfully sent"}
       </Text>
-      <Text onPress={()=>{
-        navigation.navigate("AccountBalance")
-      }} style={{
-        color:"#4CD964",
-        textDecorationLine:"underline",
-        marginTop:24,
-        fontSize:16,
-      }}>Back to dashboard</Text>
+      <Text
+        style={{
+          marginTop: 24,
+          fontSize: 16,
+          fontWeight: "400",
+          color: "#484848",
+        }}
+      >
+        {isBn
+          ? "আপনার ভেরিফিকেশন ডকুমেন্ট জমা দেওয়ার জন্য আপনাকে ধন্যবাদ। আমরা এখন আপনার তথ্য রিভিউ করছি এবং আপনার অ্যাকাউন্ট সফলভাবে যাচাই হওয়ার সাথে সাথে আপনাকে অবহিত করব। আমাদের যদি কোনো অতিরিক্ত তথ্যের প্রয়োজন হয়, আমরা আপনার মোবাইল ডিভাইসে আমাদের ইন-অ্যাপ চ্যাটের মাধ্যমে বা ডেস্কটপ ওয়েবসাইটে আমাদের চ্যাট বৈশিষ্ট্যের মাধ্যমে সরাসরি আপনার সাথে যোগাযোগ করব। আপনার ধৈর্যের জন্য এবং আমাদের সম্প্রদায়ের একটি অংশ হওয়ার জন্য আপনাকে ধন্যবাদ৷"
+          : "Thank you for submitting your verification documents. We are now reviewing your information and will notify you of the verification status via our in-app chat on your mobile device or via our chat feature on the desktop website. If we need any additional information, we will contact you directly via chat. Thank you for your patience and for being a part of our community."}
+      </Text>
+      <Text
+        onPress={() => {
+          navigation.navigate("AccountBalance");
+        }}
+        style={{
+          color: "#4CD964",
+          textDecorationLine: "underline",
+          marginTop: 24,
+          fontSize: 16,
+        }}
+      >
+        {isBn ? "ড্যাশবোর্ডে ফিরে যান" : "Back to dashboard"}
+      </Text>
     </View>
   );
 }

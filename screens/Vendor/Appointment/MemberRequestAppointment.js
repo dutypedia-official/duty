@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
-  Pressable
+  Pressable,
 } from "react-native";
 import Svg, { SvgXml } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
@@ -20,6 +20,7 @@ import {
 import { Color } from "../../../assets/colors";
 import { changeTime, timeConverter } from "../../../action";
 import Avatar from "../../../components/Avatar";
+import useLang from "../../../Hooks/UseLang";
 const status = [
   {
     title: "Incomplete",
@@ -46,7 +47,12 @@ const status = [
     color: "#1A1A1A",
   },
 ];
-export default function MemberRequestAppointment({ navigation, route,newUser,offline }) {
+export default function MemberRequestAppointment({
+  navigation,
+  route,
+  newUser,
+  offline,
+}) {
   const [Active, setActive] = React.useState("Sent");
   const user = useSelector((state) => state.user);
   // const data = route.params && route.params.data ? route.params.data : null;
@@ -69,10 +75,10 @@ export default function MemberRequestAppointment({ navigation, route,newUser,off
           let arr = [];
           //console.log(res.data.appointments)
           res.data.appointments.map((doc, i) => {
-            if(doc.user.id==newUser.id){
-                arr.push(doc);
+            if (doc.user.id == newUser.id) {
+              arr.push(doc);
             }
-           // arr.push(doc);
+            // arr.push(doc);
           });
           setUpcoming(arr);
         })
@@ -86,8 +92,8 @@ export default function MemberRequestAppointment({ navigation, route,newUser,off
           //console.log(res.data.appointments)
           let arr = [];
           res.data.appointments.map((doc, i) => {
-            if(doc.user.id==newUser.id){
-                arr.push(doc);
+            if (doc.user.id == newUser.id) {
+              arr.push(doc);
             }
           });
           setPrevious(arr);
@@ -106,8 +112,8 @@ export default function MemberRequestAppointment({ navigation, route,newUser,off
           //console.log(res.data.appointments)
           let arr = [];
           res.data.appointments.map((doc, i) => {
-            if(doc.user.id==newUser.id){
-                arr.push(doc);
+            if (doc.user.id == newUser.id) {
+              arr.push(doc);
             }
             if (doc.createdBy == "VENDOR") {
             }
@@ -124,13 +130,13 @@ export default function MemberRequestAppointment({ navigation, route,newUser,off
     if (Upcoming && Previous) {
       let arr = [];
       Upcoming.map((doc, i) => {
-        if(doc.user.id==newUser.id){
-            arr.push(doc);
+        if (doc.user.id == newUser.id) {
+          arr.push(doc);
         }
       });
       Previous.map((doc, i) => {
-        if(doc.user.id==newUser.id){
-            arr.push(doc);
+        if (doc.user.id == newUser.id) {
+          arr.push(doc);
         }
       });
       setData(arr);
@@ -207,9 +213,11 @@ export default function MemberRequestAppointment({ navigation, route,newUser,off
             username={doc.user.username}
           />
         ))}
-        <View style={{
-          height:80
-        }}/>
+        <View
+          style={{
+            height: 80,
+          }}
+        />
       </ScrollView>
 
       <FAB
@@ -233,57 +241,58 @@ export default function MemberRequestAppointment({ navigation, route,newUser,off
     </View>
   );
 }
-const Cart = ({
-  date,
-  status,
-  title,
-  onPress,
-  image,
-  name,
-  username,
-}) => {
+const Cart = ({ date, status, title, onPress, image, name, username }) => {
   //console.log(status)
   return (
-    <Pressable style={{
-      flexDirection:"row",
-      justifyContent:"space-between",
-      paddingHorizontal:20,
-      marginVertical:8,
-      paddingVertical:4,
-      alignItems:"center",
-      
-    }} onPress={onPress}>
+    <Pressable
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 20,
+        marginVertical: 8,
+        paddingVertical: 4,
+        alignItems: "center",
+      }}
+      onPress={onPress}
+    >
       <View
         style={{
           flexDirection: "row",
-          alignItems:"center"
-        }}>
+          alignItems: "center",
+        }}
+      >
         <Avatar
           style={{
             width: 48,
             height: 48,
-            borderColor:"#e5e5e5"
+            borderColor: "#e5e5e5",
           }}
           source={{ uri: image }}
         />
         <View
           style={{
             marginLeft: 12,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 16,
               fontWeight: "700",
             }}
-            numberOfLines={1}>
+            numberOfLines={1}
+          >
             {name ? name : "Easin Arafat"}
           </Text>
-          <Text style={{
-            marginTop:4,
-            fontSize:12,
-            fontWeight:"400",
-            color:"#767676"
-          }}>{date}</Text>
+          <Text
+            style={{
+              marginTop: 4,
+              fontSize: 12,
+              fontWeight: "400",
+              color: "#767676",
+            }}
+          >
+            {date}
+          </Text>
         </View>
       </View>
       <Text
@@ -292,7 +301,8 @@ const Cart = ({
           color: status ? status.color : "#1A1A1A",
           fontSize: 12,
           fontWeight: "500",
-        }}>{`${status ? status.title : "Invalid"}`}</Text>
+        }}
+      >{`${status ? status.title : "Invalid"}`}</Text>
     </Pressable>
   );
   return (
@@ -309,7 +319,8 @@ const Cart = ({
         alignItems: "center",
         marginTop: 10,
         borderRadius: 5,
-      }}>
+      }}
+    >
       <Avatar
         style={{
           width: 40,
@@ -325,19 +336,22 @@ const Cart = ({
       <View
         style={{
           flex: 0.5,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 12,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           {name ? name : "Easin Arafat"}
         </Text>
         <Text
           style={{
             fontSize: 12,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           @{username ? username : "easinarafat"}
         </Text>
       </View>
@@ -353,16 +367,19 @@ const Cart = ({
         style={{
           flex: 1.5,
           marginLeft: 5,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
-          }}>
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontSize: 12,
-            }}>
+            }}
+          >
             {date}
           </Text>
           <Text
@@ -371,13 +388,15 @@ const Cart = ({
               color: status ? status.color : "red",
               fontSize: 12,
               marginLeft: 10,
-            }}>{`(${status ? status.title : "Invalid"})`}</Text>
+            }}
+          >{`(${status ? status.title : "Invalid"})`}</Text>
         </View>
         <Text
           style={{
             fontSize: 14,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           {title ? title : "Invalid"}
         </Text>
       </View>
@@ -426,6 +445,8 @@ const Chip = ({ title, active, onPress, style }) => {
   );
 };
 const NoAppointment = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
@@ -443,7 +464,7 @@ const NoAppointment = () => {
           marginTop: 10,
         }}
       >
-        No Appointment Found
+        {isBn ? "কোনও অ্যাপয়েন্টমেন্ট নেই" : "No Appointment Found"}
       </Text>
     </View>
   );

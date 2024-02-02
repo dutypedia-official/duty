@@ -178,7 +178,7 @@ const Home = (props) => {
               paddingVertical: 20,
               flexDirection: "row",
               justifyContent: "space-between",
-              marginTop:Platform.OS=="ios"?0:10
+              marginTop: Platform.OS == "ios" ? 0 : 10,
             }}
           >
             <Text

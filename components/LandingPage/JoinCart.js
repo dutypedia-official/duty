@@ -5,8 +5,11 @@ const { width, height } = Dimensions.get("window");
 import { LinearGradient } from "expo-linear-gradient";
 import { rotate, translate } from "@shopify/react-native-skia";
 import IconButton from "../IconButton";
+import useLang from "../../Hooks/UseLang";
 
 export default function JoinCart({ style, onJoin, colors, onClick }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={[
@@ -18,25 +21,33 @@ export default function JoinCart({ style, onJoin, colors, onClick }) {
           marginVertical: 20,
         },
         style,
-      ]}>
+      ]}
+    >
       <LinearGradient
         // Background Linear Gradient
         colors={colors ? colors : ["#0BAB54", "#3BB6B7"]}
         style={styles.container}
-        end={{ x: 0.9, y: 0.2 }}>
-        <Text style={styles.text1}>Grow your business in one month</Text>
+        end={{ x: 0.9, y: 0.2 }}
+      >
+        <Text style={styles.text1}>
+          {isBn
+            ? "ব্যবসাকে রকেটের মত বুস্ট করুন 🚀"
+            : "Grow your business in one month"}
+        </Text>
         <Text style={[styles.text2]}>
-          "Revamp your biz! Join our BD platform for 100% growth in 1 month.
-          Boost sales, expand effortlessly & achieve success.
+          {isBn
+            ? "আপনার ব্যবসার পুনর্গঠন করুন! 1 মাসে 100% বৃদ্ধির জন্য আমাদের ডিউটি প্ল্যাটফর্মে ব্যবসায়ি অ্যাকাউন্ট খুলে যোগ দিন এবং বিক্রয় বৃদ্ধি করুন, অনায়াসে ব্যবসাকে প্রসারিত করুন এবং সাফল্য অর্জন করুন"
+            : "Revamp your biz! Join our BD platform for 100% growth in 1 month. Boost sales, expand effortlessly & achieve success"}
         </Text>
         <View
           style={{
             flexDirection: "row",
-          }}>
+          }}
+        >
           <IconButton
             onPress={onClick}
             style={styles.button}
-            title={"Join now"}
+            title={isBn ? "যোগ দিন" : "Join now"}
           />
         </View>
       </LinearGradient>

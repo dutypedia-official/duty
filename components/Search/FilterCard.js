@@ -7,6 +7,7 @@ import DropDown from "../DropDown";
 import DropDownRight from "./DropDownRight";
 import AddressPicker from "./AddressPicker";
 import IconButton from "../IconButton";
+import useLang from "../../Hooks/UseLang";
 
 export default function FilterCard({ onSelect }) {
   const [range, setRange] = useState([50, 25000]);
@@ -16,9 +17,10 @@ export default function FilterCard({ onSelect }) {
   const [address, setAddress] = useState(["", ""]);
   const [min, setMin] = useState("50");
   const [max, setMax] = useState("25000");
-  const [division,setDivision]=useState()
-  const [district,setDistrict]=useState()
-
+  const [division, setDivision] = useState();
+  const [district, setDistrict] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
     if (min && max) {
       //setRange([parseInt(min),parseInt(max)])
@@ -31,18 +33,21 @@ export default function FilterCard({ onSelect }) {
         paddingHorizontal: 32,
         paddingTop: 28,
         paddingBottom: 36,
-      }}>
-      <Text style={[styles.largeText, { textAlign: "center" }]}>Filter</Text>
+      }}
+    >
+      <Text style={[styles.largeText, { textAlign: "center" }]}>
+        {isBn ? "ফিলটার করুন" : "Filter"}
+      </Text>
       <View style={styles.lineBox}>
-        <Text style={[styles.largeText]}>Price</Text>
+        <Text style={[styles.largeText]}>{isBn ? "দাম" : "Price"}</Text>
         <View style={{ height: 20 }} />
         <Slider
           maximumValue={25000}
           minimumValue={50}
-          value={[min,max]}
+          value={[min, max]}
           onValueChange={(value) => {
-            setMax(value[1])
-            setMin(value[0])
+            setMax(value[1]);
+            setMin(value[0]);
           }}
           renderThumbComponent={() => (
             <View
@@ -53,7 +58,8 @@ export default function FilterCard({ onSelect }) {
                 borderRadius: 9,
                 borderWidth: 1,
                 borderColor: "#4CD964",
-              }}></View>
+              }}
+            ></View>
           )}
           maximumTrackTintColor={"#C6F3CE"}
           minimumTrackTintColor={"#4ADE80"}
@@ -63,7 +69,8 @@ export default function FilterCard({ onSelect }) {
           style={{
             flexDirection: "row",
             alignItems: "center",
-          }}>
+          }}
+        >
           <InputBox
             value={min}
             onChange={(e) => {
@@ -73,7 +80,9 @@ export default function FilterCard({ onSelect }) {
               setMin(e);
             }}
           />
-          <Text style={[styles.mediumText, { marginHorizontal: 12 }]}>to</Text>
+          <Text style={[styles.mediumText, { marginHorizontal: 12 }]}>
+            {isBn ? "থেকে" : "to"}
+          </Text>
           <InputBox
             onChange={(e) => {
               //console.log(e)
@@ -86,29 +95,38 @@ export default function FilterCard({ onSelect }) {
           />
         </View>
       </View>
-      <Text style={[styles.largeText, { marginBottom: 32 }]}>Status</Text>
+      <Text style={[styles.largeText, { marginBottom: 32 }]}>
+        {isBn ? "অবস্থা" : "Status"}
+      </Text>
       <SwitchCart
         value={online}
         onChange={() => setOnline((t) => !t)}
-        title={"Online Seller"}
+        title={isBn ? "অনলাইনে থাকা বিক্রেতা" : "Online Seller"}
       />
-      {Platform.OS=="ios"&&(<View style={{ height: 10 }} />)}
+      {Platform.OS == "ios" && <View style={{ height: 10 }} />}
       <SwitchCart
         value={verified}
         onChange={() => setVerified((t) => !t)}
-        title={"Verified Seller"}
+        title={isBn ? "যাচাইকৃত বিক্রেতা" : "Verified Seller"}
       />
       <DropDownRight
         value={sortBy}
         onChange={setSortBy}
         data={["Older", "Newest"]}
-        title={"Sort by"}
+        title={isBn ? "শ্রেণীবিভক্ত করুন" : "Sort by"}
       />
-      <Text style={[styles.largeText, { marginTop: 32 }]}>Location</Text>
-      <AddressPicker onDivision={e=>{
-        setDivision(e)
-        setDistrict()
-      }} onDistrict={setDistrict} value={address} onChange={setAddress} />
+      <Text style={[styles.largeText, { marginTop: 32 }]}>
+        {isBn ? "ঠিকানা" : "Location"}
+      </Text>
+      <AddressPicker
+        onDivision={(e) => {
+          setDivision(e);
+          setDistrict();
+        }}
+        onDistrict={setDistrict}
+        value={address}
+        onChange={setAddress}
+      />
       <IconButton
         onPress={() => {
           onSelect({
@@ -122,7 +140,7 @@ export default function FilterCard({ onSelect }) {
           });
         }}
         style={styles.button}
-        title={"Apply"}
+        title={isBn ? "সম্পন্ন" : "Apply"}
       />
     </View>
   );
@@ -138,7 +156,8 @@ const InputBox = ({ value, onChange }) => {
         borderRadius: 4,
         height: 34,
         flex: 1,
-      }}>
+      }}
+    >
       <TextInput
         keyboardType="number-pad"
         value={value}
@@ -151,7 +170,7 @@ const InputBox = ({ value, onChange }) => {
 const styles = StyleSheet.create({
   largeText: {
     fontSize: 20,
-    
+
     fontWeight: "400",
   },
   mediumText: {
@@ -170,6 +189,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
     borderRadius: 8,
     color: "#ffffff",
-    marginBottom:35
+    marginBottom: 35,
   },
 });

@@ -6,7 +6,7 @@ import {
   Text,
   Dimensions,
   Pressable,
-  Image
+  Image,
 } from "react-native";
 import Svg, { SvgXml } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
@@ -19,13 +19,18 @@ import {
   getVendorAppointment,
 } from "../../../Class/appointment";
 import { Color } from "../../../assets/colors";
-import { changeTime, dateDifference, serverTimeToLocalDate, timeConverter } from "../../../action";
+import {
+  changeTime,
+  dateDifference,
+  serverTimeToLocalDate,
+  timeConverter,
+} from "../../../action";
 import Avatar from "../../../components/Avatar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Animated, { FadeIn } from "react-native-reanimated";
 import RequestAppointmentList from "./RequestAppointmentList";
-import moment from 'moment';
+import moment from "moment";
 const Tab = createMaterialTopTabNavigator();
 const status = [
   {
@@ -54,7 +59,6 @@ const status = [
   },
 ];
 
-
 export default function VendorAppointmentList({ navigation, route }) {
   const [Active, setActive] = React.useState("Upcoming");
 
@@ -66,6 +70,8 @@ export default function VendorAppointmentList({ navigation, route }) {
   const [Upcoming, setUpcoming] = React.useState();
   const [Previous, setPrevious] = React.useState();
   const list = ["Upcoming", "Previous"];
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   //console.log(data.service.serviceCenterName)
 
@@ -77,10 +83,11 @@ export default function VendorAppointmentList({ navigation, route }) {
             backgroundColor: "#767676",
             height: 2,
           },
-          tabBarStyle:{
+          tabBarStyle: {
             //marginHorizontal:20
-          }
-        }}>
+          },
+        }}
+      >
         {list.map((doc, i) => (
           <Tab.Screen
             key={i}
@@ -114,6 +121,8 @@ export default function VendorAppointmentList({ navigation, route }) {
   );
 }
 const Screen = ({ navigation, route }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const name = route.name;
   const [Loader, setLoader] = useState(false);
   const [Data, setData] = useState();
@@ -123,11 +132,8 @@ const Screen = ({ navigation, route }) => {
   // console.log(name)
   const isFocused = useIsFocused();
   useEffect(() => {
-    
     if (isFocused && name == "All") {
-      
       (async () => {
-        
         let arr = [];
         const res = await getVendorAppointment(
           user.token,
@@ -147,7 +153,7 @@ const Screen = ({ navigation, route }) => {
         });
         setData(arr);
       })();
-    } else if (isFocused && name!="Request") {
+    } else if (isFocused && name != "Request") {
       (async () => {
         const res = await getVendorAppointment(
           user.token,
@@ -158,8 +164,8 @@ const Screen = ({ navigation, route }) => {
       })();
     }
   }, [isFocused]);
-  if(isFocused&&name=="Request"){
-    return <RequestAppointmentList navigation={navigation}/>
+  if (isFocused && name == "Request") {
+    return <RequestAppointmentList navigation={navigation} />;
   }
   if (!Data) {
     return (
@@ -168,42 +174,42 @@ const Screen = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size={"small"} color={backgroundColor} />
       </View>
     );
   }
-  if(Data&&Data.length==0){
-    return <NoAppointment />
+  if (Data && Data.length == 0) {
+    return <NoAppointment />;
   }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-        
-    {Data.map((doc, i) => (
-      <Cart
-        key={i}
-        onPress={() => {
-          navigation.navigate("VendorAppointmentListDetails", {
-            data: doc,
-          });
-        }}
-        status={
-          status.filter((s) => s.title.toUpperCase().match(doc.status))[0]
-        }
-        title={doc.title}
-        date={doc.date}
-        startTime={doc?.startTime}
-        endTime={doc?.endTime}
-        name={`${doc.user.name}`}
-        image={doc.user.profilePhoto}
-        username={doc.user.username}
-        type={name?.toUpperCase()}
-        data={doc}
-        navigation={navigation}
-      />
-    ))}
-    <View style={{ height: 80 }} />
-  </ScrollView>
+      {Data.map((doc, i) => (
+        <Cart
+          key={i}
+          onPress={() => {
+            navigation.navigate("VendorAppointmentListDetails", {
+              data: doc,
+            });
+          }}
+          status={
+            status.filter((s) => s.title.toUpperCase().match(doc.status))[0]
+          }
+          title={doc.title}
+          date={doc.date}
+          startTime={doc?.startTime}
+          endTime={doc?.endTime}
+          name={`${doc.user.name}`}
+          image={doc.user.profilePhoto}
+          username={doc.user.username}
+          type={name?.toUpperCase()}
+          data={doc}
+          navigation={navigation}
+        />
+      ))}
+      <View style={{ height: 80 }} />
+    </ScrollView>
   );
 };
 export const Cart = ({
@@ -218,75 +224,85 @@ export const Cart = ({
   endTime,
   type,
   data,
-  navigation
+  navigation,
 }) => {
   //console.log(status)
-  
-  const diff= dateDifference(new Date(),date);
+
+  const diff = dateDifference(new Date(), date);
   //console.log(`${date}==${diff}`)
   return (
-    <Pressable style={{
-      flexDirection:"row",
-      justifyContent:"space-between",
-      paddingHorizontal:20,
-      marginVertical:8,
-      paddingVertical:4,
-      alignItems:"center",
-      
-    }} onPress={onPress}>
+    <Pressable
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 20,
+        marginVertical: 8,
+        paddingVertical: 4,
+        alignItems: "center",
+      }}
+      onPress={onPress}
+    >
       <View
         style={{
           flexDirection: "row",
-          alignItems:"center"
-        }}>
-        <Avatar onPress={()=>{
-          if(data?.user){
-            navigation.navigate("UserProfile", { user: data });
-          }
-          else if(data?.service){
-            navigation.navigate("OtherProfile", { data: data,serviceId:data?.service?.id });
-          }
-          
-          
+          alignItems: "center",
         }}
+      >
+        <Avatar
+          onPress={() => {
+            if (data?.user) {
+              navigation.navigate("UserProfile", { user: data });
+            } else if (data?.service) {
+              navigation.navigate("OtherProfile", {
+                data: data,
+                serviceId: data?.service?.id,
+              });
+            }
+          }}
           style={{
             width: 48,
             height: 48,
-            borderColor:"#e5e5e5"
+            borderColor: "#e5e5e5",
           }}
           source={{ uri: image }}
         />
         <View
           style={{
             marginLeft: 12,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 16,
               fontWeight: "400",
             }}
-            numberOfLines={1}>
+            numberOfLines={1}
+          >
             {name ? name : "Easin Arafat"}
           </Text>
-          <Text style={{
-            marginTop:4,
-            fontSize:12,
-            fontWeight:"400",
-            color:"#767676"
-          }}>
+          <Text
+            style={{
+              marginTop: 4,
+              fontSize: 12,
+              fontWeight: "400",
+              color: "#767676",
+            }}
+          >
             {}
-          {diff<2?moment(new Date(`${date}`)).calendar().split(" at")[0]:serverTimeToLocalDate(date)}
-          {"  "}
-           {changeTime(startTime)}
-          {" - "}
-          {changeTime(endTime)}
+            {diff < 2
+              ? moment(new Date(`${date}`))
+                  .calendar()
+                  .split(" at")[0]
+              : serverTimeToLocalDate(date)}
+            {"  "}
+            {changeTime(startTime)}
+            {" - "}
+            {changeTime(endTime)}
           </Text>
         </View>
       </View>
-      
     </Pressable>
   );
- 
 };
 
 const Chip = ({ title, active, onPress, style }) => {
@@ -305,39 +321,50 @@ const Chip = ({ title, active, onPress, style }) => {
           alignItems: "center",
         },
         style,
-      ]}>
+      ]}
+    >
       <Text
         style={{
           color: active ? "white" : "black",
-        }}>
+        }}
+      >
         {title}
       </Text>
     </TouchableOpacity>
   );
 };
-import appointment from "../../../assets/appointment.jpeg"
+import appointment from "../../../assets/appointment.jpeg";
+import useLang from "../../../Hooks/UseLang";
 const NoAppointment = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
-    <Animated.View entering={FadeIn}
+    <Animated.View
+      entering={FadeIn}
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-      }}>
-      <Image source={appointment} style={{
-        height:200,
-        width:200,
-        borderWidth:1,
-        borderRadius:100,
-        borderColor:"#EFEFEF"
-      }} />
+      }}
+    >
+      <Image
+        source={appointment}
+        style={{
+          height: 200,
+          width: 200,
+          borderWidth: 1,
+          borderRadius: 100,
+          borderColor: "#EFEFEF",
+        }}
+      />
       <Text
         style={{
           fontSize: 16,
           fontFamily: "Poppins-Medium",
           marginTop: 24,
-        }}>
-        No Appointment Found
+        }}
+      >
+        {isBn ? "কোনও অ্যাপয়েন্টমেন্ট নেই" : "No Appointment Found"}
       </Text>
     </Animated.View>
   );

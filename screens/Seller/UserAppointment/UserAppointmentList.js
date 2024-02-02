@@ -6,7 +6,7 @@ import {
   Text,
   Dimensions,
   Pressable,
-  Image
+  Image,
 } from "react-native";
 import Svg, { SvgXml } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
@@ -72,10 +72,7 @@ export default function UserAppointmentList({ navigation, route }) {
   const [Previous, setPrevious] = React.useState();
 
   const isFocused = useIsFocused();
-  const [appointments, setAppointments] = useState([
-    "Upcoming",
-    "Previous",
-  ]);
+  const [appointments, setAppointments] = useState(["Upcoming", "Previous"]);
   const inset = useSafeAreaInsets();
 
   //console.log(data.service.serviceCenterName)
@@ -85,16 +82,17 @@ export default function UserAppointmentList({ navigation, route }) {
       style={{
         flex: 1,
         paddingTop: inset?.top,
-      }}>
-        <StatusBar backgroundColor="white"/>
+      }}
+    >
+      <StatusBar backgroundColor="white" />
       <Tab.Navigator
         screenOptions={{
           tabBarIndicatorStyle: {
             backgroundColor: "#767676",
             height: 2,
           },
-          
-        }}>
+        }}
+      >
         {appointments.map((doc, i) => (
           <Tab.Screen
             initialParams={{
@@ -115,7 +113,7 @@ const Screen = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   const name = route.name;
   const backgroundColor = route.params.backgroundColor;
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -180,7 +178,8 @@ const Screen = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size={"small"} color={backgroundColor} />
       </View>
     );
@@ -191,7 +190,7 @@ const Screen = ({ navigation, route }) => {
   }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{height:8}}/>
+      <View style={{ height: 8 }} />
       {data.map((doc, i) => (
         <Cart
           key={i}
@@ -241,7 +240,7 @@ const Screen = ({ navigation, route }) => {
 //       marginVertical:8,
 //       paddingVertical:4,
 //       alignItems:"center",
-      
+
 //     }} onPress={onPress}>
 //       <View
 //         style={{
@@ -403,41 +402,51 @@ const Chip = ({ title, active, onPress, style }) => {
           alignItems: "center",
         },
         style,
-      ]}>
+      ]}
+    >
       <Text
         style={{
           color: active ? "white" : "black",
-        }}>
+        }}
+      >
         {title}
       </Text>
     </TouchableOpacity>
   );
 };
-import appointment from "../../../assets/appointment.jpeg"
+import appointment from "../../../assets/appointment.jpeg";
 import { Cart } from "../../Vendor/Appointment/VendorAppointmentList";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
+import useLang from "../../../Hooks/UseLang";
 const NoAppointment = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
-    <View 
+    <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-      }}>
-      <Image source={appointment} style={{
-        height:200,
-        width:200,
-        borderWidth:1,
-        borderRadius:100,
-        borderColor:"#EFEFEF"
-      }} />
+      }}
+    >
+      <Image
+        source={appointment}
+        style={{
+          height: 200,
+          width: 200,
+          borderWidth: 1,
+          borderRadius: 100,
+          borderColor: "#EFEFEF",
+        }}
+      />
       <Text
         style={{
           fontSize: 16,
           fontFamily: "Poppins-Medium",
           marginTop: 24,
-        }}>
-        No Appointment Found
+        }}
+      >
+        {isBn ? "কোনও অ্যাপয়েন্টমেন্ট নেই" : "No Appointment Found"}
       </Text>
     </View>
   );

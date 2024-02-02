@@ -21,11 +21,17 @@ import { getOfflineMembers, getOnlineUser } from "../../../Class/member";
 import { Color } from "../../../assets/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Input from "../../../components/Input";
+import useLang from "../../../Hooks/UseLang";
 
 export default function CreateVendorAppointment({ navigation, route }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TabBar title={"Select Member"} navigation={navigation} />
+      <TabBar
+        title={isBn ? "সদস্য নির্বাচন করুন" : "Select Member"}
+        navigation={navigation}
+      />
       <Screen navigation={navigation} />
     </SafeAreaView>
   );
@@ -49,7 +55,8 @@ const Screen = ({ navigation, route }) => {
   const [AllData, setAllData] = useState([]);
   const backgroundColor = colors.getBackgroundColor();
   const [searchKey, setSearchKey] = useState();
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     //console.log(name)
     if (user && vendor) {
@@ -89,7 +96,8 @@ const Screen = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size={"small"} color={backgroundColor} />
       </View>
     );
@@ -118,7 +126,7 @@ const Screen = ({ navigation, route }) => {
           height: 40,
         }}
         rightIcon={<SvgXml xml={icon} />}
-        placeholder={"Type name"}
+        placeholder={isBn ? "নাম লিখুন" : "Type name"}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         {Data &&
@@ -172,11 +180,13 @@ const TabBar = ({
         alignItems: "center",
         paddingHorizontal: 20,
         marginTop: 18,
-      }}>
+      }}
+    >
       <Pressable
         onPress={() => {
           navigation.goBack();
-        }}>
+        }}
+      >
         <SvgXml xml={icon} />
       </Pressable>
       <View
@@ -187,7 +197,8 @@ const TabBar = ({
           paddingRight: 40,
         }}
         showsHorizontalScrollIndicator={false}
-        horizontal={true}>
+        horizontal={true}
+      >
         <Pressable
           onPress={() => {
             //navigation.navigate(doc.name);
@@ -200,12 +211,14 @@ const TabBar = ({
             marginLeft: 5,
             height: 40,
             justifyContent: "center",
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 20,
               fontWeight: "500",
-            }}>
+            }}
+          >
             {title}
 
             {/* {packages[state.index].name+" "+packages[state.index].price+"৳"} */}
@@ -225,7 +238,8 @@ const Cart = ({ image, name, gender, username, onPress }) => {
         justifyContent: "space-between",
         paddingLeft: 20,
         marginTop: 24,
-      }}>
+      }}
+    >
       <Avatar
         source={{ uri: image }}
         style={{
@@ -243,14 +257,16 @@ const Cart = ({ image, name, gender, username, onPress }) => {
           flexDirection: "row",
           alignItems: "center",
           height: "100%",
-        }}>
+        }}
+      >
         <Text
           numberOfLines={1}
           style={{
             fontSize: 16,
             fontWeight: "400",
             marginBottom: 12,
-          }}>
+          }}
+        >
           {name ? `${name}` : "Easin Arafat (Male)"}
         </Text>
       </View>

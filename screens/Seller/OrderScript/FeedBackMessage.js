@@ -7,6 +7,7 @@ import { socket } from "../../../Class/socket";
 import ActivityLoader from "../../../components/ActivityLoader";
 import IconButton from "../../../components/IconButton";
 import TextArea from "../../../components/TextArea";
+import useLang from "../../../Hooks/UseLang";
 
 export default function FeedBackMessage({ navigation, route }) {
   const [loader, setLoader] = useState(false);
@@ -16,6 +17,8 @@ export default function FeedBackMessage({ navigation, route }) {
   const describe = route?.params?.describe;
   const quality = route?.params?.quality;
   const [text, setText] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const confirmDelivery = async () => {
     setLoader(true);
@@ -29,7 +32,11 @@ export default function FeedBackMessage({ navigation, route }) {
         text,
         order?.id
       );
-      navigation.navigate("OrderDetails",{data:order,orderId:order?.id,type:order.type})
+      navigation.navigate("OrderDetails", {
+        data: order,
+        orderId: order?.id,
+        type: order.type,
+      });
       socket.emit("updateOrder", {
         receiverId: order.user.id,
         order: order,
@@ -38,7 +45,7 @@ export default function FeedBackMessage({ navigation, route }) {
         receiverId: order.service.user.id,
         order: order,
       });
-      
+
       setLoader(true);
     } catch (err) {
       setLoader(true);
@@ -57,7 +64,8 @@ export default function FeedBackMessage({ navigation, route }) {
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <TextArea
           value={text}
           onChange={setText}
@@ -65,13 +73,17 @@ export default function FeedBackMessage({ navigation, route }) {
             marginTop: 28,
             borderColor: "#D1D1D1",
           }}
-          placeholder={"Type your experience with the seller...."}
+          placeholder={
+            isBn
+              ? "বিক্রেতার সাথে আপনার অভিজ্ঞতার একটি ফিডব্যাক লিখুন ...."
+              : "Type your experience with the seller...."
+          }
         />
         <IconButton
           onPress={confirmDelivery}
           active={true}
           style={[styles.mt24, styles.button]}
-          title={"Done"}
+          title={isBn ? "সম্পন্ন" : "Done"}
         />
       </View>
     </ScrollView>
@@ -80,12 +92,12 @@ export default function FeedBackMessage({ navigation, route }) {
 const styles = StyleSheet.create({
   headLine: {
     fontSize: 24,
-    
+
     fontWeight: "500",
   },
   text: {
     fontSize: 16,
-   
+
     fontWeight: "400",
   },
   font: {

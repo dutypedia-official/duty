@@ -8,14 +8,17 @@ import AllReviewHeader from "../components/AllReviewHeader";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { setHideBottomBar } from "../Reducers/hideBottomBar";
+import useLang from "../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 const AllReview = ({ navigation, route }) => {
   const data = route?.params?.data;
-  const service=route?.params?.service;
+  const service = route?.params?.service;
   const individualRating = route?.params?.individualRating;
-  const isFocused=useIsFocused()
-  const dispatch=useDispatch()
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -29,13 +32,19 @@ const AllReview = ({ navigation, route }) => {
     }
   }, [isFocused]);
   return (
-    <View style={{flex:1}}>
-      <AllReviewHeader title={`${data?.length>9?data?.length:`0${data?.length}`} Review`} navigation={navigation} />
+    <View style={{ flex: 1 }}>
+      <AllReviewHeader
+        title={`${data?.length > 9 ? data?.length : `0${data?.length}`} ${
+          isBn ? "রিভিউ" : "Review"
+        }`}
+        navigation={navigation}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
           backgroundColor: secondaryColor,
-        }}>
+        }}
+      >
         <View style={{ backgroundColor: primaryColor, height: 20 }} />
         <RatingView
           style={{
@@ -43,7 +52,7 @@ const AllReview = ({ navigation, route }) => {
             paddingHorizontal: 20,
             paddingVertical: 5,
           }}
-          title="Seller Communication"
+          title={isBn ? "বিক্রেতা যোগাযোগ মান" : "Seller Communication"}
           rate={individualRating?.communicationRating}
         />
         <RatingView
@@ -52,7 +61,7 @@ const AllReview = ({ navigation, route }) => {
             paddingHorizontal: 20,
             paddingVertical: 5,
           }}
-          title="Service as Describe"
+          title={isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as Describe"}
           rate={individualRating?.describeRating}
         />
         <RatingView
@@ -61,7 +70,7 @@ const AllReview = ({ navigation, route }) => {
             paddingHorizontal: 20,
             paddingVertical: 5,
           }}
-          title="Service Quality"
+          title={isBn ? "পরিষেবার গুণমান" : "Service Quality"}
           rate={individualRating?.qualityRating}
         />
         <View style={{ backgroundColor: primaryColor, height: 20 }} />
@@ -69,7 +78,8 @@ const AllReview = ({ navigation, route }) => {
           style={{
             paddingHorizontal: 20,
             backgroundColor: primaryColor,
-          }}>
+          }}
+        >
           {data &&
             data.map((doc, i) => (
               <Cart
@@ -89,8 +99,9 @@ const AllReview = ({ navigation, route }) => {
                   fontSize: 16,
                   fontWeight: "500",
                   marginVertical: 50,
-                }}>
-                No Rating
+                }}
+              >
+                {isBn ? "কোনও রেটিং নেই" : "No Rating"}
               </Text>
             </View>
           )}

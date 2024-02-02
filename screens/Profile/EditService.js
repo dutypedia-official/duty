@@ -27,9 +27,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { styles, icon } from "../create_dashboard/BusinessTitle";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 const { width } = Dimensions.get("window");
 
 export default function EditService({ navigation, route }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const businessForm = useSelector((state) => state.businessForm);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -45,7 +49,7 @@ export default function EditService({ navigation, route }) {
   const [serviceDescriptionError, setServiceDescriptionError] = useState();
   const [layoutHeight, setLayoutHeight] = useState(0);
   const data = route?.params?.data;
-  const gigs=route?.params?.gigs;
+  const gigs = route?.params?.gigs;
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -64,7 +68,7 @@ export default function EditService({ navigation, route }) {
       setForthImage({ uri: gigs.images[3] });
       setServiceTitle(gigs.title);
       setServiceDescription(gigs.description);
-      
+
       //console.log(data.service.gigs[0].images)
       //console.log(gigs)
     }
@@ -74,20 +78,23 @@ export default function EditService({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -95,65 +102,38 @@ export default function EditService({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for title, service describe & photo
+              {isBn
+                ? "টাইটেল বা সার্ভিস বর্ণনা এবং ছবির জন্য টিপস:"
+                : "Tips for title, service describe & photo"}
             </Text>
           </View>
-          <ViewMore
-            view={true}
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={72}
-            width={145}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <View
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}>
-                <TextOp
-                  style={{ marginTop: 0 }}
-                  number={"1."}
-                  text={
-                    "Optimize Your Title: Craft a clear and compelling title that accurately represents your service. This is the first thing buyers will see, so make it count."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"2."}
-                  text={
-                    "Showcase Your Best Work: Choose high-quality photos that showcase your best work. This will help buyers visualize what you offer and build trust in your abilities."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"3."}
-                  text={
-                    "Use Descriptive Language: Use descriptive language to highlight the unique features and benefits of your service. Avoid technical jargon and focus on the value you can provide to buyers."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"4."}
-                  text={
-                    "Keep Your Listing Updated: Regularly update your service listing to reflect any changes or improvements to your offering. This will help you stay relevant and attract new buyers."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"5."}
-                  text={
-                    "We're here to help you succeed on our platform. If you have any questions or need further assistance, please don't hesitate to contact our support team. Thank you for being a part of our marketplace community!"
-                  }
-                />
-              </View>
+            content={
+              isBn
+                ? `1. আপনার সার্ভিসের টাইটেলটি অ্যাড করুন: একটি সুন্দর এবং আকর্ষণীয় টাইটেল তৈরি করুন যা আপনার সার্ভিসগুলোকে সঠিকভাবে প্রেজেন্ট করে৷ এটিই সর্বপ্রথম ক্রেতারা দেখতে পাবেন, তাই এটির উপর গুরুত্ব দিন৷।
+
+2. আপনার সেরা কাজগুলো শো করুন: আপনার সেরা কাজ গুলো দেখা/বুঝা যায় এমন সুন্দর ছবিগুলো পছন্দ করুন৷ এতে ক্রেতাদের আপনি যা অফার করেন তা ধারণা করতে এবং আপনার দক্ষতার উপর বিশ্বাস অর্জন করতে সাহায্য করবে৷
+
+3. বর্ণনামূলক ভাষা ব্যবহার করুন: আপনার সার্ভিস এর বৈশিষ্ট্য এবং সুবিধাগুলো তুলে ধরতে বর্ণনামূলক ভাষা ব্যবহার করুন। অর্থহীন বাক্য এড়িয়ে চলুন এবং আপনি ক্রেতাদের যে মূল্যায়ন/সম্মান করতে পারেন তা ক্রেতাদের বুঝানোর জন্য যথাযথ চেষ্টা করুন৷।
+
+4. আপনার সার্ভিসের মুল্য তালিকা আপডেট রাখুন: আপনি প্রতিদিন আপনার সার্ভিসের উপর যে অফারে দিচ্ছেন তা পরিবর্তন করতে আপনার সার্ভিসের তালিকা আপডেট করুন৷। এটি আপনাকে ক্রেতাদের সাথে একটি সুন্দর সম্পর্ক তৈরি করতে এবং নতুন ক্রেতাদের আকৃষ্ট করতে সাহায্য করবে৷।
+
+• আমাদের প্ল্যাটফর্মে আপনার সফলতা অর্জনের জন্য আমরা আপনাকে সাহায্য করতে সর্বদা প্রস্তুত৷ আপনার যদি কোন প্রশ্ন থাকে অথবা আরও সাহায্যের প্রয়োজন হয়, অনুগ্রহ করে আমাদের সাহায্যকারী টিমের সাথে যোগাযোগ করতে কোনো দ্বিধাবোধ করবেন না৷ আমাদের মার্কেটপ্লেস কমিউনিটির একটি অংশ হওয়ার জন্য আপনাকে ধন্যবাদ!
+              `
+                : `1. Optimize Your Title: Craft a clear and compelling title that accurately represents your service. This is the first thing buyers will see, so make it count.
+2. Showcase Your Best Work: Choose high-quality photos that showcase your best work. This will help buyers visualize what you offer and build trust in your abilities.
+3. Use Descriptive Language: Use descriptive language to highlight the unique features and benefits of your service. Avoid technical jargon and focus on the value you can provide to buyers.
+4. Keep Your Listing Updated: Regularly update your service listing to reflect any changes or improvements to your offering. This will help you stay relevant and attract new buyers.
+We're here to help you succeed on our platform. If you have any questions or need further assistance, please don't hesitate to contact our support team. Thank you for being a part of our marketplace community!
+              `
             }
           />
 
           <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Service title
+            {isBn ? "সার্ভিসের একটি সুন্দর টাইটেল দিন" : "Service title"}
           </Text>
           <Input
             value={serviceTitle}
@@ -165,11 +145,13 @@ export default function EditService({ navigation, route }) {
             }}
             error={serviceTitleError}
             style={styles.input}
-            placeholder={"Type service title"}
+            placeholder={isBn ? "সার্ভিস টাইটেল লিখুন" : "Type service title"}
           />
-          <Text style={styles.text}>Max 100 characters </Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বোচ্চ ১০০ টি অক্ষর" : "Max 100 characters"}{" "}
+          </Text>
           <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Service Description
+            {isBn ? "সার্ভিসের বর্ণনা" : "Service Description"}
           </Text>
           <TextArea
             value={serviceDescription}
@@ -180,20 +162,27 @@ export default function EditService({ navigation, route }) {
               setServiceDescription(e);
             }}
             error={serviceDescriptionError}
-            placeholder={"Describe your service"}
+            placeholder={
+              isBn ? "আপনার সার্ভিসের বর্ণনা লিখুন" : "Describe your service"
+            }
             style={styles.input}
           />
           <Text style={styles.text}>
-            Max 2000/
-            {serviceDescription ? serviceDescription?.split("")?.length : "0"}{" "}
-            characters{" "}
+            {isBn ? "সর্বোচ্চ" : "Max"} 2000/
+            {serviceDescription
+              ? serviceDescription?.split("")?.length
+              : "0"}{" "}
+            {isBn ? "অক্ষর" : "characters"}
           </Text>
-          <Text style={[styles.headLine, { marginTop: 36 }]}>Add Photo</Text>
+          <Text style={[styles.headLine, { marginTop: 36 }]}>
+            {isBn ? "ছবি অ্যাড করুন" : "Add Photo"}
+          </Text>
           <View
             style={{
               flexDirection: "row",
               marginTop: 24,
-            }}>
+            }}
+          >
             <ImageButton
               value={firstImage}
               onChange={setFirstImage}
@@ -249,25 +238,31 @@ export default function EditService({ navigation, route }) {
             }
             onPress={() => {
               if (serviceTitle.split("").length > 100) {
-                serviceTitleError("*Max 100 character required");
+                serviceTitleError(
+                  isBn ? "সর্বোচ্চ ১০০ টি অক্ষর" : "*Max 100 character required"
+                );
                 return;
               }
               if (serviceDescription.split("").length > 2000) {
-                setServiceDescriptionError("*Max 2000 character required");
+                setServiceDescriptionError(
+                  isBn
+                    ? "সর্বোচ্চ ২০০০ টি অক্ষর"
+                    : "*Max 2000 character required"
+                );
                 return;
               }
-              
+
               navigation.navigate("EditServicePrice", {
                 data: {
                   serviceTitle: serviceTitle,
                   serviceDescription: serviceDescription,
                   images: [firstImage, secondImage, thirdImage, forthImage],
                 },
-                gigs:gigs
+                gigs: gigs,
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>

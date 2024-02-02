@@ -7,6 +7,7 @@ import AddButton from "./AddButton";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import ReadMore from "./ReadMore";
+import useLang from "../Hooks/UseLang";
 
 export default function ServiceListViewer({
   serviceCategory,
@@ -20,6 +21,8 @@ export default function ServiceListViewer({
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [text, setText] = useState();
   const [extra, setExtra] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
     let e = "";
     facilities?.map((d, i) => {
@@ -37,13 +40,15 @@ export default function ServiceListViewer({
     <View
       style={{
         paddingHorizontal: 20,
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-        }}>
+        }}
+      >
         <Text
           style={{
             fontWeight: "600",
@@ -51,8 +56,9 @@ export default function ServiceListViewer({
             marginBottom: 20,
             marginTop: 35,
             color: "#535353",
-          }}>
-          Service List
+          }}
+        >
+          {isBn ? "সার্ভিস লিস্ট" : "Service List"}
         </Text>
         {editable && (
           <TouchableOpacity
@@ -72,7 +78,8 @@ export default function ServiceListViewer({
               //   data: "ONETIME",
               //   gigs: data,
               // });
-            }}>
+            }}
+          >
             <SvgXml xml={editIcon} height={"50"} width={"50"} />
           </TouchableOpacity>
         )}
@@ -80,11 +87,13 @@ export default function ServiceListViewer({
       <View
         style={{
           flexDirection: "row",
-        }}>
+        }}
+      >
         <View
           style={{
             flex: 1,
-          }}>
+          }}
+        >
           {serviceCategory && (
             <Button
               onPress={() => {
@@ -118,7 +127,7 @@ export default function ServiceListViewer({
                   ? styles.activeButton
                   : styles.inactiveButton
               }
-              title={"Extra Facilities"}
+              title={isBn ? "অতিরিক্ত সুবিধা" : "Extra Facilities"}
             />
           )}
         </View>
@@ -127,9 +136,22 @@ export default function ServiceListViewer({
           style={{
             flex: 2,
             marginLeft: 20,
-          }}>
-            <ReadMore containerStyle={{ marginTop: 0,height:active=="Extra Facilities"?"auto":0 }} content={extra} /> 
-            <ReadMore containerStyle={{ marginTop: 0,height:active!="Extra Facilities"?"auto":0 }} content={text} />
+          }}
+        >
+          <ReadMore
+            containerStyle={{
+              marginTop: 0,
+              height: active == "Extra Facilities" ? "auto" : 0,
+            }}
+            content={extra}
+          />
+          <ReadMore
+            containerStyle={{
+              marginTop: 0,
+              height: active != "Extra Facilities" ? "auto" : 0,
+            }}
+            content={text}
+          />
         </Animated.View>
       </View>
     </View>

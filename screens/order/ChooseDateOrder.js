@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View,Text, Pressable } from "react-native";
+import { ScrollView, View, Text, Pressable } from "react-native";
 import { SvgXml } from "react-native-svg";
 import IconButton from "../../components/IconButton";
 import SubHeader from "../../components/SubHeader";
@@ -8,6 +8,7 @@ import { dateConverter, dateDifference } from "../../action";
 import ReadMoreText from "rn-read-more-text";
 import { styles } from "../create_dashboard/BusinessTitle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useLang from "../../Hooks/UseLang";
 
 export default function ChooseDateOrder({ navigation, route }) {
   const [FromVisible, setFromVisible] = React.useState(false);
@@ -15,16 +16,25 @@ export default function ChooseDateOrder({ navigation, route }) {
   const [From, setFrom] = React.useState();
   const [To, setTo] = React.useState();
   const [FromDateError, setFromDateError] = React.useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [ToDateError, setToDateError] = React.useState();
-  const [textRef,setTextRef] = React.useState();
-  const content=`We offer buyers the option to select a delivery date that is convenient for them, with the flexibility to choose a delivery window that suits their schedule. However, we also want to remind buyers to communicate with the seller about their availability to ensure a successful delivery. Before selecting a delivery date, we recommend that buyers reach out to the seller to confirm their ability to deliver during the chosen time frame. This will help avoid any potential conflicts or delays in the delivery process. We strive to provide the best possible service to our buyers and sellers, and clear communication is key to ensuring a positive experience for all parties involved. Thank you for choosing our platform for your needs.If you have any questions or concerns regarding our delivery policy, please refer to our Delivery Policy section`
-  const params=route?.params;
-  const handleManualToggle = () =>{
-    if(textRef){
-      textRef.toggle()
+  const [textRef, setTextRef] = React.useState();
+  const content = isBn
+    ? `আমরা ক্রেতাদের জন্য সুবিধাজনক একটি ডেলিভারি তারিখ পছন্দ করার বিকল্প অফার করি, তাদের সুবিধামত টাইমের মধ্যে একটি ডেলিভারি তারিখ বেছে নেওয়ার জন্য৷ যাইহোক, আমরা ক্রেতাদের একটি সফল ডেলিভারি নিশ্চিত করতে বিক্রেতার সাথে তাদের প্রাপ্যতা সম্পর্কে যোগাযোগ করতেও মনে করিয়ে দিতে চাই৷।
+
+একটি ডেলিভারি তারিখ পছন্দ করার আগে, আমরা পরামর্শ দেই যে ক্রেতারা বিক্রেতার সাথে যোগাযোগ করে তাদের পছন্দ মতো সময়ের মধ্যে ডেলিভারি তারিখ নিশ্চিত করতে৷।এটি ডেলিভারি প্রক্রিয়ায় সময় কোনো সম্ভাব্য দ্বিধা বা দ্বন্দ্ব এড়াতে সাহায্য করবে৷।
+  
+আমরা আমাদের ক্রেতা এবং বিক্রেতাদের সর্বোত্তম সার্ভিস প্রদান করার চেষ্টা করি এবং জড়িত সকল পক্ষের জন্য স্পষ্ট যোগাযোগ একটি পজিটিভ অভিজ্ঞতা নিশ্চিত করার চাবিকাঠি৷।আপনার প্রয়োজনে আমাদের প্ল্যাটফর্ম বেছে নেওয়ার জন্য আপনাকে ধন্যবাদ৷।আমাদের ডেলিভারি নীতির বিষয়ে আপনার কোনো প্রশ্ন বা কনসার্ন থাকলে, অনুগ্রহ করে আমাদের ডেলিভারি নীতি বিভাগ দেখুন৷।`
+    : `We offer buyers the option to select a delivery date that is convenient for them, with the flexibility to choose a delivery window that suits their schedule. However, we also want to remind buyers to communicate with the seller about their availability to ensure a successful delivery. Before selecting a delivery date, we recommend that buyers reach out to the seller to confirm their ability to deliver during the chosen time frame. This will help avoid any potential conflicts or delays in the delivery process. We strive to provide the best possible service to our buyers and sellers, and clear communication is key to ensuring a positive experience for all parties involved. Thank you for choosing our platform for your needs.If you have any questions or concerns regarding our delivery policy, please refer to our Delivery Policy section`;
+  const params = route?.params;
+  const handleManualToggle = () => {
+    if (textRef) {
+      textRef.toggle();
     }
   };
-  const inset=useSafeAreaInsets()
+  const inset = useSafeAreaInsets();
+
   return (
     <View style={{ flex: 1 }}>
       <SubHeader
@@ -41,7 +51,8 @@ export default function ChooseDateOrder({ navigation, route }) {
             paddingHorizontal: 20,
             paddingVertical: 20,
             alignItems: "flex-start",
-          }}>
+          }}
+        >
           <View style={{ flex: 1 }}>
             <IconButton
               Icon={() => <SvgXml xml={calenderNew} />}
@@ -87,8 +98,9 @@ export default function ChooseDateOrder({ navigation, route }) {
               marginTop: 11,
               color: "#000000",
               fontSize: 14,
-            }}>
-            T0
+            }}
+          >
+            {isBn ? "থেকে" : "To"}
           </Text>
           <View style={{ flex: 1 }}>
             <IconButton
@@ -120,7 +132,11 @@ export default function ChooseDateOrder({ navigation, route }) {
                   setTo(dateConverter(date));
                   setToVisible(false);
                 } else {
-                  setToDateError("Please select current and current date");
+                  setToDateError(
+                    isBn
+                      ? "দয়া করে বর্তমান থেকে ভবিষ্যতের মধ্যের তারিখ নির্বাচন করুন"
+                      : "Please select a date between present and future"
+                  );
                   setToVisible(false);
                 }
               }}
@@ -130,9 +146,9 @@ export default function ChooseDateOrder({ navigation, route }) {
         </View>
         <IconButton
           onPress={() => {
-            params?.setFrom(From)
-            params?.setTo(To)
-            navigation?.goBack()
+            params?.setFrom(From);
+            params?.setTo(To);
+            navigation?.goBack();
           }}
           disabled={From && To ? false : true}
           active={From && To ? true : false}
@@ -140,18 +156,20 @@ export default function ChooseDateOrder({ navigation, route }) {
             marginHorizontal: 20,
             marginTop: 12,
           }}
-          title={"Confirm"}
+          title={isBn ? "নিশ্চিত করুন" : "Confirm"}
         />
         <View
           style={{
             marginHorizontal: 20,
             paddingBottom: 40,
-          }}>
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -159,10 +177,12 @@ export default function ChooseDateOrder({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Important Delivery Instructions for Buyers on our Platform
+              {isBn
+                ? "আমাদের প্ল্যাটফর্মে ক্রেতাদের জন্য গুরুত্বপূর্ণ ডেলিভারি নির্দেশানাবলী।"
+                : "Important Delivery Instructions for Buyers on our Platform"}
             </Text>
           </View>
-          
+
           <Pressable style={{ marginTop: 24 }} onPress={handleManualToggle}>
             <ReadMoreText
               ref={(e) => setTextRef(e)}

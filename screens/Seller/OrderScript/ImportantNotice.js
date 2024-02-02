@@ -4,13 +4,16 @@ import { View, Text, ScrollView } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
+import useLang from "../../../Hooks/UseLang";
 
 export default function ImportantNotice({ navigation, route }) {
   const name = route?.params?.name;
   const type = route?.params?.type;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const vendor=useSelector(state=>state.vendor)
+  const vendor = useSelector((state) => state.vendor);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -28,65 +31,149 @@ export default function ImportantNotice({ navigation, route }) {
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
             marginTop: 24,
-          }}>
+          }}
+        >
           <SvgXml xml={light} />
-          {vendor?(
+          {vendor ? (
+            isBn ? (
+              <Text
+                style={{
+                  marginLeft: 8,
+                  color: "#1A1A1A",
+
+                  fontSize: 24,
+                  fontWeight: "500",
+                  flex: 1,
+                }}
+              >
+                {type == "FAILED"
+                  ? `রিফান্ড এর নীতি এবং প্রক্রিয়া`
+                  : type == "DELIVERED"
+                  ? `সার্ভিস বুঝে পেয়ে থাকলে,৭২ ঘণ্টার মধ্যে ( হ্যাঁ আমি বুঝে পেয়েছি ) বুতামে ক্লিক করুন`
+                  : `ডেলিভারি সময় এবং প্রফাইল রেটিং:`}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  marginLeft: 8,
+                  color: "#1A1A1A",
+
+                  fontSize: 24,
+                  fontWeight: "500",
+                  flex: 1,
+                }}
+              >
+                {type == "FAILED"
+                  ? `Refund Policy and Process`
+                  : type == "DELIVERED"
+                  ? `Product Received? Click 'Yes' Within 72 Hours!`
+                  : `Delivery Time and Profile Rating.`}
+              </Text>
+            )
+          ) : isBn ? (
             <Text
-            style={{
-              marginLeft: 8,
-              color: "#1A1A1A",
-              
-              fontSize: 24,
-              fontWeight: "500",
-              flex: 1,
-            }}>
-            {type=="FAILED"?`Refund Policy and Process`:type=="DELIVERED"?`Product Received? Click 'Yes' Within 72 Hours!`:`Delivery Time and Profile Rating.`}
-          </Text>
-          ):(
+              style={{
+                marginLeft: 8,
+                color: "#1A1A1A",
+
+                fontSize: 24,
+                fontWeight: "500",
+                flex: 1,
+              }}
+            >
+              {type == "FAILED"
+                ? `রিফান্ড এর নীতি এবং প্রক্রিয়া`
+                : type == "DELIVERED"
+                ? `সার্ভিস বুঝে পেয়ে থাকলে,৭২ ঘণ্টার মধ্যে ( হ্যাঁ আমি বুঝে পেয়েছি ) বুতামে ক্লিক করুন`
+                : `একটি পজিটিভ অভিজ্ঞতার জন্য সময়মত ডেলিভারি সংক্রান্ত নোট:`}
+            </Text>
+          ) : (
             <Text
-            style={{
-              marginLeft: 8,
-              color: "#1A1A1A",
-             
-              fontSize: 24,
-              fontWeight: "500",
-              flex: 1,
-            }}>
-            {type=="FAILED"?`Refund Policy and Process`:type=="DELIVERED"?`Product Received? Click 'Yes' Within 72 Hours!`:`Regarding timely delivery for a positive experience`}
-          </Text>
+              style={{
+                marginLeft: 8,
+                color: "#1A1A1A",
+
+                fontSize: 24,
+                fontWeight: "500",
+                flex: 1,
+              }}
+            >
+              {type == "FAILED"
+                ? `Refund Policy and Process`
+                : type == "DELIVERED"
+                ? `Product Received? Click 'Yes' Within 72 Hours!`
+                : `Regarding timely delivery for a positive experience`}
+            </Text>
           )}
         </View>
-        {vendor?(
+        {vendor ? (
           <Text
-          style={{
-            fontSize: 16,
-            
-            fontWeight: "400",
-            marginTop: 24,
-          }}>
-          {type=="FAILED"
-            ? `Dear valued ${name}, we understand that sometimes an order may not be delivered as expected. In such cases, we will refund your payment within 7 working days. However, if you have not received your refund within this time frame, please do not hesitate to contact our support team for further assistance. We are committed to ensuring that you have a seamless experience on our platform, and we thank you for your understanding.`:
-            type=="DELIVERED"?(<Text>Upon receiving your product, kindly click on the "Yes, I Received" button. Failure to do so within 72 hours will result in an automatic marking of the item as received. Rest assured, we will notify you three times before this happens. For any queries, please feel free to contact our <Text style={{color:"#4ADE80"}}>support center</Text>.</Text>)
-            : `Dear ${name}, please be advised that timely delivery is crucial for maintaining a positive reputation on our platform. If you are unable to deliver the order within the specified timeframe, it is recommended that you communicate with the buyer and request an extension. If the buyer has already paid and you are unable to deliver the order, a refund will be issued to the buyer, which may have a negative impact on your profile rating. Thank you for your understanding and cooperation in ensuring a positive experience for all members of our community.`}
-        </Text>
-        ):(
+            style={{
+              fontSize: 16,
+
+              fontWeight: "400",
+              marginTop: 24,
+            }}
+          >
+            {type == "FAILED" ? (
+              isBn ? (
+                `প্রিয় ${name}, আপনি যদি আপনার সার্ভিস ডেলিভারি করতে অক্ষম হন বা যদি কোনও ক্রেতা সার্ভিসটি বাতিল করার অনুরোধ করে, আমরা সার্ভিসের স্থিতিটিকে "ব্যর্থ" হিসাবে চিহ্নিত করব এবং লেনদেনের সকল অর্থ বিক্রেতার কাছে সম্পূর্ণ ফেরত দিব৷
+আমাদের প্রাথমিক লক্ষ্য হল ক্রেতা এবং বিক্রেতা উভয়ের জন্য একটি ন্যায্য এবং বিশ্বস্ত বাজার প্রদান করা এবং আমরা নিশ্চিত করতে প্রতিশ্রুতিবদ্ধ যে সমস্ত লেনদেন সততা ও স্বচ্ছতার সাথে পরিচালিত হয়৷।আমাদের রিফান্ড নীতির বিষয়ে আপনার কোন প্রশ্ন বা কনসার্ন থাকলে, অনুগ্রহ করে আমাদের রিফান্ড নীতি বিভাগ দেখুন৷।`
+              ) : (
+                `Dear ${name}, If you unable to deliver your service or if a buyer requests to cancel the service, we will mark the service status as "failed" and initiate a full refund to the seller for the amount of the transaction.
+
+Our primary goal is to provide a fair and trustworthy marketplace for both buyers and sellers, and we are committed to ensuring that all transactions are handled with integrity and transparency. If you have any questions or concerns regarding our refund policy, please refer to our Refund Policy section`
+              )
+            ) : type == "DELIVERED" ? (
+              <Text>
+                {isBn
+                  ? 'আপনার পণ্যটি পাওয়ার পর, অনুগ্রহ করে "হ্যাঁ, আমি বুজে পেয়েছি" বোতামে ক্লিক করুন। 72 ঘন্টার মধ্যে এটি করতে ব্যর্থ হলে আপনার সার্ভিসটি ( বুজে পেয়েছেন ) বলে স্বয়ংক্রিয়ভাবে বিবেচিত হবে। তবে নিশ্চিত থাকুন, এটি হওয়ার আগে আমরা আপনাকে তিনবার আপনার নোটিফিকেশন সেকশনে অবহিত করব। আপনার যদি কোন প্রশ্ন থাকে তাহলে বিনা দ্বিধায় আমাদের'
+                  : 'Upon receiving your product, kindly click on the "Yes, I Received" button. Failure to do so within 72 hours will result in an automatic marking of the item as received. Rest assured, we will notify you three times before this happens. For any queries, please feel free to contact our'}{" "}
+                <Text style={{ color: "#4ADE80" }}>
+                  {isBn ? "সাহায্য এবং সহায়তা টিম" : "support center"}
+                </Text>{" "}
+                {isBn && "এর সাথে  যোগাযোগ করুন।"}
+              </Text>
+            ) : isBn ? (
+              `প্রিয় ${name}, আমাদের প্ল্যাটফর্মে একটি ভাল সুনাম বজায় রাখার জন্য সময়মত ডেলিভারি অত্যন্ত গুরুত্বপূর্ণ৷ আপনি যদি নির্দিষ্ট সময়ের মধ্যে অর্ডারটি ডেলিভারি করতে না পারেন, তাহলে আপনি ক্রেতার সাথে যোগাযোগ করুন এবং অতিরিক্ত সময়ের জন্য অনুরোধ করুন৷ যদি ক্রেতা ইতিমধ্যে অর্থ প্রদান করে থাকে এবং আপনি অর্ডারটি সময়মতো ডেলিভারি করতে না পারেন তবে ক্রেতাকে তার সম্পূর্ণ টাকা ফেরত দেওয়া হবে, যা আপনার বিজনেস প্রোফাইল রেটিংয়ে নেগেটিভ প্রভাব ফেলতে পারে৷ আমাদের কমিউনিটির সকল শর্ত এবং নিয়মনীতি বুজে সাহায্য এবং সহযোগিতা করে একটি পজিটিভ অভিজ্ঞতা নিশ্চিত করার জন্য আপনাকে ধন্যবাদ৷`
+            ) : (
+              `Dear ${name}, please be advised that timely delivery is crucial for maintaining a positive reputation on our platform. If you are unable to deliver the order within the specified timeframe, it is recommended that you communicate with the buyer and request an extension. If the buyer has already paid and you are unable to deliver the order, a refund will be issued to the buyer, which may have a negative impact on your profile rating. Thank you for your understanding and cooperation in ensuring a positive experience for all members of our community.`
+            )}
+          </Text>
+        ) : (
           <Text
-          style={{
-            fontSize: 16,
-            
-            fontWeight: "400",
-            marginTop: 24,
-          }}>
-          {type=="FAILED"
-            ? `Dear valued ${name}, we understand that sometimes an order may not be delivered as expected. In such cases, we will refund your payment within 7 working days. However, if you have not received your refund within this time frame, please do not hesitate to contact our support team for further assistance. We are committed to ensuring that you have a seamless experience on our platform, and we thank you for your understanding.`:
-            type=="DELIVERED"?(<Text>Upon receiving your product, kindly click on the "Yes, I Received" button. Failure to do so within 72 hours will result in an automatic marking of the item as received. Rest assured, we will notify you three times before this happens. For any queries, please feel free to contact our <Text style={{color:"#4ADE80"}}>support center</Text>.</Text>)
-            : `Dear ${name}, please be advised that timely delivery is crucial for maintaining a positive experience on our platform. If a seller is unable to deliver the order within the specified timeframe, they may request an extension, or you can communicate with them to find a resolution. If the seller is unable to deliver the order, a refund will be issued to you, and their profile rating may be negatively impacted. We are committed to ensuring a safe and positive experience for all members of our community, and we appreciate your cooperation. Thank you for choosing our platform.`}
-        </Text>
+            style={{
+              fontSize: 16,
+
+              fontWeight: "400",
+              marginTop: 24,
+            }}
+          >
+            {type == "FAILED" ? (
+              isBn ? (
+                ``
+              ) : (
+                `Dear valued ${name}, we understand that sometimes an order may not be delivered as expected. In such cases, we will refund your payment within 7 working days. However, if you have not received your refund within this time frame, please do not hesitate to contact our support team for further assistance. We are committed to ensuring that you have a seamless experience on our platform, and we thank you for your understanding.`
+              )
+            ) : type == "DELIVERED" ? (
+              <Text>
+                Upon receiving your product, kindly click on the "Yes, I
+                Received" button. Failure to do so within 72 hours will result
+                in an automatic marking of the item as received. Rest assured,
+                we will notify you three times before this happens. For any
+                queries, please feel free to contact our{" "}
+                <Text style={{ color: "#4ADE80" }}>support center</Text>.
+              </Text>
+            ) : (
+              `Dear ${name}, please be advised that timely delivery is crucial for maintaining a positive experience on our platform. If a seller is unable to deliver the order within the specified timeframe, they may request an extension, or you can communicate with them to find a resolution. If the seller is unable to deliver the order, a refund will be issued to you, and their profile rating may be negatively impacted. We are committed to ensuring a safe and positive experience for all members of our community, and we appreciate your cooperation. Thank you for choosing our platform.`
+            )}
+          </Text>
         )}
       </View>
     </ScrollView>

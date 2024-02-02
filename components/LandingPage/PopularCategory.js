@@ -23,11 +23,13 @@ import { setSaveList } from "../../Reducers/saveList";
 import { getData, getJson, storeData, storeJson } from "../../Class/storage";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import ActivityLoader from "../ActivityLoader";
+import useLang from "../../Hooks/UseLang";
 
-export default function PopularCategory({ onMore, navigation,refresh }) {
+export default function PopularCategory({ onMore, navigation, refresh }) {
   const [data, setData] = useState();
   const isFocused = useIsFocused();
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
     fetchData();
     store();
@@ -37,7 +39,7 @@ export default function PopularCategory({ onMore, navigation,refresh }) {
       const { data } = await getPopularServices();
       setData(data?.gigs);
       //console.log(data?.gigs)
-      storeJson("popular_category",data?.gigs);
+      storeJson("popular_category", data?.gigs);
     } catch (err) {
       console.error(err.message);
     }
@@ -55,14 +57,20 @@ export default function PopularCategory({ onMore, navigation,refresh }) {
       style={{
         marginHorizontal: 20,
         marginBottom: 20,
-      }}>
+      }}
+    >
       <View style={[customStyle.flexBox, { marginTop: 20, marginBottom: 8 }]}>
-        <Text style={customStyle.landingHeadLine}>Popular Category</Text>
+        <Text style={customStyle.landingHeadLine}>
+          {isBn ? "জনপ্রিয় সার্ভিস" : "Popular Category"}
+        </Text>
         <TouchableOpacity
           onPress={() => {
             onMore(data);
-          }}>
-          <Text style={styles.buttonText}>See all</Text>
+          }}
+        >
+          <Text style={styles.buttonText}>
+            {isBn ? "আরও দেখুন" : "See all"}
+          </Text>
         </TouchableOpacity>
       </View>
       {data &&
@@ -151,7 +159,8 @@ export const Card = ({ style, data, onPress }) => {
           <View
             style={{
               flex: 7,
-            }}>
+            }}
+          >
             <Text numberOfLines={2} style={[styles.headLine]}>
               {data
                 ? data.title
@@ -166,7 +175,8 @@ export const Card = ({ style, data, onPress }) => {
               }
               addToSaveList();
               setLike((t) => !t);
-            }}>
+            }}
+          >
             <AntDesign
               style={{
                 marginLeft: 20,
@@ -180,9 +190,9 @@ export const Card = ({ style, data, onPress }) => {
         </View>
         <View style={[customStyle.flexBox]}>
           <Text style={[styles.smallText, { flex: 1 }]} numberOfLines={1}>
-          {data
-                  ? `${data?.service?.providerInfo?.name}`
-                  : "Easin Arafat It consulting center"}
+            {data
+              ? `${data?.service?.providerInfo?.name}`
+              : "Easin Arafat It consulting center"}
           </Text>
           <View
             style={{

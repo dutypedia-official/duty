@@ -67,6 +67,7 @@ import DatePickerHook from "../../Hooks/DatePickerHook";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import ReadMoreText from "rn-read-more-text";
+import useLang from "../../Hooks/UseLang";
 
 const OfferNow = (props) => {
   const navigation = props.navigation;
@@ -115,6 +116,8 @@ const OfferNow = (props) => {
   const [newServices, setNewServices] = useState();
   const [facilities, setNewFacilities] = useState();
   const [dutyFee, setDutyFee] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     //console.log(data.installmentData);
@@ -128,9 +131,7 @@ const OfferNow = (props) => {
     if (gigs) {
       //console.log(data.subsData)
       setPrice(gigs.price);
-      setListData(
-          gigs?.skills  
-        );
+      setListData(gigs?.skills);
       setFacilities(gigs.facilites.selectedOptions);
     }
     if (selectedPackage) {
@@ -159,18 +160,18 @@ const OfferNow = (props) => {
   };
   const validate = async () => {
     if (!From) {
-      setFromDateError("Invalid date");
+      setFromDateError(isBn ? "ভুল তারিখ দিয়েছেন" : "Invalid date");
       return;
     }
     if (!To && type != "SUBS" && type != "INSTALLMENT") {
-      setToDateError("Invalid date");
+      setToDateError(isBn ? "ভুল তারিখ দিয়েছেন" : "Invalid date");
       return;
     }
     if (!Price) {
-      setPriceError("Invalid price");
+      setPriceError(isBn ? "দাম ভুল দিয়েছেন" : "Invalid price");
       return;
     }
-//console.log(`${params?.id} ${params?.title}`)
+    //console.log(`${params?.id} ${params?.title}`)
     setLoader(true);
     let urls;
     if (Document) {
@@ -202,9 +203,7 @@ const OfferNow = (props) => {
       data.installmentData ? data.installmentData : undefined,
       urls ? urls[0] : undefined,
       gigs ? gigs.id : params?.id,
-      gigs
-        ? gigs?.title
-        : params?.title
+      gigs ? gigs?.title : params?.title
     )
       .then((res) => {
         getNewOrderUser(res);
@@ -257,7 +256,8 @@ const OfferNow = (props) => {
   const renderFooter = ({ isShowingAll, toggle }) => (
     <Text
       style={{ color: "blue", alignSelf: "flex-end" }}
-      onPress={() => toggle()}>
+      onPress={() => toggle()}
+    >
       {isShowingAll ? "Show less" : "Show more"}
     </Text>
   );
@@ -313,12 +313,14 @@ const OfferNow = (props) => {
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <View style={{ alignItems: "center", width: width - 40 }}>
             <LinearGradient // Background Linear Gradient colors=
               colors={["#FFAFBD", "#C9FFBF"]}
               style={styles.top}
-              end={{ x: 0.1, y: 0.3 }}>
+              end={{ x: 0.1, y: 0.3 }}
+            >
               <View style={{ height: 30 }} />
               <Text
                 style={{
@@ -326,7 +328,8 @@ const OfferNow = (props) => {
                   color: "#767676",
                   fontSize: 14,
                   fontWeight: "500",
-                }}>
+                }}
+              >
                 {data ? data.service.serviceCenterName : "---"}
               </Text>
               <Text
@@ -335,7 +338,8 @@ const OfferNow = (props) => {
                   color: "#767676",
                   fontSize: 12,
                   fontWeight: "400",
-                }}>
+                }}
+              >
                 {data?.service?.providerInfo?.name}
               </Text>
               <Text
@@ -344,30 +348,50 @@ const OfferNow = (props) => {
                   color: "#767676",
                   fontSize: 12,
                   fontWeight: "400",
-                }}>
+                }}
+              >
                 {data?.service?.providerInfo?.position}
               </Text>
-              <Text
-                style={{
-                  marginTop: 15,
-                  color: "#1A1A1A",
-                  fontSize: 20,
-                  fontWeight: "500",
-                }}>
-                {type == "STARTING"
-                  ? "Starting"
-                  : type == "ONETIME"
-                  ? "Fixed"
-                  : "Package"}{" "}
-                price
-              </Text>
+              {isBn ? (
+                <Text
+                  style={{
+                    marginTop: 15,
+                    color: "#1A1A1A",
+                    fontSize: 20,
+                    fontWeight: "500",
+                  }}
+                >
+                  {type == "STARTING"
+                    ? "দাম শুরু"
+                    : type == "ONETIME"
+                    ? "এক দর"
+                    : "Package"}{" "}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    marginTop: 15,
+                    color: "#1A1A1A",
+                    fontSize: 20,
+                    fontWeight: "500",
+                  }}
+                >
+                  {type == "STARTING"
+                    ? "Starting"
+                    : type == "ONETIME"
+                    ? "Fixed"
+                    : "Package"}{" "}
+                  price
+                </Text>
+              )}
               <Text
                 style={{
                   marginTop: 12,
                   color: "#09090A",
                   fontSize: 16,
                   fontWeight: "400",
-                }}>
+                }}
+              >
                 {params?.price
                   ? params?.price
                   : type == "ONETIME"
@@ -387,7 +411,9 @@ const OfferNow = (props) => {
               )}
             </View>
           </View>
-          <Text style={[styles.text14Bold, { marginTop: 32 }]}>Details</Text>
+          <Text style={[styles.text14Bold, { marginTop: 32 }]}>
+            {isBn ? "বিস্তারিত" : "Details"}
+          </Text>
           {type == "STARTING" ? (
             <View
               style={{
@@ -395,17 +421,21 @@ const OfferNow = (props) => {
                 borderBottomColor: "#F1F1F1",
                 borderBottomWidth: 1,
                 paddingBottom: 12,
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
                   flex: 1,
-                }}>
+                }}
+              >
                 <Text style={[styles.text14, { flex: 1 }]}>
-                  Your offer{" "}
-                  <Text style={{ color: "black" }}>(Enter your amount )*</Text>
+                  {isBn ? "আপনার দাম অফার করুন *" : "Your offer"}{" "}
+                  <Text style={{ color: "black" }}>
+                    {isBn ? "" : "(Enter your amount )*"}
+                  </Text>
                 </Text>
                 <Input
                   value={Price}
@@ -416,7 +446,9 @@ const OfferNow = (props) => {
                       setPriceError(null);
                     } else {
                       setPriceError(
-                        `Price can be large or equal to ${params.price}৳`
+                        isBn
+                          ? `আপনার দরদামের মূল্য, বিক্রেতা যে দাম দিয়েছে তার বেশি অথবা সমান হতে হবে`
+                          : `Price can be large or equal to ${params.price}৳`
                       );
                     }
                   }}
@@ -458,7 +490,7 @@ const OfferNow = (props) => {
                 ))}
               </View>
               <Text style={[styles.text14, { marginTop: 20 }]}>
-                Service List
+                {isBn ? "সার্ভিস লিস্ট" : "Service List"}
               </Text>
               <View style={{ height: 10 }} />
               {/* <AnimatedHeight
@@ -480,14 +512,14 @@ const OfferNow = (props) => {
               {facilities && (
                 <>
                   <Text style={[styles.text14, { marginTop: 20 }]}>
-                    Facilities
+                    {isBn ? "আতিরিক্ত সুবিধা" : "Facilities"}
                   </Text>
                   <View style={{ height: 10 }} />
                   <AnimatedHeight
                     fontStyle={styles.text14}
                     text={facilities}
                     button={true}
-                    title={"See More"}
+                    title={isBn ? "আরও দেখুন" : "See More"}
                   />
                 </>
               )}
@@ -496,14 +528,16 @@ const OfferNow = (props) => {
 
           <View style={styles.box}>
             <Text style={styles.text14}>
-              Duty Fee {dutyFee ? dutyFee * 100 : "0"}%
+              {isBn ? "ডিউটি ফি" : "Duty Fee"} {dutyFee ? dutyFee * 100 : "0"}%
             </Text>
             <Text style={styles.text14}>
               {Price ? (Price * dutyFee).toFixed(2) : "00.00"} ৳
             </Text>
           </View>
           <View style={styles.box}>
-            <Text style={styles.text14}>Total pay</Text>
+            <Text style={styles.text14}>
+              {isBn ? "সর্বমোট টাকা" : "Total pay"}
+            </Text>
             <Text style={styles.text14}>
               {Price
                 ? (parseInt(Price) + parseInt(Price) * dutyFee).toFixed(2)
@@ -517,15 +551,19 @@ const OfferNow = (props) => {
                 flexDirection: "row",
                 alignItems: "center",
                 flex: 1,
-              }}>
-              <Text style={[styles.text14]}>Delivery date*</Text>
+              }}
+            >
+              <Text style={[styles.text14]}>
+                {isBn ? "ডেলিভারির তারিখ *" : "Delivery date*"}
+              </Text>
               <View
                 style={{
                   flexDirection: "row",
                   marginLeft: 20,
                   flex: 1,
                   justifyContent: "flex-end",
-                }}>
+                }}
+              >
                 <Text
                   onPress={() => {
                     navigation.navigate("ChooseDateOrder", {
@@ -538,9 +576,12 @@ const OfferNow = (props) => {
                     fontSize: 14,
                     textDecorationLine: "underline",
                     fontWeight: "400",
-                  }}>
+                  }}
+                >
                   {From && To
                     ? `${slashDate(From)} To ${slashDate(To)}`
+                    : isBn
+                    ? "তারিখ নির্বাচন করুন"
                     : "choose date"}
                 </Text>
                 <SvgXml style={{ marginLeft: 8 }} xml={calenderIcon} />
@@ -548,7 +589,9 @@ const OfferNow = (props) => {
             </View>
             {FromDateError || ToDateError ? (
               <Text style={{ color: "red", marginVertical: 3 }}>
-                Please select date
+                {isBn
+                  ? "যে দিন সার্ভিস চান সেইদিন এর তারিখ নির্বাচন করুন"
+                  : "Please select date"}
               </Text>
             ) : null}
           </View>
@@ -557,8 +600,11 @@ const OfferNow = (props) => {
               fontWeight: "500",
               fontSize: 16,
               marginTop: 32,
-            }}>
-            Tell your work instruction ( optional )
+            }}
+          >
+            {isBn
+              ? "আপনার কাজের নির্দেশনা বলুন ( আবশ্যক না )"
+              : "Tell your work instruction ( optional )"}
           </Text>
           <TextArea
             onChange={(e) => setDescription(e)}
@@ -570,24 +616,43 @@ const OfferNow = (props) => {
             }}
             placeholder={" "}
           />
-          <Text
-            style={{
-              fontSize: 12,
-              
-              fontWeight: "400",
-              color: "#767676",
-            }}>
-            We recommend that you communicate your requirements to the seller in
-            writing, as it will assist us in addressing any future inquiries
-            more effectively.
-          </Text>
+          {isBn ? (
+            <Text
+              style={{
+                fontSize: 12,
+
+                fontWeight: "400",
+                color: "#767676",
+              }}
+            >
+              আমরা সুপারিশ করছি যে আপনি আপনার প্রয়োজনীয়তাগুলি বিক্রেতার কাছে
+              লিখিতভাবে জানান। কারণ এটি আমাদের ভবিষ্যতের যেকোনো অনুসন্ধানকে আরও
+              কার্যকরভাবে সমাধান করতে সহায়তা করবে।
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontSize: 12,
+
+                fontWeight: "400",
+                color: "#767676",
+              }}
+            >
+              We recommend that you communicate your requirements to the seller
+              in writing, as it will assist us in addressing any future
+              inquiries more effectively.
+            </Text>
+          )}
           <Text
             style={{
               fontWeight: "500",
               fontSize: 16,
               marginTop: 32,
-            }}>
-            Attachments ( Optional )
+            }}
+          >
+            {isBn
+              ? "সংযুক্তি ফাইল অথবা ছবি ( আবশ্যক না )"
+              : "Attachments ( Optional )"}
           </Text>
           {!Document ? (
             <View>
@@ -607,30 +672,56 @@ const OfferNow = (props) => {
                   borderColor: "#AFAFAF",
                   justifyContent: "center",
                   alignItems: "center",
-                }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: "600",
-                    color: "#009FE3",
-                  }}>
-                  Add File{" "}
+                }}
+              >
+                {isBn ? (
                   <Text
                     style={{
-                      color: "#A6A4A4",
-                      fontWeight: "400",
-                    }}>
-                    Here (Max 5 MB)
+                      fontSize: 16,
+                      fontWeight: "600",
+                      color: "#009FE3",
+                    }}
+                  >
+                    ফাইল এড করুন{" "}
+                    <Text
+                      style={{
+                        color: "#A6A4A4",
+                        fontWeight: "400",
+                      }}
+                    >
+                      এখানে (সর্বচ্চ 5 MB)
+                    </Text>
                   </Text>
-                </Text>
+                ) : (
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: "600",
+                      color: "#009FE3",
+                    }}
+                  >
+                    Add File{" "}
+                    <Text
+                      style={{
+                        color: "#A6A4A4",
+                        fontWeight: "400",
+                      }}
+                    >
+                      Here (Max 5 MB)
+                    </Text>
+                  </Text>
+                )}
               </Pressable>
               <Text
                 style={{
                   color: "#EC2700",
                   marginTop: 8,
                   fontSize: 14,
-                }}>
-                Please do not share any personal Information
+                }}
+              >
+                {isBn
+                  ? "দয়া করে কোনো ব্যক্তিগত তথ্য শেয়ার করবেন না"
+                  : "Please do not share any personal Information"}
               </Text>
             </View>
           ) : (
@@ -641,12 +732,14 @@ const OfferNow = (props) => {
                 flexDirection: "row",
                 alignItems: "center",
                 flex: 1,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   marginRight: 10,
                   flex: 1,
-                }}>
+                }}
+              >
                 {Document.name}
               </Text>
               <Ionicons
@@ -663,7 +756,8 @@ const OfferNow = (props) => {
             style={{
               alignItems: "flex-end",
               marginBottom: 32,
-            }}>
+            }}
+          >
             <Text
               onPress={() => {
                 navigation.navigate("InstructionOrder");
@@ -673,8 +767,11 @@ const OfferNow = (props) => {
                 color: "#1A1A1A",
                 textDecorationLine: "underline",
                 marginTop: 20,
-              }}>
-              See How to order work
+              }}
+            >
+              {isBn
+                ? "আমাদের অর্ডার কিভাবে কাজ করে সেটা দেখুন"
+                : "See How to order work"}
             </Text>
           </View>
         </View>
@@ -684,11 +781,13 @@ const OfferNow = (props) => {
           paddingTop: 20,
           paddingHorizontal: 20,
           paddingBottom: 12,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
-          }}>
+          }}
+        >
           <CheckBox
             style={{ fontSize: 14 }}
             value={condition}
@@ -696,24 +795,72 @@ const OfferNow = (props) => {
               setCondition((val) => !val);
             }}
           />
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "400",
-            }}>
-            I agree with all the <Text onPress={() => {
-              navigation?.navigate("WebViewsGlobal", {
-                url: "https://duty.com.bd/legal/app/order-policy",
-                title: "Order Policy",
-              });
-            }} style={{ color: "#0003FF" }}>Order</Text>{" "}
-            & <Text onPress={() => {
-                navigation?.navigate("WebViewsGlobal", {
-                  url: "https://duty.com.bd/legal/app/refund-policy",
-                  title: "Refund policy",
-                });
-              }} style={{ color: "#0003FF" }}>refund policy</Text>
-          </Text>
+          {isBn ? (
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "400",
+              }}
+            >
+              আমি ডিউটি প্ল্যাটফর্মের সমস্ত{" "}
+              <Text
+                onPress={() => {
+                  navigation?.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/order-policy",
+                    title: "Order Policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                অর্ডার
+              </Text>{" "}
+              এবং{" "}
+              <Text
+                onPress={() => {
+                  navigation?.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/refund-policy",
+                    title: "Refund policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                ফেরতের নীতির{" "}
+              </Text>
+              সাথে একমত
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "400",
+              }}
+            >
+              I agree with all the{" "}
+              <Text
+                onPress={() => {
+                  navigation?.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/order-policy",
+                    title: "Order Policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                Order
+              </Text>{" "}
+              &{" "}
+              <Text
+                onPress={() => {
+                  navigation?.navigate("WebViewsGlobal", {
+                    url: "https://duty.com.bd/legal/app/refund-policy",
+                    title: "Refund policy",
+                  });
+                }}
+                style={{ color: "#0003FF" }}
+              >
+                refund policy
+              </Text>
+            </Text>
+          )}
         </View>
 
         <IconButton
@@ -729,7 +876,7 @@ const OfferNow = (props) => {
           style={{
             marginTop: 12,
           }}
-          title="Send Order Request"
+          title={isBn ? "অর্ডার এর জন্য অনুরোধ পাঠান" : "Send Order Request"}
         />
       </View>
     </Animated.View>
@@ -782,20 +929,19 @@ const styles = StyleSheet.create({
   },
   spText: {
     fontSize: 16,
-    
+
     fontWeight: "400",
     marginTop: 24,
     color: "#1A1A1A",
   },
   headLine: {
     fontSize: 24,
-    
+
     fontWeight: "500",
   },
   leading: {
     fontSize: 24,
     fontWeight: "500",
-    
   },
 });
 export default OfferNow;

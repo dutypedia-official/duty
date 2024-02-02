@@ -5,13 +5,14 @@ import { useDispatch } from "react-redux";
 import SubHeader from "../../components/SubHeader";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import OfferNow from "../Seller/OfferNow";
+import useLang from "../../Hooks/UseLang";
 
 export default function ServiceOrder({ navigation, route }) {
   const data = route?.params?.data;
   const type = route.params?.type;
-  const price=route?.params?.price;
-  const title=route?.params?.title;
-  const id=route?.params?.id
+  const price = route?.params?.price;
+  const title = route?.params?.title;
+  const id = route?.params?.id;
   const serviceList = route?.params?.serviceList;
   const facilities = route?.params?.facilities;
   const selectedPackage = route?.params?.selectedPackage;
@@ -20,6 +21,8 @@ export default function ServiceOrder({ navigation, route }) {
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -37,12 +40,18 @@ export default function ServiceOrder({ navigation, route }) {
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <SubHeader
-        
         navigation={navigation}
         title={
-          type == "STARTING"
+          isBn
+            ? type == "STARTING"
+              ? "দরদাম করুন"
+              : type == "ONETIME"
+              ? "ক্রয় করুন"
+              : "ক্রয় করুন"
+            : type == "STARTING"
             ? "Offer Your Price"
             : type == "ONETIME"
             ? "Fixed Price Service"
@@ -50,7 +59,14 @@ export default function ServiceOrder({ navigation, route }) {
         }
       />
       {type == "STARTING" && (
-        <OfferNow navigation={navigation}  title={title}  id={id}  type={type} price={price} data={data} />
+        <OfferNow
+          navigation={navigation}
+          title={title}
+          id={id}
+          type={type}
+          price={price}
+          data={data}
+        />
       )}
       {type == "ONETIME" && (
         <OfferNow

@@ -1,14 +1,17 @@
 import { useIsFocused } from "@react-navigation/native";
 import React from "react";
-import { ScrollView, StatusBar, View,Text, SafeAreaView } from "react-native";
+import { ScrollView, StatusBar, View, Text, SafeAreaView } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import IconButton from "../../../components/IconButton";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
+import useLang from "../../../Hooks/UseLang";
 
-export default function ReviewVerification({navigation}) {
+export default function ReviewVerification({ navigation }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (isFocused) {
       //dispatch(setHideBottomBar(true));
@@ -21,45 +24,55 @@ export default function ReviewVerification({navigation}) {
   }, [isFocused]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-    
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginHorizontal: 28,
             marginTop: 28,
             marginBottom: 32,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
-          <Text style={{
-            marginTop:28,
-            fontSize:24,
-            
-            fontWeight:"400"
-          }}>Your verification is currently under review.</Text>
-          <Text style={{
-            fontSize:16,
-            fontWeight:"400",
-            
-            marginTop:28,
-            color:"#484848"
-          }}>
-            Thank you for your interest in withdrawing funds from our platform.
-            We are currently reviewing your account verification request to
-            ensure the security of your account. Please be patient while we
-            complete the verification process. We will notify you as soon as
-            your account has been successfully verified and you are able to
-            proceed with your withdrawal request. Thank you for your
-            understanding and cooperation in keeping your account secure. If you
-            have any questions or concerns, please don't hesitate to contact our
-            <Text style={{color:"#4ADE80"}}> customer support team.</Text>
+          <Text
+            style={{
+              marginTop: 28,
+              fontSize: 24,
+
+              fontWeight: "400",
+            }}
+          >
+            {isBn
+              ? "আপনার সকল নথি যাচাইকরণ এবং বর্তমানে পর্যালোচনার অধীনে আছে"
+              : "Your verification is currently under review."}
           </Text>
-          <IconButton onPress={()=>{
-            navigation.goBack()
-          }} style={{
-            height:44,
-            marginTop:28,
-            
-          }} title={"Cancel"}/>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "400",
+
+              marginTop: 28,
+              color: "#484848",
+            }}
+          >
+            {isBn
+              ? "আমাদের প্ল্যাটফর্ম থেকে তহবিল তোলার আগ্রহের জন্য আপনাকে ধন্যবাদ আমরা বর্তমানে আপনার অ্যাকাউন্টের নিরাপত্তা নিশ্চিত করতে আপনার অ্যাকাউন্ট যাচাইকরণের অনুরোধ পর্যালোচনা করছি, আমরা যাচাইকরণ প্রক্রিয়া সম্পূর্ণ করার আগ পর্যন্ত অনুগ্রহ করে ধৈর্য ধরুন, যত তাড়াতাড়ি সম্ভব আপনার অ্যাকাউন্ট সফলভাবে যাচাই করা শেষ হলে তারপর আপনি আপনার টাকা উত্তোলনের অনুরোধের সাথে এগিয়ে যেতে সক্ষম হবেন, সফল ভাবে যাচাই হয়ে গেলে সেটা আপনাকে জানিয়ে দেয়া হবে আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে আপনার বোঝাপড়া এবং সহযোগিতার জন্য আপনাকে ধন্যবাদ৷ আপনার কোন প্রশ্ন বা উদ্বেগ থাকলে, আমাদের"
+              : "Thank you for your interest in withdrawing funds from our platform. We are currently reviewing your account verification request to ensure the security of your account. Please be patient while we complete the verification process. We will notify you as soon as your account has been successfully verified and you are able to proceed with your withdrawal request. Thank you for your understanding and cooperation in keeping your account secure. If you have any questions or concerns, please don't hesitate to contact our"}
+            <Text style={{ color: "#4ADE80" }}>
+              {" "}
+              {isBn ? " গ্রাহক সহায়তা দলের " : " customer support team."}
+            </Text>
+            {isBn && <Text>সাথে যোগাযোগ করতে দ্বিধা করবেন না।</Text>}
+          </Text>
+          <IconButton
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={{
+              height: 44,
+              marginTop: 28,
+            }}
+            title={isBn ? "ফিরে যান" : "Cancel"}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

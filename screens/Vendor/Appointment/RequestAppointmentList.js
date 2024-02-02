@@ -20,6 +20,7 @@ import {
 import { Color } from "../../../assets/colors";
 import { changeTime, timeConverter } from "../../../action";
 import Avatar from "../../../components/Avatar";
+import useLang from "../../../Hooks/UseLang";
 const status = [
   {
     title: "Incomplete",
@@ -195,12 +196,13 @@ export default function RequestAppointmentList({ navigation, route }) {
             name={`${doc.user.name}`}
             image={doc.user.profilePhoto}
             username={doc.user.username}
-            
           />
         ))}
-        <View style={{
-          height:80
-        }}/>
+        <View
+          style={{
+            height: 80,
+          }}
+        />
       </ScrollView>
 
       <FAB
@@ -235,46 +237,55 @@ export const Cart = ({
 }) => {
   //console.log(status)
   return (
-    <Pressable style={{
-      flexDirection:"row",
-      justifyContent:"space-between",
-      paddingHorizontal:20,
-      marginVertical:8,
-      paddingVertical:4,
-      alignItems:"center",
-      
-    }} onPress={onPress}>
+    <Pressable
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 20,
+        marginVertical: 8,
+        paddingVertical: 4,
+        alignItems: "center",
+      }}
+      onPress={onPress}
+    >
       <View
         style={{
           flexDirection: "row",
-          alignItems:"center"
-        }}>
+          alignItems: "center",
+        }}
+      >
         <Avatar
           style={{
             width: 48,
             height: 48,
-            borderColor:"#e5e5e5"
+            borderColor: "#e5e5e5",
           }}
           source={{ uri: image }}
         />
         <View
           style={{
             marginLeft: 12,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 16,
               fontWeight: "700",
             }}
-            numberOfLines={1}>
+            numberOfLines={1}
+          >
             {name ? name : "Easin Arafat"}
           </Text>
-          <Text style={{
-            marginTop:4,
-            fontSize:12,
-            fontWeight:"400",
-            color:"#767676"
-          }}>{date}</Text>
+          <Text
+            style={{
+              marginTop: 4,
+              fontSize: 12,
+              fontWeight: "400",
+              color: "#767676",
+            }}
+          >
+            {date}
+          </Text>
         </View>
       </View>
       <Text
@@ -283,7 +294,8 @@ export const Cart = ({
           color: status ? status.color : "#1A1A1A",
           fontSize: 12,
           fontWeight: "500",
-        }}>{`${status ? status.title : "Invalid"}`}</Text>
+        }}
+      >{`${status ? status.title : "Invalid"}`}</Text>
     </Pressable>
   );
   return (
@@ -300,7 +312,8 @@ export const Cart = ({
         alignItems: "center",
         marginTop: 10,
         borderRadius: 5,
-      }}>
+      }}
+    >
       <Avatar
         style={{
           width: 40,
@@ -316,19 +329,22 @@ export const Cart = ({
       <View
         style={{
           flex: 0.5,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 12,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           {name ? name : "Easin Arafat"}
         </Text>
         <Text
           style={{
             fontSize: 12,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           @{username ? username : "easinarafat"}
         </Text>
       </View>
@@ -344,16 +360,19 @@ export const Cart = ({
         style={{
           flex: 1.5,
           marginLeft: 5,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
-          }}>
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontSize: 12,
-            }}>
+            }}
+          >
             {date}
           </Text>
           <Text
@@ -362,13 +381,15 @@ export const Cart = ({
               color: status ? status.color : "red",
               fontSize: 12,
               marginLeft: 10,
-            }}>{`(${status ? status.title : "Invalid"})`}</Text>
+            }}
+          >{`(${status ? status.title : "Invalid"})`}</Text>
         </View>
         <Text
           style={{
             fontSize: 14,
           }}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           {title ? title : "Invalid"}
         </Text>
       </View>
@@ -417,6 +438,8 @@ const Chip = ({ title, active, onPress, style }) => {
   );
 };
 const NoAppointment = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
@@ -434,7 +457,7 @@ const NoAppointment = () => {
           marginTop: 10,
         }}
       >
-        No Appointment Found
+        {isBn ? "কোনও অ্যাপয়েন্টমেন্ট নেই" : "No Appointment Found"}
       </Text>
     </View>
   );

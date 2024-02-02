@@ -12,6 +12,7 @@ import IconButton from "../../../components/IconButton";
 import TextArea from "../../../components/TextArea";
 import { styles } from "../../create_dashboard/BusinessTitle";
 import { pickImage } from "../../VendorProfile";
+import useLang from "../../../Hooks/UseLang";
 
 export default function OrderDelivery({ navigation, route }) {
   const [text, setText] = useState();
@@ -19,6 +20,8 @@ export default function OrderDelivery({ navigation, route }) {
   const [loader, setLoader] = useState(false);
   const user = useSelector((state) => state.user);
   const order = route?.params?.order;
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   //console.log(files);
   const confirm = async () => {
@@ -27,28 +30,37 @@ export default function OrderDelivery({ navigation, route }) {
       let arr = [];
       arr.push(fileFromURL(files));
       const res = await uploadFile(arr, user.token);
-      const r=await completeOrderDelivery(user.token, order?.id, res[0], text);
+      const r = await completeOrderDelivery(
+        user.token,
+        order?.id,
+        res[0],
+        text
+      );
       setLoader(false);
-      navigation.navigate("VendorOrderDetails",{data:order,orderId:order?.id,type:order.type})
+      navigation.navigate("VendorOrderDetails", {
+        data: order,
+        orderId: order?.id,
+        type: order.type,
+      });
       socket.emit("updateOrder", {
         receiverId: r.data.receiverId,
-        order: order
+        order: order,
       });
       socket.emit("updateOrder", {
         receiverId: order?.user?.id,
-        order: order
+        order: order,
       });
     } catch (err) {
       setLoader(false);
       Alert.alert(err.code, err.message);
     }
   };
-  if(loader){
-    return(
-        <View style={customStyle.fullBox}>
-            <ActivityLoader/>
-        </View>
-    )
+  if (loader) {
+    return (
+      <View style={customStyle.fullBox}>
+        <ActivityLoader />
+      </View>
+    );
   }
   return (
     <ScrollView>
@@ -56,7 +68,8 @@ export default function OrderDelivery({ navigation, route }) {
         style={{
           paddingHorizontal: 20,
           alignItems: "center",
-        }}>
+        }}
+      >
         {files ? (
           <View
             style={{
@@ -65,13 +78,15 @@ export default function OrderDelivery({ navigation, route }) {
               marginTop: 59,
               justifyContent: "space-between",
               flex: 1,
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 flex: 1,
-              }}>
+              }}
+            >
               <SvgXml xml={file} />
               <Text
                 numberOfLines={1}
@@ -81,7 +96,8 @@ export default function OrderDelivery({ navigation, route }) {
                   fontWeight: "400",
                   marginLeft: 8,
                   marginRight: 30,
-                }}>
+                }}
+              >
                 {files?.uri?.split("/")[files?.uri?.split("/").length - 1]}
               </Text>
             </View>
@@ -93,8 +109,9 @@ export default function OrderDelivery({ navigation, route }) {
                 fontSize: 14,
                 fontWeight: "400",
                 color: "#4ADE80",
-              }}>
-              Remove
+              }}
+            >
+              {isBn ? "মুছে ফেলুন" : "Remove"}
             </Text>
           </View>
         ) : (
@@ -106,19 +123,22 @@ export default function OrderDelivery({ navigation, route }) {
               }}
               style={{
                 marginTop: 59,
-              }}>
+              }}
+            >
               <SvgXml xml={icon} />
             </Pressable>
             <Text
               style={{
                 fontSize: 16,
-                
+
                 fontWeight: "400",
                 marginTop: 32,
                 textAlign: "center",
-              }}>
-              Upload Your Service Delivery Receipt, Screenshoot, BuyerSignature
-              Or Other Documents for proof.
+              }}
+            >
+              {isBn
+                ? "আপনার সার্ভিস ডেলিভারির রিসিট ,স্ক্রিনশট,ক্রেতা স্বাক্ষর অথবা প্রমাণের জন্য আরো কিছু ডকুমেন্ট আপলোড করুন৷"
+                : "Upload Your Service Delivery Receipt, Screenshoot, BuyerSignature Or Other Documents for proof."}
             </Text>
           </>
         )}
@@ -127,17 +147,20 @@ export default function OrderDelivery({ navigation, route }) {
             alignItems: "flex-end",
             width: "100%",
             marginTop: 16,
-          }}>
-          <Text onPress={()=>{
-            navigation.navigate("OrderDeliveryRequirement");
           }}
+        >
+          <Text
+            onPress={() => {
+              navigation.navigate("OrderDeliveryRequirement");
+            }}
             style={{
               color: "#EC2700",
               fontSize: 14,
               fontWeight: "400",
               textDecorationLine: "underline",
-            }}>
-            Important message
+            }}
+          >
+            {isBn ? "⚠️ গুরুত্বপূর্ণ ম্যাসেজ" : "Important message"}
           </Text>
         </View>
         <TextArea
@@ -148,16 +171,21 @@ export default function OrderDelivery({ navigation, route }) {
             borderColor: "#D1D1D1",
             marginTop: 32,
           }}
-          placeholder={"Type here if you want to tell something to buyer..."}
+          placeholder={
+            isBn
+              ? "ক্রেতাকে কিছু বলতে চাইলে এখানে টাইপ করুন..."
+              : "Type here if you want to tell something to buyer..."
+          }
         />
-        <IconButton onPress={confirm}
+        <IconButton
+          onPress={confirm}
           disabled={files ? false : true}
           active={files ? true : false}
           style={{
             width: "100%",
             marginTop: 10,
           }}
-          title={"Confirm"}
+          title={isBn ? "নিশ্চিত করুন" : "Confirm"}
         />
       </View>
     </ScrollView>

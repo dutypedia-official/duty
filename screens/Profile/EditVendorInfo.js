@@ -11,19 +11,20 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import { FontAwesome, FontAwesome5,Ionicons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import DropDown from "../../components/DropDown";
 import Input from "../../components/Input";
 import SuggestionBox, { MainOptions } from "../../components/SuggestionBox";
 import IconButton from "../../components/IconButton";
 import { useDispatch, useSelector } from "react-redux";
 import { Color } from "../../assets/colors";
-import { Entypo } from '@expo/vector-icons';
+import { Entypo } from "@expo/vector-icons";
 import { updateData } from "../../Class/update";
 import { getService } from "../../Class/service";
 import ActivityLoader from "../../components/ActivityLoader";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 export default function EditVendorInfo({ navigation, route }) {
@@ -106,12 +107,14 @@ export default function EditVendorInfo({ navigation, route }) {
   const [name, setName] = useState();
   const [specialty, setSpecialty] = useState();
   const [gender, setGender] = useState();
-  const [newSpecialty,setNewSpecialty]=useState([])
-  const user=useSelector(state=>state.user)
-  const vendor=useSelector(state=>state.vendor)
-  const dispatch=useDispatch()
-  const [loader,setLoader]=useState(false)
-  const isFocused=useIsFocused()
+  const [newSpecialty, setNewSpecialty] = useState([]);
+  const user = useSelector((state) => state.user);
+  const vendor = useSelector((state) => state.vendor);
+  const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
+  const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -138,71 +141,84 @@ export default function EditVendorInfo({ navigation, route }) {
       setSpecialty(data.service.speciality);
     }
   }, [data]);
-  const updateInfo=()=>{
-    setLoader(true)
-    updateData(user.token,{
-      serviceId:vendor.service.id,
-      serviceCenterName:centerName,
-      providerInfo:{
-        title:selectedItem,
-        name:name,
-        gender:gender,
-        position:SelectedPositions
+  const updateInfo = () => {
+    setLoader(true);
+    updateData(user.token, {
+      serviceId: vendor.service.id,
+      serviceCenterName: centerName,
+      providerInfo: {
+        title: selectedItem,
+        name: name,
+        gender: gender,
+        position: SelectedPositions,
       },
-      worker:parseInt(TeamNumber)
-    }).then(res=>{
-      updateVendorInfo()
-    }).catch(err=>{
-      setLoader(false)
-      console.error(err.response.data.msg)
+      worker: parseInt(TeamNumber),
     })
-  }
-  const updateVendorInfo=async()=>{
-    const res=await getService(user.token,vendor.service.id);
-    if(res){
-      setLoader(false)
+      .then((res) => {
+        updateVendorInfo();
+      })
+      .catch((err) => {
+        setLoader(false);
+        console.error(err.response.data.msg);
+      });
+  };
+  const updateVendorInfo = async () => {
+    const res = await getService(user.token, vendor.service.id);
+    if (res) {
+      setLoader(false);
       dispatch({ type: "SET_VENDOR", playload: res.data });
-      navigation.goBack()
+      navigation.goBack();
     }
-  }
-  if(loader){
-    return(
-      <View style={{
-        flex:1,
-        justifyContent:"center",
-        alignItems:"center"
-      }}>
-        <ActivityLoader/>
+  };
+  if (loader) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 0,
-          }}>
+          }}
+        >
           <View style={{ height: 15 }} />
-          <Text style={styles.levels}>Service Center Name</Text>
+          <Text style={styles.levels}>
+            {isBn ? "আপনার সার্ভিস সেন্টারের নাম" : "Service Center Name"}
+          </Text>
           <Input
             value={centerName}
             onChange={setCenterName}
             style={styles.input}
-            placeholder={"Center Name"}
+            placeholder={
+              isBn ? "সার্ভিস সেন্টার অথবা ব্রান্ড নাম লিখুন" : "Center Name"
+            }
           />
-          <Text style={styles.levels}>Service Provider Information</Text>
+          <Text style={styles.levels}>
+            {isBn ? "সার্ভিস প্রদানকারীর তথ্য" : "Service Provider Information"}
+          </Text>
           <View
             style={{
               flexDirection: "row",
               paddingHorizontal: 20,
               flex: 1,
-            }}>
+            }}
+          >
             <SuggestionBox
-              placeholder="Title"
+              placeholder={isBn ? "টাইটেল" : "Title"}
               value={selectedItem}
               onChange={(val) => {
                 setData(val);
@@ -224,7 +240,7 @@ export default function EditVendorInfo({ navigation, route }) {
             <Input
               value={name}
               onChange={setName}
-              placeholder={"Name"}
+              placeholder={isBn ? "নাম" : "Name"}
               style={{
                 borderWidth: 1,
                 width: width - 180,
@@ -236,7 +252,8 @@ export default function EditVendorInfo({ navigation, route }) {
               flexDirection: "row",
               paddingHorizontal: 20,
               marginVertical: 5,
-            }}>
+            }}
+          >
             <DropDown
               onChange={(val) => {
                 setGender(val);
@@ -246,12 +263,12 @@ export default function EditVendorInfo({ navigation, route }) {
                 width: 120,
               }}
               value={gender}
-              placeholder="Gender"
+              placeholder={isBn ? "লিঙ্গ" : "Gender"}
               DATA={["Male", "Female", "Other"]}
             />
 
             <SuggestionBox
-              placeholder="Position"
+              placeholder={isBn ? "অবস্থান/পজিশন" : "Position"}
               onChange={(val) => {
                 setPositions(val);
               }}
@@ -274,7 +291,8 @@ export default function EditVendorInfo({ navigation, route }) {
               fontFamily: "Poppins-Medium",
               marginTop: 10,
               marginHorizontal: 20,
-            }}>
+            }}
+          >
             How many team/ Worker do you have?
           </Text>
           <View
@@ -282,7 +300,8 @@ export default function EditVendorInfo({ navigation, route }) {
               flexDirection: "row",
               marginTop: 5,
               marginHorizontal: 20,
-            }}>
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 setData([]);
@@ -292,7 +311,8 @@ export default function EditVendorInfo({ navigation, route }) {
                   setTeamNumber(`${num - 1}`);
                 }
               }}
-              style={styles.button}>
+              style={styles.button}
+            >
               <FontAwesome5 name="minus" size={20} color="#707070" />
             </TouchableOpacity>
             <TextInput
@@ -333,7 +353,8 @@ export default function EditVendorInfo({ navigation, route }) {
                 let num = parseInt(TeamNumber) + 1;
                 setTeamNumber(`${num}`);
               }}
-              style={styles.button}>
+              style={styles.button}
+            >
               <FontAwesome name="plus" size={20} color="#707070" />
             </TouchableOpacity>
           </View>
@@ -343,59 +364,73 @@ export default function EditVendorInfo({ navigation, route }) {
               {
                 marginTop: 5,
               },
-            ]}>
+            ]}
+          >
             Specialty{"  "}
             <Text
               style={{
                 color: "#707070",
-              }}>
+              }}
+            >
               (max 25 letter)
             </Text>
           </Text>
-          <View style={{
-            paddingHorizontal:20,
-            flexDirection:"row",
-            flexWrap:"wrap"
-          }}>
-            {newSpecialty.map((doc,i)=>(
-              <Chip key={i} onRemove={()=>{
-                setNewSpecialty(val=>val.filter((e,j)=>j!=i))
-              }} backgroundColor={backgroundColor} title={doc}/>
+          <View
+            style={{
+              paddingHorizontal: 20,
+              flexDirection: "row",
+              flexWrap: "wrap",
+            }}
+          >
+            {newSpecialty.map((doc, i) => (
+              <Chip
+                key={i}
+                onRemove={() => {
+                  setNewSpecialty((val) => val.filter((e, j) => j != i));
+                }}
+                backgroundColor={backgroundColor}
+                title={doc}
+              />
             ))}
           </View>
           <View
             style={{
               flexDirection: "row",
-            }}>
+            }}
+          >
             <Input
               value={specialty}
-              onChange={e=>{
-                setSpecialty(e)
-                if(e.length>24){
-                  setNewSpecialty(val=>[...val,e])
-                  setSpecialty("")
+              onChange={(e) => {
+                setSpecialty(e);
+                if (e.length > 24) {
+                  setNewSpecialty((val) => [...val, e]);
+                  setSpecialty("");
                 }
               }}
               style={{
-                width:width-140,
-                borderWidth:1
+                width: width - 140,
+                borderWidth: 1,
               }}
               placeholder={"Your specialty"}
             />
-            <IconButton onPress={()=>{
-              if(newSpecialty.length>24){
-                Alert.alert("Specialty can't more then 25")
-                return
-              }
-              if(specialty){
-                setNewSpecialty(val=>[...val,specialty])
-                setSpecialty("")
-              }
-            }} style={{
-              marginVertical:5,
-              backgroundColor:backgroundColor,
-              width:80
-            }} title={"Add"}/>
+            <IconButton
+              onPress={() => {
+                if (newSpecialty.length > 24) {
+                  Alert.alert("Specialty can't more then 25");
+                  return;
+                }
+                if (specialty) {
+                  setNewSpecialty((val) => [...val, specialty]);
+                  setSpecialty("");
+                }
+              }}
+              style={{
+                marginVertical: 5,
+                backgroundColor: backgroundColor,
+                width: 80,
+              }}
+              title={"Add"}
+            />
           </View>
           <MainOptions
             setValue={(value) => {
@@ -423,7 +458,8 @@ export default function EditVendorInfo({ navigation, route }) {
             }}
             Data={Positions}
           />
-          <IconButton onPress={updateInfo}
+          <IconButton
+            onPress={updateInfo}
             style={{
               marginHorizontal: 20,
               marginVertical: 30,
@@ -442,7 +478,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Poppins-Medium",
     marginHorizontal: 20,
-    
   },
   input: {
     borderWidth: 1,
@@ -466,26 +501,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-const Chip=({title,backgroundColor,onRemove})=>{
-  return(
-    <View style={{
-      borderColor:"#e5e5e5",
-      borderWidth:1,
-      paddingHorizontal:10,
-      paddingVertical:5,
-      borderRadius:20,
-      margin:5,
-      flexDirection:"row",
-      alignItems:"center"
-    }}>
-      
-      <Text style={{
-        color:"black",
-        fontSize:16
-      }}>{title}</Text>
-      <Ionicons onPress={onRemove?onRemove:null} style={{
-        marginLeft:5
-      }} name="close-circle-outline" size={21} color="#707070" />
+const Chip = ({ title, backgroundColor, onRemove }) => {
+  return (
+    <View
+      style={{
+        borderColor: "#e5e5e5",
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 20,
+        margin: 5,
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
+      <Text
+        style={{
+          color: "black",
+          fontSize: 16,
+        }}
+      >
+        {title}
+      </Text>
+      <Ionicons
+        onPress={onRemove ? onRemove : null}
+        style={{
+          marginLeft: 5,
+        }}
+        name="close-circle-outline"
+        size={21}
+        color="#707070"
+      />
     </View>
-  )
-}
+  );
+};

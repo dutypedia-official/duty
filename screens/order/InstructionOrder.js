@@ -1,62 +1,125 @@
 import React from "react";
-import { View,ScrollView, StyleSheet,Text, Dimensions } from "react-native";
+import { View, ScrollView, StyleSheet, Text, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
 import SubHeader from "../../components/SubHeader";
 import ViewMore from "../../Hooks/ViewMore";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 const { width, height } = Dimensions.get("window");
 
-export default function InstructionOrder({navigation,route}) {
-  const inset=useSafeAreaInsets()
+export default function InstructionOrder({ navigation, route }) {
+  const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View style={{ flex: 1 }}>
       <SubHeader
-        
         style={{
           marginTop: inset?.top,
         }}
         navigation={navigation}
-        title={"How to order work"}
+        title={isBn ? "আমাদের অর্ডার যেভাবে কাজ করে" : "How to order work"}
       />
-      <ScrollView showsVerticalScrollIndicator={false}
-        style={{ backgroundColor: "#ffffff" }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ backgroundColor: "#ffffff" }}
+      >
         <View
           style={{
             paddingHorizontal: 20,
             paddingBottom: 32,
-          }}>
+          }}
+        >
           <Cart
             Icon={first}
-            title={`Order Request Sent to Seller for [Service].`}
-            description={`When you want to send an order request to a seller, it's important to provide a clear and detailed description of what you need. This will help ensure that the seller can fulfill your requirements and deliver your order to your satisfaction. When choosing a delivery date, it's a good idea to talk to the seller and ask which date is best for them. This will help ensure that they have enough time to complete your order and deliver it to you on time. Once you've confirmed the delivery date with the seller, you can send them an order request. Be sure to review the details of the request before sending it, to ensure that everything is correct. Remember, clear communication is key to a successful transaction. So be sure to communicate clearly with the seller and provide all the information they need to fulfill your requirements`}
+            title={
+              isBn
+                ? "[সার্ভিসের] জন্য বিক্রেতার কাছে অর্ডারের অনুরোধ পাঠানো।"
+                : `Order Request Sent to Seller for [Service].`
+            }
+            description={
+              isBn
+                ? `আপনি যখন একজন বিক্রেতার কাছে একটি অর্ডার রিকোয়েস্ট পাঠাতে চান, তখন আপনার যা প্রয়োজন তার একটি পরিষ্কার এবং বিস্তারিত বর্ণনা করা গুরুত্বপূর্ণ৷।এটি নিশ্চিত করতে সাহায্য করবে যে বিক্রেতা আপনার প্রয়োজনীয়তা পূরণ করতে পারে এবং আপনার সন্তুষ্টির জন্য আপনার অর্ডার গ্রহণ করতে পারে৷।
+
+একটি ডেলিভারি তারিখ নির্বাচন করার সময়, বিক্রেতার সাথে কথা বলা এবং তাদের জন্য কোন তারিখটি গুরুত্বপূর্ণ তা জিজ্ঞাসা করা একটি ভাল ধারণা৷।এটি নিশ্চিত করতে সাহায্য করবে যে তাদের কাছে আপনার অর্ডারটি সম্পূর্ণ করার জন্য পর্যাপ্ত সময় আছে এবং সময়মতো আপনার কাছে পৌঁছে দেওয়া যাবে৷।
+
+একবার আপনি বিক্রেতার সাথে ডেলিভারির তারিখ নিশ্চিত করলে, আপনি তাদের একটি অর্ডার রিকোয়েস্ট পাঠাতে পারেন৷ রিকোয়েস্ট পাঠানোর আগে ডিটেইলস রিভিউ করতে ভুলবেন না, নিশ্চিত করুন যে সবকিছু ঠিক আছে৷।মনে রাখবেন, ক্লিয়ার যোগাযোগ একটি সফল লেনদেনের চাবিকাঠি৷।তাই বিক্রেতার সাথে ক্লিয়ার যোগাযোগ করতে ভুলবেন না এবং আপনার প্রয়োজনীয়তা পূরণের জন্য তাদের প্রয়োজনীয় সমস্ত তথ্য প্রদান করুন`
+                : `When you want to send an order request to a seller, it's important to provide a clear and detailed description of what you need. This will help ensure that the seller can fulfill your requirements and deliver your order to your satisfaction. When choosing a delivery date, it's a good idea to talk to the seller and ask which date is best for them. This will help ensure that they have enough time to complete your order and deliver it to you on time. Once you've confirmed the delivery date with the seller, you can send them an order request. Be sure to review the details of the request before sending it, to ensure that everything is correct. Remember, clear communication is key to a successful transaction. So be sure to communicate clearly with the seller and provide all the information they need to fulfill your requirements`
+            }
           />
           <Cart
-            title={`Reviewing and Accepting the Order`}
+            title={
+              isBn
+                ? `অর্ডার যাচাই এবং অর্ডার গ্রহণ`
+                : `Reviewing and Accepting the Order`
+            }
             Icon={second}
-            description={`When you send your order request, the seller will review it to see if they can fulfill your requirements. If they can, they will accept your order. If they cannot, they may ask for more information or decline the order. So, it's important to make sure that you communicate clearly with the seller and provide all the information they need to fulfill your requirements. This will help ensure that your order is accepted and completed to your satisfaction.`}
+            description={
+              isBn
+                ? `আপনি যখন আপনার অর্ডারের রিকোয়েস্ট পাঠান, তখন বিক্রেতা আপনার প্রয়োজনীয়তাগুলি পূরণ করতে পারে কিনা তা দেখতে এটি রিভিউ করবে৷।যদি তারা পারে, তারা আপনার অর্ডার গ্রহণ করবে৷।যদি তারা না পারে, তারা আরও তথ্য চাইতে পারে বা অর্ডার বাতিল করতে পারে৷।সুতরাং, এটা নিশ্চিত করা গুরুত্বপূর্ণ যে আপনি বিক্রেতার সাথে স্পষ্টভাবে যোগাযোগ করছেন এবং আপনার প্রয়োজনীয়তা পূরণের জন্য তাদের প্রয়োজনীয় সমস্ত তথ্য সরবরাহ করেছেন৷ এটি নিশ্চিত করতে সাহায্য করবে যে আপনার অর্ডারটি গ্রহণ করা হচ্ছে এবং আপনার চাহিদা সম্পূর্ণ হচ্ছে`
+                : `When you send your order request, the seller will review it to see if they can fulfill your requirements. If they can, they will accept your order. If they cannot, they may ask for more information or decline the order. So, it's important to make sure that you communicate clearly with the seller and provide all the information they need to fulfill your requirements. This will help ensure that your order is accepted and completed to your satisfaction.`
+            }
             right={true}
           />
           <Cart
-            title={`Making Payment`}
+            title={isBn ? "পেমেন্ট করা" : `Making Payment`}
             Icon={third}
-            description={`When a seller accepts your order, it's crucial to ensure a safe and secure transaction by making your payment through our platform. You can easily do this by clicking on the "Pay Now" button in your duty invoice. As a platform, we prioritize the security of our payment system and do not release any payment to the seller until you have received your service. This provides a layer of protection for you as the buyer and also ensures that the seller fulfills their end of the bargain. It's important not to pay through any other method or external link provided by the seller or any third party, as this could compromise the security of your transaction. By paying through our platform, your transaction is closely tracked and verified, which adds an extra layer of protection for both you and the seller. So always remember to make your payment by clicking the "Pay Now" button in your duty invoice. If you have any questions or concerns about making your payment, our support team is always available to assist you.`}
+            description={
+              isBn
+                ? `যখন একজন বিক্রেতা আপনার অর্ডার অ্যাকসেপ্ট করেন, তখন আমাদের প্ল্যাটফর্মের মাধ্যমে আপনার অর্থ প্রদান একটি নিরাপদ লেনদেন নিশ্চিত করা অত্যন্ত গুরুত্বপূর্ণ৷।আপনি আপনার ডিউটি ইনভয়েস এ  "মূল্যপরিশোধ করুন" বোতামে ক্লিক করে এটি সহজেই করতে পারেন৷। 
+
+একটি প্ল্যাটফর্ম হিসাবে, আমরা আমাদের পেমেন্ট সিস্টেমের নিরাপত্তাকে অগ্রাধিকার দিই এবং আপনি আপনার সার্ভিস না পাওয়া পর্যন্ত বিক্রেতাকে আমরা কোনো অর্থ প্রদান করি না৷।এটি ক্রেতা হিসাবে আপনার জন্য প্রটেকশনের একটি ধাপ প্রদান করে এবং এটি নিশ্চিত করে যে বিক্রেতা তাদের মূল্য দরদাম সম্পূর্ন করতে পারে৷।বিক্রেতা বা তৃতীয় পক্ষের দ্বারা প্রদত্ত অন্য কোনো পদ্ধতি বা বাহ্যিক লিঙ্কের মাধ্যমে অর্থ প্রদান না করা গুরুত্বপূর্ণ, কারণ এটি আপনার লেনদেনের নিরাপত্তার সমস্যা করতে পারে৷।
+                
+আমাদের প্ল্যাটফর্মের মাধ্যমে অর্থ প্রদান, আপনার লেনদেন ঘনিষ্ঠভাবে ট্র্যাক এবং ভেরিফাইড করা হয়, যা আপনার এবং বিক্রেতা উভয়ের জন্য এক্সট্রা একটি প্রটেকশন তৈরি করে৷।তাই সবসময় মনে রাখবেন যে আপনার ডিউটি ইনভয়েসে "মূল্যপরিশোধ করুন" বোতামে ক্লিক করে আপনার অর্থপ্রদান করবেন৷।
+                
+আপনার অর্থ প্রদানের বিষয়ে আপনার কোনো প্রশ্ন বা কনসার্ন থাকলে, আমাদের সহায়তা টিম আপনাকে সাহায্য করার জন্য সর্বদা প্রস্তুত`
+                : `When a seller accepts your order, it's crucial to ensure a safe and secure transaction by making your payment through our platform. You can easily do this by clicking on the "Pay Now" button in your duty invoice. As a platform, we prioritize the security of our payment system and do not release any payment to the seller until you have received your service. This provides a layer of protection for you as the buyer and also ensures that the seller fulfills their end of the bargain. It's important not to pay through any other method or external link provided by the seller or any third party, as this could compromise the security of your transaction. By paying through our platform, your transaction is closely tracked and verified, which adds an extra layer of protection for both you and the seller. So always remember to make your payment by clicking the "Pay Now" button in your duty invoice. If you have any questions or concerns about making your payment, our support team is always available to assist you.`
+            }
           />
           <Cart
-            title={`The seller will process your service`}
+            title={
+              isBn
+                ? "বিক্রেতা আপনার সার্ভিসের প্রক্রিয়া করবে"
+                : `The seller will process your service`
+            }
             Icon={forth}
-            description={`After you've made your payment, the seller will begin processing your order. During this time, they may need additional information from you to complete your order. If the seller requires any additional information, they will reach out to you through our messaging system. It's important to respond promptly to any messages from the seller, to ensure that your order is completed on time and to your satisfaction. If you have any questions or concerns during the processing period, don't hesitate to reach out to the seller or our support team for assistance. We're here to help ensure that your order is completed to your satisfaction, so please don't hesitate to ask for help if you need it.`}
+            description={
+              isBn
+                ? `আপনি আপনার পেমেন্ট করার পরে, বিক্রেতা আপনার অর্ডার প্রক্রিয়াকরণ শুরু করবে৷।এই সময়ের মধ্যে, আপনার অর্ডার সম্পূর্ণ করার জন্য তাদের আপনার কাছ থেকে অতিরিক্ত তথ্যের প্রয়োজন হতে পারে৷।।
+
+বিক্রেতার কোনো অতিরিক্ত তথ্যের প্রয়োজন হলে, তারা আমাদের মেসেজিং সিস্টেমের মাধ্যমে আপনার কাছে বার্তা পৌঁছাবে৷।আপনার অর্ডার সময়মতো এবং আপনার  চাহিদা সম্পূর্ণ হয়েছে তা নিশ্চিত করতে বিক্রেতার যেকোনো মেসেজের সাথে সাথে রেসপন্ড জানানো গুরুত্বপূর্ণ৷।।
+                
+প্রসেসিং এর সময় আপনার কোনো প্রশ্ন বা প্রশ্ন থাকলে, বিক্রেতা বা আমাদের সহায়তা টিম সাথে যোগাযোগ করতে দ্বিধা করবেন না৷।
+আপনার অর্ডার এবং আপনার  চাহিদা সম্পূর্ণ করার জন্যই আমরা এখানে আছি, তাই আপনার প্রয়োজন হলে সাহায্য চাইতে দ্বিধা বোধ করবেন না`
+                : `After you've made your payment, the seller will begin processing your order. During this time, they may need additional information from you to complete your order. If the seller requires any additional information, they will reach out to you through our messaging system. It's important to respond promptly to any messages from the seller, to ensure that your order is completed on time and to your satisfaction. If you have any questions or concerns during the processing period, don't hesitate to reach out to the seller or our support team for assistance. We're here to help ensure that your order is completed to your satisfaction, so please don't hesitate to ask for help if you need it.`
+            }
             right={true}
           />
           <Cart
-            title={`Receive your service`}
+            title={isBn ? "আপনার সেবা গ্রহণ করুন" : `Receive your service`}
             Icon={fifth}
-            description={`When the seller has successfully completed your order, they will deliver the service to you either online or physically. If the service is delivered online, the seller may need to provide additional proof or documents to confirm the delivery. Once you have received your service, please click on the "Yes, I Receive" button to confirm that you have received it. This will help ensure that the seller is paid promptly for their work. If the service is physical, the seller will provide you with documents that confirm the service that was performed in front of you. Once you have received these documents, please click on the "Yes, I Receive" button to confirm that you have received them. If you have any issues with the service that was delivered, please reach out to the seller or our support team for assistance. We're here to help ensure that you're satisfied with the service you receive.`}
+            description={
+              isBn
+                ? `যখন বিক্রেতা আপনার অর্ডার সফলভাবে কমপ্লিট করে, তখন তারা আপনাকে অনলাইনে বা ফিজিক্যাল ভাবে সার্ভিসটি ডেলিভারি করবে৷।যদি সার্ভিসটি অনলাইনে ডেলিভারি করা হয়, তবে বিক্রেতাকে ডেলিভারি নিশ্চিত করতে অতিরিক্ত প্রমাণ বা ডকুমেন্ট সরবরাহ করাতে হতে পারে৷ একবার আপনি আপনার সার্ভিসটি পেয়ে গেলে, আপনি এটি পেয়েছেন তা নিশ্চিত করতে দয়া করে 'হ্যাঁ, আমি বুজে পেয়েছি' বোতামে ক্লিক করুন৷।এটি নিশ্চিত করতে সাহায্য করবে যে বিক্রেতাকে তাদের কাজের জন্য অবিলম্বে অর্থ প্রদান করা হয়েছে৷।।
+যদি সার্ভিসটি ফিজিক্যাল ডেলিভারি হয়, তাহলে বিক্রেতা আপনার সামনে সম্পাদিত সার্ভিসটি নিশ্চিত করতে আপনার সার্ভিস সরবরাহ করবে৷।একবার আপনি সার্ভিস  পেয়ে গেলে, আপনি সেগুলি পেয়েছেন তা নিশ্চিত করতে দয়া করে হ্যাঁ, বুজে পেয়েছি" বোতামে ক্লিক করুন৷
+ডেলিভারি করা সার্ভিসে আপনার যদি কোনও সমস্যা থাকে তবে সহায়তার জন্য অনুগ্রহ করে বিক্রেতা বা আমাদের সহায়তা টিমের সাথে যোগাযোগ করুন৷`
+                : `When the seller has successfully completed your order, they will deliver the service to you either online or physically. If the service is delivered online, the seller may need to provide additional proof or documents to confirm the delivery. Once you have received your service, please click on the "Yes, I Receive" button to confirm that you have received it. This will help ensure that the seller is paid promptly for their work. If the service is physical, the seller will provide you with documents that confirm the service that was performed in front of you. Once you have received these documents, please click on the "Yes, I Receive" button to confirm that you have received them. If you have any issues with the service that was delivered, please reach out to the seller or our support team for assistance. We're here to help ensure that you're satisfied with the service you receive.`
+            }
           />
           <Cart
-            title={`We pay to the seller`}
+            title={
+              isBn ? "আমরা বিক্রেতাকে অর্থ প্রদান করি" : `We pay to the seller`
+            }
             Icon={sixth}
-            description={`Once you have properly received your service and are satisfied with it, please click the "Yes, I Received" button to confirm that you have received the service. This will let the seller know that their work has been delivered to your satisfaction. If for any reason you are unable to click the button, it will be automatically marked as received after 72 hours. This is to ensure that the seller is properly compensated for their work and that the transaction can be completed. Once the service has been confirmed as received, we will proceed with payment to the seller. Our payment system is secure and reliable, so you can rest assured that the seller will receive their payment in a timely manner.`}
+            description={
+              isBn
+                ? `একবার আপনি আপনার সার্ভিসটি সঠিকভাবে পেয়ে গেলে এবং স্যাটিসফাইড হলে, আপনি সার্ভিসটি পেয়েছেন তা নিশ্চিত করতে দয়া করে "হ্যাঁ, আমি বুজে পেয়েছি" বোতামে ক্লিক করুন৷।এটি বিক্রেতাকে জানাবে যে তাদের কাজ আপনার স্যাটিসফেকশন মোতাবেক ডেলিভারি করা হয়েছে৷।
+আপনি যদি ৭২ ঘন্টার মধ্যে "হ্যাঁ, আমি পেয়েছি" বোতামে ক্লিক করতে না পারেন তবে স্বয়ংক্রিয়ভাবে সার্ভিসটি বুজে পেয়ছেন হিসাবে চিহ্নিত করা হবে।যাতে বুঝা যায় যে বিক্রেতা তাদের সার্ভিসটি সঠিকভাবে ডেলিভারি করেছেন এবং এর ফলে লেনদেনটি সম্পূর্ণ করা যেতে পারে৷।
+সার্ভিসটি কনফার্ম হিসাবে নিশ্চিত হয়ে গেলে, আমরা বিক্রেতার কাছে অর্থ প্রদানের জন্য এগিয়ে যাবো৷।আমাদের পেমেন্ট সিস্টেম নিরাপদ এবং নির্ভরযোগ্য, তাই আপনি নিশ্চিত থাকতে পারেন যে বিক্রেতা তাদের পেমেন্ট সময়মত পাবেন`
+                : `Once you have properly received your service and are satisfied with it, please click the "Yes, I Received" button to confirm that you have received the service. This will let the seller know that their work has been delivered to your satisfaction. If for any reason you are unable to click the button, it will be automatically marked as received after 72 hours. This is to ensure that the seller is properly compensated for their work and that the transaction can be completed. Once the service has been confirmed as received, we will proceed with payment to the seller. Our payment system is secure and reliable, so you can rest assured that the seller will receive their payment in a timely manner.`
+            }
             right={true}
           />
         </View>
@@ -65,141 +128,132 @@ export default function InstructionOrder({navigation,route}) {
   );
 }
 const Cart = ({
-    Icon,
-    description,
-    index,
-    open,
-    onMore,
-    style,
-    right,
-    title,
-    onOpen,
-  }) => {
-    const isDark = useSelector((state) => state.isDark);
-    const [layoutHeight, setLayoutHeight] = React.useState(0);
-    return (
-      <View
-        style={[
-          {
-            marginTop: 40,
-          },
-          style,
-        ]}>
-        {right ? (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}>
-            <Text
-              style={[
-                styles.leading,
-                { flex: 1, marginRight: 8, textAlign: "right" },
-              ]}>
-              {title}
-            </Text>
-            <SvgXml xml={Icon} />
-          </View>
-        ) : (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}>
-            <SvgXml xml={Icon} />
-            <Text style={[styles.leading, { flex: 1, marginLeft: 8 }]}>
-              {title}
-            </Text>
-          </View>
-        )}
-        <ViewMore
+  Icon,
+  description,
+  index,
+  open,
+  onMore,
+  style,
+  right,
+  title,
+  onOpen,
+}) => {
+  const isDark = useSelector((state) => state.isDark);
+  const [layoutHeight, setLayoutHeight] = React.useState(0);
+  return (
+    <View
+      style={[
+        {
+          marginTop: 40,
+        },
+        style,
+      ]}
+    >
+      {right ? (
+        <View
           style={{
-            marginTop: 24,
+            flexDirection: "row",
+            alignItems: "center",
           }}
-          onChange={(e) => {
-            if (e) {
-            }
+        >
+          <Text
+            style={[
+              styles.leading,
+              { flex: 1, marginRight: 8, textAlign: "right" },
+            ]}
+          >
+            {title}
+          </Text>
+          <SvgXml xml={Icon} />
+        </View>
+      ) : (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
           }}
-          width={"37%"}
-          height={layoutHeight}
-          component={
-            <Text
-              onLayout={(e) => {
-                setLayoutHeight(e.nativeEvent.layout.height);
-              }}
-              style={[styles.spText, { marginTop: 0 }]}>
-              {description}
-            </Text>
-          }
-        />
-      </View>
-    );
-  };
-  const styles = StyleSheet.create({
-    background: {
-      width: "100%",
-      height: "100%",
-      position: "absolute",
-    },
-    top: {
-      borderRadius: 16,
-      overflow: "hidden",
-      alignItems: "center",
-      marginTop: 40,
-      width: width - 40,
-      padding: 20,
-      paddingTop: 0,
-    },
-    avatar: {
-      height: 60,
-      width: 60,
-      borderRadius: 30,
-      borderWidth: 3,
-      borderColor: "#ffffff",
-      overflow: "hidden",
-      justifyContent: "center",
-      alignItems: "center",
-      position: "absolute",
-      transform: [{ translateY: 10 }],
-      zIndex: 100,
-    },
-    text14: {
-      fontSize: 14,
-      fontWeight: "400",
-      color: "#767676",
-    },
-    text14Bold: {
-      fontSize: 14,
-      fontWeight: "500",
-      color: "#1A1A1A",
-    },
-    box: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      borderBottomWidth: 1,
-      borderBottomColor: "#F1F1F1",
-      paddingVertical: 20,
-    },
-    spText: {
-      fontSize: 16,
-      lineHeight:24,
-      fontWeight: "400",
-      marginTop: 24,
-      color: "#1A1A1A",
-    },
-    headLine: {
-      fontSize: 24,
-      
-      fontWeight: "500",
-    },
-    leading: {
-      fontSize: 24,
-      fontWeight: "500",
-      
-    },
-  });
-  
-  const first = `<svg width="80" height="92" viewBox="0 0 80 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+        >
+          <SvgXml xml={Icon} />
+          <Text style={[styles.leading, { flex: 1, marginLeft: 8 }]}>
+            {title}
+          </Text>
+        </View>
+      )}
+      <ReadMore
+        containerStyle={{
+          marginTop: 24,
+        }}
+        content={
+          <Text style={[styles.spText, { marginTop: 0 }]}>{description}</Text>
+        }
+      />
+    </View>
+  );
+};
+const styles = StyleSheet.create({
+  background: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  },
+  top: {
+    borderRadius: 16,
+    overflow: "hidden",
+    alignItems: "center",
+    marginTop: 40,
+    width: width - 40,
+    padding: 20,
+    paddingTop: 0,
+  },
+  avatar: {
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    borderWidth: 3,
+    borderColor: "#ffffff",
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    transform: [{ translateY: 10 }],
+    zIndex: 100,
+  },
+  text14: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#767676",
+  },
+  text14Bold: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#1A1A1A",
+  },
+  box: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F1F1",
+    paddingVertical: 20,
+  },
+  spText: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: "400",
+    marginTop: 24,
+    color: "#1A1A1A",
+  },
+  headLine: {
+    fontSize: 24,
+
+    fontWeight: "500",
+  },
+  leading: {
+    fontSize: 24,
+    fontWeight: "500",
+  },
+});
+
+const first = `<svg width="80" height="92" viewBox="0 0 80 92" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_5384_51505)">
   <path d="M23.5916 0H59.8168C62.1385 0.189473 64.2983 1.28415 65.8448 3.05523C66.9654 4.3631 67.7145 5.9566 68.0118 7.6647C70.9968 7.66962 73.9827 7.6647 76.9666 7.6647C77.5134 7.65724 78.0516 7.80348 78.5219 8.08729C78.9921 8.3711 79.3762 8.78146 79.6317 9.27313C79.9893 10.2715 80.1111 11.3413 79.9874 12.3964C80.0232 13.5877 79.9989 14.7802 79.9147 15.969C79.7682 16.6468 79.4051 17.2561 78.8821 17.7019C78.3591 18.1476 77.7056 18.4047 77.0238 18.4329C77.0238 24.0263 77.0238 29.62 77.0238 35.214C77.032 36.7162 76.5068 38.171 75.5449 39.311C75.029 39.922 74.3965 40.4201 73.6857 40.775C72.9748 41.13 72.2005 41.3343 71.4096 41.3758C70.3193 41.4211 69.2291 41.3807 68.1388 41.3935C68.1388 43.6199 68.1388 45.8482 68.1388 48.0746C69.0325 48.0557 69.9118 48.3051 70.6669 48.7916C71.422 49.2781 72.0194 49.9802 72.3843 50.81C72.7492 51.6398 72.8656 52.5606 72.7188 53.4573C72.5719 54.354 72.1685 55.1868 71.5589 55.8517C70.4356 57.0491 69.293 58.217 68.1514 59.3829C68.1233 67.1994 68.1562 75.0178 68.1359 82.8343C68.1301 84.2258 67.8171 85.5983 67.2199 86.8504C66.6228 88.1025 65.7568 89.2021 64.6858 90.0683C63.2118 91.2474 61.4096 91.9234 59.5358 92H8.64661C6.92325 91.9305 5.25609 91.3575 3.84466 90.3495C2.43323 89.3415 1.33732 87.9412 0.688086 86.3163C0.20758 85.0951 -0.0251535 83.7876 0.00387694 82.4726C0.00387694 63.2456 0.00387694 44.019 0.00387694 24.7927C-0.0132068 24.5229 0.0266383 24.2524 0.120741 23.9995C0.214844 23.7465 0.361032 23.517 0.549501 23.3262C7.86775 15.746 15.1889 8.16766 22.513 0.591336C22.8056 0.287988 23.1816 0.0818334 23.5916 0ZM25.1732 3.06706C25.1684 8.75374 25.1781 14.4434 25.1732 20.1301C25.1707 20.9395 25.0079 21.7402 24.6943 22.4843C24.3808 23.2283 23.923 23.9005 23.3484 24.4606C22.2679 25.5058 20.8292 26.0814 19.3381 26.0651C13.876 26.0684 8.41466 26.0684 2.95392 26.0651C2.95392 27.0842 2.95392 28.1026 2.95392 29.1203V82.649C2.9186 84.2474 3.48985 85.7982 4.54911 86.9796C5.12431 87.6174 5.82757 88.122 6.61125 88.4594C7.39494 88.7967 8.24076 88.9589 9.09144 88.9349C25.8749 88.9257 42.6593 88.9221 59.4447 88.9241C60.9568 88.8555 62.3873 88.2078 63.4492 87.1109C64.5111 86.0141 65.1256 84.5493 65.1694 83.0107C65.1917 76.166 65.1742 69.3203 65.1761 62.4756C60.5889 67.2102 56.0052 71.9485 51.4251 76.6903C50.9802 77.2624 50.424 77.7348 49.7912 78.078C47.4736 79.1023 45.1581 80.1312 42.8444 81.1648C42.5651 81.313 42.2469 81.3681 41.935 81.322C41.6232 81.2759 41.3335 81.131 41.1072 80.908C40.8809 80.685 40.7295 80.3951 40.6745 80.0796C40.6194 79.764 40.6635 79.4389 40.8005 79.1503C41.8026 76.7248 42.8192 74.3072 43.8184 71.8818C43.9421 71.557 44.1287 71.2608 44.3669 71.0105C51.3188 63.8107 58.2695 56.6095 65.2188 49.4071C65.1219 46.7402 65.212 44.0663 65.1723 41.3965C60.1977 41.3965 55.2222 41.4073 50.2476 41.3915C49.1155 41.3614 48.0154 41.0029 47.0769 40.3582C46.1384 39.7136 45.4006 38.8096 44.9503 37.7528C44.5372 36.7228 44.3615 35.6103 44.4367 34.5005C44.4419 29.1404 44.4419 23.7809 44.4367 18.4221C43.6966 18.401 42.9895 18.106 42.448 17.5925C41.9065 17.079 41.5678 16.3823 41.4954 15.6329C41.4498 13.9575 41.475 12.282 41.4818 10.6066C41.5041 9.84116 41.8106 9.11269 42.3395 8.56766C42.8685 8.02262 43.5807 7.70142 44.333 7.66864C51.2138 7.64696 58.0947 7.66864 64.9755 7.6578C64.7235 6.6647 64.2319 5.75121 63.5452 5.00004C62.8585 4.24887 61.9984 3.68375 61.0428 3.35583C59.8933 3.06605 58.7055 2.96622 57.5248 3.06016H25.1732M5.04531 23C9.57698 23 14.1074 23 18.6364 23C19.2108 23.0482 19.7889 22.9942 20.345 22.8403C20.8913 22.6383 21.3633 22.2702 21.6968 21.7861C22.0304 21.3019 22.2094 20.7252 22.2096 20.134C22.2096 15.1674 22.2096 10.2002 22.2096 5.23234C16.4885 11.1562 10.7671 17.0788 5.04531 23ZM44.4328 10.7327C44.4328 12.2689 44.4328 13.8054 44.4328 15.3422C44.8098 15.3028 45.2866 15.4644 45.5454 15.082C46.9429 13.6346 48.3404 12.1855 49.7379 10.7347C47.9689 10.7314 46.1992 10.7314 44.4289 10.7347M53.532 11.1388C52.1965 12.5462 50.8359 13.926 49.4975 15.3314C50.5636 15.3402 51.6248 15.3314 52.6869 15.3402C54.1804 13.8146 55.6593 12.2761 57.1449 10.7387C56.1661 10.7436 55.1844 10.7229 54.2056 10.7387C53.9148 10.6904 53.7297 10.9673 53.5369 11.1398M56.9017 15.3353C57.9729 15.3353 59.0448 15.3353 60.1173 15.3353C61.5968 13.7991 63.0796 12.2656 64.5656 10.7347C63.4928 10.7347 62.4199 10.7347 61.3481 10.7347C59.8653 12.2676 58.3838 13.8008 56.9036 15.3343M64.3175 15.3343C65.3961 15.3343 66.4738 15.3491 67.5525 15.3235C69.0062 13.7821 70.4986 12.2742 71.964 10.7396C70.9027 10.7327 69.8425 10.7446 68.7813 10.7308C67.2704 12.2426 65.7993 13.7978 64.3136 15.3314M75.9335 10.9634C74.5289 12.4207 73.123 13.8773 71.7159 15.3333C73.4848 15.3333 75.2545 15.3333 77.0248 15.3333C77.0248 13.7972 77.0248 12.2607 77.0248 10.7239C76.6584 10.7692 76.1913 10.6017 75.9326 10.9624M47.3926 18.4073C47.3974 19.4175 47.3926 20.4247 47.3926 21.4349C47.3974 26.0848 47.379 30.7357 47.4013 35.3855C47.426 36.1799 47.7554 36.933 48.319 37.4836C48.8826 38.0343 49.6357 38.3389 50.4172 38.3323C57.2961 38.3323 64.1744 38.3323 71.052 38.3323C71.8306 38.3345 72.5794 38.0279 73.1393 37.4777C73.6991 36.9275 74.026 36.1769 74.0505 35.3855C74.0747 30.7366 74.0505 26.0887 74.0612 21.4399C74.0612 20.4297 74.0612 19.4224 74.0612 18.4122C65.1703 18.3925 56.2789 18.3925 47.3867 18.4122M67.1968 51.7143C66.5184 52.3992 65.8604 53.1029 65.1878 53.7928C65.8843 54.5156 66.5804 55.236 67.2763 55.9541C67.9547 55.2643 68.6272 54.5744 69.2901 53.8766C69.4556 53.7214 69.5871 53.5326 69.6762 53.3224C69.7654 53.1122 69.8102 52.8854 69.8076 52.6565C69.8002 52.281 69.6566 51.9215 69.4043 51.6472C69.1521 51.3728 68.8091 51.203 68.4412 51.1702C68.2068 51.1587 67.973 51.2016 67.7573 51.2957C67.5417 51.3898 67.35 51.5336 67.1968 51.7143ZM46.6269 73.0231C45.9796 74.258 45.5367 75.6013 44.9688 76.8776C46.1462 76.3542 47.3334 75.8477 48.5022 75.3007C49.1248 74.7508 49.7172 74.1664 50.2767 73.5503C55.2438 68.4005 60.2139 63.2535 65.1868 58.1096C64.4852 57.4 63.798 56.6736 63.1012 55.9601C57.6101 61.6477 52.0996 67.3137 46.6269 73.0231Z" fill="#2B1505"/>
   <path d="M53.7171 23.002C53.93 22.6329 54.2127 22.3104 54.5489 22.0531C54.8851 21.7958 55.268 21.6088 55.6757 21.5029C59.0457 21.4583 62.4164 21.4583 65.7877 21.5029C66.1958 21.61 66.5789 21.7982 66.9151 22.0567C67.2513 22.3151 67.5338 22.6388 67.7463 23.0089C68.129 23.9751 68.2624 25.0248 68.1339 26.0582C68.2587 27.091 68.1254 28.1391 67.7463 29.1055C67.4918 29.5748 67.1186 29.9665 66.6654 30.2401C66.2122 30.5137 65.6954 30.6592 65.1684 30.6617C62.2119 30.667 59.2548 30.667 56.297 30.6617C55.745 30.6612 55.2042 30.5042 54.7353 30.2082C54.2663 29.9122 53.8879 29.489 53.6425 28.9863C53.3182 28.0419 53.2066 27.0355 53.3159 26.0414C53.1888 25.0085 53.3257 23.9596 53.7132 22.9961M56.2814 24.5266C56.2814 25.5477 56.2814 26.5657 56.2814 27.5819C59.245 27.6016 62.2067 27.5819 65.1703 27.5907C65.1752 26.5687 65.1703 25.5457 65.1703 24.5237L56.2814 24.5266Z" fill="#2B1505"/>
@@ -239,7 +293,7 @@ const Cart = ({
   </defs>
   </svg>
   `;
-  const second = `<svg width="72" height="92" viewBox="0 0 72 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+const second = `<svg width="72" height="92" viewBox="0 0 72 92" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_5384_51551)">
   <path d="M35.3535 0H35.9974C36.0009 5.39227 36.0009 10.7842 35.9974 16.1758C30.4546 16.163 24.9118 16.1827 19.371 16.1669C18.7286 16.1541 18.1103 15.9308 17.6192 15.5344C17.1281 15.138 16.7941 14.5925 16.6728 13.9889C16.5491 12.9255 16.647 11.8502 16.6171 10.7819C16.6171 8.98492 16.6171 7.18794 16.6171 5.39095C20.4817 5.37814 24.3441 5.41461 28.2097 5.37518C28.7411 3.9211 29.6959 2.6426 30.9616 1.69029C32.2272 0.737972 33.7511 0.151514 35.3535 0Z" fill="#FE810D"/>
   <path d="M35.9974 0H37.3615C38.0219 0.251315 38.7276 0.382393 39.3736 0.674115C40.4063 1.12794 41.3316 1.77807 42.0932 2.58491C42.8548 3.39175 43.4368 4.33842 43.8037 5.3673C47.6631 5.4215 51.5225 5.3742 55.3818 5.39095C55.3818 7.18794 55.3818 8.98492 55.3818 10.7819C55.3684 11.7428 55.4024 12.7047 55.3818 13.6656C55.351 14.3434 55.0469 14.9834 54.5335 15.4514C54.0201 15.9194 53.3371 16.179 52.6279 16.1758C47.0872 16.1706 41.5464 16.1706 36.0057 16.1758C36.0016 10.7849 35.9988 5.39292 35.9974 0Z" fill="#FF495A"/>
@@ -259,7 +313,7 @@ const Cart = ({
   </defs>
   </svg>
   `;
-  const third = `<svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+const third = `<svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_5384_51574)">
   <path d="M40.3156 17.287C44.2574 17.3206 48.024 18.8572 50.7868 21.5588C53.5496 24.2603 55.0825 27.9057 55.0482 31.693C55.0822 35.4801 53.5492 39.1252 50.7864 41.8266C48.0236 44.5279 44.2572 46.0644 40.3156 46.098C36.3739 46.0644 32.6075 44.5279 29.8447 41.8266C27.0819 39.1252 25.549 35.4801 25.5829 31.693C25.5487 27.9057 27.0815 24.2603 29.8444 21.5588C32.6072 18.8572 36.3737 17.3206 40.3156 17.287Z" fill="#FEA31C"/>
   <path d="M17.1329 5.28249C17.8477 3.72674 19.0144 2.4021 20.4931 1.46739C21.9717 0.53268 23.6996 0.0275782 25.4696 0.0126432C35.1928 0.00680725 44.9163 0.00680725 54.6402 0.0126432C56.2834 -0.11319 57.9348 0.119566 59.4711 0.693502C61.1506 1.389 62.5809 2.54228 63.5853 4.01067C64.5897 5.47907 65.1239 7.19814 65.122 8.95523C65.1274 26.8521 65.1274 44.7489 65.122 62.6458C64.6218 62.6688 64.125 62.7388 63.639 62.8549C63.563 60.1762 63.6217 57.4956 63.6005 54.8169C63.6531 53.6585 63.6227 52.4979 63.5094 51.3435C63.2485 50.1752 62.5445 49.142 61.5343 48.445C61.2205 48.2393 60.8351 48.1604 60.4612 48.2252C60.174 47.1563 59.5145 46.214 58.5924 45.5553C57.8688 45.0607 57.0093 44.7826 56.1217 44.7558C55.2341 44.729 54.3581 44.9546 53.6036 45.4045C52.9054 45.8277 52.3347 46.4191 51.948 47.1199C51.5614 47.8207 51.3724 48.6065 51.3997 49.3992C51.4038 56.7979 51.4038 64.1962 51.3997 71.5942C50.1849 71.5942 48.9701 71.5942 47.7624 71.5942C47.3256 71.1426 46.7966 70.7823 46.2083 70.536C45.6201 70.2896 44.9854 70.1625 44.3437 70.1625C43.7141 70.176 43.0937 70.3105 42.5191 70.5581C41.9444 70.8057 41.4272 71.1613 40.9979 71.604C37.151 71.5758 33.3041 71.604 29.4572 71.5913C31.1063 68.6928 32.8161 65.8254 34.5584 62.9804C34.7548 63.7661 35.198 64.4748 35.8279 65.0103C36.4684 65.4619 37.2541 65.6823 38.0469 65.6328C39.7679 65.6328 41.4889 65.6221 43.2099 65.6328C43.7255 65.6864 44.2471 65.6244 44.7336 65.4518C45.2201 65.2791 45.6584 65.0005 46.0141 64.6378C46.2923 64.3408 46.5059 63.9934 46.6424 63.6159C46.7788 63.2384 46.8353 62.8385 46.8085 62.4398C46.7817 62.041 46.6722 61.6514 46.4864 61.2939C46.3006 60.9364 46.0422 60.6183 45.7265 60.3581C44.4439 59.2882 42.6419 59.7463 41.1072 59.6588C39.3862 59.7648 37.5266 59.3135 35.9443 60.1451C36.1022 58.6628 35.843 56.9237 34.4855 56.023C34.4303 55.0852 34.1567 54.1712 33.6848 53.3485C33.213 52.5258 32.555 51.8154 31.7592 51.2696C30.6738 50.5705 29.3823 50.227 28.0773 50.2905C26.7722 50.3539 25.5233 50.8209 24.5169 51.6217C23.5434 52.5219 22.7536 53.5891 22.1885 54.7683C20.3393 57.9041 18.4894 61.0383 16.6389 64.1709L16.5589 64.0834C16.6045 63.7741 16.6105 63.386 16.2977 63.208C16.3544 55.0669 16.3068 46.9248 16.321 38.7836C16.3251 28.9015 16.3251 19.019 16.321 9.13615C16.3015 7.80795 16.5776 6.49107 17.1309 5.27374M28.5451 4.49561C28.4975 5.46827 28.4975 6.45259 28.5451 7.43011C29.5459 7.4768 30.5475 7.4768 31.5497 7.43011C31.5973 6.45162 31.5952 5.47118 31.5497 4.49367C30.5485 4.44698 29.5463 4.44698 28.5471 4.49367M34.6454 4.49367C34.5995 5.4741 34.5995 6.45454 34.6454 7.43498C38.6948 7.46869 42.7459 7.46869 46.7986 7.43498C46.8465 6.45454 46.8465 5.4741 46.7986 4.49367C42.7492 4.458 38.6982 4.458 34.6454 4.49367ZM34.0583 19.5825C31.0671 21.2197 28.8115 23.8615 27.7251 26.9999C26.735 29.8322 26.7461 32.8992 27.7566 35.7248C28.767 38.5504 30.7204 40.9762 33.3132 42.6256C33.3686 42.8233 33.4467 43.0145 33.546 43.1956C35.3151 45.224 37.7066 46.6628 40.3783 47.3061C42.8021 47.9111 45.3531 47.8571 47.7468 47.15C50.1404 46.4429 52.2824 45.1105 53.9336 43.3016C55.8331 41.2835 57.041 38.7532 57.3938 36.0534C57.667 34.0611 57.4733 32.0354 56.8268 30.1243C56.1803 28.2132 55.0974 26.4651 53.6573 25.0079C53.3166 24.5638 52.8381 24.2348 52.2906 24.0684C51.2965 22.5561 49.9952 21.252 48.4645 20.2341C46.9338 19.2161 45.2052 18.5052 43.382 18.1439C40.1928 17.5362 36.8825 18.0506 34.0552 19.5932L34.0583 19.5825Z" fill="#95979D"/>
@@ -290,7 +344,7 @@ const Cart = ({
   </defs>
   </svg>
   `;
-  const forth = `<svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+const forth = `<svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_5384_52014)">
   <path d="M4.05844 11.0513C2.1969 5.60497 6.66419 1.04737 11.304 0C19.816 14.0724 24.5062 30.2253 31.4552 45.1723C27.0868 46.7352 22.3075 48.5513 20.1639 53.3347C14.7906 39.2358 9.15754 25.2427 4.05844 11.0513ZM8.66139 14.6419C10.8824 13.8599 15.0144 15.7289 15.5852 12.2014C16.1308 9.89615 13.8855 8.65049 12.2972 7.82886C9.58392 8.82234 9.7913 12.3743 8.66139 14.6419ZM15.0513 22.1158C16.3168 25.6139 17.3343 30.0403 21.4906 30.689C20.2376 27.1778 19.5302 22.3009 15.0513 22.1158ZM20.226 35.4175C21.2803 38.9287 22.5836 42.9575 26.4676 43.7924C25.3251 40.335 24.7417 35.3666 20.226 35.4175Z" fill="#869CA8"/>
   <path d="M67.3379 8.48065C69.9311 7.47396 73.4671 5.41989 75.6261 8.40134C77.758 10.6537 76.2589 13.5691 75.254 15.9546C73.3682 16.0472 71.4699 16.1397 69.5832 16.2465L69.2237 15.0669C68.5909 12.8796 67.9484 10.6934 67.3379 8.48065Z" fill="#869CA8"/>
@@ -330,7 +384,7 @@ const Cart = ({
   </svg>
   
   `;
-  const fifth = `<svg width="76" height="88" viewBox="0 0 76 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+const fifth = `<svg width="76" height="88" viewBox="0 0 76 88" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_5384_51652)">
   <path d="M7.07991 0.0237774C10.3952 -0.022847 13.7106 0.0168367 17.0188 0.00394057C17.5817 1.30645 18.1273 2.6159 18.6942 3.91344C18.8458 4.28289 19.1126 4.59614 19.4568 4.80863C19.8009 5.02111 20.2048 5.122 20.611 5.09691C25.0449 5.09691 29.482 5.09691 33.9169 5.09691C34.2926 5.10348 34.6617 5.00058 34.9774 4.80132C35.2931 4.60206 35.541 4.31543 35.6897 3.97792C36.2546 2.6645 36.7728 1.32827 37.3225 0.00988934C40.4665 0.0277455 43.6104 -0.0218523 46.7543 0.0327081C48.5717 0.175069 50.2774 0.947576 51.5641 2.21107C52.8508 3.47455 53.6339 5.14596 53.7724 6.92418C53.8484 9.05799 53.7815 11.1948 53.8089 13.3316C44.8517 13.3425 35.8956 13.3226 26.9415 13.3405C24.0381 13.3473 21.2481 14.4434 19.1465 16.4028C17.8822 17.6042 16.9033 19.0627 16.279 20.6751C15.6547 22.2875 15.4004 24.0144 15.534 25.7336C15.5411 37.0128 15.5229 48.2919 15.5432 59.569C15.5694 61.7257 16.2222 63.8306 17.4253 65.638C18.6285 67.4454 20.3324 68.8809 22.3381 69.7768C23.7771 70.4085 25.3368 70.7341 26.9141 70.7321C35.8773 70.7367 44.8409 70.7367 53.8048 70.7321C53.7977 74.0434 53.818 77.3567 53.7957 80.668C53.7572 82.1533 53.2723 83.5945 52.4015 84.8119C51.5307 86.0292 50.3126 86.9686 48.8993 87.5129C47.9267 87.8659 46.8937 88.0319 45.8568 88.002C33.0285 87.993 20.1982 88.0129 7.36793 87.9911C5.40748 87.9129 3.55207 87.1033 2.1829 85.7286C0.813727 84.354 0.0347799 82.5186 0.00607412 80.5996C-0.000687021 56.1784 -0.000687021 31.7578 0.00607412 7.33785C0.0469798 5.47839 0.793265 3.70023 2.09988 2.34902C3.40649 0.997813 5.18007 0.170098 7.07586 0.0267593M20.7033 81.2315C20.3512 81.4059 20.061 81.6799 19.8702 82.0178C19.6794 82.3557 19.5968 82.7419 19.6333 83.1262C19.6754 83.5919 19.8917 84.0261 20.2407 84.3455C20.5897 84.6649 21.0469 84.8471 21.5248 84.8573C25.3553 84.8712 29.1868 84.8642 33.0174 84.8573C33.2777 84.8631 33.5366 84.818 33.7788 84.7245C34.021 84.6311 34.2417 84.4912 34.4279 84.3132C34.6142 84.1352 34.7621 83.9225 34.8631 83.6878C34.9642 83.453 35.0162 83.2009 35.0162 82.9462C35.0162 82.6915 34.9642 82.4394 34.8631 82.2046C34.7621 81.9698 34.6142 81.7572 34.4279 81.5792C34.2417 81.4011 34.021 81.2613 33.7788 81.1679C33.5366 81.0744 33.2777 81.0293 33.0174 81.0351C29.34 81.0212 25.6595 81.0351 21.9822 81.0262C21.5469 80.9946 21.1101 81.0639 20.7073 81.2285L20.7033 81.2315Z" fill="#869CA8"/>
   <path d="M21.2104 0.000976562C25.1995 0.00560593 29.1885 0.00560593 33.1776 0.000976562C33.0022 0.420596 32.8308 0.837238 32.6614 1.25686C29.0195 1.27075 25.3776 1.25686 21.7388 1.2638C21.5616 0.843194 21.3855 0.422249 21.2104 0.000976562Z" fill="#869CA8"/>
@@ -348,7 +402,7 @@ const Cart = ({
   </defs>
   </svg>
   `;
-  const sixth = `<svg width="93" height="89" viewBox="0 0 93 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+const sixth = `<svg width="93" height="89" viewBox="0 0 93 89" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clip-path="url(#clip0_5384_51670)">
   <path d="M10.084 0.20599C11.3627 0.0128022 12.6572 -0.0541875 13.949 0.00598928C32.9677 0.00598928 51.986 0.00598928 71.004 0.00598928C74.1135 0.0181018 77.0922 1.25864 79.291 3.45729C81.4898 5.65594 82.7306 8.63452 82.743 11.744C82.7483 32.2893 82.7503 52.835 82.749 73.381C85.686 73.403 88.625 73.361 91.562 73.398C91.9171 73.3936 92.2611 73.5222 92.5262 73.7585C92.7914 73.9948 92.9586 74.3217 92.995 74.675C93.0193 76.4382 92.6903 78.1884 92.0273 79.8225C91.3644 81.4565 90.381 82.9412 89.1351 84.1891C87.8891 85.437 86.4059 86.4227 84.773 87.0882C83.14 87.7538 81.3903 88.0855 79.627 88.064C64.027 88.0587 48.431 88.0567 32.839 88.058C29.7291 88.0469 26.7498 86.806 24.5516 84.6061C22.3534 82.4061 21.1147 79.4259 21.106 76.316C21.1007 56.7487 21.0987 37.182 21.1 17.616C15.3527 17.6087 9.60567 17.6087 3.85901 17.616C3.13392 17.6454 2.40768 17.627 1.68501 17.561C1.17201 17.486 0.876007 17.016 0.557007 16.661V10.935C0.774146 8.20072 1.92808 5.62512 3.82401 3.64299C5.50513 1.87765 7.69217 0.676876 10.084 0.20599ZM8.18401 3.96299C7.13206 4.51825 6.2036 5.28102 5.45474 6.2052C4.70587 7.12938 4.15214 8.19579 3.82701 9.33999C3.48031 11.0971 3.36666 12.8922 3.48901 14.679C9.35567 14.679 15.225 14.679 21.097 14.679C21.2202 12.8927 21.1055 11.098 20.756 9.34199C20.3977 8.08215 19.7627 6.91817 18.8973 5.93497C18.032 4.95177 16.958 4.17415 15.7538 3.65883C14.5497 3.14351 13.2457 2.90349 11.9369 2.95629C10.6282 3.00908 9.34775 3.35335 8.18901 3.96399M20.117 2.94499C21.9351 4.62071 23.2054 6.80589 23.762 9.21499C24.0277 10.7148 24.1206 12.2401 24.039 13.761C24.039 34.5537 24.039 55.3453 24.039 76.136C24.0215 77.489 24.3093 78.8286 24.881 80.055C25.5282 81.433 26.5219 82.6194 27.7649 83.4985C29.0078 84.3775 30.4576 84.9191 31.9724 85.0703C33.4873 85.2214 35.0155 84.977 36.4076 84.3608C37.7998 83.7447 39.0083 82.7779 39.915 81.555C41.2332 79.7143 41.8477 77.4621 41.647 75.207C41.6071 74.9896 41.6145 74.7663 41.6685 74.552C41.7225 74.3377 41.822 74.1376 41.9602 73.9652C42.0984 73.7927 42.2721 73.652 42.4694 73.5526C42.6668 73.4532 42.8832 73.3974 43.104 73.389C55.3387 73.3723 67.572 73.37 79.804 73.382C79.808 53.3233 79.808 33.2657 79.804 13.209C79.85 12.1728 79.7954 11.1346 79.641 10.109C79.2535 8.06364 78.1548 6.22135 76.5395 4.9082C74.9242 3.59504 72.8964 2.89571 70.815 2.93399C53.913 2.93932 37.013 2.94166 20.115 2.94099M44.597 76.316C44.5819 77.9734 44.2259 79.61 43.5512 81.1239C42.8765 82.6378 41.8974 83.9967 40.675 85.116C53.6583 85.138 66.642 85.141 79.626 85.125C82.1237 85.1615 84.5495 84.2891 86.4519 82.6703C88.3543 81.0514 89.6035 78.7963 89.967 76.325C74.845 76.319 59.7217 76.316 44.597 76.316Z" fill="#525050"/>
   <path d="M34.321 8.79602C34.3231 8.4129 34.4762 8.04607 34.7471 7.77516C35.018 7.50425 35.3849 7.35112 35.768 7.34902C36.755 7.32902 37.74 7.34302 38.727 7.34302C39.7698 7.34466 40.7781 7.7166 41.5721 8.39252C42.3662 9.06844 42.8944 10.0044 43.0625 11.0336C43.2306 12.0627 43.0278 13.1181 42.4902 14.0116C41.9525 14.9051 41.115 15.5786 40.127 15.912C39.1868 16.1462 38.2147 16.2256 37.249 16.147C37.243 16.699 37.275 17.253 37.227 17.804C37.1798 18.1708 36.995 18.5059 36.7101 18.7417C36.4252 18.9774 36.0614 19.0962 35.6922 19.074C35.3231 19.0518 34.9762 18.8902 34.7216 18.6219C34.4671 18.3537 34.3239 17.9988 34.321 17.629C34.3083 14.6844 34.3083 11.74 34.321 8.79602ZM37.253 10.278C37.253 11.256 37.253 12.232 37.253 13.21C38.053 13.153 38.987 13.419 39.66 12.865C39.8229 12.7269 39.9537 12.555 40.0435 12.3613C40.1332 12.1675 40.1797 11.9566 40.1797 11.743C40.1797 11.5295 40.1332 11.3185 40.0435 11.1248C39.9537 10.931 39.8229 10.7591 39.66 10.621C38.984 10.067 38.046 10.337 37.25 10.278H37.253Z" fill="#525050"/>

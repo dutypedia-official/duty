@@ -10,170 +10,179 @@ import IconButton from "../../../components/IconButton";
 import ViewMore from "../../../Hooks/ViewMore";
 import { styles } from "../../create_dashboard/BusinessTitle";
 import TextOp from "../../create_dashboard/TextOp";
+import useLang from "../../../Hooks/UseLang";
+import ReadMore from "../../../components/ReadMore";
 
-export default function CancelOrderConfirmation({navigation,route}) {
+export default function CancelOrderConfirmation({ navigation, route }) {
   const [layoutHeight, setLayoutHeight] = useState();
-  const name=route?.params?.name;
-  const order=route?.params?.order;
-  const [loader,setLoader]=useState(false)
-  const user=useSelector(state=>state.user)
-  const vendor=useSelector(state=>state.vendor)
+  const name = route?.params?.name;
+  const order = route?.params?.order;
+  const [loader, setLoader] = useState(false);
+  const user = useSelector((state) => state.user);
+  const vendor = useSelector((state) => state.vendor);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
-  const cancelTheOrder=useCallback(()=>{
-    setLoader(true)
-    if(vendor){
+  const cancelTheOrder = useCallback(() => {
+    setLoader(true);
+    if (vendor) {
+      cancelOrderByVendor(user.token, order.id)
+        .then((res) => {
+          setLoader(false);
 
-      cancelOrderByVendor(user.token,order.id).then(res=>{
-        setLoader(false)
-
-        navigation.navigate("VendorOrderDetails",{data:order,orderId:order?.id,type:order.type})
+          navigation.navigate("VendorOrderDetails", {
+            data: order,
+            orderId: order?.id,
+            type: order.type,
+          });
+          socket.emit("updateOrder", {
+            receiverId: res.data.receiverId,
+            order: order,
+          });
+          socket.emit("updateOrder", {
+            receiverId: order.user.id,
+            order: order,
+          });
+          socket.emit("notificationSend", {
+            receiverId: res.data.receiverId,
+            order: order,
+          });
+        })
+        .catch((err) => {
+          setLoader(false);
+          Alert.alert(err.response.data.msg);
+        });
+      return;
+    }
+    cancelOrderByUser(user.token, order.id)
+      .then((res) => {
+        setLoader(false);
+        navigation.navigate("OrderDetails", {
+          data: order,
+          orderId: order?.id,
+          type: order.type,
+        });
         socket.emit("updateOrder", {
           receiverId: res.data.receiverId,
-          order: order
+          order: order,
         });
         socket.emit("updateOrder", {
           receiverId: order.user.id,
-          order: order
+          order: order,
         });
-        socket.emit("notificationSend", {
-          receiverId: res.data.receiverId,
-          order: order
-        });
-        
-      }).catch(err=>{
-        setLoader(false)
-        Alert.alert(err.response.data.msg)
       })
-      return
-    }
-    cancelOrderByUser(user.token,order.id).then(res=>{
-      setLoader(false)
-      navigation.navigate("OrderDetails",{data:order,orderId:order?.id,type:order.type})
-      socket.emit("updateOrder", {
-        receiverId: res.data.receiverId,
-        order: order
+      .catch((err) => {
+        setLoader(false);
+        Alert.alert(err.response.data.msg);
       });
-      socket.emit("updateOrder", {
-        receiverId: order.user.id,
-        order: order
-      });
-      
-    }).catch(err=>{
-      setLoader(false)
-      Alert.alert(err.response.data.msg)
-    })
-  },[])
-  if(loader){
-    return(
+  }, []);
+  if (loader) {
+    return (
       <View style={customStyle.fullBox}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
     <ScrollView>
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 20,
             fontWeight: 28,
             fontWeight: "400",
             marginTop: 25,
-          }}>
-          Please confirm if you wish to cancel this order ?
+          }}
+        >
+          {isBn
+            ? "আপনি যদি অর্ডারটি বাতিল করতে চান তাহলে নিশ্চিত করুন?"
+            : "Please confirm if you wish to cancel this order ?"}
         </Text>
-        <IconButton onPress={cancelTheOrder}
+        <IconButton
+          onPress={cancelTheOrder}
           style={{
             marginTop: 32,
             height: 38,
           }}
           active={true}
-          title={"Confirm"}
+          title={isBn ? "নিশ্চিত করুন" : "Confirm"}
         />
         <View
           style={{
             flexDirection: "row",
             marginTop: 24,
-          }}>
+          }}
+        >
           <SvgXml xml={light} />
           <Text
             style={{
               marginLeft: 8,
               color: "#1A1A1A",
-            
+
               fontSize: 24,
               fontWeight: "500",
               flex: 1,
-            }}>
-            Important message
+            }}
+          >
+            {isBn ? "গুরুত্বপূর্ণ ম্যাসেজ" : "Important message"}
           </Text>
         </View>
-        {vendor?(
-          <ViewMore view={true}
-          style={{
-            marginTop: 24,
-            
-          }}
-          lowHeight={75}
-          width={135}
-          
-          position={{
-            bottom:0
-          }}
-          height={layoutHeight}
-          component={
-            <View
-              onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-              style={{ width: "100%" }}>
-              <TextOp
-                style={{ marginTop: 0 }}
-                text={
-                  "Cancelling an order may negatively impact your seller rating."
-                }
-              />
-              <TextOp
-                style={{ marginTop: 5 }}
-                text={
-                  "If you cancel an order that has already been paid for, the buyer may request a refund, which can result in a loss of revenue for you."
-                }
-              />
-              <TextOp
-                style={{ marginTop: 5 }}
-                text={
-                  "If you cancel orders frequently, your account may be flagged and reviewed by our team for potential violation of our terms and conditions."
-                }
-              />
-              
-            </View>
-          }
-        />
-        ):(<ViewMore
-          style={{
-            marginTop: 24,
-          }}
-          width={"37%"}
-          height={layoutHeight}
-          component={
-            <Text
-              onLayout={(e) => {
-                setLayoutHeight(e.nativeEvent.layout.height);
-              }}
-              style={[styles.spText, { marginTop: 0 }]}>
-              Dear {name}, we understand that there may be times when you need
-              to cancel an order. However, we kindly request that you avoid
-              excessive cancellations as it may cause inconvenience to our
-              sellers and affect their performance on our platform. Please
-              communicate with the seller and try to resolve any issues before
-              requesting to cancel an order. We appreciate your cooperation in
-              ensuring a positive experience for all members of our community.
-              Thank you.
-            </Text>
-          }
-        />)}
-        
+        {vendor ? (
+          <ReadMore
+            view={true}
+            containerStyle={{
+              marginTop: 24,
+            }}
+            content={
+              <View
+                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                style={{ width: "100%" }}
+              >
+                <TextOp
+                  style={{ marginTop: 0 }}
+                  text={
+                    isBn
+                      ? "অর্ডারটি বাতিল হয়ে গেলে আপনার সেলার প্রোফাইলের রেটিং এর উপর নেগেটিভ প্রভাব ফেলতে পারে৷"
+                      : "Cancelling an order may negatively impact your seller rating."
+                  }
+                />
+                <TextOp
+                  style={{ marginTop: 5 }}
+                  text={
+                    isBn
+                      ? "আপনি যদি এমন একটি অর্ডার বাতিল করেন যার ইতিমধ্যে পেমেন্ট করা হয়ে গেছে, তখন ক্রেতা রিফান্ডের জন্য অনুরোধ করতে পারে, যার ফলে আপনার আয়ের ক্ষতি হতে পারে৷"
+                      : "If you cancel an order that has already been paid for, the buyer may request a refund, which can result in a loss of revenue for you."
+                  }
+                />
+                <TextOp
+                  style={{ marginTop: 5 }}
+                  text={
+                    isBn
+                      ? "আপনি যদি ঘন ঘন অর্ডার ক্যান্সেল করেন, তাহলে আমাদের নিয়ম ও শর্তাবলী ভঙ্গ হবে যার ফলে আপনার অ্যাকাউন্ট আমাদের টিমের সাথে আলোচনা করে স্থগিত করা হতে পারে৷"
+                      : "If you cancel orders frequently, your account may be flagged and reviewed by our team for potential violation of our terms and conditions."
+                  }
+                />
+              </View>
+            }
+          />
+        ) : (
+          <ReadMore
+            containerStyle={{
+              marginTop: 24,
+            }}
+            content={
+              <Text style={[styles.spText, { marginTop: 0 }]}>
+                {isBn
+                  ? `প্রিয় ${name}, আমরা বুজতে পারি যে এমন অনেক সময় হতে পারে যখন আপনাকে একটি অর্ডার বাতিল করতে হতে পারে৷। যাইহোক, আমরা অনুরোধ করছি যে আপনি অতিরিক্ত অর্ডার বাতিল  করা থেকে বিরত থাকুন কারণ এটি আমাদের বিক্রেতাদের অসুবিধার কারণ হতে পারে এবং আমাদের প্ল্যাটফর্মে তাদের কর্মক্ষমতা উপর প্রভাব পড়তে পারে৷। অনুগ্রহ করে বিক্রেতার সাথে যোগাযোগ করুন এবং অর্ডার বাতিল করার আগে যেকোনো সমস্যা সমাধানের চেষ্টা করুন৷ আমরা আমাদের কমিউনিটির সকল সদস্যের জন্য একটি পজিটিভ অভিজ্ঞতা নিশ্চিত করতে প্রতিশ্রুতিবদ্ধ এবং আপনার সহযোগিতার জন্য আপনাকে ধন্যবাদ৷`
+                  : `Dear ${name}, we understand that there may be times when you need to cancel an order. However, we kindly request that you avoid excessive cancellations as it may cause inconvenience to our sellers and affect their performance on our platform. Please communicate with the seller and try to resolve any issues before requesting to cancel an order. We appreciate your cooperation in ensuring a positive experience for all members of our community. Thank you.`}
+              </Text>
+            }
+          />
+        )}
       </View>
     </ScrollView>
   );

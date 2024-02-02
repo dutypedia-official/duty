@@ -18,6 +18,7 @@ import IconButton from "../components/IconButton";
 import { SvgXml } from "react-native-svg";
 import customStyle from "../assets/stylesheet";
 import ActivityLoader from "../components/ActivityLoader";
+import useLang from "../Hooks/UseLang";
 
 const Login = ({ navigation }) => {
   const [Email, setEmail] = React.useState();
@@ -25,23 +26,29 @@ const Login = ({ navigation }) => {
   const [EmailError, setEmailError] = React.useState();
   const [PasswordError, setPasswordError] = React.useState();
   const dispatch = useDispatch();
-  const [loader,setLoader]=useState(false)
-  const [error,setError]=useState()
-  const userRef=useRef()
-  const passRef=useRef()
+  const [loader, setLoader] = useState(false);
+  const [error, setError] = useState();
+  const userRef = useRef();
+  const passRef = useRef();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const login = () => {
     setEmailError(null);
     setPasswordError(null);
     if (!Email) {
-      setEmailError("Username field is required");
+      setEmailError(
+        isBn ? "ইউজার নেম/পাসওয়ার্ড আবশ্যক" : "Username field is required"
+      );
       return;
     }
     if (!Password) {
-      setEmailError("Password field is required");
+      setEmailError(
+        isBn ? "ইউজার নেম/পাসওয়ার্ড আবশ্যক" : "Password field is required"
+      );
       return;
     }
-    setLoader(true)
+    setLoader(true);
     userLogin(Email, Password)
       .then((res) => {
         //console.log(res);
@@ -59,33 +66,35 @@ const Login = ({ navigation }) => {
               dispatch({ type: "SET_VENDOR_INFO", playload: false });
               //setLoad(!load);
             }
-            setLoader(false)
+            setLoader(false);
           });
         }
       })
       .catch((err) => {
-        setLoader(false)
-        setEmailError(err?.response?.data?.msg)
+        setLoader(false);
+        setEmailError(isBn ? "তথ্য ভুল দিয়েছেন" : "Wrong login details");
         //console.warn(err.response.data.msg);
       });
   };
-  if(loader){
-    return(
+  if (loader) {
+    return (
       <View style={customStyle.fullBox}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml
             style={{
               marginTop: 24,
@@ -96,41 +105,67 @@ const Login = ({ navigation }) => {
           <View
             style={{
               marginVertical: 72,
-            }}>
-            <Text style={styles.lebel}>Username</Text>
-            <Input autoCapitalize={"none"} onSubmitEditing={()=>{
-              if(passRef){
-                passRef.current.focus()
-              }
-            }} returnKeyType={"next"} innerRef={userRef} value={Email} onChange={setEmail} placeholder={" "} style={styles.input} />
+            }}
+          >
+            <Text style={styles.lebel}>{isBn ? "ইউজার নেম" : "Username"}</Text>
+            <Input
+              autoCapitalize={"none"}
+              onSubmitEditing={() => {
+                if (passRef) {
+                  passRef.current.focus();
+                }
+              }}
+              returnKeyType={"next"}
+              innerRef={userRef}
+              value={Email}
+              onChange={setEmail}
+              placeholder={" "}
+              style={styles.input}
+            />
             <View style={{ height: 20 }} />
-            <Text style={styles.lebel}>Password</Text>
-            <Input onSubmitEditing={()=>{
-              login()
-            }} secureTextEntry={true} returnKeyType={"go"} innerRef={passRef} value={Password} onChange={setPassword} placeholder={" "} style={styles.input} />
+            <Text style={styles.lebel}>{isBn ? "পাসওয়ার্ড" : "Password"}</Text>
+            <Input
+              onSubmitEditing={() => {
+                login();
+              }}
+              secureTextEntry={true}
+              returnKeyType={"go"}
+              innerRef={passRef}
+              value={Password}
+              onChange={setPassword}
+              placeholder={" "}
+              style={styles.input}
+            />
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-end",
                 marginTop: 8,
-              }}>
-              
-                <Text
+              }}
+            >
+              <Text
                 style={[
                   styles.text,
                   { color: "#EC2700", flex: 1, textAlign: "left" },
-                ]}>
+                ]}
+              >
                 {EmailError}
               </Text>
-            
-              <Text onPress={()=>{
-                navigation.navigate("Recovery")
-              }} style={[styles.text, { textDecorationLine: "underline" }]}>
-                Forget id and password
+
+              <Text
+                onPress={() => {
+                  navigation.navigate("Recovery");
+                }}
+                style={[styles.text, { textDecorationLine: "underline" }]}
+              >
+                {isBn
+                  ? "আইডি এবং পাসওয়ার্ড ভুলে গেছি"
+                  : "Forget id and password"}
               </Text>
             </View>
           </View>
-          <IconButton onPress={login}
+          <IconButton
+            onPress={login}
             active={true}
             style={[
               styles.button,
@@ -139,23 +174,25 @@ const Login = ({ navigation }) => {
                 color: "#ffffff",
               },
             ]}
-            title={"Login"}
+            title={isBn ? "লগইন করুন" : "Login"}
           />
           <View
             style={{
               flexDirection: "row",
               marginVertical: 16,
               alignItems: "center",
-            }}>
+            }}
+          >
             <View style={styles.line} />
-            <Text style={styles.text}>or</Text>
+            <Text style={styles.text}>{isBn ? "অথবা" : "or"}</Text>
             <View style={styles.line} />
           </View>
-          <IconButton onPress={()=>{
-            navigation.navigate("SignUp_1")
-          }}
+          <IconButton
+            onPress={() => {
+              navigation.navigate("SignUp_1");
+            }}
             style={[styles.button, { marginBottom: 20 }]}
-            title={"Create an account"}
+            title={isBn ? "একটি অ্যাকাউন্ট তৈরি করুন" : "Create an account"}
           />
         </View>
       </ScrollView>
@@ -207,8 +244,8 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   text: {
-    fontSize: 14,
-    
+    fontSize: 12,
+
     fontWeight: "400",
   },
   input: {

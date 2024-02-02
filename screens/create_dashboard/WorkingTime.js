@@ -25,29 +25,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import PageChip from "./components/PageChip";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function WorkingTime({ navigation, route }) {
-  const businessForm=useSelector(state=>state.businessForm)
-  const [checked, setChecked] = useState(businessForm?.workingTime==true?true:false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
+  const businessForm = useSelector((state) => state.businessForm);
+  const [checked, setChecked] = useState(
+    businessForm?.workingTime == true ? true : false
+  );
   const [visible, setVisible] = React.useState({
     title: "",
     visible: false,
   });
-  const [Times, setTimes] = React.useState(Array.isArray(businessForm?.workingTime)?businessForm.workingTime:[{},{},{},{},{},{},{}]);
+  const [Times, setTimes] = React.useState(
+    Array.isArray(businessForm?.workingTime)
+      ? businessForm.workingTime
+      : [{}, {}, {}, {}, {}, {}, {}]
+  );
   const [TimesError, setTimesError] = React.useState([]);
   const [TimeError, setTimeError] = React.useState();
   const [layoutHeight, setLayoutHeight] = useState(0);
   const data = route?.params?.data;
   const [time, setTime] = useState(0);
-  const dispatch=useDispatch()
-  const isFocused=useIsFocused()
-  const [sat,setSat]=useState()
-  const [sun,setSun]=useState()
-  const [mon,setMon]=useState()
-  const [tue,setTue]=useState()
-  const [wed,setWed]=useState()
-  const [thu,setThu]=useState()
-  const [fri,setFri]=useState()
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const [sat, setSat] = useState();
+  const [sun, setSun] = useState();
+  const [mon, setMon] = useState();
+  const [tue, setTue] = useState();
+  const [wed, setWed] = useState();
+  const [thu, setThu] = useState();
+  const [fri, setFri] = useState();
 
   React.useEffect(() => {
     if (isFocused) {
@@ -60,80 +70,82 @@ export default function WorkingTime({ navigation, route }) {
       //console.log("seen")
       dispatch(setHideBottomBar(false));
     }
-    if(Array.isArray(businessForm?.workingTime)){
-      businessForm?.workingTime?.map((doc)=>{
-        if(doc.title=="Saturday"){
-          setSat(doc)
-        }else if(doc.title=="Sunday"){
-          setSun(doc)
-        }else if(doc.title=="Monday"){
-          setMon(doc)
-        }else if(doc.title=="Tuesday"){
-          setTue(doc)
-        }else if(doc.title=="Wednesday"){
-          setWed(doc)
-        }else if(doc.title=="Thursday"){
-          setThu(doc)
-        }else if(doc.title=="Friday"){
-          setFri(doc)
+    if (Array.isArray(businessForm?.workingTime)) {
+      businessForm?.workingTime?.map((doc) => {
+        if (doc.title == "Saturday") {
+          setSat(doc);
+        } else if (doc.title == "Sunday") {
+          setSun(doc);
+        } else if (doc.title == "Monday") {
+          setMon(doc);
+        } else if (doc.title == "Tuesday") {
+          setTue(doc);
+        } else if (doc.title == "Wednesday") {
+          setWed(doc);
+        } else if (doc.title == "Thursday") {
+          setThu(doc);
+        } else if (doc.title == "Friday") {
+          setFri(doc);
         }
-      })
+      });
     }
   }, [isFocused]);
-  const setAllTimes=(value)=>{
-    if(!sat){
-      setSat(value)
+  const setAllTimes = (value) => {
+    if (!sat) {
+      setSat(value);
     }
-    if(!sun){
-      setSun(value)
+    if (!sun) {
+      setSun(value);
     }
-    if(!mon){
-      setMon(value)
+    if (!mon) {
+      setMon(value);
     }
-    if(!tue){
-      setTue(value)
+    if (!tue) {
+      setTue(value);
     }
-    if(!wed){
-      setWed(value)
+    if (!wed) {
+      setWed(value);
     }
-    if(!thu){
-      setThu(value)
+    if (!thu) {
+      setThu(value);
     }
-    if(!fri){
-      setFri(value)
+    if (!fri) {
+      setFri(value);
     }
-    
-  }
-  useEffect(()=>{
-    let arr=[]
-    arr.push(sat)
-    arr.push(sun)
-    arr.push(mon)
-    arr.push(tue)
-    arr.push(wed)
-    arr.push(thu)
-    arr.push(fri)
-    setTimes(arr)
-  },[sat,sun,mon,tue,wed,thu,fri])
+  };
+  useEffect(() => {
+    let arr = [];
+    arr.push(sat);
+    arr.push(sun);
+    arr.push(mon);
+    arr.push(tue);
+    arr.push(wed);
+    arr.push(thu);
+    arr.push(fri);
+    setTimes(arr);
+  }, [sat, sun, mon, tue, wed, thu, fri]);
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
-      <PageChip currentPage={8} totalPage={14}/>
+        <PageChip currentPage={8} totalPage={14} />
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -141,30 +153,51 @@ export default function WorkingTime({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for set up the working time
+              {isBn
+                ? "কাজের সময় সেট আপ করার জন্য টিপস:"
+                : "Tips for set up the working time"}
             </Text>
           </View>
-          <ViewMore
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            width={142}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={[styles.spText, { marginTop: 0 }]}>
-                We require information on your working time to help potential
-                buyers understand when you're available to provide your
-                services. If you are a{" "}
-                <Text style={{ fontWeight: "700" }}>company</Text>, please input
-                your working hours as accurately as possible. If you are an{" "}
-                <Text style={{ fontWeight: "700" }}>individual</Text>, please
-                enter the days and times when you are usually available to work.
-                However, if you have a flexible schedule or can work any day,
-                please enter your preferred working hours instead. This will
-                help buyers determine whether your services fit their needs.
-              </Text>
+            content={
+              isBn ? (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  ক্রেতাদের বুজার সুবিধার জন্য আপনার কাজের সময়সূচী অ্যাড করুন
+                  যখন আপনি আপনার সার্ভিস প্রদানের জন্য প্রস্তুত থাকেন৷ আপনার
+                  একটি <Text style={{ fontWeight: "700" }}>কোম্পানি </Text>হলে,
+                  সঠিকভাবে আপনার কাজের সময় ইনপুট করুন৷ আপনি যদি{" "}
+                  <Text style={{ fontWeight: "700" }}>একজন ব্যক্তি </Text>অথবা
+                  একজন ফ্রিল্যান্সার হয়ে থাকেন, অনুগ্রহ করে সেই দিন এবং
+                  সময়গুলি লিখুন যখন আপনি কাজ করার জন্য প্রস্তুত থাকেন৷ যদি
+                  আপনার একটি সুন্দর সময়সূচী থাকে বা সব সময় কাজ করতে পারেন,
+                  তাহলে অনুগ্রহ করে আপনার পছন্দের কাজের সময়সূচী যোগ করুন৷ এতে
+                  ক্রেতাদের আপনার সার্ভিসগুলি তাদের প্রয়োজনের সাথে মানানসই কিনা
+                  তা নির্ধারণ করতে সাহায্য করবে ৷
+                </Text>
+              ) : (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  We require information on your working time to help potential
+                  buyers understand when you're available to provide your
+                  services. If you are a{" "}
+                  <Text style={{ fontWeight: "700" }}>company</Text>, please
+                  input your working hours as accurately as possible. If you are
+                  an <Text style={{ fontWeight: "700" }}>individual</Text>,
+                  please enter the days and times when you are usually available
+                  to work. However, if you have a flexible schedule or can work
+                  any day, please enter your preferred working hours instead.
+                  This will help buyers determine whether your services fit
+                  their needs.
+                </Text>
+              )
             }
           />
           <View
@@ -173,8 +206,11 @@ export default function WorkingTime({ navigation, route }) {
               alignItems: "center",
               marginTop: 36,
               justifyContent: "space-between",
-            }}>
-            <Text style={[styles.headLine, { marginTop: 0 }]}>Select time</Text>
+            }}
+          >
+            <Text style={[styles.headLine, { marginTop: 0 }]}>
+              {isBn ? "সময় নির্বাচন করুন" : "Select time"}
+            </Text>
             <CheckBox
               value={checked}
               onChange={() => {
@@ -195,13 +231,12 @@ export default function WorkingTime({ navigation, route }) {
                 error={TimesError[0]}
                 onChange={(val) => {
                   setAllTimes({
-                    checked:false,
-                    openingTime:val.openingTime,
-                    closingTime:val?.closingTime,
-                    title:val?.title
-                  })
-                  setSat(val)
-                  
+                    checked: false,
+                    openingTime: val.openingTime,
+                    closingTime: val?.closingTime,
+                    title: val?.title,
+                  });
+                  setSat(val);
                 }}
                 setVisible={setVisible}
                 title="Saturday"
@@ -211,13 +246,12 @@ export default function WorkingTime({ navigation, route }) {
                 error={TimesError[1]}
                 onChange={(val) => {
                   setAllTimes({
-                    checked:false,
-                    openingTime:val.openingTime,
-                    closingTime:val?.closingTime,
-                    title:val?.title
-                  })
-                  setSun(val)
-                 
+                    checked: false,
+                    openingTime: val.openingTime,
+                    closingTime: val?.closingTime,
+                    title: val?.title,
+                  });
+                  setSun(val);
                 }}
                 setVisible={setVisible}
                 title="Sunday"
@@ -228,13 +262,12 @@ export default function WorkingTime({ navigation, route }) {
                 error={TimesError[2]}
                 onChange={(val) => {
                   setAllTimes({
-                    checked:false,
-                    openingTime:val.openingTime,
-                    closingTime:val?.closingTime,
-                    title:val?.title
-                  })
-                  setMon(val)
-                  
+                    checked: false,
+                    openingTime: val.openingTime,
+                    closingTime: val?.closingTime,
+                    title: val?.title,
+                  });
+                  setMon(val);
                 }}
                 setVisible={setVisible}
                 title="Monday"
@@ -245,13 +278,12 @@ export default function WorkingTime({ navigation, route }) {
                 error={TimesError[3]}
                 onChange={(val) => {
                   setAllTimes({
-                    checked:false,
-                    openingTime:val.openingTime,
-                    closingTime:val?.closingTime,
-                    title:val?.title
-                  })
-                  setTue(val)
-                  
+                    checked: false,
+                    openingTime: val.openingTime,
+                    closingTime: val?.closingTime,
+                    title: val?.title,
+                  });
+                  setTue(val);
                 }}
                 setVisible={setVisible}
                 title="Tuesday"
@@ -262,13 +294,12 @@ export default function WorkingTime({ navigation, route }) {
                 error={TimesError[4]}
                 onChange={(val) => {
                   setAllTimes({
-                    checked:false,
-                    openingTime:val.openingTime,
-                    closingTime:val?.closingTime,
-                    title:val?.title
-                  })
-                  setWed(val)
-                  
+                    checked: false,
+                    openingTime: val.openingTime,
+                    closingTime: val?.closingTime,
+                    title: val?.title,
+                  });
+                  setWed(val);
                 }}
                 setVisible={setVisible}
                 title="Wednesday"
@@ -279,13 +310,12 @@ export default function WorkingTime({ navigation, route }) {
                 error={TimesError[5]}
                 onChange={(val) => {
                   setAllTimes({
-                    checked:false,
-                    openingTime:val.openingTime,
-                    closingTime:val?.closingTime,
-                    title:val?.title
-                  })
-                  setThu(val)
-                  
+                    checked: false,
+                    openingTime: val.openingTime,
+                    closingTime: val?.closingTime,
+                    title: val?.title,
+                  });
+                  setThu(val);
                 }}
                 setVisible={setVisible}
                 title="Thursday"
@@ -296,13 +326,12 @@ export default function WorkingTime({ navigation, route }) {
                 error={TimesError[6]}
                 onChange={(val) => {
                   setAllTimes({
-                    checked:false,
-                    openingTime:val.openingTime,
-                    closingTime:val?.closingTime,
-                    title:val?.title
-                  })
-                  setFri(val)
-                  
+                    checked: false,
+                    openingTime: val.openingTime,
+                    closingTime: val?.closingTime,
+                    title: val?.title,
+                  });
+                  setFri(val);
                 }}
                 setVisible={setVisible}
                 title="Friday"
@@ -320,22 +349,29 @@ export default function WorkingTime({ navigation, route }) {
                 fontFamily: "Poppins-Light",
                 color: "red",
                 marginTop: 3,
-              }}>
+              }}
+            >
               {TimeError}
             </Text>
           )}
           <IconButton
-            active={checked || Times?.filter(d=>d?.checked)?.length > 0 ? true : false}
-            disabled={checked || Times?.filter(d=>d?.checked)?.length>0 ? false : true}
+            active={
+              checked || Times?.filter((d) => d?.checked)?.length > 0
+                ? true
+                : false
+            }
+            disabled={
+              checked || Times?.filter((d) => d?.checked)?.length > 0
+                ? false
+                : true
+            }
             onPress={() => {
-              
-
-              if (!checked && Times?.filter(d=>d?.checked)?.length == 0) {
+              if (!checked && Times?.filter((d) => d?.checked)?.length == 0) {
                 setTimeError("Please select any time");
                 //scrollingTo(250);
                 return;
               }
-              
+
               dispatch({
                 type: "WORKING_TIME",
                 playload: checked ? true : Times,
@@ -348,16 +384,16 @@ export default function WorkingTime({ navigation, route }) {
                   position: data.position,
                   numberOfTeam: data.numberOfTeam,
                   established: data.established,
-                  workingTime: Times?.filter(d=>d?.checked),
+                  workingTime: Times?.filter((d) => d?.checked),
                   fullTime: checked,
-                  serviceCategory:data?.serviceCategory,
-                  skills:data?.skills,
-                  facilities:data?.facilities,
+                  serviceCategory: data?.serviceCategory,
+                  skills: data?.skills,
+                  facilities: data?.facilities,
                 },
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>

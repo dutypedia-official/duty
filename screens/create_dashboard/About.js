@@ -34,14 +34,18 @@ import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PageChip from "./components/PageChip";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
-export default function About({ navigation,route }) {
-  const businessForm=useSelector(state=>state.businessForm)
-  const dispatch=useDispatch()
-  const isFocused=useIsFocused()
+export default function About({ navigation, route }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
+  const businessForm = useSelector((state) => state.businessForm);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const [date, setDate] = useState();
-  const [aboutError,setAboutError]=useState()
-  const data=route?.params?.data;
+  const [aboutError, setAboutError] = useState();
+  const data = route?.params?.data;
   const [Service, setService] = React.useState([
     {
       id: 1,
@@ -61,14 +65,16 @@ export default function About({ navigation,route }) {
   ]);
   const [ServiceError, setServiceError] = React.useState();
   const [buttonVisible, setButtonVisible] = React.useState(false);
-  const [layoutHeight,setLayoutHeight]=useState(0)
-  const [about,setAbout]=useState(businessForm?.about?businessForm.about:text)
-  const [length,setLength]=useState(0)
-  const inset=useSafeAreaInsets()
+  const [layoutHeight, setLayoutHeight] = useState(0);
+  const [about, setAbout] = useState(
+    businessForm?.about ? businessForm.about : text
+  );
+  const [length, setLength] = useState(0);
+  const inset = useSafeAreaInsets();
 
   React.useEffect(() => {
-    if(businessForm?.facilities){
-      setService(businessForm.facilities)
+    if (businessForm?.facilities) {
+      setService(businessForm.facilities);
     }
     if (isFocused) {
       //console.log("hidden")
@@ -86,21 +92,24 @@ export default function About({ navigation,route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
-      <PageChip currentPage={13} totalPage={14} />
+        <PageChip currentPage={13} totalPage={14} />
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -108,42 +117,54 @@ export default function About({ navigation,route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for about your business
+              {isBn
+                ? "আপনার ব্যবসার সম্পর্কে টিপস:"
+                : "Tips for about your business"}
             </Text>
           </View>
-          <ViewMore
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            width={142}
-            height={layoutHeight}
-            component={
-              <Text onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)} 
-              style={[styles.spText,{marginTop:0}]}>
-              Introduce your business and what makes it unique. Share your
-              goals, vision, and what you can offer to potential buyers in a
-              genuine way that reflects your business's personality and values.
-              Avoid using buzzwords or generic language that doesn't truly
-              represent your brand. Remember to regularly update this section
-              with any changes to your business, to help you stay relevant and
-              attract new buyers.
-            </Text>
+            content={
+              isBn ? (
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  {`আপনার ব্যবসার সাথে পরিচয় করিয়ে দিন এবং আপনার ব্যবসায়ের আকর্ষণীয় দিকগুলো ব্যাখ্যা করুন৷ আপনার লক্ষ্য এবং দৃষ্টিভঙ্গি শেয়ার করুন৷ আপনি ক্রেতাদের যা অফার করবেন তা সঠিক নিয়মে করুন এবং এটি যেন আপনার ব্যবসায়ের ব্যক্তিত্ব এবং মূল্যবোধকে ফুটিয়ে তুলে৷ আপনার ব্র্যান্ডের/কোম্পানির প্রতিনিধিত্ব করে না এমন ওয়ার্ড এবং ল্যাংগুয়েজ এড়িয়ে চলুন যেমন: (বাজওয়ার্ড এবং জেনেরিক ল্যাংগুয়েজ)৷ আপনি নিজেকে প্রাসঙ্গিক রাখতে এবং নতুন ক্রেতাদের আকৃষ্ট করতে আপনার ব্যবসায়ের যেকোনো পরিবর্তনের সাথে এই অংশ/সেকশন টি নিয়মিত আপডেট রাখুন৷।
+
+আমাদের প্রোফাইলে আপনাকে স্বাগতম! 😊 আমরা আমাদের ক্লায়েন্টদের হাই-কোয়ালিটির সার্ভিস প্রদানের জন্য অভিজ্ঞ প্রফেশনাল একটি টিম।আমাদের প্রধান লক্ষ্য হল সময়মত, দক্ষ এবং সাশ্রয়ী সমাধান দিয়ে আমাদের ক্লায়েন্টদের চাহিদা বজায় রাখা৷😎 বছরের পর বছর ধরে অভিজ্ঞতার সাথে, আমরা এই ইন্ডাস্ট্রিতে আমাদের ক্লায়েন্টদের চাহিদা পূরণ করে তাদের খুশি করায় তারা আমাদের উপর আত্মবিশ্বাসী৷ আমাদের সার্ভিসগুলো বিবেচনা করে আমাদের সাথে কাজ করার জন্য আপনাকে ধন্যবাদ,!"😍
+                `}
+                </Text>
+              ) : (
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  Introduce your business and what makes it unique. Share your
+                  goals, vision, and what you can offer to potential buyers in a
+                  genuine way that reflects your business's personality and
+                  values. Avoid using buzzwords or generic language that doesn't
+                  truly represent your brand. Remember to regularly update this
+                  section with any changes to your business, to help you stay
+                  relevant and attract new buyers.
+                </Text>
+              )
             }
           />
-          
+
           <Text style={[styles.headLine, { marginTop: 36 }]}>
-            About Your Business
+            {isBn ? "আপনার ব্যবসার সম্পর্কে" : "About Your Business"}
           </Text>
-          <TextArea error={aboutError}
+          <TextArea
+            error={aboutError}
             style={styles.input}
             value={about}
-            onChange={e=>{
-              
-              setAbout(e)
+            onChange={(e) => {
+              setAbout(e);
             }}
-            placeholder={"Type here"}
+            placeholder={isBn ? "এখানে লিখুন" : "Type here"}
           />
-          <Text style={styles.text}>Max 2000/{about?about?.split("")?.length:"0"} characters </Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বোচ্চ" : "Max"} 2000/
+            {about ? about?.split("")?.length : "0"}{" "}
+            {isBn ? "অক্ষর" : "characters"}{" "}
+          </Text>
           {/* <View>
             <Text
               style={{
@@ -205,18 +226,21 @@ export default function About({ navigation,route }) {
               />
             )}
           </View> */}
-          <IconButton active={about?true:false}
-          disabled={about?false:true}
+          <IconButton
+            active={about ? true : false}
+            disabled={about ? false : true}
             onPress={() => {
-              if(about?.split("")?.length>2000){
-                setAboutError("*Max 2000 character")
-                return
+              if (about?.split("")?.length > 2000) {
+                setAboutError(
+                  isBn ? "*সর্বোচ্চ ২০০০ টি অক্ষর" : "*Max 2000 character"
+                );
+                return;
               }
               dispatch({ type: "FACILITIES", playload: Service });
               dispatch({ type: "ABOUT", playload: about });
-              
-              navigation.navigate("FinalReview",{
-                data:{
+
+              navigation.navigate("FinalReview", {
+                data: {
                   keywords: data?.keywords,
                   serviceCenterName: data.serviceCenterName,
                   providerName: data.providerName,
@@ -234,18 +258,18 @@ export default function About({ navigation,route }) {
                   serviceDescription: data.serviceDescription,
                   images: data.images,
                   address: data?.address,
-                  about:about,
-                  
-                }
+                  about: about,
+                },
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
           <Modal
             transparent={true}
             visible={buttonVisible}
-            onRequestClose={() => setButtonVisible(false)}>
+            onRequestClose={() => setButtonVisible(false)}
+          >
             <AddCard
               onSelect={(e) => {
                 setService((d) => [
@@ -256,7 +280,7 @@ export default function About({ navigation,route }) {
                     checked: true,
                   },
                 ]);
-                setButtonVisible(false)
+                setButtonVisible(false);
               }}
               onClose={() => setButtonVisible(false)}
             />
@@ -269,6 +293,8 @@ export default function About({ navigation,route }) {
 const AddCard = ({ onClose, onSelect }) => {
   const [text, setText] = useState();
   const [textError, setTextError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   return (
     <View style={[customStyle.fullBox, { backgroundColor: "#0000001e" }]}>
@@ -282,14 +308,16 @@ const AddCard = ({ onClose, onSelect }) => {
             padding: 20,
           },
           customStyle.shadow,
-        ]}>
+        ]}
+      >
         <Text
           style={{
             fontSize: 20,
             fontWeight: "500",
             textAlign: "center",
-          }}>
-          Add Feature
+          }}
+        >
+          {isBn ? "বৈশিষ্ট্য গুলি অ্যাড করুন" : "Add Feature"}
         </Text>
         <Input
           error={textError}

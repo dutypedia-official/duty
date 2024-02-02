@@ -101,11 +101,13 @@ import { vendorLogin } from "../../Class/auth";
 import customStyle from "../../assets/stylesheet";
 import ViewMore from "../../Hooks/ViewMore";
 import ServiceListViewer from "../../components/ServiceListViewer";
+import useLang from "../../Hooks/UseLang";
 //import businessForm from "../../Reducers/businessForm";
-
 
 const { width, height } = Dimensions.get("window");
 const FinalReview = (props) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const newData = props?.route?.params?.data;
   const window = Dimensions.get("window");
   const newUser = useSelector((state) => state.user);
@@ -188,7 +190,7 @@ const FinalReview = (props) => {
   const [imageUploader, setImageUploader] = useState(false);
   const [ButtonPress, setButtonPress] = useState(false);
   const [loading, setLoading] = useState(false);
-  const business=useSelector(state=>state.businessForm)
+  const business = useSelector((state) => state.businessForm);
 
   React.useEffect(() => {
     if (isFocused) {
@@ -352,7 +354,9 @@ const FinalReview = (props) => {
       t47: newData?.fullTime ? true : false,
       skills: newData?.skills,
       keywords: newData?.keywords,
-      category: newData?.serviceCategory?.name?newData.serviceCategory:{name:business.serviceCategory},
+      category: newData?.serviceCategory?.name
+        ? newData.serviceCategory
+        : { name: business.serviceCategory },
     };
     //console.log(businessForm)
     const res = await createService(
@@ -455,7 +459,8 @@ const FinalReview = (props) => {
           // }
           // scrollY.setValue(e.nativeEvent.contentOffset.y);
           setOffset(currentOffset);
-        }}>
+        }}
+      >
         <Canvas style={{ width: width, height: height - (height * 30) / 100 }}>
           <Fill color={primaryColor} />
           <Box
@@ -464,7 +469,8 @@ const FinalReview = (props) => {
               5,
               5
             )}
-            color={primaryColor}>
+            color={primaryColor}
+          >
             <BoxShadow
               dx={30}
               dy={30}
@@ -513,7 +519,8 @@ const FinalReview = (props) => {
             justifyContent: "center",
             elevation: 2,
             zIndex: 100,
-          }}></View>
+          }}
+        ></View>
         <View
           style={{
             backgroundColor: primaryColor,
@@ -521,13 +528,15 @@ const FinalReview = (props) => {
             borderTopRightRadius: 30,
             marginTop: -30,
             overflow: "hidden",
-          }}>
+          }}
+        >
           <View
             style={{
               alignItems: "flex-end",
               paddingHorizontal: 20,
               paddingTop: 20,
-            }}>
+            }}
+          >
             {/* <TouchableOpacity>
               <SvgXml xml={editIcon} height="50" width={"50"} />
             </TouchableOpacity> */}
@@ -539,7 +548,8 @@ const FinalReview = (props) => {
               paddingHorizontal: 20,
               paddingVertical: 5,
               backgroundColor: primaryColor,
-            }}>
+            }}
+          >
             <Text
               numberOfLines={2}
               style={[
@@ -548,7 +558,8 @@ const FinalReview = (props) => {
                   flex: 3,
                   fontSize: Platform.OS == "ios" ? 22 : 20.5,
                 },
-              ]}>
+              ]}
+            >
               {newData
                 ? newData.serviceTitle
                 : "Easin Arafat It Consulting Center"}
@@ -562,7 +573,8 @@ const FinalReview = (props) => {
               paddingHorizontal: 20,
               marginVertical: 15,
               flex: 1,
-            }}>
+            }}
+          >
             <Avatar
               onPress={() => {
                 setModalVisible((val) => !val);
@@ -577,7 +589,8 @@ const FinalReview = (props) => {
             <View
               style={{
                 flex: 3,
-              }}>
+              }}
+            >
               <Tooltip
                 enterTouchDelay={10}
                 title={
@@ -586,7 +599,8 @@ const FinalReview = (props) => {
                         newData?.providerName
                       } (${newData?.gender.toUpperCase()})`
                     : "No"
-                }>
+                }
+              >
                 <View
                   onPress={() => {
                     setNameDropDown((val) => !val);
@@ -599,14 +613,16 @@ const FinalReview = (props) => {
                     paddingVertical: 10,
                     paddingHorizontal: 10,
                     flex: 1,
-                  }}>
+                  }}
+                >
                   <Text
                     numberOfLines={NameDropDown ? 2 : 1}
                     style={{
                       color: "#6366F1",
                       fontSize: Platform.OS == "ios" ? 16.5 : 15,
                       fontFamily: "Poppins-SemiBold",
-                    }}>
+                    }}
+                  >
                     {newData
                       ? `${
                           newData?.providerName
@@ -619,7 +635,8 @@ const FinalReview = (props) => {
             <View
               style={{
                 flex: 2,
-              }}>
+              }}
+            >
               <Tooltip enterTouchDelay={10} title={newData?.position}>
                 <View
                   style={{
@@ -630,7 +647,8 @@ const FinalReview = (props) => {
                     borderRadius: 10,
                     justifyContent: "center",
                     justifySelf: "flex-end",
-                  }}>
+                  }}
+                >
                   <Text
                     numberOfLines={PositionDropDown ? 4 : 1}
                     style={{
@@ -638,7 +656,8 @@ const FinalReview = (props) => {
                       textAlign: "center",
                       fontSize: Platform.OS == "ios" ? 14 : 13,
                       fontFamily: "Poppins-SemiBold",
-                    }}>
+                    }}
+                  >
                     {newData?.position}
                   </Text>
                 </View>
@@ -648,21 +667,24 @@ const FinalReview = (props) => {
           <View
             style={{
               paddingHorizontal: 20,
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: Platform.OS == "ios" ? 22 : 20.5,
                   fontFamily: "Poppins-SemiBold",
                   marginVertical: 15,
                   marginTop: 2,
-                }}>
-                Specialty In
+                }}
+              >
+                {isBn ? "যে সব বিষয়ে বিশেষত্ব" : "Specialty In"}
               </Text>
             </View>
             <Animation.View style={{ height: specialtyAnimation }}>
@@ -675,7 +697,8 @@ const FinalReview = (props) => {
                   flexDirection: "row",
                   flexWrap: "wrap",
                   alignItems: "center",
-                }}>
+                }}
+              >
                 {Array.isArray(Specialty) &&
                   Specialty.map((doc, i) => (
                     <SpecialtyComponent
@@ -697,13 +720,15 @@ const FinalReview = (props) => {
                     }}
                     style={{
                       marginVertical: 5,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
                         fontFamily: "Poppins-SemiBold",
                         fontSize: Platform.OS == "ios" ? 16.5 : 15,
                         color: "#86939B",
-                      }}>
+                      }}
+                    >
                       {!More ? "...Show All" : "...Show Less"}
                     </Text>
                   </Pressable>
@@ -715,21 +740,24 @@ const FinalReview = (props) => {
             style={{
               paddingHorizontal: 20,
               backgroundColor: primaryColor,
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: Platform.OS == "ios" ? 22 : 20.5,
                   fontFamily: "Poppins-SemiBold",
                   marginTop: 15,
                   marginBottom: 10,
-                }}>
-                About
+                }}
+              >
+                {isBn ? "সেবা প্রদানকারীর সম্পর্কে" : "About"}
               </Text>
               {/* <TouchableOpacity style={{}}>
                 <SvgXml xml={editIcon} height="50" width={"50"} />
@@ -755,15 +783,19 @@ const FinalReview = (props) => {
               paddingHorizontal: 20,
               paddingVertical: 10,
               paddingTop: 5,
-            }}>
+            }}
+          >
             <Text
               style={{
                 color: "#4ADE80",
                 fontSize: Platform.OS == "ios" ? 16.5 : 15,
                 fontFamily: "Poppins-SemiBold",
                 marginBottom: 15,
-              }}>
-              ...Company Calender, Location & Team
+              }}
+            >
+              {isBn
+                ? "...কোম্পানির ক্যালেন্ডার, ঠিকানা এবং টিম"
+                : "...Company Calender, Location & Team"}
             </Text>
           </Pressable>
         </View>
@@ -771,7 +803,8 @@ const FinalReview = (props) => {
         <MotiView
           transition={{ type: "timing" }}
           animate={{ height: calenderHeight }}
-          style={{ overflow: "hidden" }}>
+          style={{ overflow: "hidden" }}
+        >
           <View
             style={{
               backgroundColor: primaryColor,
@@ -781,7 +814,8 @@ const FinalReview = (props) => {
               if (OpenDetails) {
                 //setCalenderHeight(e.nativeEvent.layout.height);
               }
-            }}>
+            }}
+          >
             <ProfileOption
               onPress={() => {
                 //console.log(newData?.workingTime)
@@ -796,7 +830,7 @@ const FinalReview = (props) => {
                 });
               }}
               Icon={() => <SvgXml xml={calenderIcon} height="22" width="22" />}
-              title="Company Calender"
+              title={isBn ? "কোম্পানির ক্যালেন্ডার" : "Company Calender"}
             />
             <ProfileOption
               onPress={() => {
@@ -818,12 +852,16 @@ const FinalReview = (props) => {
               Icon={() => (
                 <Ionicons name="location-sharp" size={24} color={"#4ADE80"} />
               )}
-              title="Work Location"
+              title={isBn ? "কর্মক্ষেত্র" : "Work Location"}
             />
 
             <BarOption
               icon={user}
-              title={`Worker and Team (${newData?.numberOfTeam} member)`}
+              title={
+                isBn
+                  ? `কর্মী এবং টিমের সদস্য (${newData?.numberOfTeam})`
+                  : `Worker and Team (${newData?.numberOfTeam} member)`
+              }
             />
           </View>
         </MotiView>
@@ -840,7 +878,8 @@ const FinalReview = (props) => {
               //   height: newNavigation,
               // },
             ]
-          }>
+          }
+        >
           {/* <Tab.Navigator
             screenOptions={{
               tabBarStyle: {
@@ -939,7 +978,8 @@ const FinalReview = (props) => {
             marginTop: 10,
             marginHorizontal: 20,
             justifyContent: "center",
-          }}>
+          }}
+        >
           <CheckBox
             value={ButtonPress}
             onChange={() => {
@@ -951,16 +991,17 @@ const FinalReview = (props) => {
             }}
           />
           <Text style={{ fontSize: 16 }}>
-            I agree with all the{" "}
+            {isBn ? "আমি ডিউটি প্ল্যাটফর্মের সমস্ত" : "I agree with all the"}{" "}
             <Text
               onPress={() => {
                 navigation.navigate("WebViewsGlobal", {
                   url: "https://duty.com.bd/legal/app/terms-and-conditions",
-                  title: "Terms & Conditions",
+                  title: isBn ? "শর্তাবলীর" : "Terms & Conditions",
                 });
               }}
-              style={{ color: "blue" }}>
-              terms and conditions
+              style={{ color: "blue" }}
+            >
+              {isBn ? "সাথে একমত" : "terms and conditions"}
             </Text>
           </Text>
         </Pressable>
@@ -976,7 +1017,7 @@ const FinalReview = (props) => {
             borderWidth: 0,
             color: ButtonPress ? "white" : "black",
           }}
-          title="Confirm"
+          title={isBn ? "নিশ্চিত করুন" : "Confirm"}
         />
       </View>
 
@@ -992,14 +1033,16 @@ const FinalReview = (props) => {
             borderRadius: 5,
             zIndex: 150,
           }}
-          layout={FadeIn}>
+          layout={FadeIn}
+        >
           <Pressable
             onPress={async () => {
               //console.log("ok");
               const res = await pickImage();
               setWallPhoto(res.uri);
               uploadProfileImage(res, false);
-            }}>
+            }}
+          >
             <SvgXml xml={cameraIcon} height="20" width={"20"} />
           </Pressable>
         </Animated.View>
@@ -1007,7 +1050,8 @@ const FinalReview = (props) => {
       <Modal
         visible={modalVisible}
         animationType="slide"
-        onRequestClose={() => setModalVisible((val) => !val)}>
+        onRequestClose={() => setModalVisible((val) => !val)}
+      >
         <ImageScreen
           uri={image}
           onClose={setModalVisible}
@@ -1025,7 +1069,8 @@ const FinalReview = (props) => {
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "transparent",
-          }}>
+          }}
+        >
           <ActivityLoader />
         </View>
       </Modal>
@@ -1155,13 +1200,15 @@ const BarOption = ({ icon, title }) => {
         flexDirection: "row",
         backgroundColor: primaryColor,
         paddingVertical: 5,
-      }}>
+      }}
+    >
       <SvgXml xml={icon} height="22" width="22" />
       <View
         style={{
           flex: 6,
           marginLeft: 10,
-        }}>
+        }}
+      >
         <Text
           numberOfLines={lines}
           style={{
@@ -1169,7 +1216,8 @@ const BarOption = ({ icon, title }) => {
             marginBottom: 5,
             fontSize: Platform.OS == "ios" ? 16.5 : 15,
             color: "#333333",
-          }}>
+          }}
+        >
           {title}
         </Text>
       </View>
@@ -1219,7 +1267,7 @@ const BargainingScreen = (props) => {
   const scrollTo = params.scrollTo;
   const changeScreenName = params.changeScreenName;
   const dispatch = useDispatch();
-  const business=useSelector(state=>state.businessForm)
+  const business = useSelector((state) => state.businessForm);
   //console.log(Data);
 
   React.useEffect(() => {
@@ -1305,7 +1353,8 @@ const BargainingScreen = (props) => {
 
         setOffset(currentOffset);
       }}
-      nestedScrollEnabled={true}>
+      nestedScrollEnabled={true}
+    >
       <View style={{ backgroundColor: primaryColor, marginBottom: -1 }}>
         <Text
           style={{
@@ -1314,7 +1363,8 @@ const BargainingScreen = (props) => {
             color: textColor,
             paddingHorizontal: 20,
             marginTop: 20,
-          }}>
+          }}
+        >
           {Title}
         </Text>
 
@@ -1322,7 +1372,8 @@ const BargainingScreen = (props) => {
           style={{
             marginHorizontal: 20,
             marginTop: 10,
-          }}>
+          }}
+        >
           {Description && (
             <AnimatedHeight
               onChange={(height) => {
@@ -1342,7 +1393,8 @@ const BargainingScreen = (props) => {
             justifyContent: "flex-end",
             marginVertical: 0,
             marginTop: 10,
-          }}></View>
+          }}
+        ></View>
         <Carousel
           panGestureHandlerProps={{
             activeOffsetX: [-10, 10],
@@ -1366,7 +1418,11 @@ const BargainingScreen = (props) => {
         />
       </View>
       <ServiceListViewer
-        serviceCategory={Data?.serviceCategory?.name?Data.serviceCategory:{name:business.serviceCategory}}
+        serviceCategory={
+          Data?.serviceCategory?.name
+            ? Data.serviceCategory
+            : { name: business.serviceCategory }
+        }
         facilities={Facilities}
         skills={Data?.skills}
       />
@@ -1378,14 +1434,16 @@ const BargainingScreen = (props) => {
           justifyContent: "space-between",
           marginHorizontal: 20,
           marginVertical: 15,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: Platform.OS == "ios" ? 17 : 15.5,
             color: textColor,
 
             fontFamily: "Poppins-SemiBold",
-          }}>
+          }}
+        >
           From {Price} ৳
         </Text>
         {/* <TouchableOpacity
@@ -1610,13 +1668,15 @@ const SpecialtyComponent = ({ doc, i, arr, seeMore, more }) => {
         paddingVertical: 5,
         marginRight: 5,
         marginVertical: 5,
-      }}>
+      }}
+    >
       <Text
         style={{
           color: "white",
           fontFamily: "Poppins-Medium",
           fontSize: Platform.OS == "ios" ? 14.5 : 12,
-        }}>
+        }}
+      >
         {doc}
       </Text>
     </View>
@@ -1699,7 +1759,8 @@ const ServiceTable = ({ item, i, name, NewDataList, onLayout, height }) => {
         borderColor: "#e5e5e5",
         minHeight: 10,
       }}
-      key={i}>
+      key={i}
+    >
       {item && contentHeight > 30 && (
         <Text
           numberOfLines={1}
@@ -1708,7 +1769,8 @@ const ServiceTable = ({ item, i, name, NewDataList, onLayout, height }) => {
             fontSize: Platform.OS == "ios" ? 16.5 : 15,
             margin: 0,
             color: "#535353",
-          }}>
+          }}
+        >
           {item}
         </Text>
       )}
@@ -1723,7 +1785,8 @@ const ServiceTable = ({ item, i, name, NewDataList, onLayout, height }) => {
                     fontFamily: "Poppins-Medium",
                     fontSize: Platform.OS == "ios" ? 16.5 : 15,
                     color: "#95979D",
-                  }}>
+                  }}
+                >
                   {doc}
                 </Text>
                 <Rows
@@ -1744,7 +1807,8 @@ const ServiceTable = ({ item, i, name, NewDataList, onLayout, height }) => {
               fontFamily: "Poppins-Medium",
               fontSize: Platform.OS == "ios" ? 16.5 : 15,
               color: "#95979D",
-            }}>
+            }}
+          >
             {name}
           </Text>
           <Rows
@@ -1804,7 +1868,8 @@ const Rows = ({ title, item, name, NewDataList, height, index }) => {
         color: textColor,
 
         maxHeight: 160,
-      }}>
+      }}
+    >
       {text}
     </Text>
   );
@@ -1846,11 +1911,13 @@ const TabBar = ({
         flexDirection: "row",
         borderBottomColor: "#E9E6E6",
         borderBottomWidth: 0.5,
-      }}>
+      }}
+    >
       <ScrollView
         ref={ref}
         showsHorizontalScrollIndicator={false}
-        horizontal={true}>
+        horizontal={true}
+      >
         {packages.map((doc, index) => {
           const isFocused = state.index === index;
 
@@ -1878,12 +1945,14 @@ const TabBar = ({
                   marginLeft: 5,
                   height: 40,
                   justifyContent: "center",
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 16,
                     fontFamily: "Poppins-SemiBold",
-                  }}>
+                  }}
+                >
                   {Title}
 
                   {/* {packages[state.index].name+" "+packages[state.index].price+"৳"} */}
@@ -1949,7 +2018,8 @@ const TabScreen = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       {data.features.map((doc, i) => (
         <View
           style={{
@@ -1960,7 +2030,8 @@ const TabScreen = ({ navigation, route }) => {
             borderBottomColor: "#F1F1F1",
             borderBottomWidth: data.features.length - 1 == i ? 0 : 1,
           }}
-          key={i}>
+          key={i}
+        >
           {doc.isAvailable ? (
             <SvgXml xml={right} height="30" width={"30"} />
           ) : (
@@ -1977,7 +2048,8 @@ const TabScreen = ({ navigation, route }) => {
             style={{
               fontSize: 14,
               color: "#666666",
-            }}>
+            }}
+          >
             {doc.title}
           </Text>
         </View>
@@ -2069,14 +2141,16 @@ const Subscriptions = ({ navigation, route }) => {
       onLayout={(e) => {
         setLayoutHeight(e.nativeEvent.layout.height);
       }}
-      nestedScrollEnabled={true}>
+      nestedScrollEnabled={true}
+    >
       <View
         style={{
           marginHorizontal: 10,
           flexDirection: "row",
           flexWrap: "wrap",
           marginVertical: 20,
-        }}>
+        }}
+      >
         {SubsCription &&
           SubsCription.map((doc, i) => (
             <ServiceCart
@@ -2121,13 +2195,15 @@ const Subscriptions = ({ navigation, route }) => {
               justifyContent: "center",
               width: "100%",
             }}
-            entering={FadeIn}>
+            entering={FadeIn}
+          >
             <View
               style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <SvgXml
                 xml={serviceIcon}
                 style={{ marginVertical: 100 }}
@@ -2137,78 +2213,6 @@ const Subscriptions = ({ navigation, route }) => {
             </View>
           </Animated.View>
         )}
-        {/* <View
-          style={{
-            backgroundColor: primaryColor,
-            marginTop: 0,
-          }}
-        >
-          {RelatedServices.length > 2 && (
-            <View>
-              <Text
-                style={{
-                  fontSize: Platform.OS == "ios" ? 22 : 20.5,
-                  fontFamily: "Poppins-SemiBold",
-                  color: textColor,
-                  paddingHorizontal: 10,
-                  paddingVertical: 15,
-                }}
-              >
-                Related Service
-              </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                }}
-              >
-                {RelatedServices.map((doc, i) =>
-                  i < 6 ? (
-                    <RelatedService
-                      squire={true}
-                      data={doc}
-                      key={i}
-                      navigation={navigation}
-                    />
-                  ) : null
-                )}
-              </View>
-            </View>
-          )}
-
-          {UnRelatedServices.length > 0 && (
-            <View>
-              <Text
-                style={{
-                  fontSize: Platform.OS == "ios" ? 22 : 20.5,
-                  fontFamily: "Poppins-SemiBold",
-                  color: textColor,
-                  paddingHorizontal: 10,
-                  paddingVertical: 15,
-                }}
-              >
-                You Might Also Like
-              </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                }}
-              >
-                {UnRelatedServices.map((doc, i) =>
-                  i < 50 ? (
-                    <RelatedService
-                      squire={true}
-                      data={doc}
-                      key={i}
-                      navigation={navigation}
-                    />
-                  ) : null
-                )}
-              </View>
-            </View>
-          )}
-        </View> */}
       </View>
       <View style={{ height: 70 }} />
     </View>
@@ -2245,7 +2249,8 @@ const ImageScreen = ({ onClose, onChange, uri }) => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "black",
-      }}>
+      }}
+    >
       {click && (
         <Animated.View
           style={{
@@ -2254,7 +2259,8 @@ const ImageScreen = ({ onClose, onChange, uri }) => {
             top: 50,
             right: 20,
           }}
-          layout={FadeIn}>
+          layout={FadeIn}
+        >
           <Pressable onPress={pickImage}>
             <SvgXml xml={cameraIcon} height="20" width={"20"} />
           </Pressable>
@@ -2271,7 +2277,8 @@ const ImageScreen = ({ onClose, onChange, uri }) => {
         }}
         onPress={() => {
           setClick((val) => !val);
-        }}>
+        }}
+      >
         <Image
           style={{
             width: "100%",

@@ -12,8 +12,16 @@ import { getOnlineUsers, getSocket } from "../../Class/socket";
 import ActivityLoader from "../../components/ActivityLoader";
 import ChatHeader from "../../components/ChatHeader";
 import SearchBar from "../../components/SearchBar";
-const {height,width}=Dimensions.get("window")
-export default function SellerList({ navigation, seller, onClose, data,bottomRef,setIndex }) {
+import useLang from "../../Hooks/UseLang";
+const { height, width } = Dimensions.get("window");
+export default function SellerList({
+  navigation,
+  seller,
+  onClose,
+  data,
+  bottomRef,
+  setIndex,
+}) {
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 300);
   const translateY = diffClamp.interpolate({
@@ -28,33 +36,35 @@ export default function SellerList({ navigation, seller, onClose, data,bottomRef
   const isFocused = useIsFocused();
   const chatSearchRef = useSelector((state) => state.chatSearchRef);
   //const searchX=route?.params?.search;
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
-   if(vendor){
-    getConversationVendor(user.token,vendor?.service?.id)
-    .then((res) => {
-      setLoader(false);
-      setMembers(res.data.conversations);
-      setAllMembers(res.data.conversations);
-      //console.warn(res.data.conversations)
-    })
-    .catch((err) => {
-      setLoader(false);
-      console.warn(err.response.data.msg);
-    });
-   }else{
-    getConversation(user.token)
-    .then((res) => {
-      setLoader(false);
-      setMembers(res.data.conversations);
-      setAllMembers(res.data.conversations);
-      //console.warn(res.data.conversations[0])
-    })
-    .catch((err) => {
-      setLoader(false);
-      console.warn(err.response.data.msg);
-    });
-   }
+    if (vendor) {
+      getConversationVendor(user.token, vendor?.service?.id)
+        .then((res) => {
+          setLoader(false);
+          setMembers(res.data.conversations);
+          setAllMembers(res.data.conversations);
+          //console.warn(res.data.conversations)
+        })
+        .catch((err) => {
+          setLoader(false);
+          console.warn(err.response.data.msg);
+        });
+    } else {
+      getConversation(user.token)
+        .then((res) => {
+          setLoader(false);
+          setMembers(res.data.conversations);
+          setAllMembers(res.data.conversations);
+          //console.warn(res.data.conversations[0])
+        })
+        .catch((err) => {
+          setLoader(false);
+          console.warn(err.response.data.msg);
+        });
+    }
   }, [user, vendor, seller]);
   const search = (val, data) => {
     if (!Array.isArray(data)) {
@@ -82,7 +92,8 @@ export default function SellerList({ navigation, seller, onClose, data,bottomRef
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityLoader />
       </View>
     );
@@ -96,13 +107,14 @@ export default function SellerList({ navigation, seller, onClose, data,bottomRef
       stickyHeaderIndices={[0]}
       onScroll={(e) => {
         scrollY.setValue(e.nativeEvent.contentOffset.y);
-      }}>
-      
+      }}
+    >
       <View
         style={{
           paddingHorizontal: 20,
           minHeight: "100%",
-        }}>
+        }}
+      >
         <View style={{ height: 0 }} />
         {Members &&
           Members.map((doc, i) => (
@@ -125,7 +137,7 @@ export default function SellerList({ navigation, seller, onClose, data,bottomRef
                   username: doc?.users?.filter(
                     (d) => d.user.id != user.user.id
                   )[0]?.user?.username,
-                  serviceId:doc?.serviceId
+                  serviceId: doc?.serviceId,
                 });
               }}
               userId={
@@ -133,32 +145,48 @@ export default function SellerList({ navigation, seller, onClose, data,bottomRef
                   ?.id
               }
               key={i}
-              name={vendor?`${
-                doc?.users?.filter((d) => d.user.id != user.user.id)[0]?.user
-                  ?.name
-              }`:`${doc?.service?.serviceCenterName}`}
+              name={
+                vendor
+                  ? `${
+                      doc?.users?.filter((d) => d.user.id != user.user.id)[0]
+                        ?.user?.name
+                    }`
+                  : `${doc?.service?.serviceCenterName}`
+              }
               username={`${
                 doc?.users?.filter((d) => d.user.id != user.user.id)[0]?.user
                   ?.username
               }`}
-              image={vendor?{
-                uri: doc?.users?.filter((d) => d.user.id != user.user.id)[0]
-                  ?.user?.profilePhoto,
-              }:{
-                uri: doc?.service?.profilePhoto,
-              }}
+              image={
+                vendor
+                  ? {
+                      uri: doc?.users?.filter(
+                        (d) => d.user.id != user.user.id
+                      )[0]?.user?.profilePhoto,
+                    }
+                  : {
+                      uri: doc?.service?.profilePhoto,
+                    }
+              }
             />
           ))}
         {Members && Members.length == 0 && (
-          <View style={[customStyle.fullBox,{minHeight:height-250}]}>
+          <View style={[customStyle.fullBox, { minHeight: height - 250 }]}>
             {/* <SvgXml xml={noResult} /> */}
             <Text
               style={{
                 marginVertical: 20,
                 textAlign: "center",
                 fontSize: 24,
-              }}>
-              {chatSearchRef ? "Ops, No Result" : "No Member Added"}
+              }}
+            >
+              {chatSearchRef
+                ? isBn
+                  ? "কোনও রেজাল্ট পাওয়া যায়নি"
+                  : "Ops, No Result"
+                : isBn
+                ? "কোনও সদস্য নেই"
+                : "No Member Added"}
             </Text>
           </View>
         )}
@@ -168,7 +196,8 @@ export default function SellerList({ navigation, seller, onClose, data,bottomRef
               marginVertical: 20,
               textAlign: "center",
               fontSize: 16,
-            }}>
+            }}
+          >
             Ops! Please logged in as ''Vendor''
           </Text>
         )}

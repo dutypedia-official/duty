@@ -7,14 +7,17 @@ import { replyReview } from "../../../Class/service";
 import IconButton from "../../../components/IconButton";
 import TextArea from "../../../components/TextArea";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
+import useLang from "../../../Hooks/UseLang";
 
 export default function FeedBack({ navigation, route }) {
   const data = route?.params?.data;
   const [text, setText] = useState();
   const user = useSelector((state) => state.user);
   const [textError, setTextError] = useState();
-  const dispatch=useDispatch()
-  const isFocused=useIsFocused()
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -26,17 +29,19 @@ export default function FeedBack({ navigation, route }) {
       dispatch(setHideBottomBar(true));
     }, 50);
   }, [isFocused]);
-  
+
   const reply = async () => {
     if (!text) {
-      setTextError("*your reply text is required");
+      setTextError(isBn ? "কিছু লিখা আবশ্যক" : "*your reply text is required");
       return;
     }
-    replyReview(user.token, data.id, text).then(res=>{
+    replyReview(user.token, data.id, text)
+      .then((res) => {
         navigation.goBack();
-    }).catch(err=>{
+      })
+      .catch((err) => {
         Alert.alert("Ops!", err.response.data.msg);
-    })
+      });
   };
 
   return (
@@ -44,7 +49,8 @@ export default function FeedBack({ navigation, route }) {
       <View
         style={{
           paddingHorizontal: 28,
-        }}>
+        }}
+      >
         <Cart data={data} noReplay={true} />
         <View style={{ height: 28 }} />
         <TextArea
@@ -55,16 +61,18 @@ export default function FeedBack({ navigation, route }) {
             width: "100%",
           }}
           placeholderTextColor={"#767676"}
-          placeholder={"type your reply...."}
+          placeholder={isBn ? "আপনার জবাব লিখুন" : "type your reply...."}
         />
         <View style={{ height: 28 }} />
-        <IconButton disabled={text?false:true} active={text?true:false}
+        <IconButton
+          disabled={text ? false : true}
+          active={text ? true : false}
           onPress={reply}
           style={{
             height: 40,
             color: "#A3A3A3",
           }}
-          title={"Done"}
+          title={isBn ? "সম্পন্ন" : "Done"}
         />
       </View>
     </ScrollView>

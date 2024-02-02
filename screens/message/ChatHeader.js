@@ -3,10 +3,13 @@ import { View, Text, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
+import useLang from "../../Hooks/UseLang";
 
 export default function ChatHeader({ navigation, route, onContact, onSearch }) {
   const vendor = useSelector((state) => state.vendor);
   const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
@@ -18,13 +21,15 @@ export default function ChatHeader({ navigation, route, onContact, onSearch }) {
         alignItems: "center",
         borderBottomColor: "#E6E6E6",
         borderBottomWidth: 1,
-      }}>
+      }}
+    >
       <Text
         style={{
           fontSize: 24,
           fontWeight: "500",
-        }}>
-        Inbox
+        }}
+      >
+        {isBn ? "ইনবক্স" : "Inbox"}
       </Text>
       {!vendor && (
         <Pressable onPress={onSearch}>

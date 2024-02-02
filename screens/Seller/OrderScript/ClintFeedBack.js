@@ -8,6 +8,7 @@ import { SvgXml } from "react-native-svg";
 import star from "../../../assets/icons/star.png";
 import IconButton from "../../../components/IconButton";
 import { AntDesign } from "@expo/vector-icons";
+import useLang from "../../../Hooks/UseLang";
 
 export default function ClintFeedBack({ navigation, route }) {
   const [loader, setLoader] = useState(false);
@@ -16,24 +17,31 @@ export default function ClintFeedBack({ navigation, route }) {
   const [communication, setCommunication] = useState(0);
   const [describe, setDescribe] = useState(0);
   const [quality, setQuality] = useState(0);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <Text style={[styles.headLine, styles.mt28, { textAlign: "center" }]}>
-          Congrats on receiving your order!{" "}
+          {isBn
+            ? "আপনার অর্ডার রিসিভ করার জন্য আপনাকে অভিনন্দন !"
+            : "Congrats on receiving your order!"}{" "}
         </Text>
         <SvgXml style={styles.mt28} width={"100%"} xml={vectorIcon} />
         <Text style={[styles.text, styles.mt24]}>
-          We hope you're satisfied with our seller's service. Your feedback
-          helps them succeed and our community thrive. It only takes a few
-          Second to leave a review - thank you!"
+          {isBn
+            ? "আমরা আশা করি আপনি আমাদের বিক্রেতার সার্ভিসের উপর সন্তুষ্ট৷ আপনার ফিডব্যাক বিক্রেতাদের সফল করতে সাহায্য করে এবং আমাদের কমিউনিটিকে সমৃদ্ধিশালী করে৷ অনুগ্রহ করে কয়েক সেকেন্ড সময় নিয়ে একটি রিভিউ দিন - ধন্যবাদ!"
+            : "We hope you're satisfied with our seller's service. Your feedback helps them succeed and our community thrive. It only takes a few Second to leave a review - thank you!"}
         </Text>
         <View style={[styles.box, styles.mt24]}>
-          <Text style={[styles.font]}>Seller communication rating</Text>
+          <Text style={[styles.font]}>
+            {isBn ? "বিক্রেতা যোগাযোগ এর মান" : "Seller communication rating"}
+          </Text>
           <View style={[styles.flexBox, styles.mt16]}>
             <Rating
               onFinishRating={(e) => {
@@ -45,28 +53,27 @@ export default function ClintFeedBack({ navigation, route }) {
             />
           </View>
           <Text style={[styles.font, styles.mt24]}>
-            Service as described rating
+            {isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as described rating"}
           </Text>
           <View style={[styles.flexBox, styles.mt16]}>
             <Rating
               onFinishRating={(e) => {
                 setDescribe(e);
-                
               }}
-              
               ratingImage={star}
               imageSize={40}
               fractions={2}
               startingValue={describe}
             />
           </View>
-          <Text style={[styles.font, styles.mt24]}>Service quality rating</Text>
+          <Text style={[styles.font, styles.mt24]}>
+            {isBn ? "পরিষেবার মান" : "Service quality rating"}
+          </Text>
           <View style={[styles.flexBox, styles.mt16]}>
             <Rating
               onFinishRating={(e) => {
                 setQuality(e);
               }}
-             
               ratingImage={star}
               imageSize={40}
               fractions={2}
@@ -77,9 +84,36 @@ export default function ClintFeedBack({ navigation, route }) {
         <IconButton
           onPress={() => {
             navigation.navigate("FeedBackMessage", {
-              communication: communication>4?5:communication>3?4:communication>2?3:communication>1?2:1,
-              describe: describe>4?5:describe>3?4:describe>2?3:describe>1?2:1,
-              quality: quality>4?5:quality>3?4:quality>2?3:quality>1?2:1,
+              communication:
+                communication > 4
+                  ? 5
+                  : communication > 3
+                  ? 4
+                  : communication > 2
+                  ? 3
+                  : communication > 1
+                  ? 2
+                  : 1,
+              describe:
+                describe > 4
+                  ? 5
+                  : describe > 3
+                  ? 4
+                  : describe > 2
+                  ? 3
+                  : describe > 1
+                  ? 2
+                  : 1,
+              quality:
+                quality > 4
+                  ? 5
+                  : quality > 3
+                  ? 4
+                  : quality > 2
+                  ? 3
+                  : quality > 1
+                  ? 2
+                  : 1,
               order: order,
             });
           }}
@@ -90,7 +124,7 @@ export default function ClintFeedBack({ navigation, route }) {
             communication > 0 && describe > 0 && quality > 0 ? true : false
           }
           style={[styles.button, styles.mt28]}
-          title={"Continue"}
+          title={isBn ? "পরবর্তী" : "Continue"}
         />
       </View>
     </ScrollView>
@@ -99,12 +133,12 @@ export default function ClintFeedBack({ navigation, route }) {
 const styles = StyleSheet.create({
   headLine: {
     fontSize: 24,
-    
+
     fontWeight: "500",
   },
   text: {
     fontSize: 16,
-   
+
     fontWeight: "400",
   },
   font: {

@@ -1,32 +1,38 @@
 import { useIsFocused } from "@react-navigation/native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useSelector } from "react-redux";
 import { getAllWithdraws } from "../../../Class/account";
 import IconButton from "../../../components/IconButton";
 import WithdrawCart from "./WithdrawCart";
+import useLang from "../../../Hooks/UseLang";
 
-export default function RecentWithdraw({navigation}) {
+export default function RecentWithdraw({ navigation }) {
   const [data, setData] = useState();
-  const user=useSelector(state=>state.user)
-  const vendor=useSelector(state=>state.vendor)
-  const isFocused=useIsFocused()
+  const user = useSelector((state) => state.user);
+  const vendor = useSelector((state) => state.vendor);
+  const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
-    if(user&&vendor){
-      getAllWithdraws(user.token,vendor.service.id).then(res=>{
-        setData(res.data)
-      }).catch(err=>{
-        console.error(err.response.data.msg)
-      })
+    if (user && vendor) {
+      getAllWithdraws(user.token, vendor.service.id)
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => {
+          console.error(err.response.data.msg);
+        });
     }
-  }, [isFocused])
-  
+  }, [isFocused]);
+
   return (
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       {data && data.length > 0 && (
         <View
           style={{
@@ -34,46 +40,56 @@ export default function RecentWithdraw({navigation}) {
             alignItems: "center",
             justifyContent: "space-between",
             marginVertical: 10,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 16,
-            }}>
-            Recent Transaction
+            }}
+          >
+            {isBn ? "সর্বশেষ লেনদেন" : "Recent Transaction"}
           </Text>
-          <IconButton onPress={()=>{
-            navigation.navigate("AllWithdraws")
-          }}
+          <IconButton
+            onPress={() => {
+              navigation.navigate("AllWithdraws");
+            }}
             style={{
               borderWidth: 0,
               fontSize: 16,
             }}
             Icon={() => <SvgXml xml={icon} />}
-            title={"view all"}
+            title={isBn ? "সব দেখুন" : "view all"}
           />
         </View>
       )}
-      <TopBox/>
-      {data && data.map((doc, i) => i<6? <WithdrawCart key={i} data={doc} />:<></>)}
+      <TopBox />
+      {data &&
+        data.map((doc, i) =>
+          i < 6 ? <WithdrawCart key={i} data={doc} /> : <></>
+        )}
       {data && data.length == 0 && <NoThing />}
     </View>
   );
 }
 const NoThing = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-      }}>
+      }}
+    >
       <Text
         style={{
           fontSize: 16,
           color: "black",
           textAlign: "center",
-        }}>
-        No Withdraw found
+        }}
+      >
+        {isBn ? "কোনও উত্তোলন নেই" : "No Withdraw found"}
       </Text>
     </View>
   );
@@ -83,16 +99,18 @@ const icon = `<svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns=
 </svg>
 `;
 export const TopBox = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View style={styles.container}>
       <View style={styles.leftBox}>
-        <Text style={styles.text}>Date</Text>
+        <Text style={styles.text}>{isBn ? "তারিখ" : "Date"}</Text>
       </View>
       <View style={styles.middleBox}>
-        <Text style={styles.text}>Amount</Text>
+        <Text style={styles.text}>{isBn ? "টাকা" : "Amount"}</Text>
       </View>
       <View style={styles.rightBox}>
-        <Text style={styles.text}>Status</Text>
+        <Text style={styles.text}>{isBn ? "অবস্থা" : "Status"}</Text>
       </View>
     </View>
   );

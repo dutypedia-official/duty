@@ -18,15 +18,19 @@ import { useIsFocused } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { StatusBar } from "expo-status-bar";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
-export default function VendorAddress({ navigation,route }) {
+export default function VendorAddress({ navigation, route }) {
   const [type, setType] = useState("Only me");
   const [visible, setVisible] = React.useState(false);
   const [layoutHeight, setLayoutHeight] = useState(0);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const address=route?.params?.address;
-  const noEdit=route?.params?.noEdit;
+  const address = route?.params?.address;
+  const noEdit = route?.params?.noEdit;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(address)
 
   const openMenu = () => setVisible(true);
@@ -50,7 +54,8 @@ export default function VendorAddress({ navigation,route }) {
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <Image
           style={{
             width: width - 40,
@@ -63,45 +68,50 @@ export default function VendorAddress({ navigation,route }) {
           style={{
             alignItems: "flex-end",
             marginTop: 36,
-          }}>
-          {!noEdit&&(
+          }}
+        >
+          {!noEdit && (
             <Pressable
-            onPress={() => {
-              navigation.navigate("EditVendorAddress",{address:address});
-            }}>
-            <Text
-              style={{
-                textDecorationLine: "underline",
-                fontSize: 16,
-                
-              }}>
-              Edit
-            </Text>
-          </Pressable>
+              onPress={() => {
+                navigation.navigate("EditVendorAddress", { address: address });
+              }}
+            >
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontSize: 16,
+                }}
+              >
+                Edit
+              </Text>
+            </Pressable>
           )}
           <View
             style={{
               flexDirection: "row",
               width: "100%",
               marginVertical: 4,
-            }}>
+            }}
+          >
             <SvgXml xml={addressIcon} />
             <Text
               style={{
                 fontWeight: "500",
-                
+
                 fontSize: 16,
                 marginLeft: 10,
-                flex:1
-              }}>
-                {address?.address}{address?.address?", ":""}
-                {address?.area}{", "}
-                {address?.city}{", "}
-                {address?.region}
-            
+                flex: 1,
+              }}
+            >
+              {address?.address}
+              {address?.address ? ", " : ""}
+              {address?.area}
+              {", "}
+              {address?.city}
+              {", "}
+              {address?.region}
             </Text>
           </View>
-          
         </View>
         <View style={{ marginBottom: 32 }}>
           <View style={{ flexDirection: "row", marginTop: 36 }}>
@@ -109,37 +119,24 @@ export default function VendorAddress({ navigation,route }) {
             <Text
               style={{
                 fontWeight: "500",
-               
+
                 fontSize: 24,
                 marginLeft: 8,
                 flex: 1,
-              }}>
-              Tips for address
+              }}
+            >
+              {isBn ? "ঠিকানার অ্যাড করার জন্য টিপস" : "Tips for address"}
             </Text>
           </View>
-          <ViewMore
-            view={true}
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={70}
-            width={167}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={[styles.spText, { marginTop: 0 }]}>
-                Set Your Address: As a seller, you may need to provide your
-                address for internal purposes. If you are a company, please
-                provide your business address. If you are an individual without
-                a physical service center, you can provide your current
-                location. Please note that your address will not be visible to
-                buyers, it will only be used for internal purposes. day, please
-                enter your preferred working hours instead. This will help
-                buyers determine whether your services fit their needs.
+            content={
+              <Text style={[styles.spText, { marginTop: 0 }]}>
+                {isBn
+                  ? "আপনার ঠিকানা সেট করুন: একজন বিক্রেতা হিসাবে, আপনাকে ইন্টারনাল কাজের জন্য আপনার ঠিকানা দিতে হবে৷ আপনার যদি একটি কোম্পানি থাকে তাহলে আপনার কোম্পানির ঠিকানা প্রদান করুন৷ আপনি যদি কোনও ফিজিক্যাল সার্ভিস সেন্টার ছাড়াই একজন ব্যক্তি হন তবে আপনি আপনার বর্তমান ঠিকানা দিতে পারেন৷ দয়া করে মনে রাখবেন যে আপনার ঠিকানা ক্রেতাদের দেখানো হবে না, এটি শুধুমাত্র ইন্টারনাল উদ্দেশ্যে ব্যবহার করা হবে৷"
+                  : "Set Your Address: As a seller, you may need to provide your address for internal purposes. If you are a company, please provide your business address. If you are an individual without a physical service center, you can provide your current location. Please note that your address will not be visible to buyers, it will only be used for internal purposes. day, please enter your preferred working hours instead. This will help buyers determine whether your services fit their needs."}
               </Text>
             }
           />

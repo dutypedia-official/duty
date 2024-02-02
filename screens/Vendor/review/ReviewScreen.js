@@ -1,6 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ScrollView, View,Text } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Cart } from "../../../Cart/ReviewCart";
 import { getReviews } from "../../../Class/service";
@@ -10,6 +10,7 @@ import ActivityLoader from "../../../components/ActivityLoader";
 import AllReviewHeader from "../../../components/AllReviewHeader";
 import { setHideBottomBar } from "../../../Reducers/hideBottomBar";
 import customStyle from "../../../assets/stylesheet";
+import useLang from "../../../Hooks/UseLang";
 
 export default function ReviewScreen({ navigation }) {
   const user = useSelector((state) => state.user);
@@ -17,7 +18,9 @@ export default function ReviewScreen({ navigation }) {
   const [overall, setOverAll] = useState();
   const [reviews, setReviews] = useState();
   const isFocused = useIsFocused();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -41,41 +44,49 @@ export default function ReviewScreen({ navigation }) {
   }, [isFocused]);
   return (
     <View style={{ flex: 1 }}>
-      <AllReviewHeader title={`${reviews?reviews.length:"0"} Review`} navigation={navigation} />
-      <ScrollView style={{flex:1}}>
+      <AllReviewHeader
+        title={`${reviews ? reviews.length : "0"} ${isBn ? "রিভিউ" : "Review"}`}
+        navigation={navigation}
+      />
+      <ScrollView style={{ flex: 1 }}>
         <View
           style={{
             marginTop: 8,
             marginHorizontal: 28,
             marginBottom: 32,
-          }}>
+          }}
+        >
           <RatingView
             style={{
               backgroundColor: "#ffffff",
               marginVertical: 8,
             }}
-            title="Communication"
-            rate={overall?.communicationRating?overall?.communicationRating:0}
+            title={isBn ? "বিক্রেতা যোগাযোগ এর মান" : "Communication"}
+            rate={
+              overall?.communicationRating ? overall?.communicationRating : 0
+            }
           />
           <RatingView
             style={{
               backgroundColor: "#ffffff",
               marginVertical: 8,
             }}
-            title="Service as Describe"
-            rate={overall?.describeRating?overall?.describeRating:0}
+            title={isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as Describe"}
+            rate={overall?.describeRating ? overall?.describeRating : 0}
           />
           <RatingView
             style={{
               backgroundColor: "#ffffff",
               marginVertical: 8,
             }}
-            title="Service quality"
-            rate={overall?.qualityRating?overall?.qualityRating:0}
+            title={isBn ? "পরিষেবার গুণমান" : "Service quality"}
+            rate={overall?.qualityRating ? overall?.qualityRating : 0}
           />
           {reviews && reviews.length == 0 && (
             <View style={[customStyle.fullBox]}>
-              <Text style={[customStyle.mediumText,{marginTop:40}]}>No Reviews</Text>
+              <Text style={[customStyle.mediumText, { marginTop: 40 }]}>
+                {isBn ? "কোনও রিভিউ নেই" : "No Reviews"}
+              </Text>
             </View>
           )}
           {!reviews && (
@@ -89,7 +100,7 @@ export default function ReviewScreen({ navigation }) {
                 data={doc}
                 key={i}
                 onReplay={() => {
-                  navigation.navigate("FeedBack",{data:doc});
+                  navigation.navigate("FeedBack", { data: doc });
                 }}
                 service={vendor?.service}
               />

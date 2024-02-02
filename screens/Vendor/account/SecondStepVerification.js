@@ -24,6 +24,7 @@ import { DistrictList } from "../../../Data/district";
 import InputButton from "./InputButton";
 import { SvgXml } from "react-native-svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useLang from "../../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 export default function SecondStepVerification({ navigation, route }) {
@@ -57,12 +58,14 @@ export default function SecondStepVerification({ navigation, route }) {
   const [permanentFullAddress, setPermanentFullAddress] = useState();
   const [presentDistrictError, setPresentDistrictError] = useState();
   const [permanentDistrictError, setPermanentDistrictError] = useState();
-  const [nameError,setNameError]=useState()
-  const [genderError,setGenderError]=useState()
-  const [presentError,setPresentError]=useState()
-  const [permanentError,setPermanentError]=useState()
-  const [dateError,setDateError]=useState()
-  const inset=useSafeAreaInsets()
+  const [nameError, setNameError] = useState();
+  const [genderError, setGenderError] = useState();
+  const [presentError, setPresentError] = useState();
+  const [permanentError, setPermanentError] = useState();
+  const [dateError, setDateError] = useState();
+  const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (index == -1) {
@@ -73,7 +76,7 @@ export default function SecondStepVerification({ navigation, route }) {
   }, [index]);
 
   const bottomSheetRef = useRef(null);
-  const scrollRef=useRef()
+  const scrollRef = useRef();
   // variables
   const snapPoints = useMemo(() => ["25%", "60%"], []);
 
@@ -83,35 +86,48 @@ export default function SecondStepVerification({ navigation, route }) {
     setIndex(index);
   }, []);
   const next = () => {
-    setNameError()
-    setGenderError()
-    setDateError()
-    setPresentError()
-    setPermanentError()
-    if(!name){
-      setNameError("*Name is required")
-      scrollRef?.current.scrollTo({y:0})
-      return
+    setNameError();
+    setGenderError();
+    setDateError();
+    setPresentError();
+    setPermanentError();
+    if (!name) {
+      setNameError(isBn ? "*নাম দেয়া আবশ্যক" : "*Name is required");
+      scrollRef?.current.scrollTo({ y: 0 });
+      return;
     }
-    if(type!="Company"&&!gender){
-      setGenderError("*Gender is required")
-      scrollRef?.current.scrollTo({y:10})
-      return
+    if (type != "Company" && !gender) {
+      setGenderError(isBn ? "*লিঙ্গ নির্বাচন করুন" : "*Gender is required");
+      scrollRef?.current.scrollTo({ y: 10 });
+      return;
     }
-    if(!date){
-      setDateError("*Date is required")
-      scrollRef?.current.scrollTo({y:50})
-      return
+    if (!date) {
+      setDateError(isBn ? "*তারিখ দেয়া আবশ্যক" : "*Date is required");
+      scrollRef?.current.scrollTo({ y: 50 });
+      return;
     }
-    
-    if(type!="Company"&&(!presentDistrict||!presentDivision||!presentUpazila||!presentPostalCode||!presentFullAddress)){
-      setPresentError("*Address is required")
-      scrollRef?.current.scrollTo({y:100})
-      return
+
+    if (
+      type != "Company" &&
+      (!presentDistrict ||
+        !presentDivision ||
+        !presentUpazila ||
+        !presentPostalCode ||
+        !presentFullAddress)
+    ) {
+      setPresentError(isBn ? "*ঠিকানা দেয়া আবশ্যক" : "*Address is required");
+      scrollRef?.current.scrollTo({ y: 100 });
+      return;
     }
-    if(!permanentDistrict || !permanentDivision ||!permanentUpazila||!permanentPostalCode||!permanentFullAddress){
-      setPermanentError("*Address is required")
-      return
+    if (
+      !permanentDistrict ||
+      !permanentDivision ||
+      !permanentUpazila ||
+      !permanentPostalCode ||
+      !permanentFullAddress
+    ) {
+      setPermanentError(isBn ? "*ঠিকানা দেয়া আবশ্যক" : "*Address is required");
+      return;
     }
 
     let data = {
@@ -134,42 +150,55 @@ export default function SecondStepVerification({ navigation, route }) {
         fullAddress: permanentFullAddress,
       },
     };
-    
-    navigation.navigate("ThirdStepVerification", {data:data});
+
+    navigation.navigate("ThirdStepVerification", { data: data });
   };
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1,paddingTop:inset?.top }}
+      style={{ flex: 1, paddingTop: inset?.top }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}>
-     
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+    >
       <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 28,
             marginBottom: 32,
             paddingHorizontal: 28,
-          }}>
-          <Text style={[styles.text, { marginBottom: 12 }]}>
-            {type == "Company" && "Company "}Name
-          </Text>
-          <Input error={nameError}
+          }}
+        >
+          {isBn ? (
+            <Text style={[styles.text, { marginBottom: 12 }]}>
+              {type == "Company" && "কোম্পানি "} নাম
+            </Text>
+          ) : (
+            <Text style={[styles.text, { marginBottom: 12 }]}>
+              {type == "Company" && "Company "} Name
+            </Text>
+          )}
+          <Input
+            error={nameError}
             value={name}
             onChange={setName}
             style={styles.input}
-            placeholder={`Type your ${
-              type == "Company" ? "company" : "full"
-            } name`}
+            placeholder={
+              isBn
+                ? `${type == "Company" ? "কোম্পানির" : "পুরো নাম"}  লিখুন`
+                : `Type your ${type == "Company" ? "company" : "full"} name`
+            }
           />
           {type != "Company" && (
             <>
-              <Text style={[styles.text, { marginTop: 28 }]}>gender</Text>
+              <Text style={[styles.text, { marginTop: 28 }]}>
+                {isBn ? "লিঙ্গ" : "gender"}
+              </Text>
               <View
                 style={{
                   flexDirection: "row",
                   marginTop: 12,
-                }}>
+                }}
+              >
                 <RadioButton
                   dark={true}
                   value={gender == "Male" ? true : false}
@@ -200,12 +229,20 @@ export default function SecondStepVerification({ navigation, route }) {
                   title={"Other"}
                 />
               </View>
-              {genderError&&(<Text style={styles.errorText}>{genderError}</Text>)}
+              {genderError && (
+                <Text style={styles.errorText}>{genderError}</Text>
+              )}
             </>
           )}
-          <Text style={[styles.text, { marginTop: 28 }]}>
-            {type == "Company" ? "Established date" : "Date of birth"}
-          </Text>
+          {isBn ? (
+            <Text style={[styles.text, { marginTop: 28 }]}>
+              {type == "Company" ? "স্থাপিত তারিখ" : "জন্ম তারিখ"}
+            </Text>
+          ) : (
+            <Text style={[styles.text, { marginTop: 28 }]}>
+              {type == "Company" ? "Established date" : "Date of birth"}
+            </Text>
+          )}
           <DatePicker
             value={date}
             onChange={setDate}
@@ -213,18 +250,19 @@ export default function SecondStepVerification({ navigation, route }) {
               marginTop: 12,
             }}
           />
-          {dateError&&(<Text style={styles.errorText}>{dateError}</Text>)}
+          {dateError && <Text style={styles.errorText}>{dateError}</Text>}
           {type != "Company" && (
             <>
               <Text style={[styles.text, { marginTop: 28 }]}>
-                Present address
+                {isBn ? "বর্তমান ঠিকানা" : "Present address"}
               </Text>
               <View
                 style={{
                   flexDirection: "row",
                   marginTop: 16,
                   justifyContent: "space-between",
-                }}>
+                }}
+              >
                 <InputButton
                   onPress={() => {
                     setIndex(1);
@@ -238,14 +276,18 @@ export default function SecondStepVerification({ navigation, route }) {
                     styles.padding,
                   ]}
                   editable={false}
-                  placeholder={"Division"}
+                  placeholder={isBn ? "বিভাগ" : "Division"}
                 />
 
                 <InputButton
                   error={presentDistrictError}
                   onPress={() => {
                     if (!presentDivision) {
-                      setPresentDistrictError("*Division not selected");
+                      setPresentDistrictError(
+                        isBn
+                          ? "বিভাগ নির্বাচন করা হয়নাই"
+                          : "*Division not selected"
+                      );
                       return;
                     }
                     setIndex(1);
@@ -258,7 +300,7 @@ export default function SecondStepVerification({ navigation, route }) {
                     styles.padding,
                   ]}
                   editable={false}
-                  placeholder={"District"}
+                  placeholder={isBn ? "জেলা" : "District"}
                 />
               </View>
               <View
@@ -266,7 +308,8 @@ export default function SecondStepVerification({ navigation, route }) {
                   flexDirection: "row",
                   marginTop: 16,
                   justifyContent: "space-between",
-                }}>
+                }}
+              >
                 <Input
                   value={presentUpazila}
                   style={[
@@ -275,7 +318,7 @@ export default function SecondStepVerification({ navigation, route }) {
                     styles.padding,
                   ]}
                   onChange={setPresentUpazila}
-                  placeholder={"Upazilla/City"}
+                  placeholder={isBn ? "উপজিলা/সিটি" : "Upazilla/City"}
                 />
                 <Input
                   style={[
@@ -286,38 +329,47 @@ export default function SecondStepVerification({ navigation, route }) {
                   keyboardType={"number-pad"}
                   value={presentPostalCode}
                   onChange={setPresentPostalCode}
-                  placeholder={"Postal code"}
+                  placeholder={isBn ? "পোস্টাল কোড" : "Postal code"}
                 />
               </View>
               <TextArea
                 value={presentFullAddress}
                 style={styles.textArea}
                 onChange={setPresentFullAddress}
-                placeholder={"Full address"}
+                placeholder={isBn ? "পুরো ঠিকানা লিখুন" : "Full address"}
               />
-              {presentError&&(<Text style={styles.errorText}>{presentError}</Text>)}
+              {presentError && (
+                <Text style={styles.errorText}>{presentError}</Text>
+              )}
             </>
           )}
 
-          <Text style={[styles.text, { marginTop: 28 }]}>
-            {type == "Company" ? "Company address" : "Permanent Address"}
-          </Text>
+          {isBn ? (
+            <Text style={[styles.text, { marginTop: 28 }]}>
+              {type == "Company" ? "কোম্পানির ঠিকানা" : "স্থায়ী ঠিকানা"}
+            </Text>
+          ) : (
+            <Text style={[styles.text, { marginTop: 28 }]}>
+              {type == "Company" ? "Company address" : "Permanent Address"}
+            </Text>
+          )}
           <View
             style={{
               flexDirection: "row",
               marginTop: 16,
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <InputButton
               onPress={() => {
                 setIndex(1);
                 setSelect("Permanent Division");
-                setPermanentDistrictError()
+                setPermanentDistrictError();
               }}
               value={permanentDivision}
               editable={false}
               style={[styles.input, { width: width / 2 - 48 }, styles.padding]}
-              placeholder={"Division"}
+              placeholder={isBn ? "বিভাগ" : "Division"}
             />
             <InputButton
               onPress={() => {
@@ -332,7 +384,7 @@ export default function SecondStepVerification({ navigation, route }) {
               editable={false}
               value={permanentDistrict}
               style={[styles.input, { width: width / 2 - 48 }, styles.padding]}
-              placeholder={"District"}
+              placeholder={isBn ? "জেলা" : "District"}
             />
           </View>
           <View
@@ -340,18 +392,19 @@ export default function SecondStepVerification({ navigation, route }) {
               flexDirection: "row",
               marginTop: 16,
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <Input
               value={permanentUpazila}
               onChange={setPermanentUpazila}
               style={[styles.input, { width: width / 2 - 48 }, styles.padding]}
-              placeholder={"Upazilla/City"}
+              placeholder={isBn ? "উপজিলা/সিটি" : "Upazilla/City"}
             />
             <Input
               value={permanentPostalCode}
               onChange={setPermanentPostalCode}
               style={[styles.input, { width: width / 2 - 48 }, styles.padding]}
-              placeholder={"Postal code"}
+              placeholder={isBn ? "পোস্টাল কোড" : "Postal code"}
               keyboardType={"number-pad"}
             />
           </View>
@@ -361,13 +414,15 @@ export default function SecondStepVerification({ navigation, route }) {
             style={styles.textArea}
             placeholder={"Full address"}
           />
-          {permanentError&&(<Text style={styles.errorText}>{permanentError}</Text>)}
+          {permanentError && (
+            <Text style={styles.errorText}>{permanentError}</Text>
+          )}
           <IconButton
             onPress={() => {
               next();
             }}
             style={styles.button}
-            title={"Next"}
+            title={isBn ? "পরবর্তী" : "Next"}
           />
         </View>
       </ScrollView>
@@ -387,14 +442,14 @@ export default function SecondStepVerification({ navigation, route }) {
         index={index}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+      >
         {select == "Present Division" && (
           <Screen
             onChange={(e) => {
               setPresentDivision(e);
-              
             }}
-            onClose={()=>bottomSheetRef?.current?.close()}
+            onClose={() => bottomSheetRef?.current?.close()}
             select={presentDivision}
           />
         )}
@@ -405,7 +460,7 @@ export default function SecondStepVerification({ navigation, route }) {
               setPresentDistrict(e);
               //bottomSheetRef?.current?.close();
             }}
-            onClose={()=>bottomSheetRef?.current?.close()}
+            onClose={() => bottomSheetRef?.current?.close()}
             select={presentDistrict}
           />
         )}
@@ -415,7 +470,7 @@ export default function SecondStepVerification({ navigation, route }) {
               setPermanentDivision(e);
               //bottomSheetRef?.current?.close();
             }}
-            onClose={()=>bottomSheetRef?.current?.close()}
+            onClose={() => bottomSheetRef?.current?.close()}
             select={permanentDivision}
           />
         )}
@@ -426,7 +481,7 @@ export default function SecondStepVerification({ navigation, route }) {
               setPermanentDistrict(e);
               //bottomSheetRef?.current?.close();
             }}
-            onClose={()=>bottomSheetRef?.current?.close()}
+            onClose={() => bottomSheetRef?.current?.close()}
             select={permanentDistrict}
           />
         )}
@@ -472,26 +527,26 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomColor: "#F1EFEF",
     borderBottomWidth: 1,
-    flexDirection:"row",
-    justifyContent:"space-between"
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   textSp: {
     color: "#484848",
     fontWeight: "400",
     fontSize: 16,
-    
   },
-  errorText:{
-    color:"red",
-    marginTop:2
-  }
+  errorText: {
+    color: "red",
+    marginTop: 2,
+  },
 });
 const Screen = ({ select, value, onChange, onClose }) => {
   return (
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <Text
         style={{
           marginVertical: 12,
@@ -499,13 +554,15 @@ const Screen = ({ select, value, onChange, onClose }) => {
           fontSize: 20,
           width: "100%",
           textAlign: "center",
-        }}>
+        }}
+      >
         {value ? "District" : "Division"}
       </Text>
       <BottomSheetScrollView
         contentContainerStyle={{
           backgroundColor: "#ffffff",
-        }}>
+        }}
+      >
         {!value &&
           DistrictList.map((doc, i) => (
             <Pressable
@@ -515,9 +572,10 @@ const Screen = ({ select, value, onChange, onClose }) => {
                 }
               }}
               style={styles.box}
-              key={i}>
+              key={i}
+            >
               <Text style={styles.textSp}>{doc.title}</Text>
-              {select==doc.title&&(<SvgXml xml={tick}/>)}
+              {select == doc.title && <SvgXml xml={tick} />}
             </Pressable>
           ))}
         {value &&
@@ -530,26 +588,28 @@ const Screen = ({ select, value, onChange, onClose }) => {
                   }
                 }}
                 style={styles.box}
-                key={i}>
+                key={i}
+              >
                 <Text style={styles.textSp}>{doc}</Text>
-                {select==doc&&(<SvgXml xml={tick}/>)}
+                {select == doc && <SvgXml xml={tick} />}
               </Pressable>
             )
           )}
       </BottomSheetScrollView>
-      <IconButton onPress={onClose}
+      <IconButton
+        onPress={onClose}
         style={{
           marginBottom: 20,
           backgroundColor: "#4ADE80",
           marginHorizontal: 8,
-          color:"white"
+          color: "white",
         }}
         title={"Done"}
       />
     </View>
   );
 };
-const tick=`<svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+const tick = `<svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M13.725 1.22423C14.055 0.885479 14.5413 0.664229 15.0188 0.792979C15.5688 0.907979 15.9525 1.42673 16 1.97298V2.03548C15.9688 2.44423 15.7487 2.80423 15.46 3.08298C12.5825 5.95548 9.7075 8.82923 6.835 11.7042C6.54625 11.993 6.18625 12.263 5.75625 12.2442C5.325 12.2605 4.9625 11.9917 4.67375 11.7017C3.30125 10.3267 1.9275 8.95298 0.55125 7.58298C0.2625 7.30423 0.0375 6.94798 0 6.54048V6.47923C0.03875 5.92298 0.42875 5.39423 0.9875 5.28048C1.46625 5.15173 1.95125 5.37923 2.28125 5.71923C3.44375 6.87298 4.59625 8.03673 5.75875 9.19048C8.41625 6.53798 11.0662 3.87798 13.725 1.22423Z" fill="#4ADE80"/>
 </svg>
-`
+`;

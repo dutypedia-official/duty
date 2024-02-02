@@ -14,6 +14,7 @@ import ActivityLoader from "../../../components/ActivityLoader";
 import IconButton from "../../../components/IconButton";
 import Input from "../../../components/Input";
 import { CheckBox } from "../../Seller/Pricing";
+import useLang from "../../../Hooks/UseLang";
 
 export default function WithdrawSecond({ navigation, route }) {
   const [amount, setAmount] = useState();
@@ -24,22 +25,29 @@ export default function WithdrawSecond({ navigation, route }) {
   const [loader, setLoader] = useState(false);
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const save = async () => {
     setAmountError();
     setCheckError();
     if (!amount) {
-      setAmountError("*Amount is required");
+      setAmountError(isBn ? "*টাকার পরিমাণ আবশ্যক" : "*Amount is required");
       return;
     }
     if (parseInt(amount) > parseInt(data?.amount)) {
       setAmountError(
-        "*The requested amount must be equal to or less than the available amount."
+        isBn
+          ? "*অনুরোধকৃত পরিমাণ অবশ্যই উত্তোলনের পর্যাপ্ত টাকার পরিমাণের সমান বা কম হতে হবে।"
+          : "*The requested amount must be equal to or less than the available amount."
       );
       return;
     }
     if (parseInt(amount) < 500) {
-      setAmountError("*Minimum request amount 500BDT");
+      setAmountError(
+        isBn
+          ? "সর্বনিম্ন ৫০০ টাকা তুলতে পারবেন"
+          : "*Minimum request amount 500BDT"
+      );
       return;
     }
     if (!check) {
@@ -72,18 +80,22 @@ export default function WithdrawSecond({ navigation, route }) {
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <Text style={[styles.gap1, styles.smallText]}>
-          Available for withdraw{" "}
+          {isBn ? "উত্তোলনের জন্য পর্যাপ্ত টাকা আছে" : "Available for withdraw"}{" "}
           <Text
             style={{
               fontWeight: "500",
-            }}>
+            }}
+          >
             {data?.amount}
           </Text>
           ৳
         </Text>
-        <Text style={[styles.gap1]}>Enter amount</Text>
+        <Text style={[styles.gap1]}>
+          {isBn ? "টাকার পরিমাণ লিখুন" : "Enter amount"}
+        </Text>
         <Input
           error={amountError}
           value={amount}
@@ -96,29 +108,49 @@ export default function WithdrawSecond({ navigation, route }) {
           style={{
             flexDirection: "row",
             marginVertical: 20,
-          }}>
+          }}
+        >
           <CheckBox value={check} onChange={() => setCheck((v) => !v)} />
-          <Text style={styles.extraSmall}>
-            I accept all the{" "}
-            <Text
-              onPress={() => {
-                Linking.openURL("https://duty.com.bd");
-              }}
-              style={{
-                textDecorationLine: "underline",
-                color: "#7566FF",
-              }}>
-              terms and conditions
-            </Text>{" "}
-            of the duty.
-          </Text>
+          {isBn ? (
+            <Text style={styles.extraSmall}>
+              আমি ডিউটির{" "}
+              <Text
+                onPress={() => {
+                  Linking.openURL("https://duty.com.bd");
+                }}
+                style={{
+                  textDecorationLine: "underline",
+                  color: "#7566FF",
+                }}
+              >
+                উত্তোলন
+              </Text>{" "}
+              এর নীতির সাথে একমত
+            </Text>
+          ) : (
+            <Text style={styles.extraSmall}>
+              I accept all the{" "}
+              <Text
+                onPress={() => {
+                  Linking.openURL("https://duty.com.bd");
+                }}
+                style={{
+                  textDecorationLine: "underline",
+                  color: "#7566FF",
+                }}
+              >
+                terms and conditions
+              </Text>{" "}
+              of the duty.
+            </Text>
+          )}
         </View>
         <IconButton
           active={amount && check ? true : false}
           onPress={() => {
             save();
           }}
-          title={"Send withdraw request"}
+          title={isBn ? "উত্তোলনের জন্য অনুরোধ পাঠান" : "Send withdraw request"}
         />
       </View>
     </ScrollView>

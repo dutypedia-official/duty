@@ -19,45 +19,48 @@ import { createReport } from "../Class/service";
 import { useSelector } from "react-redux";
 import customStyle from "../assets/stylesheet";
 import ActivityLoader from "../components/ActivityLoader";
+import useLang from "../Hooks/UseLang";
 
-const Support = ({ navigation,route}) => {
+const Support = ({ navigation, route }) => {
   const ref = React.useRef();
   const [Images, setImages] = React.useState([]);
   const [Visible, setVisible] = React.useState(false);
-  const [subject,setSubject]=useState()
-  const [description,setDescription]=useState()
-  const [loader,setLoader]=useState(false)
-  const [subjectError,setSubjectError]=useState()
-  const [descriptionError,setDescriptionError]=useState()
-  const user=useSelector(state=>state.user)
-  const serviceId=route?.params?.serviceId;
-
-  const send=()=>{
-    setSubjectError()
-    if(!subject){
-      setSubjectError("Subject is required")
-      return
+  const [subject, setSubject] = useState();
+  const [description, setDescription] = useState();
+  const [loader, setLoader] = useState(false);
+  const [subjectError, setSubjectError] = useState();
+  const [descriptionError, setDescriptionError] = useState();
+  const user = useSelector((state) => state.user);
+  const serviceId = route?.params?.serviceId;
+  const { language } = useLang();
+  const isBn = language == "Bn";
+  const send = () => {
+    setSubjectError();
+    if (!subject) {
+      setSubjectError(isBn ? "বিষয় দেয়া আবশ্যক" : "Subject is required");
+      return;
     }
-    if(!user){
-      navigation.navigate("LogIn")
-      return
+    if (!user) {
+      navigation.navigate("LogIn");
+      return;
     }
-    if(!serviceId){
-      Alert.alert("Ops!","Invalid seller profile")
-      return
+    if (!serviceId) {
+      Alert.alert("Ops!", "Invalid seller profile");
+      return;
     }
-    setLoader(true)
-    createReport(user.token,subject,description,serviceId)
-    .then(res=>{
-      setLoader(false)
-      setVisible(true);
-      setSubject()
-      setDescription()
-    }).catch(err=>{
-      setLoader(false)
-      Alert.alert(err.response.data.msg)
-    })
-  }
+    setLoader(true);
+    createReport(user.token, subject, description, serviceId)
+      .then((res) => {
+        setLoader(false);
+        setVisible(true);
+        setSubject();
+        setDescription();
+      })
+      .catch((err) => {
+        setLoader(false);
+        Alert.alert(err.response.data.msg);
+      });
+  };
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -95,15 +98,13 @@ const Support = ({ navigation,route}) => {
     let arr = Images.filter((img) => img.uri != data.uri);
     setImages(arr);
   };
-  React.useEffect(() => {
-    
-  },[])
-  if(loader){
-    return(
+  React.useEffect(() => {}, []);
+  if (loader) {
+    return (
       <View style={customStyle.fullBox}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
     <ScrollView>
@@ -120,20 +121,27 @@ const Support = ({ navigation,route}) => {
           style={{
             fontSize: 16,
             color: "#061365",
-            fontFamily:'Poppins-Medium'
+            fontFamily: "Poppins-Medium",
           }}
         >
-          Do not share sensitive information (attachments or text). ex. Your
-          credit card details or personal ID number
+          {isBn
+            ? "অনুগ্রহ করে কোনো ব্যক্তিগত তথ্য শেয়ার করবেন না"
+            : "Please do not share any personal or adult content"}
         </Text>
       </View>
-      <Text style={{ fontSize: 16, 
-      marginLeft: 30,
-       marginTop: 10,
-       fontFamily: 'Poppins-Medium'}}>
-        Subject
+      <Text
+        style={{
+          fontSize: 16,
+          marginLeft: 30,
+          marginTop: 10,
+          fontFamily: "Poppins-Medium",
+        }}
+      >
+        {isBn ? "বিষয়" : "Subject"}
       </Text>
-      <TextInput value={subject} onChangeText={setSubject}
+      <TextInput
+        value={subject}
+        onChangeText={setSubject}
         style={{
           borderWidth: 1,
           borderColor: "#e5e5e0",
@@ -143,21 +151,29 @@ const Support = ({ navigation,route}) => {
           marginVertical: 10,
           backgroundColor: primaryColor,
           padding: 10,
-          fontFamily:'Poppins-Medium'
+          fontFamily: "Poppins-Medium",
         }}
       />
-      {subjectError&&(
-        <Text style={{
-          color:"red",
-          marginVertical:2,
-          marginHorizontal: 30,
-        }}>{subjectError}</Text>
+      {subjectError && (
+        <Text
+          style={{
+            color: "red",
+            marginVertical: 2,
+            marginHorizontal: 30,
+          }}
+        >
+          {subjectError}
+        </Text>
       )}
-      <Text style={{ fontSize: 16,
-       marginLeft: 30,
-        marginTop: 10,
-        fontFamily: 'Poppins-Medium'}}>
-        Description
+      <Text
+        style={{
+          fontSize: 16,
+          marginLeft: 30,
+          marginTop: 10,
+          fontFamily: "Poppins-Medium",
+        }}
+      >
+        {isBn ? "বিবরণ" : "Description"}
       </Text>
       <TouchableOpacity
         onPress={() => {
@@ -174,9 +190,11 @@ const Support = ({ navigation,route}) => {
           height: 160,
         }}
       >
-        <TextInput value={description} onChangeText={setDescription}
+        <TextInput
+          value={description}
+          onChangeText={setDescription}
           ref={ref}
-          style={{ width: "100%", fontSize: 14,fontFamily:'Poppins-Medium' }}
+          style={{ width: "100%", fontSize: 14, fontFamily: "Poppins-Medium" }}
           multiline={true}
           placeholder="By Describing the most important
       facts, we can quickly resolve your request."
@@ -290,7 +308,7 @@ const Support = ({ navigation,route}) => {
       </View> */}
       <IconButton
         onPress={() => {
-          send()
+          send();
         }}
         style={{
           marginHorizontal: 30,
@@ -298,13 +316,14 @@ const Support = ({ navigation,route}) => {
           height: 45,
           backgroundColor: "#03D303",
           color: "white",
-          marginTop:30
+          marginTop: 30,
         }}
-        title={route.name=='Support_1'?"Send Report":"Send Request"}
+        title={route.name == "Support_1" ? "Send Report" : "Send Request"}
       />
-      <IconButton onPress={() =>{
-        navigation.goBack()
-      }}
+      <IconButton
+        onPress={() => {
+          navigation.goBack();
+        }}
         style={{
           marginHorizontal: 30,
           marginVertical: 10,
@@ -348,9 +367,8 @@ const AlertDesign = ({ visible }) => {
           color: "red",
           fontSize: 16,
           margin: 30,
-          
-          fontFamily: 'Poppins-Medium'
-          
+
+          fontFamily: "Poppins-Medium",
         }}
       >
         Your request has been successfully sent our team will contact with you

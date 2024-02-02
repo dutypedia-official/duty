@@ -12,6 +12,7 @@ import { checkOTP, checkResetUser, resetUser, sendOTP } from "../../Class/auth";
 import ActivityLoader from "../../components/ActivityLoader";
 import IconButton from "../../components/IconButton";
 import Input from "../../components/Input";
+import useLang from "../../Hooks/UseLang";
 
 export default function SignUp_2({ navigation, route }) {
   const number = route?.params?.number;
@@ -21,7 +22,9 @@ export default function SignUp_2({ navigation, route }) {
   const [counter, setCounter] = useState(90);
   const [loader, setLoader] = useState(false);
   const [token, setToken] = useState();
-  const reset=route?.params?.reset
+  const reset = route?.params?.reset;
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   useEffect(() => {
     const timer =
@@ -32,8 +35,8 @@ export default function SignUp_2({ navigation, route }) {
     setError();
     setLoader(true);
     setCounter(90);
-    setOtp()
-    if(reset){
+    setOtp();
+    if (reset) {
       try {
         await resetUser(number);
         setLoader(false);
@@ -41,7 +44,7 @@ export default function SignUp_2({ navigation, route }) {
         setLoader(false);
         console.error(err.message);
       }
-      return
+      return;
     }
     try {
       await sendOTP(number);
@@ -54,24 +57,27 @@ export default function SignUp_2({ navigation, route }) {
   const check = () => {
     setError();
     setLoader(true);
-    if(reset){
-      checkResetUser(number,otp)
-      .then((res) => {
-        setLoader(false);
-        //console.log(res.data);
-        navigation.navigate("Reset",{token:res.data?.token,username:res.data?.username})
-        //console.log(res.data);
-      })
-      .catch((err) => {
-        setLoader(false);
-        setError(err.response.data.msg);
-      });
-      return
+    if (reset) {
+      checkResetUser(number, otp)
+        .then((res) => {
+          setLoader(false);
+          //console.log(res.data);
+          navigation.navigate("Reset", {
+            token: res.data?.token,
+            username: res.data?.username,
+          });
+          //console.log(res.data);
+        })
+        .catch((err) => {
+          setLoader(false);
+          setError(err.response.data.msg);
+        });
+      return;
     }
     checkOTP(number, otp)
       .then((res) => {
         setLoader(false);
-        navigation.navigate("SignUp_3",{token:res.data?.token})
+        navigation.navigate("SignUp_3", { token: res.data?.token });
         //console.log(res.data);
       })
       .catch((err) => {
@@ -91,19 +97,22 @@ export default function SignUp_2({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} style={signUpStyle.mt28} xml={vector} />
           <Text style={[signUpStyle.headLine, signUpStyle.mt44]}>
-            Verify your Number
+            {isBn ? "আপনার নাম্বার যাচাই করুন" : "Verify your Number"}
           </Text>
           <Text style={[signUpStyle.mt8, signUpStyle.text]}>
-            We have sent a code to your {number}. Please enter the code to
-            proceed.
+            {isBn
+              ? `আমরা আপনার ${number} এ একটি কোড পাঠিয়েছি৷ এগিয়ে যাওয়ার জন্য দয়া করে কোডটি লিখুন৷`
+              : `We have sent a code to your ${number}. Please enter the code to proceed.`}
           </Text>
           <Input
             keyboardType={"number-pad"}
@@ -112,48 +121,51 @@ export default function SignUp_2({ navigation, route }) {
             style={[signUpStyle.input, signUpStyle.mt18]}
             placeholder={" "}
           />
-          {counter > 0&&!error ? (
+          {counter > 0 && !error ? (
             <Text style={[signUpStyle.text]}>
-              Wait {counter}s before requesting another code
+              {isBn
+                ? `আরেকটি কোড পাঠানোর আগে ${counter} সেকেন্ড অপেক্ষা করুন৷`
+                : `Wait ${counter}s before requesting another code`}
             </Text>
-          ) :!error? (
+          ) : !error ? (
             <Text style={[signUpStyle.text]}>
-              Did not get it yet?{" "}
+              {isBn ? "কোডটি কি এখনো পাননি?" : "Did not get it yet?"}{" "}
               <Text
                 onPress={resendOTP}
                 style={{
                   color: "red",
                   textDecorationLine: "underline",
-                }}>
-                Send again
+                }}
+              >
+                {isBn ? "আবার পাঠান।" : "Send again."}
               </Text>
-              .
             </Text>
-          ):error?(
-            <Text style={[signUpStyle.text,{color:"red"}]}>
-            The code you entered does not match. {" "}
+          ) : error ? (
+            <Text style={[signUpStyle.text, { color: "red" }]}>
+              {isBn
+                ? "আপনি যে কোডটি লিখেছেন সেটি ভুল৷"
+                : "The code you entered does not match."}{" "}
               <Text
                 onPress={resendOTP}
                 style={{
                   color: "black",
                   textDecorationLine: "underline",
-                }}>
-                Send again
+                }}
+              >
+                {isBn ? "আবার পাঠান।" : "Send again."}
               </Text>
-              .
             </Text>
-          ):null}
+          ) : null}
         </View>
       </ScrollView>
       <IconButton
         disabled={otp && counter > 0 ? false : true}
         active={otp && counter > 0 ? true : false}
         onPress={() => {
-          check()
-          
+          check();
         }}
         style={signUpStyle.button}
-        title={"Continue"}
+        title={isBn ? "পরবর্তি" : "Continue"}
       />
     </KeyboardAvoidingView>
   );
@@ -309,12 +321,10 @@ const signUpStyle = StyleSheet.create({
   headLine: {
     fontSize: 24,
     fontWeight: "700",
-    
   },
   text: {
     fontSize: 14,
     fontWeight: "400",
-    
   },
   button: {
     marginHorizontal: 20,

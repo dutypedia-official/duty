@@ -34,7 +34,13 @@ import ActivityLoader from "../components/ActivityLoader";
 import Avatar from "../components/Profile/Avatar";
 import SquireCart from "../components/Profile/SquireCart";
 import FlatCart from "../components/Profile/FlatCart";
-import { allTimeConverter, dateDifference, serverTimeToLocalDate, timeConverter } from "../action";
+import {
+  allTimeConverter,
+  dateDifference,
+  serverTimeToLocalDate,
+  timeConverter,
+} from "../action";
+import useLang from "../Hooks/UseLang";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -48,6 +54,8 @@ export default function UserProfile({ navigation, route }) {
   const ref = React.useRef();
   const vendor = useSelector((state) => state.vendor);
   const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(user)
   const ViewBox = ({ Icon, title, onPress }) => {
     return (
@@ -61,7 +69,8 @@ export default function UserProfile({ navigation, route }) {
           justifyContent: "center",
           alignItems: "center",
           margin: 5,
-        }}>
+        }}
+      >
         <SvgXml xml={Icon} height="22" width="22" />
         {title && (
           <Text
@@ -70,7 +79,8 @@ export default function UserProfile({ navigation, route }) {
               color: textColor,
               fontFamily: "Poppins-Medium",
               marginTop: 8,
-            }}>
+            }}
+          >
             {title}
           </Text>
         )}
@@ -85,12 +95,14 @@ export default function UserProfile({ navigation, route }) {
         paddingTop: inset?.top,
         alignItems: "center",
         backgroundColor: "#F2F2F6",
-      }}>
+      }}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             alignItems: "center",
-          }}>
+          }}
+        >
           <Avatar
             containerStyle={{ marginTop: 12 }}
             edit={false}
@@ -105,23 +117,24 @@ export default function UserProfile({ navigation, route }) {
             alignItems: "center",
             flex: 1,
             paddingHorizontal: 40,
-          }}>
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontSize: 32,
               fontWeight: "500",
               flex: 1,
-            }}>
-            {user
-              ? `${user.user.name}`
-              : `Invalid user`}
+            }}
+          >
+            {user ? `${user.user.name}` : `Invalid user`}
           </Text>
           <Text
             style={{
               fontSize: 16,
               fontWeight: "400",
-            }}>
+            }}
+          >
             {" "}
             {user ? `${user.user.gender.toUpperCase()}` : `Invalid`}
           </Text>
@@ -130,11 +143,14 @@ export default function UserProfile({ navigation, route }) {
               fontSize: 12,
               marginTop: 4,
               fontWeight: "400",
-              
-            }}>
-            Last seen{" "}
-            {dateDifference(user?.user?.lastSeen,new Date())==0?"today":serverTimeToLocalDate(user?.user?.lastSeen)}
-            {" "}
+            }}
+          >
+            {isBn ? "সর্বশেষ দেখেছে" : "Last seen"}{" "}
+            {dateDifference(user?.user?.lastSeen, new Date()) == 0
+              ? isBn
+                ? "আজ"
+                : "today"
+              : serverTimeToLocalDate(user?.user?.lastSeen)}{" "}
             {timeConverter(user?.user?.lastSeen)}
           </Text>
         </View>
@@ -143,14 +159,15 @@ export default function UserProfile({ navigation, route }) {
             flexDirection: "row",
             marginTop: 20,
             justifyContent: "center",
-          }}>
+          }}
+        >
           <SquireCart
             onPress={() => {
               navigation.navigate("MemberOrderList", {
                 userId: user?.user?.id,
               });
             }}
-            title={"Your Order"}
+            title={isBn ? "আপনার অর্ডার" : "Your Order"}
             icon={cart}
           />
           <SquireCart
@@ -163,7 +180,7 @@ export default function UserProfile({ navigation, route }) {
             style={{
               marginHorizontal: 24,
             }}
-            title={"Appointment"}
+            title={isBn ? "অ্যাপয়েন্টমেন্ট" : "Appointment"}
             icon={calender}
           />
           <SquireCart
@@ -179,7 +196,7 @@ export default function UserProfile({ navigation, route }) {
                 username: user.user.username,
               });
             }}
-            title={"Message"}
+            title={isBn ? "ম্যাসেজ" : "Message"}
             icon={love}
           />
         </View>
@@ -190,8 +207,14 @@ export default function UserProfile({ navigation, route }) {
             }}
             style={{ paddingTop: 0 }}
             icon={call}
-            title={"Phone"}
-            value={user?.user?.hidePhone?"Private":user?.user?.phone}
+            title={isBn ? "ফোন" : "Phone"}
+            value={
+              user?.user?.hidePhone
+                ? isBn
+                  ? "প্রাইভেট"
+                  : "Private"
+                : user?.user?.phone
+            }
             type={"Private"}
             disableGo={true}
             Private={user?.user?.hidePhone}
@@ -201,8 +224,18 @@ export default function UserProfile({ navigation, route }) {
               //navigation.navigate("Email");
             }}
             icon={email}
-            title={"Email"}
-            value={user?.user?.hideEmail?"Private":(user?.user?.email?user?.user?.email:"No email added")}
+            title={isBn ? "ইমেইল" : "Email"}
+            value={
+              user?.user?.hideEmail
+                ? isBn
+                  ? "প্রাইভেট"
+                  : "Private"
+                : user?.user?.email
+                ? user?.user?.email
+                : isBn
+                ? "কোন ইমেইল অ্যাড করা হয়নি"
+                : "No email added"
+            }
             type={"Private"}
             disableGo={true}
             Private={user?.user?.hideEmail}
@@ -213,8 +246,26 @@ export default function UserProfile({ navigation, route }) {
               //navigation.navigate("UserLocation");
             }}
             icon={location}
-            title={"Address"}
-            value={user?.user?.hideAddress?"Private":user?.user?.address?`${user?.user?.address.division}, ${user?.user?.address.district}, ${user?.user?.address?.thana}${user?.user?.address.address?", ":""}${user?.user?.address.address?user?.user?.address.address:""}`:"No address added!"}
+            title={isBn ? "ঠিকানা" : "Address"}
+            value={
+              user?.user?.hideAddress
+                ? isBn
+                  ? "প্রাইভেট"
+                  : "Private"
+                : user?.user?.address
+                ? `${user?.user?.address.division}, ${
+                    user?.user?.address.district
+                  }, ${user?.user?.address?.thana}${
+                    user?.user?.address.address ? ", " : ""
+                  }${
+                    user?.user?.address.address
+                      ? user?.user?.address.address
+                      : ""
+                  }`
+                : isBn
+                ? "কোন ঠিকানা অ্যাড করা হয়নি"
+                : "No address added!"
+            }
             type={"Private"}
             disableGo={true}
             style={{ borderBottomWidth: 0, paddingBottom: 0 }}
@@ -227,8 +278,8 @@ export default function UserProfile({ navigation, route }) {
               navigation.navigate("Note", { user: user });
             }}
             icon={noteIcon}
-            title={"Note"}
-            value={"Your remember lists"}
+            title={isBn ? "নোট" : "Note"}
+            value={isBn ? "মনে রাখার জন্য লিস্ট" : "Your remember lists"}
             type={""}
             style={{ borderBottomWidth: 0, paddingTop: 0, paddingBottom: 0 }}
           />
@@ -236,416 +287,18 @@ export default function UserProfile({ navigation, route }) {
       </ScrollView>
     </View>
   );
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          backgroundColor: "#F2F2F6",
-        }}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <View
-            style={{
-              width: 90,
-              height: 90,
-              borderColor: textColor,
-              borderWidth: 1,
-              borderRadius: 45,
-              marginVertical: 10,
-              marginTop: 30,
-              justifyContent: "center",
-              alignItems: "center",
-              overflow: "hidden",
-            }}>
-            {user && user.user.profilePhoto ? (
-              <Image
-                style={{
-                  width: 90,
-                  height: 90,
-                  borderRadius: 45,
-                }}
-                source={{ uri: user.user.profilePhoto }}
-              />
-            ) : (
-              <FontAwesome name="user" size={70} color={assentColor} />
-            )}
-          </View>
-          <Text
-            style={{
-              fontSize: 18,
-              fontFamily: "Poppins-SemiBold",
-              color: textColor,
-            }}>
-            {user
-              ? `${user.user.name}`
-              : `Invalid user`}
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "Poppins-Medium",
-                color: textColor,
-              }}>
-              {" "}
-              {user ? `(${user.user.gender.toUpperCase()})` : `Invalid`}
-            </Text>
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              color: textColor,
-              fontFamily: "Poppins-Medium",
-            }}>
-            Last seen today 12:00 pm
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 20,
-            marginVertical: 20,
-            justifyContent: "center",
-          }}>
-          {/* <ViewBox Icon={callIcon} title="Call" /> */}
-          <ViewBox
-            onPress={() => {
-              let newUser = {
-                userId: user.user.id,
-                user: user.user,
-              };
-              navigation.navigate("ChatScreen", {
-                data: {
-                  users: [newUser],
-                },
-                username: user.user.username,
-              });
-            }}
-            Icon={chatIcon}
-            title="Chat"
-          />
-          <ViewBox
-            onPress={() => {
-              navigation.navigate("MemberAppointment", {
-                user: user.user,
-                offline: false,
-              });
-            }}
-            Icon={calenderIcon}
-            title="Appointment"
-          />
-          <ViewBox Icon={threeDot} title="" />
-        </View>
-        <View
-          style={{
-            backgroundColor: primaryColor,
-            borderRadius: 10,
-            marginHorizontal: 20,
-            paddingLeft: 10,
-            paddingTop: 10,
-            paddingBottom: 10,
-          }}>
-          <View
-            style={{
-              borderBottomWidth: 0.5,
-              borderBottomColor: "#E2E2E2",
-              paddingBottom: 8,
-            }}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "Poppins-Medium",
-                color: textColor,
-              }}>
-              User Name
-            </Text>
-            <Text
-              style={{
-                color: "#6366F1",
-                fontFamily: "Poppins-Medium",
-                fontSize: 16,
-                marginTop: 3,
-              }}>
-              @{user ? `${user.user.username}` : "invalid"}
-            </Text>
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 0.5,
-              borderBottomColor: "#E2E2E2",
-              paddingBottom: 8,
-            }}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "Poppins-Medium",
-                color: textColor,
-                marginTop: 10,
-              }}>
-              Mobile
-            </Text>
-            <Text
-              style={{
-                color: "#6366F1",
-                fontFamily: "Poppins-Medium",
-                fontSize: 16,
-                marginTop: 3,
-              }}>
-              N/A
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                right: 10,
-                top: -30,
-                zIndex: 100,
-              }}>
-              <Text>Edit</Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 0,
-              borderBottomColor: "#E2E2E2",
-              paddingBottom: 5,
-            }}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "Poppins-Medium",
-                color: textColor,
-                marginTop: 10,
-              }}>
-              Email
-            </Text>
-            <Text
-              style={{
-                color: "#6366F1",
-                fontFamily: "Poppins-Medium",
-                fontSize: 16,
-                marginTop: 3,
-              }}>
-              {user ? `${user.user.email}` : "invalid"}
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                right: 10,
-                top: -25,
-                zIndex: 100,
-              }}>
-              <Text>Edit</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View
-          style={{
-            backgroundColor: primaryColor,
-            borderRadius: 10,
-            marginHorizontal: 20,
-            paddingLeft: 10,
-            paddingTop: 10,
-            paddingBottom: 10,
-            marginTop: 20,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Note", { user: user });
-            }}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}>
-            <View
-              style={{
-                backgroundColor: "#03D303",
-                width: 30,
-                height: 30,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 5,
-              }}>
-              <SvgXml xml={noteIcon} height="24" width={"24"} />
-            </View>
-            <View
-              style={{
-                marginLeft: 10,
-                borderColor: "#E2E2E2",
-                borderBottomWidth: 0.5,
-                flex: 1,
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: "Poppins-Medium",
-                  color: textColor,
-                  marginBottom: 6,
-                }}>
-                Note
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 10,
-            }}>
-            <View
-              style={{
-                backgroundColor: "#333333",
-                width: 30,
-                height: 30,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 5,
-              }}>
-              <SvgXml xml={addressIcon} height="24" width={"24"} />
-            </View>
-            <View
-              style={{
-                marginLeft: 10,
-                borderColor: "#E2E2E2",
-                borderBottomWidth: 0.5,
-                flex: 1,
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: "Poppins-Medium",
-                  color: textColor,
-                  marginBottom: 6,
-                }}>
-                Address
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("WebViews", {
-                url: "https://duty.com.bd/about",
-                title: "About Us",
-              });
-            }}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 10,
-            }}>
-            <View
-              style={{
-                backgroundColor: "#333333",
-                width: 30,
-                height: 30,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 5,
-              }}>
-              <SvgXml xml={addressIcon} height="24" width={"24"} />
-            </View>
-            <View
-              style={{
-                marginLeft: 10,
-                borderColor: "#E2E2E2",
-                borderBottomWidth: 0,
-                flex: 1,
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: "Poppins-Medium",
-                  color: textColor,
-                  marginBottom: 6,
-                }}>
-                About Us
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        {/* <View
-          style={{
-            height: 30,
-            backgroundColor: primaryColor,
-            marginVertical: 20,
-          }}
-        >
-          <ScrollView ref={ref} showsHorizontalScrollIndicator={false} horizontal={true}>
-            {initialState.map((doc, i) => (
-              <TouchableOpacity
-                key={i}
-                onPress={() => {
-                  if(SliderRef){
-                    setActive(i);
-                    SliderRef.snapToItem(i,true)
-                  }
-                }}
-                style={{
-                  height: "100%",
-                  width: 90,
-                  paddingVertical:5,
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    marginBottom: 5,
-                  }}
-                >
-                  {doc.title}
-                </Text>
-                {i == Active && (
-                  <View
-                    style={{
-                      backgroundColor: "#AC5DCB",
-                      height: 2,
-                      width: "50%",
-                    }}
-                  ></View>
-                )}
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View> */}
-        <View style={{ height: 20 }} />
-        <View style={{ minHeight: 500 }}>
-          <TabBar userId={user.user.id} />
-        </View>
-      </ScrollView>
-      {vendor && (
-        <FAB
-          color="#FFFFFF"
-          icon="plus"
-          style={{
-            position: "absolute",
-            borderRadius: 30,
-            backgroundColor: "#43B05C",
-            bottom: 20,
-            right: 20,
-            width: 50,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={() => {
-            navigation.navigate("VendorServiceList", { userId: user.user.id });
-          }}
-        />
-      )}
-    </SafeAreaView>
-  );
 }
 export const MemberOrderList = ({ navigation, route }) => {
   const userId = route?.params?.userId;
-  const inset=useSafeAreaInsets()
-  const vendor=useSelector(state=>state.vendor)
+  const inset = useSafeAreaInsets();
+  const vendor = useSelector((state) => state.vendor);
   return (
-    <View style={{
-      paddingTop:inset?.top,
-      flex:1
-    }}>
+    <View
+      style={{
+        paddingTop: inset?.top,
+        flex: 1,
+      }}
+    >
       <TabBar userId={userId} />
       {vendor && (
         <FAB
@@ -782,7 +435,8 @@ export const TabBar = ({ userId, offline }) => {
             backgroundColor: "#AC5DCB",
           },
           tabBarScrollEnabled: true,
-        }}>
+        }}
+      >
         {initialStateOffline.map((doc, i) => (
           <Tab.Screen
             key={i}
@@ -801,7 +455,6 @@ export const TabBar = ({ userId, offline }) => {
         tabBarItemStyle: {
           margin: 0,
           padding: 0,
-          
         },
         tabBarIndicatorStyle: {
           backgroundColor: "#767676",
@@ -809,9 +462,9 @@ export const TabBar = ({ userId, offline }) => {
         },
         tabBarStyle: {
           backgroundColor: "#ffffff",
-          
         },
-      }}>
+      }}
+    >
       {initialState.map((doc, i) => (
         <Tab.Screen
           key={i}
@@ -845,7 +498,7 @@ const Screens = ({ navigation, route }) => {
       value: false,
       type: "ONETIME",
     },
-    
+
     {
       title: "Package",
       value: false,
@@ -858,10 +511,12 @@ const Screens = ({ navigation, route }) => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const key = route.params.key;
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (vendor && user && key) {
-      getOrders(user.token, "vendor", vendor.service.id, key,0)
+      getOrders(user.token, "vendor", vendor.service.id, key, 0)
         .then((res) => {
           let arr = res.data.orders.filter((d) => d.user.id == userId);
           setAllOrders(arr);
@@ -889,7 +544,10 @@ const Screens = ({ navigation, route }) => {
   }
   return (
     <View>
-      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}
+      >
         {Orders &&
           Orders.map((doc, i) => (
             <OrderCart
@@ -901,15 +559,15 @@ const Screens = ({ navigation, route }) => {
               onPress={() => {
                 navigation.navigate("VendorOrderDetails", {
                   data: doc,
-                  orderId:doc?.id,
-                  type:doc?.type
+                  orderId: doc?.id,
+                  type: doc?.type,
                 });
               }}
               data={doc}
               key={i}
             />
           ))}
-    
+
         <View style={{ height: 80 }} />
       </ScrollView>
       {Orders && Orders.length == 0 && (
@@ -918,14 +576,16 @@ const Screens = ({ navigation, route }) => {
             height: 400,
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <SvgXml xml={emptyIcon} width="100" height="100" />
           <Text
             style={{
               marginTop: 30,
               color: textColor,
-            }}>
-            No Order Found
+            }}
+          >
+            {isBn ? "কোনও অর্ডার নেই" : "No Order Found"}
           </Text>
         </View>
       )}
@@ -1058,13 +718,15 @@ const OfflineScreens = ({ navigation, route }) => {
             height: 400,
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <SvgXml xml={emptyIcon} width="100" height="100" />
           <Text
             style={{
               marginTop: 30,
               color: textColor,
-            }}>
+            }}
+          >
             No Order Found
           </Text>
         </View>

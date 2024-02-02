@@ -25,15 +25,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import PageChip from "./components/PageChip";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function NewPricing({ navigation, route }) {
-  const businessForm=useSelector(state=>state.businessForm)
-  const dispatch=useDispatch()
-  const isFocused=useIsFocused()
+  const businessForm = useSelector((state) => state.businessForm);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const [price, setPrice] = useState(businessForm?.price);
   const [layoutHeight, setLayoutHeight] = useState(0);
   const data = route?.params?.data;
-  const [priceError,setPriceError]=useState()
+  const [priceError, setPriceError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -46,26 +50,29 @@ export default function NewPricing({ navigation, route }) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  const toEn = n => n.replace(/[০-৯]/g, d => "০১২৩৪৫৬৭৮৯".indexOf(d));
+  const toEn = (n) => n.replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
-      <PageChip currentPage={9} totalPage={14}/>
+        <PageChip currentPage={9} totalPage={14} />
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -73,86 +80,60 @@ export default function NewPricing({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for set up the price
+              {isBn
+                ? "মূল্য সেট আপ করার জন্য টিপস:"
+                : "Tips for set up the price"}
             </Text>
           </View>
 
-          <ViewMore view={true}
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={77}
-            width={167}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <View
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}>
-                <TextOp
-                  style={{ marginTop: 0, minHeight: 0 }}
-                  number={"1."}
-                  text={"Determine your value and research market rates."}
-                />
-                <TextOp
-                  style={{ marginTop: 5, minHeight: 20 }}
-                  number={"2."}
-                  text={
-                    "Consider your target audience and set a starting fee that is competitive but not undervaluing your services."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5, minHeight: 20 }}
-                  number={"3."}
-                  text={
-                    "Communicate your starting fee clearly to potential buyers, and explain any additional charges based on the scope of the project."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"4."}
-                  text={
-                    "Allow for flexibility in your pricing based on the specific needs of each buyer."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  number={"5."}
-                  text={
-                    "Regularly evaluate and adjust your pricing strategy to remain competitive in the market."
-                  }
-                />
-              </View>
+            content={
+              isBn
+                ? `1. আপনি মার্কেট রিসার্চ করে আপনার মূল্য তালিকা তৈরি করুন৷।
+2. আপনি ক্রেতাদের কথা চিন্তা করে একটি স্টার্টিং ফি সেট করুন যা প্রতিযোগিতামূলক এবং আপনার সার্ভিসগুলোকেও সঠিক মূল্য দিবে৷।
+3. ক্রেতাদের সাথে কথা বলে আপনার স্টার্টিং ফি নির্ধারণ করুন এবং ব্যাখ্যা করুন কোন প্রকল্পের উপর ভিত্তি করে অতিরিক্ত মূল্য নির্ধারণ করা হয়েছে৷।
+4. প্রতিটি ক্রেতার চাহিদার উপর ভিত্তি করে আপনার মূল্য নির্ধারণ করুন৷।              
+5. বাজার প্রতিযোগিতায় টিকে থাকার জন্য আপনার মূল্য নির্ধারণের সিস্টেম প্রতিনিয়ত পরিবর্তন করুন এবং সমান রাখুন৷।
+              `
+                : `1. Determine your value and research market rates.
+2. Consider your target audience and set a starting fee that is competitive but not undervaluing your services.
+3. Communicate your starting fee clearly to potential buyers, and explain any additional charges based on the scope of the project.
+4. Allow for flexibility in your pricing based on the specific needs of each buyer.
+5. Regularly evaluate and adjust your pricing strategy to remain competitive in the market.
+                `
             }
           />
 
           <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Starting price
+            {isBn ? "দাম শুরু" : "Starting price"}
           </Text>
-          <Input error={priceError}
-
+          <Input
+            error={priceError}
             value={price}
-            onChange={e=>{
-             // console.log(toEn(e))
-             if(e?.split("")?.length>8){
-              return
-             }
-              setPrice(toEn(e))
+            onChange={(e) => {
+              // console.log(toEn(e))
+              if (e?.split("")?.length > 8) {
+                return;
+              }
+              setPrice(toEn(e));
             }}
             keyboardType={"number-pad"}
             style={styles.input}
             placeholder={"00.00 ৳"}
           />
-          <Text style={styles.text}>Minimum 50.00 ৳ </Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বনিম্ন ৫০.০০ ৳ থেকে শুরু করতে হবে" : "Minimum 50.00 ৳"}{" "}
+          </Text>
           <IconButton
             disabled={price ? false : true}
             active={price ? true : false}
             onPress={() => {
-              if(parseInt(price)<50){
-                setPriceError("*Minimum 50 taka required")
-                return
+              if (parseInt(price) < 50) {
+                setPriceError("*Minimum 50 taka required");
+                return;
               }
 
               dispatch({ type: "PRICE", playload: price });
@@ -167,14 +148,14 @@ export default function NewPricing({ navigation, route }) {
                   workingTime: data.workingTime,
                   fullTime: data.fullTime,
                   price: price,
-                  serviceCategory:data?.serviceCategory,
-                  skills:data?.skills,
-                  facilities:data?.facilities,
+                  serviceCategory: data?.serviceCategory,
+                  skills: data?.skills,
+                  facilities: data?.facilities,
                 },
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>

@@ -16,7 +16,12 @@ import {
 import BackHeader from "./../../components/BackHeader";
 import DropDown from "./../../components/DropDown";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { primaryColor, textColor, backgroundColor, Color } from "../../assets/colors";
+import {
+  primaryColor,
+  textColor,
+  backgroundColor,
+  Color,
+} from "../../assets/colors";
 import { Entypo } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
 import {
@@ -62,6 +67,8 @@ const Notice = (props) => {
   const [AllData, setAllData] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [Refresh, setRefresh] = React.useState(false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -71,7 +78,7 @@ const Notice = (props) => {
     setRefresh((val) => !val);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  const isFocused=useIsFocused()
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     //console.warn("ok")
@@ -87,7 +94,7 @@ const Notice = (props) => {
         }
       });
     }
-  }, [Refresh,isFocused]);
+  }, [Refresh, isFocused]);
 
   const onChange = (val) => {
     createNotice(user.token, {
@@ -119,16 +126,20 @@ const Notice = (props) => {
   if (!AllData) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-       <ActivityLoader/>
+        <ActivityLoader />
       </View>
     );
   }
   if (Array.isArray(AllData) && AllData.length == 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{
-          fontSize:18
-        }}>No Notice Found!</Text>
+        <Text
+          style={{
+            fontSize: 18,
+          }}
+        >
+          {isBn ? "কোনও নোটিশ নেই" : "No Notice Found!"}
+        </Text>
       </View>
     );
   }
@@ -138,7 +149,6 @@ const Notice = (props) => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      
       scrollEventThrottle={16}
       onScroll={(e) => {
         scrollY.setValue(e.nativeEvent.contentOffset.y);
@@ -169,7 +179,7 @@ const Notice = (props) => {
                 fontFamily: "Poppins-Medium",
               }}
             >
-              Add Notice
+              {isBn ? "নোটিশ তৈরি করুন" : "Add Notice"}
             </Text>
             <View style={{ width: 10 }} />
             <AntDesign name="pluscircleo" size={24} color={backgroundColor} />
@@ -187,12 +197,12 @@ const Notice = (props) => {
             paddingHorizontal: 10,
           }}
         >
-          <Text style={styles.text}>Id/ Record</Text>
-          <Text style={styles.text}>Date</Text>
-          <Text style={styles.text}>Notice</Text>
+          <Text style={styles.text}>{isBn ? "আইডি/রেকর্ড" : "Id/ Record"}</Text>
+          <Text style={styles.text}>{isBn ? "তারিখ" : "Date"}</Text>
+          <Text style={styles.text}>{isBn ? "নোটিশ" : "Notice"}</Text>
           <Text style={styles.text}></Text>
         </View>
-        {Data&&
+        {Data &&
           Data.map((doc, i) => (
             <Cart
               {...props}
@@ -202,8 +212,7 @@ const Notice = (props) => {
               Data={Data}
               i={i}
             />
-          ))
-        }
+          ))}
       </View>
       <Animated.View
         style={[
@@ -293,6 +302,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import IconButton from "../../components/IconButton";
 import ActivityLoader from "../../components/ActivityLoader";
 import { useIsFocused } from "@react-navigation/native";
+import useLang from "../../Hooks/UseLang";
 
 const Cart = ({ value, setData, Data, i, navigation }) => {
   const [Visible, setVisible] = React.useState(false);
@@ -403,10 +413,11 @@ export const AddNotice = (props) => {
   const [Subject, setSubject] = React.useState();
   const [Description, setDescription] = React.useState();
   const [Name, setName] = React.useState();
-  const isDark=useSelector(state=>state.isDark)
-  const colors=new Color(isDark)
-  const backgroundColor=colors.getBackgroundColor()
-
+  const isDark = useSelector((state) => state.isDark);
+  const colors = new Color(isDark);
+  const backgroundColor = colors.getBackgroundColor();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (value) {
       setDay(value.date);
@@ -434,7 +445,7 @@ export const AddNotice = (props) => {
             marginHorizontal: 20,
           }}
         >
-          Select Date
+          {isBn ? "তারিখ নির্বাচন করুন" : "Select Date"}
         </Text>
         <View
           style={{
@@ -478,7 +489,7 @@ export const AddNotice = (props) => {
               marginTop: 25,
             },
           ]}
-          placeholder="Id/ Record Number"
+          placeholder={isBn ? "আইডি/রেকর্ড" : "Id/ Record Number"}
         />
         <Input
           value={Subject}
@@ -486,7 +497,7 @@ export const AddNotice = (props) => {
             setSubject(val);
           }}
           style={styles.input}
-          placeholder="Subject"
+          placeholder={isBn ? "বিষয়" : "Subject"}
         />
         <View style={{ paddingHorizontal: 20 }}>
           <TextArea
@@ -494,7 +505,7 @@ export const AddNotice = (props) => {
             onChange={(val) => {
               setDescription(val);
             }}
-            placeholder="Describe your notice"
+            placeholder={isBn ? "নোটিশ এর বিবরণ লিখুন" : "Describe your notice"}
           />
         </View>
         <View>
@@ -507,7 +518,7 @@ export const AddNotice = (props) => {
               color: textColor,
             }}
           >
-            Your Personal Information
+            {isBn ? "আপনার তথ্য দিন" : "Your Personal Information"}
           </Text>
           <Input
             value={Name}
@@ -519,7 +530,7 @@ export const AddNotice = (props) => {
               borderWidth: 1,
               width: 200,
             }}
-            placeholder="Your Name"
+            placeholder={isBn ? "আপনার নাম" : "Your Name"}
           />
           <View
             style={{
@@ -528,7 +539,7 @@ export const AddNotice = (props) => {
           >
             <SuggestionBox
               value={Position}
-              placeholder="Position"
+              placeholder={isBn ? "আপনার অবস্থান" : "Position"}
               onChange={(val) => {
                 setData(val);
               }}
@@ -581,7 +592,7 @@ export const AddNotice = (props) => {
             height: 45,
             marginTop: 25,
           }}
-          title="Save"
+          title={isBn ? "সংরক্ষণ করুন" : "Save"}
         />
         <MainOptions
           setValue={(val) => {
@@ -712,7 +723,7 @@ export const ViewCart = (props) => {
           justifyContent: "space-between",
           backgroundColor: primaryColor,
           paddingBottom: 10,
-          paddingTop:10
+          paddingTop: 10,
         }}
       >
         <Ionicons

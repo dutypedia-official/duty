@@ -146,7 +146,7 @@ const VendorInstallmentService = (props) => {
   const [scrollDirection, setScrollDirection] = React.useState(false);
   const isFocused = useIsFocused();
   const [subsData, setSubsData] = React.useState();
-  const [InstallmentData,setInstallmentData]=useState()
+  const [InstallmentData, setInstallmentData] = useState();
 
   React.useEffect(() => {
     if (isFocused) {
@@ -176,7 +176,7 @@ const VendorInstallmentService = (props) => {
       setBackgroundImage(data.service.wallPhoto);
       setImage(data.service.profilePhoto);
       setSubsData(data.subsData);
-      setInstallmentData(data.installmentData)
+      setInstallmentData(data.installmentData);
       //console.log(data.subsData)
       let img = [];
       // img.push(newImage1)
@@ -272,11 +272,7 @@ const VendorInstallmentService = (props) => {
     }
   }, [ActiveService + Click + Refresh]);
 
-
-  if (
-    !Data ||
-    !NewDataList
-  ) {
+  if (!Data || !NewDataList) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Loading...</Text>
@@ -548,9 +544,14 @@ const VendorInstallmentService = (props) => {
               #Installment Service
             </Text>
 
-            <TouchableOpacity onPress={()=>{
-              navigation.navigate("EditInstallmentService",{data:data,gigs:data})
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("EditInstallmentService", {
+                  data: data,
+                  gigs: data,
+                });
+              }}
+            >
               <SvgXml xml={editIcon} height="50" width={"50"} />
             </TouchableOpacity>
           </View>
@@ -583,7 +584,6 @@ const VendorInstallmentService = (props) => {
                 text={Description}
               />
             </View>
-            
           </View>
           <View
             style={{
@@ -610,18 +610,22 @@ const VendorInstallmentService = (props) => {
               >
                 Service List
               </Text>
-              <TouchableOpacity onPress={()=>{
-                const gigs=vendor.service.gigs.filter(d=>d.type=="STARTING")
-                navigation.navigate("EditServiceList", {
-                  NewDataList: serverToLocal(
-                    gigs[0].services.options,
-                    gigs[0].services.category
-                  ),
-                  name: "VendorOrderDetails",
-                  data: "INSTALLMENT",
-                  gigs:data
-                });
-              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  const gigs = vendor.service.gigs.filter(
+                    (d) => d.type == "STARTING"
+                  );
+                  navigation.navigate("EditServiceList", {
+                    NewDataList: serverToLocal(
+                      gigs[0].services.options,
+                      gigs[0].services.category
+                    ),
+                    name: "VendorOrderDetails",
+                    data: "INSTALLMENT",
+                    gigs: data,
+                  });
+                }}
+              >
                 <SvgXml xml={editIcon} height="50" width={"50"} />
               </TouchableOpacity>
             </View>
@@ -679,18 +683,18 @@ const VendorInstallmentService = (props) => {
                       title={NewDataList.length > 0 && NewDataList[0].mainTitle}
                     />
                   )}
-                  {Facilities&&Facilities.length!=0&&(
+                  {Facilities && Facilities.length != 0 && (
                     <Button
-                    onPress={() => {
-                      setActiveService("Extra Facilities");
-                    }}
-                    style={
-                      ActiveService == "Extra Facilities"
-                        ? styles.activeButton
-                        : styles.inactiveButton
-                    }
-                    title={"Extra Facilities"}
-                  />
+                      onPress={() => {
+                        setActiveService("Extra Facilities");
+                      }}
+                      style={
+                        ActiveService == "Extra Facilities"
+                          ? styles.activeButton
+                          : styles.inactiveButton
+                      }
+                      title={"Extra Facilities"}
+                    />
                   )}
                 </View>
                 <View
@@ -737,7 +741,6 @@ const VendorInstallmentService = (props) => {
                           fontSize: Platform.OS == "ios" ? 16.5 : 15,
                           fontFamily: "Poppins-SemiBold",
                           color: "#95979D",
-
                         }}
                       >
                         Extra Facilities
@@ -753,7 +756,7 @@ const VendorInstallmentService = (props) => {
                               style={{
                                 fontSize: Platform.OS == "ios" ? 16.5 : 15,
                                 fontFamily: "Poppins-Medium",
-                               
+
                                 color: textColor,
                               }}
                               key={i + 1}
@@ -785,7 +788,8 @@ const VendorInstallmentService = (props) => {
                 fontFamily: "Poppins-Medium",
               }}
             >
-              {InstallmentData?.installmentType} {(Price/InstallmentData.installmentCount).toFixed(2)} ৳
+              {InstallmentData?.installmentType}{" "}
+              {(Price / InstallmentData.installmentCount).toFixed(2)} ৳
             </Text>
             <TouchableOpacity
               onPress={() => {

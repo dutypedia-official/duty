@@ -97,10 +97,12 @@ import ServiceListViewer from "../components/ServiceListViewer";
 import ServiceTab from "./SellerProfile/ServiceTab";
 import ReadMore from "../components/ReadMore";
 import PictureViewer from "./SellerProfile/PictureViewer";
-
+import useLang from "../Hooks/UseLang";
 
 const { width, height } = Dimensions.get("window");
 const VendorProfile = (props) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const window = Dimensions.get("window");
   const newUser = useSelector((state) => state.user);
   const [image, setImage] = React.useState(null);
@@ -408,7 +410,8 @@ const VendorProfile = (props) => {
           // }
           // scrollY.setValue(e.nativeEvent.contentOffset.y);
           setOffset(currentOffset);
-        }}>
+        }}
+      >
         <Canvas style={{ width: width, height: height - (height * 30) / 100 }}>
           <Fill color={"#ffffff"} />
           <Box
@@ -417,7 +420,8 @@ const VendorProfile = (props) => {
               5,
               5
             )}
-            color={"#ffffff"}>
+            color={"#ffffff"}
+          >
             <BoxShadow
               dx={30}
               dy={30}
@@ -466,7 +470,8 @@ const VendorProfile = (props) => {
             justifyContent: "center",
             elevation: 2,
             zIndex: 100,
-          }}></View>
+          }}
+        ></View>
         <View
           style={{
             backgroundColor: "#ffffff",
@@ -474,13 +479,15 @@ const VendorProfile = (props) => {
             borderTopRightRadius: 30,
             marginTop: -30,
             overflow: "hidden",
-          }}>
+          }}
+        >
           <View
             style={{
               alignItems: "flex-end",
               paddingHorizontal: 20,
               paddingTop: 20,
-            }}>
+            }}
+          >
             {/* <TouchableOpacity>
               <SvgXml xml={editIcon} height="50" width={"50"} />
             </TouchableOpacity> */}
@@ -492,7 +499,8 @@ const VendorProfile = (props) => {
               paddingHorizontal: 20,
               paddingVertical: 5,
               backgroundColor: "#ffffff",
-            }}>
+            }}
+          >
             <Text
               numberOfLines={2}
               style={[
@@ -501,7 +509,8 @@ const VendorProfile = (props) => {
                   flex: 3,
                   fontSize: Platform.OS == "ios" ? 22 : 20.5,
                 },
-              ]}>
+              ]}
+            >
               {data
                 ? data.service.serviceCenterName
                 : "Easin Arafat It Consulting Center"}
@@ -510,12 +519,14 @@ const VendorProfile = (props) => {
             <View
               style={{
                 alignItems: "center",
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                }}>
+                }}
+              >
                 <SvgXml
                   xml={newStar}
                   height={Platform.OS == "ios" ? "21" : "19"}
@@ -527,7 +538,8 @@ const VendorProfile = (props) => {
                     fontFamily: "Poppins-Bold",
                     color: "#FFC107",
                     marginLeft: 5,
-                  }}>
+                  }}
+                >
                   {rating.toFixed(1)}
                 </Text>
               </View>
@@ -536,7 +548,8 @@ const VendorProfile = (props) => {
                   fontSize: Platform.OS == "ios" ? 12 : 11,
                   fontFamily: "Poppins-Medium",
                   marginTop: Platform.OS == "ios" ? 5 : 0,
-                }}>
+                }}
+              >
                 Profile Views {Data ? Data.service.views : "00"}
               </Text>
             </View>
@@ -548,7 +561,8 @@ const VendorProfile = (props) => {
               paddingHorizontal: 20,
               marginVertical: 15,
               flex: 1,
-            }}>
+            }}
+          >
             <Avatar
               onPress={() => {
                 setModalVisible((val) => !val);
@@ -563,7 +577,8 @@ const VendorProfile = (props) => {
             <View
               style={{
                 flex: 3,
-              }}>
+              }}
+            >
               <Tooltip
                 enterTouchDelay={10}
                 title={
@@ -572,7 +587,8 @@ const VendorProfile = (props) => {
                         Data.service.providerInfo.name
                       } (${Data.service.providerInfo.gender.toUpperCase()})`
                     : "No"
-                }>
+                }
+              >
                 <View
                   onPress={() => {
                     setNameDropDown((val) => !val);
@@ -585,14 +601,16 @@ const VendorProfile = (props) => {
                     paddingVertical: 10,
                     paddingHorizontal: 10,
                     flex: 1,
-                  }}>
+                  }}
+                >
                   <Text
                     numberOfLines={NameDropDown ? 2 : 1}
                     style={{
                       color: "#6366F1",
                       fontSize: Platform.OS == "ios" ? 16.5 : 15,
                       fontFamily: "Poppins-SemiBold",
-                    }}>
+                    }}
+                  >
                     {Data
                       ? `${
                           Data.service.providerInfo.name
@@ -605,10 +623,12 @@ const VendorProfile = (props) => {
             <View
               style={{
                 flex: 2,
-              }}>
+              }}
+            >
               <Tooltip
                 enterTouchDelay={10}
-                title={Data ? Data.service.providerInfo.position : ""}>
+                title={Data ? Data.service.providerInfo.position : ""}
+              >
                 <View
                   style={{
                     flex: 1,
@@ -618,7 +638,8 @@ const VendorProfile = (props) => {
                     borderRadius: 10,
                     justifyContent: "center",
                     justifySelf: "flex-end",
-                  }}>
+                  }}
+                >
                   <Text
                     numberOfLines={PositionDropDown ? 4 : 1}
                     style={{
@@ -626,7 +647,8 @@ const VendorProfile = (props) => {
                       textAlign: "center",
                       fontSize: Platform.OS == "ios" ? 14 : 13,
                       fontFamily: "Poppins-SemiBold",
-                    }}>
+                    }}
+                  >
                     {Data ? Data.service.providerInfo.position : ""}
                   </Text>
                 </View>
@@ -636,28 +658,32 @@ const VendorProfile = (props) => {
           <View
             style={{
               paddingHorizontal: 20,
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: Platform.OS == "ios" ? 22 : 20.5,
                   fontFamily: "Poppins-SemiBold",
                   marginVertical: 15,
                   marginTop: 2,
-                }}>
-                Specialty In
+                }}
+              >
+                {isBn ? "যে সব বিষয়ে বিশেষত্ব" : "Specialty In"}
               </Text>
               <TouchableOpacity
                 onPress={() => {
                   dispatch({ type: "SET_NEW_DATA", playload: null });
                   navigation.navigate("EditBusinessTitle", { data: Data });
                 }}
-                style={{}}>
+                style={{}}
+              >
                 <SvgXml xml={editIcon} height="50" width={"50"} />
               </TouchableOpacity>
             </View>
@@ -671,7 +697,8 @@ const VendorProfile = (props) => {
                   flexDirection: "row",
                   flexWrap: "wrap",
                   alignItems: "center",
-                }}>
+                }}
+              >
                 {Array.isArray(Specialty) &&
                   Specialty.map((doc, i) => (
                     <SpecialtyComponent
@@ -693,13 +720,15 @@ const VendorProfile = (props) => {
                     }}
                     style={{
                       marginVertical: 5,
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{
                         fontFamily: "Poppins-SemiBold",
                         fontSize: Platform.OS == "ios" ? 16.5 : 15,
                         color: "#86939B",
-                      }}>
+                      }}
+                    >
                       {!More ? "...Show All" : "...Show Less"}
                     </Text>
                   </Pressable>
@@ -711,21 +740,24 @@ const VendorProfile = (props) => {
             style={{
               paddingHorizontal: 20,
               backgroundColor: primaryColor,
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: Platform.OS == "ios" ? 22 : 20.5,
                   fontFamily: "Poppins-SemiBold",
                   marginTop: 15,
                   marginBottom: 10,
-                }}>
-                About
+                }}
+              >
+                {isBn ? "সেবা প্রদানকারীর সম্পর্কে" : "About"}
               </Text>
               {/* <TouchableOpacity style={{}}>
                 <SvgXml xml={editIcon} height="50" width={"50"} />
@@ -753,15 +785,19 @@ const VendorProfile = (props) => {
               paddingHorizontal: 20,
               paddingVertical: 10,
               paddingTop: 5,
-            }}>
+            }}
+          >
             <Text
               style={{
                 color: "#4ADE80",
                 fontSize: Platform.OS == "ios" ? 16.5 : 15,
                 fontFamily: "Poppins-SemiBold",
                 marginBottom: 15,
-              }}>
-              ...Company Calender, Notice & Team
+              }}
+            >
+              {isBn
+                ? "...কোম্পানির ক্যালেন্ডার, ঠিকানা এবং টিম"
+                : "...Company Calender, Notice & Team"}
             </Text>
           </Pressable>
         </View>
@@ -769,7 +805,8 @@ const VendorProfile = (props) => {
         <MotiView
           transition={{ type: "timing" }}
           animate={{ height: calenderHeight }}
-          style={{ overflow: "hidden" }}>
+          style={{ overflow: "hidden" }}
+        >
           <View
             style={{
               backgroundColor: primaryColor,
@@ -779,7 +816,8 @@ const VendorProfile = (props) => {
               if (OpenDetails) {
                 //setCalenderHeight(e.nativeEvent.layout.height);
               }
-            }}>
+            }}
+          >
             <ProfileOption
               onPress={() => {
                 navigation.navigate("Company Calender", {
@@ -788,7 +826,7 @@ const VendorProfile = (props) => {
                 });
               }}
               Icon={() => <SvgXml xml={calenderIcon} height="22" width="22" />}
-              title="Company Calender"
+              title={isBn ? "কোম্পানির ক্যালেন্ডার" : "Company Calender"}
             />
             <ProfileOption
               onPress={() => {
@@ -800,7 +838,7 @@ const VendorProfile = (props) => {
                 marginBottom: 0,
               }}
               Icon={() => <SvgXml xml={noticeIcon} height="22" width="22" />}
-              title="Notice"
+              title={isBn ? "বিজ্ঞপ্তি" : "Notice"}
             />
             <ProfileOption
               onPress={() => {
@@ -814,11 +852,15 @@ const VendorProfile = (props) => {
               Icon={() => (
                 <Ionicons name="location-sharp" size={24} color={"#4ADE80"} />
               )}
-              title="Work Location"
+              title={isBn ? "কর্মক্ষেত্র" : "Work Location"}
             />
             <BarOption
               icon={user}
-              title={`Worker and Team (${Data?.service.worker} member)`}
+              title={
+                isBn
+                  ? `কর্মী এবং টিমের সদস্য (${Data?.service.worker})`
+                  : `Worker and Team (${Data?.service.worker} member)`
+              }
             />
           </View>
         </MotiView>
@@ -868,7 +910,8 @@ const VendorProfile = (props) => {
             height: 50,
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Pressable
             onPress={() => {
               const gigs = vendor.service.gigs.filter(
@@ -881,7 +924,8 @@ const VendorProfile = (props) => {
                 name: "VendorOrderDetails",
                 data: "ONETIME",
               });
-            }}>
+            }}
+          >
             <AntDesign name="plus" size={25} color="white" />
           </Pressable>
         </Animated.View>
@@ -907,7 +951,8 @@ const VendorProfile = (props) => {
             height: 50,
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Pressable
             onPress={() => {
               dispatch({ type: "SET_NEW_DATA", playload: null });
@@ -924,7 +969,8 @@ const VendorProfile = (props) => {
                 name: "VendorOrderDetails",
                 data: "PACKAGE",
               });
-            }}>
+            }}
+          >
             <AntDesign name="plus" size={25} color="white" />
           </Pressable>
         </Animated.View>
@@ -942,14 +988,16 @@ const VendorProfile = (props) => {
             borderRadius: 5,
             zIndex: 250,
           }}
-          layout={FadeIn}>
+          layout={FadeIn}
+        >
           <Pressable
             onPress={async () => {
               //console.log("ok");
               const res = await pickImage();
               setWallPhoto(res.uri);
               uploadProfileImage(res, false);
-            }}>
+            }}
+          >
             <SvgXml xml={cameraIcon} height="20" width={"20"} />
           </Pressable>
         </Animated.View>
@@ -957,7 +1005,8 @@ const VendorProfile = (props) => {
       <Modal
         visible={modalVisible}
         animationType="slide"
-        onRequestClose={() => setModalVisible((val) => !val)}>
+        onRequestClose={() => setModalVisible((val) => !val)}
+      >
         <ImageScreen
           uri={image}
           onClose={setModalVisible}
@@ -975,7 +1024,8 @@ const VendorProfile = (props) => {
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "transparent",
-          }}>
+          }}
+        >
           <ActivityLoader />
         </View>
       </Modal>
@@ -1020,7 +1070,8 @@ const ServiceTabss = ({
             overflow: "hidden",
             height: newNavigation,
           },
-        ]}>
+        ]}
+      >
         <Tab.Navigator
           screenOptions={{
             tabBarStyle: {
@@ -1047,7 +1098,8 @@ const ServiceTabss = ({
             tabBarScrollEnabled: true,
             tabBarPressColor: primaryColor,
             swipeEnabled: false,
-          }}>
+          }}
+        >
           <Tab.Screen
             options={{
               tabBarLabel: ({ focused, color, size }) => (
@@ -1056,7 +1108,8 @@ const ServiceTabss = ({
                     color: focused ? "#4ADE80" : "black",
                     fontFamily: "Poppins-SemiBold",
                     fontSize: Platform.OS == "ios" ? 16.5 : 15,
-                  }}>
+                  }}
+                >
                   {initialState[0].title}
                 </Text>
               ),
@@ -1091,7 +1144,8 @@ const ServiceTabss = ({
                     color: focused ? "#4ADE80" : "black",
                     fontFamily: "Poppins-SemiBold",
                     fontSize: Platform.OS == "ios" ? 18 : 17,
-                  }}>
+                  }}
+                >
                   {initialState[1].title}
                 </Text>
               ),
@@ -1127,7 +1181,8 @@ const ServiceTabss = ({
                     color: focused ? "#4ADE80" : "black",
                     fontFamily: "Poppins-SemiBold",
                     fontSize: Platform.OS == "ios" ? 18 : 17,
-                  }}>
+                  }}
+                >
                   {initialState[2].title}
                 </Text>
               ),
@@ -1162,14 +1217,16 @@ const ServiceTabss = ({
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                  }}>
+                  }}
+                >
                   <Text
                     style={{
                       color: focused ? "#4ADE80" : "black",
                       fontFamily: "Poppins-SemiBold",
                       fontSize: Platform.OS == "ios" ? 18 : 17,
                       marginRight: 10,
-                    }}>
+                    }}
+                  >
                     Settings
                   </Text>
                   <SvgXml
@@ -1226,13 +1283,15 @@ const BarOption = ({ icon, title }) => {
         flexDirection: "row",
         backgroundColor: primaryColor,
         paddingVertical: 5,
-      }}>
+      }}
+    >
       <SvgXml xml={icon} height="22" width="22" />
       <View
         style={{
           flex: 6,
           marginLeft: 10,
-        }}>
+        }}
+      >
         <Text
           numberOfLines={lines}
           style={{
@@ -1240,7 +1299,8 @@ const BarOption = ({ icon, title }) => {
             marginBottom: 5,
             fontSize: Platform.OS == "ios" ? 16.5 : 15,
             color: "#333333",
-          }}>
+          }}
+        >
           {title}
         </Text>
       </View>
@@ -1259,7 +1319,9 @@ const BargainingScreen = ({ navigation, route, params }) => {
   const vendor = useSelector((state) => state.vendor);
   const gigs = vendor.service.gigs.filter((d) => d.type == "STARTING");
   const Facilities = convertServerFacilities(gigs[0]?.facilites);
-  const [modalVisible,setModalVisible]=useState()
+  const [modalVisible, setModalVisible] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View>
       <View style={{ backgroundColor: primaryColor, marginBottom: -1 }}>
@@ -1270,7 +1332,8 @@ const BargainingScreen = ({ navigation, route, params }) => {
             color: textColor,
             paddingHorizontal: 20,
             marginTop: 20,
-          }}>
+          }}
+        >
           {gigs ? gigs[0].title : ""}
         </Text>
 
@@ -1279,7 +1342,8 @@ const BargainingScreen = ({ navigation, route, params }) => {
             marginHorizontal: 20,
             marginVertical: 15,
             marginBottom: 0,
-          }}>
+          }}
+        >
           <ReadMore content={gigs ? gigs[0].description : ""} />
         </View>
         <View
@@ -1289,7 +1353,8 @@ const BargainingScreen = ({ navigation, route, params }) => {
             justifyContent: "flex-end",
             marginVertical: 0,
             marginTop: -15,
-          }}>
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("EditService", {
@@ -1297,7 +1362,8 @@ const BargainingScreen = ({ navigation, route, params }) => {
                 gigs: gigs[0],
               });
             }}
-            style={{}}>
+            style={{}}
+          >
             <SvgXml xml={editIcon} height="50" width={"50"} />
           </TouchableOpacity>
         </View>
@@ -1313,7 +1379,7 @@ const BargainingScreen = ({ navigation, route, params }) => {
           scrollAnimationDuration={500}
           onSnapToItem={(index) => {}}
           renderItem={({ index }) => (
-            <Pressable onPress={()=>setModalVisible(gigs[0].images[index])}>
+            <Pressable onPress={() => setModalVisible(gigs[0].images[index])}>
               <Image
                 style={{
                   width: width,
@@ -1349,22 +1415,41 @@ const BargainingScreen = ({ navigation, route, params }) => {
           justifyContent: "space-between",
           marginHorizontal: 20,
           marginVertical: 15,
-        }}>
-        <Text
-          style={{
-            fontSize: Platform.OS == "ios" ? 17 : 15.5,
-            color: textColor,
+        }}
+      >
+        {isBn ? (
+          <Text
+            style={{
+              fontSize: Platform.OS == "ios" ? 17 : 15.5,
+              color: textColor,
 
-            fontFamily: "Poppins-SemiBold",
-          }}>
-          From {gigs[0].price} ৳
-        </Text>
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            {gigs[0].price} ৳ থেকে শুরু
+          </Text>
+        ) : (
+          <Text
+            style={{
+              fontSize: Platform.OS == "ios" ? 17 : 15.5,
+              color: textColor,
+
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            From {gigs[0].price} ৳
+          </Text>
+        )}
       </View>
 
       <View style={{ height: 30 }} />
-      <Modal animationType="slide" visible={Boolean(modalVisible)} onRequestClose={()=>setModalVisible()}>
-        <PictureViewer url={modalVisible} onClose={()=>setModalVisible()}/>
-       </Modal>
+      <Modal
+        animationType="slide"
+        visible={Boolean(modalVisible)}
+        onRequestClose={() => setModalVisible()}
+      >
+        <PictureViewer url={modalVisible} onClose={() => setModalVisible()} />
+      </Modal>
     </View>
   );
 };
@@ -1401,7 +1486,8 @@ const FixedScreen = ({ navigation, Data, onPress, isFocused }) => {
           flexWrap: "wrap",
           marginHorizontal: 10,
           marginVertical: 20,
-        }}>
+        }}
+      >
         {FixedService.map((doc, i) => (
           <ServiceCart onPress={() => onPress(doc)} key={i} data={doc} />
         ))}
@@ -1416,13 +1502,15 @@ const FixedScreen = ({ navigation, Data, onPress, isFocused }) => {
             justifyContent: "center",
             width: "100%",
           }}
-          entering={FadeIn}>
+          entering={FadeIn}
+        >
           <View
             style={{
               flex: 1,
               justifyContent: "center",
               alignItems: "center",
-            }}>
+            }}
+          >
             <SvgXml
               xml={serviceIcon}
               style={{ marginVertical: 100 }}
@@ -1462,7 +1550,8 @@ const PackageScreen = ({ isFocused, onPress, Data }) => {
           flexDirection: "row",
           flexWrap: "wrap",
           marginVertical: 20,
-        }}>
+        }}
+      >
         {PackageService.map((doc, i) => (
           <ServiceCart
             onPress={() => {
@@ -1485,13 +1574,15 @@ const PackageScreen = ({ isFocused, onPress, Data }) => {
             justifyContent: "center",
             width: "100%",
           }}
-          entering={FadeIn}>
+          entering={FadeIn}
+        >
           <View
             style={{
               flex: 1,
               justifyContent: "center",
               alignItems: "center",
-            }}>
+            }}
+          >
             <SvgXml
               xml={serviceIcon}
               style={{ marginVertical: 100 }}
@@ -1541,13 +1632,15 @@ const SpecialtyComponent = ({ doc, i, arr, seeMore, more }) => {
         paddingVertical: 5,
         marginRight: 5,
         marginVertical: 5,
-      }}>
+      }}
+    >
       <Text
         style={{
           color: "white",
           fontFamily: "Poppins-Medium",
           fontSize: Platform.OS == "ios" ? 14.5 : 12,
-        }}>
+        }}
+      >
         {doc}
       </Text>
     </View>
@@ -1628,7 +1721,8 @@ export const ServiceTable = ({
         borderColor: "#e5e5e5",
         minHeight: 10,
       }}
-      key={i}>
+      key={i}
+    >
       {item && contentHeight > 30 && (
         <Text
           numberOfLines={1}
@@ -1637,7 +1731,8 @@ export const ServiceTable = ({
             fontSize: Platform.OS == "ios" ? 16.5 : 15,
             margin: 0,
             color: "#535353",
-          }}>
+          }}
+        >
           {item}
         </Text>
       )}
@@ -1652,7 +1747,8 @@ export const ServiceTable = ({
                     fontFamily: "Poppins-Medium",
                     fontSize: Platform.OS == "ios" ? 16.5 : 15,
                     color: "#95979D",
-                  }}>
+                  }}
+                >
                   {doc}
                 </Text>
                 <Rows
@@ -1673,7 +1769,8 @@ export const ServiceTable = ({
               fontFamily: "Poppins-Medium",
               fontSize: Platform.OS == "ios" ? 16.5 : 15,
               color: "#95979D",
-            }}>
+            }}
+          >
             {name}
           </Text>
           <Rows
@@ -1733,7 +1830,8 @@ export const Rows = ({ title, item, name, NewDataList, height, index }) => {
         color: textColor,
 
         maxHeight: 160,
-      }}>
+      }}
+    >
       {text}
     </Text>
   );
@@ -1775,11 +1873,13 @@ export const TabBar = ({
         flexDirection: "row",
         borderBottomColor: "#E9E6E6",
         borderBottomWidth: 0.5,
-      }}>
+      }}
+    >
       <ScrollView
         ref={ref}
         showsHorizontalScrollIndicator={false}
-        horizontal={true}>
+        horizontal={true}
+      >
         {packages.map((doc, index) => {
           const isFocused = state.index === index;
 
@@ -1807,12 +1907,14 @@ export const TabBar = ({
                   marginLeft: 5,
                   height: 40,
                   justifyContent: "center",
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 16,
                     fontFamily: "Poppins-SemiBold",
-                  }}>
+                  }}
+                >
                   {Title}
 
                   {/* {packages[state.index].name+" "+packages[state.index].price+"৳"} */}
@@ -1878,7 +1980,8 @@ export const TabScreen = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       {data.features.map((doc, i) => (
         <View
           style={{
@@ -1889,7 +1992,8 @@ export const TabScreen = ({ navigation, route }) => {
             borderBottomColor: "#F1F1F1",
             borderBottomWidth: data.features.length - 1 == i ? 0 : 1,
           }}
-          key={i}>
+          key={i}
+        >
           {doc.isAvailable ? (
             <SvgXml xml={right} height="30" width={"30"} />
           ) : (
@@ -1906,7 +2010,8 @@ export const TabScreen = ({ navigation, route }) => {
             style={{
               fontSize: 14,
               color: "#666666",
-            }}>
+            }}
+          >
             {doc.title}
           </Text>
         </View>
@@ -1967,7 +2072,8 @@ const ImageScreen = ({ onClose, onChange, uri }) => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "black",
-      }}>
+      }}
+    >
       {click && (
         <Animated.View
           style={{
@@ -1976,7 +2082,8 @@ const ImageScreen = ({ onClose, onChange, uri }) => {
             top: 50,
             right: 20,
           }}
-          layout={FadeIn}>
+          layout={FadeIn}
+        >
           <Pressable onPress={pickImage}>
             <SvgXml xml={cameraIcon} height="20" width={"20"} />
           </Pressable>
@@ -1993,7 +2100,8 @@ const ImageScreen = ({ onClose, onChange, uri }) => {
         }}
         onPress={() => {
           setClick((val) => !val);
-        }}>
+        }}
+      >
         <Image
           style={{
             width: "100%",

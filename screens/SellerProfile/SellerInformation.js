@@ -18,9 +18,10 @@ import { MotiView } from "moti";
 import ProfileOption from "../../components/ProfileOption";
 import { calenderIcon, noticeIcon, user } from "../../assets/icon";
 import ReadMore from "../../components/ReadMore";
-const {width,height}=Dimensions.get('window')
+import useLang from "../../Hooks/UseLang";
+const { width, height } = Dimensions.get("window");
 
-export default function SellerInformation({ Data,newUser,navigation }) {
+export default function SellerInformation({ Data, newUser, navigation }) {
   const [rating, setRating] = useState(0);
   const [NameDropDown, setNameDropDown] = React.useState(false);
   const childRef = React.useRef();
@@ -34,7 +35,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
   const [More, setMore] = React.useState(false);
   const [OpenDetails, setOpenDetails] = React.useState(false);
   const [calenderHeight, setCalenderHeight] = React.useState(0);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
     Data && setSpecialty(Data?.service?.keywords);
   }, [Data]);
@@ -55,7 +57,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
           borderTopRightRadius: 30,
           marginTop: -30,
           overflow: "hidden",
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -63,7 +66,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
             paddingHorizontal: 20,
             paddingVertical: 5,
             backgroundColor: primaryColor,
-          }}>
+          }}
+        >
           <Text
             numberOfLines={2}
             style={[
@@ -73,7 +77,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                 flex: 3,
                 fontSize: Platform.OS == "ios" ? 22 : 20.5,
               },
-            ]}>
+            ]}
+          >
             {Data
               ? Data.service.serviceCenterName
               : "Easin Arafat It Consulting Center"}
@@ -83,12 +88,14 @@ export default function SellerInformation({ Data,newUser,navigation }) {
             style={{
               paddingTop: 20,
               alignItems: "center",
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <SvgXml
                 xml={newStar}
                 height={Platform.OS == "ios" ? "21" : "19"}
@@ -100,7 +107,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                   fontFamily: "Poppins-Bold",
                   color: "#FFC107",
                   marginLeft: 5,
-                }}>
+                }}
+              >
                 {rating.toFixed(1)}
               </Text>
             </View>
@@ -109,8 +117,10 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                 fontSize: Platform.OS == "ios" ? 12 : 11,
                 fontFamily: "Poppins-Medium",
                 marginTop: Platform.OS == "ios" ? 5 : 0,
-              }}>
-              Profile Views {Data ? Data.service.views : "00"}
+              }}
+            >
+              {isBn ? "প্রোফাইল দেখেছে" : "Profile Views"}{" "}
+              {Data ? Data.service.views : "00"}
             </Text>
           </View>
         </View>
@@ -121,7 +131,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
             paddingHorizontal: 20,
             marginVertical: 15,
             flex: 1,
-          }}>
+          }}
+        >
           <Avatar
             style={{
               width: 40,
@@ -133,7 +144,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
           <View
             style={{
               flex: 3,
-            }}>
+            }}
+          >
             <Tooltip
               enterTouchDelay={10}
               title={
@@ -142,7 +154,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                       Data.service.providerInfo.name
                     } (${Data.service.providerInfo.gender.toUpperCase()})`
                   : "No"
-              }>
+              }
+            >
               <View
                 onPress={() => {
                   setNameDropDown((val) => !val);
@@ -155,14 +168,16 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                   paddingVertical: 10,
                   paddingHorizontal: 10,
                   flex: 1,
-                }}>
+                }}
+              >
                 <Text
                   numberOfLines={NameDropDown ? 2 : 1}
                   style={{
                     color: "#6366F1",
                     fontSize: Platform.OS == "ios" ? 16.5 : 15,
                     fontFamily: "Poppins-SemiBold",
-                  }}>
+                  }}
+                >
                   {Data
                     ? `${
                         Data.service.providerInfo.name
@@ -175,10 +190,12 @@ export default function SellerInformation({ Data,newUser,navigation }) {
           <View
             style={{
               flex: 2,
-            }}>
+            }}
+          >
             <Tooltip
               enterTouchDelay={10}
-              title={Data ? Data.service.providerInfo.position : ""}>
+              title={Data ? Data.service.providerInfo.position : ""}
+            >
               <View
                 style={{
                   flex: 1,
@@ -188,7 +205,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                   borderRadius: 10,
                   justifyContent: "center",
                   justifySelf: "flex-end",
-                }}>
+                }}
+              >
                 <Text
                   numberOfLines={PositionDropDown ? 4 : 1}
                   style={{
@@ -196,7 +214,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                     textAlign: "center",
                     fontSize: Platform.OS == "ios" ? 14 : 13,
                     fontFamily: "Poppins-SemiBold",
-                  }}>
+                  }}
+                >
                   {Data ? Data.service.providerInfo.position : ""}
                 </Text>
               </View>
@@ -206,15 +225,17 @@ export default function SellerInformation({ Data,newUser,navigation }) {
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: Platform.OS == "ios" ? 22 : 20.5,
               fontFamily: "Poppins-SemiBold",
               marginVertical: 15,
               marginTop: 2,
-            }}>
-            Specialty In
+            }}
+          >
+            {isBn ? "যে সব বিষয়ে বিশেষত্ব" : "Specialty In"}
           </Text>
           <Animation.View style={{ height: specialtyAnimation }}>
             <View
@@ -226,7 +247,8 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                 flexDirection: "row",
                 flexWrap: "wrap",
                 alignItems: "center",
-              }}>
+              }}
+            >
               {Array.isArray(Specialty) &&
                 Specialty.map((doc, i) => (
                   <SpecialtyComponent
@@ -248,14 +270,22 @@ export default function SellerInformation({ Data,newUser,navigation }) {
                   }}
                   style={{
                     marginVertical: 5,
-                  }}>
+                  }}
+                >
                   <Text
                     style={{
                       fontFamily: "Poppins-SemiBold",
                       fontSize: Platform.OS == "ios" ? 16.5 : 15,
                       color: "#86939B",
-                    }}>
-                    {!More ? "...Show All" : "...Show Less"}
+                    }}
+                  >
+                    {!More
+                      ? isBn
+                        ? "...সব দেখুন"
+                        : "...Show All"
+                      : isBn
+                      ? "...অল্প দেখুন"
+                      : "...Show Less"}
                   </Text>
                 </Pressable>
               )}
@@ -266,23 +296,25 @@ export default function SellerInformation({ Data,newUser,navigation }) {
           style={{
             paddingHorizontal: 20,
             backgroundColor: primaryColor,
-            marginBottom:10
-          }}>
+            marginBottom: 10,
+          }}
+        >
           <Text
             style={{
               fontSize: Platform.OS == "ios" ? 22 : 20.5,
               fontFamily: "Poppins-SemiBold",
               marginTop: 15,
               marginBottom: 10,
-            }}>
-            About
+            }}
+          >
+            {isBn ? "সেবা প্রদানকারীর সম্পর্কে" : "About"}
           </Text>
 
           {/* <AnimatedHeight
             id={Data.service.id == "W8kHHhBuKG4jkXPNJ32Mw" ? true : false}
             text={Data?.service?.about}
           /> */}
-          <ReadMore content={Data?.service?.about}/>
+          <ReadMore content={Data?.service?.about} />
         </View>
         <Pressable
           onPress={() => {
@@ -297,62 +329,72 @@ export default function SellerInformation({ Data,newUser,navigation }) {
             paddingHorizontal: 20,
             paddingVertical: 10,
             paddingTop: 5,
-          }}>
+          }}
+        >
           <Text
             style={{
               color: "#4ADE80",
               fontSize: Platform.OS == "ios" ? 16.5 : 15,
               fontFamily: "Poppins-SemiBold",
               marginBottom: 15,
-            }}>
-            ...Company Calender, Notice & Team
+            }}
+          >
+            {isBn
+              ? "...কোম্পানির ক্যালেন্ডার, নোটিশ এবং টিম"
+              : "...Company Calender, Notice & Team"}
           </Text>
         </Pressable>
       </View>
       <MotiView
-          transition={{ type: "timing" }}
-          animate={{ height: calenderHeight }}
-          style={{ overflow: "hidden" }}>
-          <View
-            style={{
-              backgroundColor: primaryColor,
-              marginTop: -10,
+        transition={{ type: "timing" }}
+        animate={{ height: calenderHeight }}
+        style={{ overflow: "hidden" }}
+      >
+        <View
+          style={{
+            backgroundColor: primaryColor,
+            marginTop: -10,
+          }}
+          onLayout={(e) => {
+            if (OpenDetails) {
+              //setCalenderHeight(e.nativeEvent.layout.height);
+            }
+          }}
+        >
+          <ProfileOption
+            onPress={() => {
+              navigation.navigate("Company Calender", {
+                workingTime: Data?.service?.workingTime,
+                t47: Data?.service?.t47,
+              });
             }}
-            onLayout={(e) => {
-              if (OpenDetails) {
-                //setCalenderHeight(e.nativeEvent.layout.height);
-              }
-            }}>
-            <ProfileOption
-              onPress={() => {
-                navigation.navigate("Company Calender", {
-                  workingTime: Data?.service?.workingTime,
-                  t47: Data?.service?.t47,
-                });
-              }}
-              Icon={() => <SvgXml xml={calenderIcon} height="22" width="22" />}
-              title="Company Calender"
-            />
-            <ProfileOption
-              onPress={() => {
-                navigation.navigate("UserNotice", {
-                  serviceId: Data.service.id,
-                });
-              }}
-              style={{
-                marginBottom: 0,
-              }}
-              Icon={() => <SvgXml xml={noticeIcon} height="22" width="22" />}
-              title="Notice"
-            />
-            <BarOption
-              icon={user}
-              title={`Worker and Team (${Data?.service.worker} member)`}
-            />
-          </View>
-        </MotiView>
+            Icon={() => <SvgXml xml={calenderIcon} height="22" width="22" />}
+            title={isBn ? "কোম্পানির ক্যালেন্ডার" : "Company Calender"}
+          />
+          <ProfileOption
+            onPress={() => {
+              navigation.navigate("UserNotice", {
+                serviceId: Data.service.id,
+              });
+            }}
+            style={{
+              marginBottom: 0,
+            }}
+            Icon={() => <SvgXml xml={noticeIcon} height="22" width="22" />}
+            title={isBn ? "নোটিশ" : "Notice"}
+          />
+          <BarOption
+            icon={user}
+            title={
+              isBn
+                ? `কর্মচারী এবং টিম (${Data?.service.worker})`
+                : `Worker and Team (${Data?.service.worker} member)`
+            }
+          />
+        </View>
+      </MotiView>
 
-        <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
+      <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
     </>
   );
 }
@@ -395,53 +437,58 @@ const SpecialtyComponent = ({ doc, i, arr, seeMore, more }) => {
         paddingVertical: 5,
         marginRight: 5,
         marginVertical: 5,
-      }}>
+      }}
+    >
       <Text
         style={{
           color: "white",
           fontWeight: "500",
           fontSize: Platform.OS == "ios" ? 14.5 : 12,
-        }}>
+        }}
+      >
         {doc}
       </Text>
     </View>
   );
 };
 const BarOption = ({ icon, title }) => {
-    const [lines, setLines] = React.useState(1);
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setLines((d) => {
-            if (d === 1) {
-              return 10;
-            }
-            return 1;
-          });
-        }}
+  const [lines, setLines] = React.useState(1);
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        setLines((d) => {
+          if (d === 1) {
+            return 10;
+          }
+          return 1;
+        });
+      }}
+      style={{
+        paddingHorizontal: 20,
+        flexDirection: "row",
+        backgroundColor: primaryColor,
+        paddingVertical: 5,
+      }}
+    >
+      <SvgXml xml={icon} height="22" width="22" />
+      <View
         style={{
-          paddingHorizontal: 20,
-          flexDirection: "row",
-          backgroundColor: primaryColor,
-          paddingVertical: 5,
-        }}>
-        <SvgXml xml={icon} height="22" width="22" />
-        <View
+          flex: 6,
+          marginLeft: 10,
+        }}
+      >
+        <Text
+          numberOfLines={lines}
           style={{
-            flex: 6,
-            marginLeft: 10,
-          }}>
-          <Text
-            numberOfLines={lines}
-            style={{
-              fontFamily: "Poppins-SemiBold",
-              marginBottom: 5,
-              fontSize: Platform.OS == "ios" ? 16.5 : 15,
-              color: "#333333",
-            }}>
-            {title}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+            fontFamily: "Poppins-SemiBold",
+            marginBottom: 5,
+            fontSize: Platform.OS == "ios" ? 16.5 : 15,
+            color: "#333333",
+          }}
+        >
+          {title}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};

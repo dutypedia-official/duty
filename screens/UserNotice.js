@@ -23,6 +23,7 @@ import OutsideView from "react-native-detect-press-outside";
 import IconButton from "../components/IconButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
+import useLang from "../Hooks/UseLang";
 
 export default function UserNotice({ navigation, route }) {
   const serviceId =
@@ -45,6 +46,8 @@ export default function UserNotice({ navigation, route }) {
   const [Data, setData] = React.useState([]);
   const [Search, setSearch] = React.useState();
   const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (vendor || serviceId) {
@@ -101,155 +104,166 @@ export default function UserNotice({ navigation, route }) {
     <SafeAreaView
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <View
+        style={{
+          flexDirection: "row",
+          paddingLeft: 20,
+          paddingVertical: 10,
+          justifyContent: "space-between",
+          shadowOffset: { height: 1, width: 1 },
+          shadowRadius: 2,
+          elevation: 1,
+          shadowOpacity: 0.01,
+          shadowColor: "black",
+          backgroundColor: primaryColor,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={{ flexDirection: "row" }}
+        >
+          <AntDesign name="left" size={22} color={"#C2D5F6"} />
+          <Text
+            style={{
+              color: "#C2D5F6",
+              fontSize: 16,
+              marginLeft: 10,
+            }}
+          >
+            {isBn ? "নোটিশ" : "Notice"}
+          </Text>
+        </TouchableOpacity>
+        <View
           style={{
             flexDirection: "row",
-            paddingLeft: 20,
-            paddingVertical: 10,
             justifyContent: "space-between",
-            shadowOffset: { height: 1, width: 1 },
-            shadowRadius: 2,
-            elevation: 1,
-            shadowOpacity: 0.01,
-            shadowColor: "black",
-            backgroundColor: primaryColor,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{ flexDirection: "row" }}>
-            <AntDesign name="left" size={22} color={"#C2D5F6"} />
-            <Text
-              style={{
-                color: "#C2D5F6",
-                fontSize: 16,
-                marginLeft: 10,
-              }}>
-              Notice
-            </Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}>
-            {SearchOpen && (
-              <Animated.View ref={childRef} entering={SlideInRight}>
-                <TextInput
-                  autoFocus={true}
-                  onBlur={() => {
-                    setSearchOpen(false);
-                  }}
-                  value={Search}
-                  onChangeText={(e) => setSearch(e)}
-                  ref={(ref) => setRef(ref)}
-                  style={{
-                    width: width / 2 - 20,
-                    borderColor: "#C2D5F6",
-                    borderBottomWidth: 1,
-                    height: 25,
-                  }}
-                  placeholder="Search"
-                />
-              </Animated.View>
-            )}
-
-            <View style={{ backgroundColor: primaryColor, paddingRight: 20 }}>
-              <AntDesign
-                onPress={() => {
-                  setSearchOpen((val) => !val);
+          }}
+        >
+          {SearchOpen && (
+            <Animated.View ref={childRef} entering={SlideInRight}>
+              <TextInput
+                autoFocus={true}
+                onBlur={() => {
+                  setSearchOpen(false);
                 }}
+                value={Search}
+                onChangeText={(e) => setSearch(e)}
+                ref={(ref) => setRef(ref)}
                 style={{
-                  marginLeft: 10,
+                  width: width / 2 - 20,
+                  borderColor: "#C2D5F6",
+                  borderBottomWidth: 1,
+                  height: 25,
                 }}
-                name="search1"
-                size={24}
-                color={"#C2D5F6"}
+                placeholder={isBn ? "খুঁজুন" : "Search"}
               />
-            </View>
+            </Animated.View>
+          )}
+
+          <View style={{ backgroundColor: primaryColor, paddingRight: 20 }}>
+            <AntDesign
+              onPress={() => {
+                setSearchOpen((val) => !val);
+              }}
+              style={{
+                marginLeft: 10,
+              }}
+              name="search1"
+              size={24}
+              color={"#C2D5F6"}
+            />
           </View>
         </View>
-        <ScrollView scrollEventThrottle={16}
-        onScroll={()=>{
+      </View>
+      <ScrollView
+        scrollEventThrottle={16}
+        onScroll={() => {
           setSearchOpen(false);
         }}
-         showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            paddingHorizontal: 5,
+          }}
+        >
+          <SvgXml
+            style={{ marginLeft: "5%", marginBottom: 20 }}
+            xml={noticeVector}
+            height="250"
+            width={"90%"}
+          />
           <View
             style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              paddingHorizontal: 5,
-            }}>
-            <SvgXml
-              style={{ marginLeft: "5%", marginBottom: 20 }}
-              xml={noticeVector}
-              height="250"
-              width={"90%"}
-            />
+              width: "100%",
+              alignItems: "center",
+              marginTop: "10%",
+            }}
+          >
+            {Loader && <ActivityLoader />}
+          </View>
+          {Data &&
+            Data.map((doc, i) => (
+              <NoticeCart
+                setData={setReload}
+                navigation={navigation}
+                key={i}
+                data={doc}
+              />
+            ))}
+          {Data && Data.length == 0 && !Loader && (
             <View
               style={{
-                width: "100%",
+                justifyContent: "center",
                 alignItems: "center",
-                marginTop: "10%",
-              }}>
-              {Loader && <ActivityLoader />}
-            </View>
-            {Data &&
-              Data.map((doc, i) => (
-                <NoticeCart
-                  setData={setReload}
-                  navigation={navigation}
-                  key={i}
-                  data={doc}
-                />
-              ))}
-            {Data && Data.length == 0 && !Loader && (
-              <View
+                width: "100%",
+              }}
+            >
+              <Text
                 style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                }}>
-                <Text
-                  style={{
-                    color: textColor,
-                    fontSize: 18,
-                    fontFamily: "Poppins-Medium",
-                    marginTop: "30%",
-                    textAlign: "center",
-                  }}>
-                  No Notice Found
-                </Text>
-              </View>
-            )}
-          </View>
-          <View style={{ height: 20 }} />
-        </ScrollView>
-        {vendor && (
-          <FAB
-            color="#FFFFFF"
-            icon="plus"
-            style={{
-              position: "absolute",
-              borderRadius: 30,
-              backgroundColor: "#43B05C",
-              bottom: 20,
-              right: 20,
-              width: 50,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={() => {
-              navigation.navigate("AddNotice", {
-                onChange: onChange,
-                value: null,
-              });
-            }}
-          />
-        )}
+                  color: textColor,
+                  fontSize: 18,
+                  fontFamily: "Poppins-Medium",
+                  marginTop: "30%",
+                  textAlign: "center",
+                }}
+              >
+                {isBn ? "কোনও নোটিশ নেই" : "No Notice Found"}
+              </Text>
+            </View>
+          )}
+        </View>
+        <View style={{ height: 20 }} />
+      </ScrollView>
+      {vendor && (
+        <FAB
+          color="#FFFFFF"
+          icon="plus"
+          style={{
+            position: "absolute",
+            borderRadius: 30,
+            backgroundColor: "#43B05C",
+            bottom: 20,
+            right: 20,
+            width: 50,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() => {
+            navigation.navigate("AddNotice", {
+              onChange: onChange,
+              value: null,
+            });
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -267,21 +281,24 @@ const NoticeCart = ({ data, navigation, setData }) => {
         padding: 10,
         width: width / 2 - 15,
         margin: 5,
-      }}>
+      }}
+    >
       <Text
         numberOfLines={1}
         style={{
           fontFamily: "Poppins-Medium",
           fontSize: 16,
-        }}>
-        Id/Record No {data.record}
+        }}
+      >
+        {isBn ? "নোটিশ আইডি/রেকর্ড নম্বর" : "Id/Record No"} {data.record}
       </Text>
       <Text
         numberOfLines={1}
         style={{
           marginTop: 5,
           fontSize: 14,
-        }}>
+        }}
+      >
         {dateConvert(data.date)}
       </Text>
       <Text
@@ -290,7 +307,8 @@ const NoticeCart = ({ data, navigation, setData }) => {
           marginTop: 20,
           fontSize: 12,
           fontFamily: "Poppins-SemiBold",
-        }}>
+        }}
+      >
         {data.subject}
       </Text>
       <Text
@@ -301,7 +319,8 @@ const NoticeCart = ({ data, navigation, setData }) => {
           color: textColor,
           marginTop: 5,
           height: 50,
-        }}>
+        }}
+      >
         {data.message}
       </Text>
       <IconButton
@@ -319,7 +338,7 @@ const NoticeCart = ({ data, navigation, setData }) => {
           marginVertical: 5,
           height: 30,
         }}
-        title={"View"}
+        title={isBn ? "দেখুন" : "View"}
       />
     </View>
   );

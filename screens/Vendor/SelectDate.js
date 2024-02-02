@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, StyleSheet, Text,Dimensions } from "react-native";
+import { View, ScrollView, StyleSheet, Text, Dimensions } from "react-native";
 import { SvgXml } from "react-native-svg";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Color } from "../../assets/colors";
@@ -8,9 +8,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Button from "../../components/Button";
 import { convertDate, dateConverter } from "../../action";
 import IconButton from "../../components/IconButton";
-const {width,height}=Dimensions.get("window")
+import useLang from "../../Hooks/UseLang";
+const { width, height } = Dimensions.get("window");
 
-export default function SelectDate({onChange,navigation,route}) {
+export default function SelectDate({ onChange, navigation, route }) {
   const [Open, setOpen] = React.useState();
   const [Close, setClose] = React.useState();
   const [OpeningTime, setOpeningTime] = React.useState();
@@ -20,58 +21,69 @@ export default function SelectDate({onChange,navigation,route}) {
   const primaryColor = colors.getPrimaryColor();
   const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
-  const [Error,setError]=React.useState()
-  const data=route.params.data?route.params.data:null;
-  const userId=route.params.userId;
-  const params=route.params;
-  const selectedPackage=params.selectedPackage;
-  const offline=params.offline;
+  const [Error, setError] = React.useState();
+  const data = route.params.data ? route.params.data : null;
+  const userId = route.params.userId;
+  const params = route.params;
+  const selectedPackage = params.selectedPackage;
+  const offline = params.offline;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(userId)
   //console.log(data)
-  
 
   return (
     <View
       style={{
         flex: 1,
-        
       }}
     >
       <SvgXml
         style={{
           marginTop: "10%",
-          alignSelf:"center"
+          alignSelf: "center",
         }}
         xml={svgIcon}
         height="30%"
       />
       <View>
-      <Text style={{
-        fontSize:16,
-        color:textColor,
-        marginHorizontal:20,
-        marginVertical:20
-      }}>Select delivery date</Text>
+        <Text
+          style={{
+            fontSize: 16,
+            color: textColor,
+            marginHorizontal: 20,
+            marginVertical: 20,
+          }}
+        >
+          {isBn ? "ডেলিভারির তারিখ নির্বাচন করুন" : "Select delivery date"}
+        </Text>
       </View>
       <View
         style={{
           flexDirection: "row",
-          alignItems:"center",
-          marginHorizontal:10
+          alignItems: "center",
+          marginHorizontal: 10,
         }}
       >
-        <TouchableOpacity onPress={()=>{
-          setOpen(true)
-        }} style={styles.box}>
+        <TouchableOpacity
+          onPress={() => {
+            setOpen(true);
+          }}
+          style={styles.box}
+        >
           <DateTimePickerModal
-          themeVariant="light"
+            themeVariant="light"
             date={OpeningTime ? OpeningTime : new Date()}
             buttonTextColorIOS={backgroundColor}
             isVisible={Open}
             mode="date"
             onConfirm={(e) => {
               if (ClosingTime && ClosingTime < e) {
-                setError(`Opening time can't be earlier from closing time.`);
+                setError(
+                  isBn
+                    ? "তারিখটি বর্তমানে দিন থেকে ভবিষ্যতের তারিখের ভিতরে নির্বাচন করতে হবে।"
+                    : `The date must be selected from the current day to the future date`
+                );
                 setOpen(false);
                 setOpeningTime(null);
                 return;
@@ -91,22 +103,31 @@ export default function SelectDate({onChange,navigation,route}) {
               setOpen(false);
             }}
           />
-          <Text style={styles.text}>{OpeningTime?dateConverter(OpeningTime):"yyyy-mm-dd"}</Text>
-          <SvgXml xml={calender} height="24" width={"24"}/>
+          <Text style={styles.text}>
+            {OpeningTime ? dateConverter(OpeningTime) : "yyyy-mm-dd"}
+          </Text>
+          <SvgXml xml={calender} height="24" width={"24"} />
         </TouchableOpacity>
         <Text>to</Text>
-        <TouchableOpacity onPress={()=>{
-          setClose(true)
-        }} style={styles.box}>
+        <TouchableOpacity
+          onPress={() => {
+            setClose(true);
+          }}
+          style={styles.box}
+        >
           <DateTimePickerModal
-          themeVariant="light"
+            themeVariant="light"
             date={ClosingTime ? ClosingTime : new Date()}
             buttonTextColorIOS={backgroundColor}
             isVisible={Close}
             mode="date"
             onConfirm={(e) => {
               if (OpeningTime && OpeningTime >= e) {
-                setError(`Opening time can't be earlier from closing time.`);
+                setError(
+                  isBn
+                    ? "তারিখটি বর্তমানে দিন থেকে ভবিষ্যতের তারিখের ভিতরে নির্বাচন করতে হবে।"
+                    : `The date must be selected from the current day to the future date`
+                );
                 setClose(false);
                 setClosingTime(null);
                 return;
@@ -126,44 +147,56 @@ export default function SelectDate({onChange,navigation,route}) {
               setClose(false);
             }}
           />
-          <Text style={styles.text}>{ClosingTime?convertDate(ClosingTime):"yyyy-mm-dd"}</Text>
-        <SvgXml xml={calender} height="24" width={"24"}/>
+          <Text style={styles.text}>
+            {ClosingTime ? convertDate(ClosingTime) : "yyyy-mm-dd"}
+          </Text>
+          <SvgXml xml={calender} height="24" width={"24"} />
         </TouchableOpacity>
       </View>
-      {Error&&(
-        <Text style={{
-          color:"red",
-          textAlign:"center",
-          marginVertical:10,
-          marginHorizontal:20
-        }}>{Error}</Text>
+      {Error && (
+        <Text
+          style={{
+            color: "red",
+            textAlign: "center",
+            marginVertical: 10,
+            marginHorizontal: 20,
+          }}
+        >
+          {Error}
+        </Text>
       )}
-      <IconButton onPress={()=>{
-        if(!OpeningTime || !ClosingTime){
-          setError("Please select date")
-          return;
-        }
-        
-        navigation.navigate("AcceptOrder", {
-          facilities: data.facilites,
-          id: data.id,
-          data: data, 
-          vendor:true,
-          from:dateConverter(OpeningTime),
-          to:dateConverter(ClosingTime),
-          userId:userId,
-          selectedPackage:selectedPackage,
-          offline:offline
-        });
-      }} style={{
-        borderRadius:5,
-        marginHorizontal:20,
-        color:"white",
-        backgroundColor:"#4ADE80",
-        position:"absolute",
-        bottom:10,
-        width:width-40
-      }} title={"Next"} />
+      <IconButton
+        onPress={() => {
+          if (!OpeningTime || !ClosingTime) {
+            setError(
+              isBn ? "অনুগ্রহ করে তারিখ নির্বাচন করুন" : "Please select date"
+            );
+            return;
+          }
+
+          navigation.navigate("AcceptOrder", {
+            facilities: data.facilites,
+            id: data.id,
+            data: data,
+            vendor: true,
+            from: dateConverter(OpeningTime),
+            to: dateConverter(ClosingTime),
+            userId: userId,
+            selectedPackage: selectedPackage,
+            offline: offline,
+          });
+        }}
+        style={{
+          borderRadius: 5,
+          marginHorizontal: 20,
+          color: "white",
+          backgroundColor: "#4ADE80",
+          position: "absolute",
+          bottom: 10,
+          width: width - 40,
+        }}
+        title={isBn ? "Next" : "পরবর্তী"}
+      />
     </View>
   );
 }
@@ -277,13 +310,13 @@ const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="114.5" height="1
 </g>
 </svg>
 `;
-const calender=`<svg xmlns="http://www.w3.org/2000/svg" width="12.33" height="12.275" viewBox="0 0 12.33 12.275">
+const calender = `<svg xmlns="http://www.w3.org/2000/svg" width="12.33" height="12.275" viewBox="0 0 12.33 12.275">
 <g id="Group_10006" data-name="Group 10006" transform="translate(-29.234 -142.572)">
   <rect id="Rectangle_7218" data-name="Rectangle 7218" width="12.063" height="10.301" rx="4" transform="translate(29.331 144.062)" fill="#666"/>
   <path id="Path_19748" data-name="Path 19748" d="M9.83,6.959A.43.43,0,0,1,10.621,7a5.666,5.666,0,0,1,.022.813q1.825,0,3.651,0A5.728,5.728,0,0,1,14.316,7a.428.428,0,0,1,.8-.031,5.053,5.053,0,0,1,.026.837c.506.012,1.011-.023,1.516.019a2.13,2.13,0,0,1,1.837,1.757,15.465,15.465,0,0,1,.018,2.108c0,1.683.007,3.367,0,5.051a2.116,2.116,0,0,1-2.138,2.044q-3.9,0-7.8,0a2.131,2.131,0,0,1-2.141-2.24c0-1.583,0-3.167,0-4.751,0-.708-.067-1.418,0-2.125A2.117,2.117,0,0,1,7.77,7.959,6.368,6.368,0,0,1,9.8,7.809a4.675,4.675,0,0,1,.029-.85M7.643,9.077c-.431.406-.35,1.031-.347,1.565H17.641c0-.535.081-1.161-.349-1.566-.558-.586-1.44-.314-2.154-.377a3.157,3.157,0,0,1-.05.87.423.423,0,0,1-.763-.031,4.286,4.286,0,0,1-.032-.839q-1.825,0-3.651,0a4.216,4.216,0,0,1-.033.84.426.426,0,0,1-.764.033A3.313,3.313,0,0,1,9.8,8.7c-.714.064-1.6-.21-2.156.378m1.272,3.7a.56.56,0,1,0,.718.7.564.564,0,0,0-.718-.7m2.214.013a.561.561,0,1,0,.774.585.565.565,0,0,0-.774-.585m2.223.009a.561.561,0,1,0,.8.472.566.566,0,0,0-.8-.472m2.3-.021a.56.56,0,1,0,.719.7.563.563,0,0,0-.719-.7M8.937,15.022a.56.56,0,1,0,.7.681.564.564,0,0,0-.7-.681m6.741,0a.56.56,0,1,0,.7.677.563.563,0,0,0-.7-.677m-4.641.07a.56.56,0,1,0,.864.4.564.564,0,0,0-.864-.4m2.292-.027a.56.56,0,1,0,.82.429A.564.564,0,0,0,13.329,15.065Z" transform="translate(22.93 135.957)" fill="#fff" stroke="#707070" stroke-width="0.2"/>
 </g>
 </svg>
-`
+`;
 const styles = StyleSheet.create({
   box: {
     width: 150,
@@ -292,13 +325,13 @@ const styles = StyleSheet.create({
     height: 45,
     marginHorizontal: 10,
     borderRadius: 5,
-    flexDirection:"row",
-    justifyContent:"center",
-    alignItems:"center"
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  text:{
-    fontFamily:"Poppins-Medium",
-    fontSize:14,
-    marginHorizontal:10
-  }
+  text: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 14,
+    marginHorizontal: 10,
+  },
 });

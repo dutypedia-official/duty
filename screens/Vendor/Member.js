@@ -63,79 +63,14 @@ import OutsideView from "react-native-detect-press-outside";
 import ActivityLoader from "../../components/ActivityLoader";
 import { useIsFocused } from "@react-navigation/native";
 import customStyle from "../../assets/stylesheet";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 const Member = ({ navigation }) => {
   const [routeName, setRouteName] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return <DutyPediaUser navigation={navigation} />;
-  return (
-    <SafeAreaView style={{ flex: 1, paddingTop: 0 }}>
-      <Tab.Navigator
-        screenOptions={{
-          tabBarIndicatorStyle: {
-            backgroundColor: "#4ADE80",
-          },
-        }}>
-        <Tab.Screen
-          options={{
-            tabBarLabel: ({ focused, color, size }) => (
-              <Text
-                style={{
-                  color: focused ? "#4ADE80" : "#333333",
-                  fontSize: 16,
-                }}>
-                Dutypedia User
-              </Text>
-            ),
-          }}
-          name="Dutypedia User"
-          component={DutyPediaUser}
-          initialParams={{
-            setRouteName: setRouteName,
-          }}
-        />
-        <Tab.Screen
-          options={{
-            tabBarLabel: ({ focused, color, size }) => (
-              <Text
-                style={{
-                  color: focused ? "#4ADE80" : "#333333",
-                  fontSize: 16,
-                }}>
-                Offline User
-              </Text>
-            ),
-          }}
-          name="Offline User"
-          component={OfflineUser}
-          initialParams={{
-            setRouteName: setRouteName,
-          }}
-        />
-      </Tab.Navigator>
-      <Pressable
-        onPress={() => {
-          if (routeName == "Dutypedia User") {
-            navigation.navigate("AddOnlineUser", { onChange: null });
-          } else if (routeName == "Offline User") {
-            navigation.navigate("AddOfflineUser", { id: null, reload: null });
-          }
-        }}
-        style={{
-          width: 60,
-          height: 60,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#4ADE80",
-          borderRadius: 30,
-          bottom: 20,
-          right: 20,
-          position: "absolute",
-        }}>
-        <SvgXml xml={whiteContact} height={"20"} width={"20"} />
-      </Pressable>
-    </SafeAreaView>
-  );
 };
 
 export default Member;
@@ -314,14 +249,16 @@ const DutyPediaUser = (props) => {
       style={{
         flex: 1,
         paddingTop: inset?.top,
-      }}>
+      }}
+    >
       <View style={{ marginHorizontal: 20 }}>
         <Text
           style={{
             fontSize: 24,
             fontWeight: "700",
             marginVertical: 12,
-          }}>
+          }}
+        >
           Member list
         </Text>
         <Input
@@ -358,7 +295,8 @@ const DutyPediaUser = (props) => {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
+        }
+      >
         {Data &&
           Data.map((doc, i) => (
             <OnlineCart
@@ -375,11 +313,18 @@ const DutyPediaUser = (props) => {
           ))}
         {AllData && AllData.length == 0 && (
           <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center",height:height-180 }}>
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              height: height - 180,
+            }}
+          >
             <Text
               style={{
                 fontSize: 18,
-              }}>
+              }}
+            >
               No Member Found!
             </Text>
           </View>
@@ -446,7 +391,8 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
         marginLeft: 20,
         borderRadius: 5,
         justifyContent: "space-between",
-      }}>
+      }}
+    >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Pressable
           style={{
@@ -458,7 +404,8 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
             alignItems: "center",
             borderWidth: 1,
             borderColor: "#e5e5e5",
-          }}>
+          }}
+        >
           {doc.user.profilePhoto ? (
             <Image
               style={{
@@ -481,16 +428,16 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
             flex: 1,
             height: "100%",
             marginLeft: 16,
-          }}>
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontSize: 16,
               fontWeight: "400",
-            }}>
-            {doc.user.name
-              ? doc.user.name
-              : "Easin Arafat"}
+            }}
+          >
+            {doc.user.name ? doc.user.name : "Easin Arafat"}
           </Text>
           <Pressable
             style={{
@@ -499,7 +446,8 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
             onPress={() => {
               setModalVisible((val) => !val);
               setSelectUser(`${doc.user.name}`);
-            }}>
+            }}
+          >
             {/* <Feather name="send" size={22} color={backgroundColor} />
         <View style={{ width: 15 }} />
         <AntDesign
@@ -519,7 +467,8 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
         animationType={"fade"}
         transparent={true}
         visible={AlertVisible}
-        onRequestClose={() => setAlertVisible(false)}>
+        onRequestClose={() => setAlertVisible(false)}
+      >
         <AlertModal
           title="Hey"
           subTitle={"Are you sure want to delete this?"}
@@ -541,19 +490,22 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <OutsideView
           childRef={childRef}
           onPressOutside={() => {
             // handle press outside of childRef event
             setModalVisible((val) => !val);
-          }}>
+          }}
+        >
           <View
             style={{
               width: "100%",
               height: "100%",
               justifyContent: "flex-end",
-            }}>
+            }}
+          >
             <View
               style={{
                 width: "100%",
@@ -565,7 +517,8 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
                 paddingHorizontal: 20,
                 paddingVertical: 20,
               }}
-              ref={childRef}>
+              ref={childRef}
+            >
               <IconButton
                 onPress={() => {
                   setModalVisible(false);
@@ -682,7 +635,8 @@ const OfflineUser = (props) => {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
+        }
+      >
         <Input
           rightIcon={
             <SvgXml
@@ -764,7 +718,8 @@ const OfflineCart = ({ doc, i, navigation, reload, onPress }) => {
         paddingVertical: 10,
         paddingHorizontal: 10,
         justifyContent: "space-between",
-      }}>
+      }}
+    >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View
           style={{
@@ -777,7 +732,8 @@ const OfflineCart = ({ doc, i, navigation, reload, onPress }) => {
             marginLeft: 5,
             borderWidth: 1,
             borderColor: "#e5e5e5",
-          }}>
+          }}
+        >
           {doc.profilePhoto ? (
             <Image
               style={{
@@ -797,7 +753,8 @@ const OfflineCart = ({ doc, i, navigation, reload, onPress }) => {
               marginLeft: 10,
               fontSize: 15,
               fontFamily: "Poppins-Medium",
-            }}>
+            }}
+          >
             {doc.name ? doc.name : "Easin Arafat"}
           </Text>
           <Text
@@ -806,7 +763,8 @@ const OfflineCart = ({ doc, i, navigation, reload, onPress }) => {
               marginLeft: 10,
               fontSize: 13,
               fontFamily: "Poppins-Medium",
-            }}>
+            }}
+          >
             {totalOrder > 0 ? `${totalOrder} Orders` : "No Order Yet"}
           </Text>
         </View>
@@ -827,7 +785,8 @@ const OfflineCart = ({ doc, i, navigation, reload, onPress }) => {
         animationType={"fade"}
         transparent={true}
         visible={AlertVisible}
-        onRequestClose={() => setAlertVisible(false)}>
+        onRequestClose={() => setAlertVisible(false)}
+      >
         <AlertModal
           title="Hey"
           subTitle={"Are you sure want to delete this?"}
@@ -849,19 +808,22 @@ const OfflineCart = ({ doc, i, navigation, reload, onPress }) => {
         animationType="slide"
         transparent={true}
         visible={Visible}
-        onRequestClose={() => setVisible(false)}>
+        onRequestClose={() => setVisible(false)}
+      >
         <OutsideView
           childRef={childRef}
           onPressOutside={() => {
             // handle press outside of childRef event
             setVisible((val) => !val);
-          }}>
+          }}
+        >
           <View
             style={{
               width: "100%",
               height: "100%",
               justifyContent: "flex-end",
-            }}>
+            }}
+          >
             <View
               style={{
                 width: "100%",
@@ -873,7 +835,8 @@ const OfflineCart = ({ doc, i, navigation, reload, onPress }) => {
                 paddingHorizontal: 20,
                 paddingVertical: 20,
               }}
-              ref={childRef}>
+              ref={childRef}
+            >
               <IconButton
                 onPress={() => {
                   setVisible(false);
@@ -1078,7 +1041,8 @@ export const AddOfflineUser = (props) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           {backgroundImage ? (
@@ -1089,7 +1053,8 @@ export const AddOfflineUser = (props) => {
           ) : (
             <LinearGradient
               style={styles.backgroundContainer}
-              colors={["#983C85", "#983C85", "#983C53"]}></LinearGradient>
+              colors={["#983C85", "#983C85", "#983C53"]}
+            ></LinearGradient>
           )}
 
           <View style={styles.profile}>
@@ -1104,7 +1069,8 @@ export const AddOfflineUser = (props) => {
                 {
                   top: -5,
                 },
-              ]}>
+              ]}
+            >
               <EvilIcons
                 onPress={() => {
                   pickImage().then((result) => {
@@ -1128,7 +1094,8 @@ export const AddOfflineUser = (props) => {
                 height: 30,
                 width: 30,
               },
-            ]}>
+            ]}
+          >
             <EvilIcons
               onPress={() => {
                 pickImage().then((result) => {
@@ -1151,7 +1118,8 @@ export const AddOfflineUser = (props) => {
             marginTop: 20,
             marginBottom: 10,
             marginHorizontal: 20,
-          }}>
+          }}
+        >
           Member Information
         </Text>
         <Input
@@ -1350,21 +1318,25 @@ export const AddOnlineUser = ({ navigation, route }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+    >
       <SafeAreaView
         style={{
           flex: 1,
-        }}>
+        }}
+      >
         <View
           style={{
             marginHorizontal: 20,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 24,
               fontWeight: "700",
               marginVertical: 12,
-            }}>
+            }}
+          >
             Add Member
           </Text>
           <Input
@@ -1423,7 +1395,8 @@ export const AddOnlineUser = ({ navigation, route }) => {
             onPress: () => {
               setMessage(null);
             },
-          }}>
+          }}
+        >
           {Message}
         </Snackbar>
       </SafeAreaView>
@@ -1451,14 +1424,16 @@ const CartView = ({ doc, onChange, setMessage }) => {
         marginLeft: 20,
         alignItems: "center",
         borderBottomWidth: 0,
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           flex: 1,
           height: "100%",
-        }}>
+        }}
+      >
         <View
           style={{
             width: 40,
@@ -1469,7 +1444,8 @@ const CartView = ({ doc, onChange, setMessage }) => {
             alignItems: "center",
             overflow: "hidden",
             margin: 0,
-          }}>
+          }}
+        >
           {doc.profilePhoto ? (
             <Image
               style={{
@@ -1492,15 +1468,17 @@ const CartView = ({ doc, onChange, setMessage }) => {
             alignItems: "center",
             paddingVertical: 12,
             borderBottomColor: "#E6E6E6",
-          }}>
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontSize: 16,
               fontWeight: "400",
-              
+
               flex: 1,
-            }}>
+            }}
+          >
             {doc.name}
           </Text>
           {/* <Text
@@ -1534,7 +1512,8 @@ const CartView = ({ doc, onChange, setMessage }) => {
               marginRight: 20,
               marginLeft: 20,
             }}
-            title={Send ? "Undo" : "Send Request"}>
+            title={Send ? "Undo" : "Send Request"}
+          >
             <SvgXml
               xml={!Send ? contact : sendContact}
               width="20"

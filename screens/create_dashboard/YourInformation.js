@@ -1,4 +1,4 @@
-import React, { useState, useRef,useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   ScrollView,
   KeyboardAvoidingView,
@@ -25,7 +25,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import PageChip from "./components/PageChip";
-import OptionCart,{Cart} from "./components/OptionCart";
+import OptionCart, { Cart } from "./components/OptionCart";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function YourInformation({ navigation, route }) {
   const businessForm = useSelector((state) => state.businessForm);
@@ -34,7 +36,8 @@ export default function YourInformation({ navigation, route }) {
   const [gender, setGender] = useState(businessForm?.gender);
   const [position, setPosition] = useState(businessForm?.position);
   const [nameError, setNameError] = useState();
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const PositionData = [
     {
       title: "Administrative Assistant",
@@ -85,7 +88,7 @@ export default function YourInformation({ navigation, route }) {
   const serviceCenterName = route?.params?.serviceCenterName;
   const suggestionBox = useRef();
   const isFocused = useIsFocused();
-  const data=route?.params?.data;
+  const data = route?.params?.data;
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -98,20 +101,20 @@ export default function YourInformation({ navigation, route }) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  const [pos,setPos]=useState([])
+  const [pos, setPos] = useState([]);
   useEffect(() => {
     if (position) {
       const filteredCategory =
-      text === ""
-        ? PositionData
-        : PositionData.filter((cat) =>
-            cat.title
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .match(position.toLowerCase().replace(/\s+/g, ""))
-          );
-          //console.log(filteredCategory)
-          setPos(filteredCategory);
+        text === ""
+          ? PositionData
+          : PositionData.filter((cat) =>
+              cat.title
+                .toLowerCase()
+                .replace(/\s+/g, "")
+                .match(position.toLowerCase().replace(/\s+/g, ""))
+            );
+      //console.log(filteredCategory)
+      setPos(filteredCategory);
       //console.log(arr[0].title)
     } else {
       setPos([]);
@@ -122,75 +125,109 @@ export default function YourInformation({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView
         style={{
           paddingHorizontal: 20,
         }}
-        showsVerticalScrollIndicator={false}>
-          <PageChip currentPage={5} totalPage={14}/>
+        showsVerticalScrollIndicator={false}
+      >
+        <PageChip currentPage={5} totalPage={14} />
         <OutsideView
           childRef={childRef}
           onPressOutside={() => {
             setGenderPress(false);
             // handle press outside of childRef event
-          }}>
+          }}
+        >
           <SvgXml style={{ marginTop: 24 }} width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml style={{ marginRight: 8 }} xml={icon} />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for set up your information
+              {isBn
+                ? "আপনার তথ্য সেট আপ করার জন্য টিপস:"
+                : "Tips for set up your information"}
             </Text>
           </View>
-          <ViewMore
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={72}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={[styles.spText, { marginTop: 0 }]}>
-                If you are registering as an{" "}
-                <Text style={{ fontWeight: "700" }}>individual</Text>, simply
-                fill in your name and gender, and for the "position" field, you
-                can enter any title or role that best describes you, such as{" "}
-                <Text style={{ fontWeight: "700" }}>
-                  "freelancer" or "consultant."
+            content={
+              isBn ? (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  আপনি যদি{" "}
+                  <Text style={{ fontWeight: "700" }}>একজন ব্যক্তি </Text>হিসাবে
+                  নিবন্ধন করে থাকেন, তাহলে আপনার নাম এবং লিঙ্গ পূরণ করুন এবং
+                  আপনার"পজিশন" বুঝানোর জন্য, আপনি যে কোনো টাইটেল ব্যাবহার করতে
+                  পারেন যেমন:{" "}
+                  <Text style={{ fontWeight: "700" }}>
+                    ("ফ্রিল্যান্সার" অথবা "কনসালট্যান্ট")
+                  </Text>
+                  ৷ আপনি যদি একটি{" "}
+                  <Text style={{ fontWeight: "700" }}>কোম্পানি</Text>হিসাবে
+                  নিবন্ধন করে থাকেন তাহলে আপনি আপনার নিজের নাম ব্যবহার করতে
+                  পারেন এবং কোম্পানির মধ্যে আপনি কোন পজিশন এ আসেন তা লিখতে
+                  পারেন৷ এই তথ্য দিয়ে, আপনি আমাদের প্ল্যাটফর্মে সঠিক ক্রেতা এবং
+                  বিক্রেতাদের সাথে সম্পর্ক তৈরি করতে আমাদের সাহায্য করবেন৷
+                  আমাদের মার্কেটপ্লেস বেছে নেওয়ার জন্য আপনাকে ধন্যবাদ এবং আমরা
+                  আপনার সফলতা কামনা করি!
                 </Text>
-                If you are registering as a{" "}
-                <Text style={{ fontWeight: "700" }}>company</Text>, you can
-                still use your own name and provide your position within the
-                company. By providing this information, you will help us connect
-                you with the right buyers and sellers on our platform. Thank you
-                for choosing our marketplace and we look forward to seeing you
-                succeed!
-              </Text>
+              ) : (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  If you are registering as an{" "}
+                  <Text style={{ fontWeight: "700" }}>individual</Text>, simply
+                  fill in your name and gender, and for the "position" field,
+                  you can enter any title or role that best describes you, such
+                  as{" "}
+                  <Text style={{ fontWeight: "700" }}>
+                    "freelancer" or "consultant."
+                  </Text>
+                  If you are registering as a{" "}
+                  <Text style={{ fontWeight: "700" }}>company</Text>, you can
+                  still use your own name and provide your position within the
+                  company. By providing this information, you will help us
+                  connect you with the right buyers and sellers on our platform.
+                  Thank you for choosing our marketplace and we look forward to
+                  seeing you succeed!
+                </Text>
+              )
             }
           />
-          <Text style={[styles.headLine, { marginTop: 36 }]}>Your Name</Text>
+          <Text style={[styles.headLine, { marginTop: 36 }]}>
+            {isBn ? "আপনার নাম" : "Your Name"}
+          </Text>
           <Input
             onFocus={() => setGenderPress(false)}
             value={name}
             error={nameError}
             onChange={setName}
             style={[styles.input]}
-            placeholder={"Type your name"}
+            placeholder={isBn ? "আপনার নাম লিখুন" : "Type your name"}
           />
-          <Text style={styles.text}>Max 20 character</Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বোচ্চ ২০ টি অক্ষর" : "Max 20 character"}
+          </Text>
           <View
             style={{
               flexDirection: "row",
               marginTop: 16,
               alignItems: "flex-start",
-
-            }}>
+            }}
+          >
             <View>
               {genderPress && (
                 <View ref={childRef} style={[newStyle.box]}>
@@ -204,15 +241,17 @@ export default function YourInformation({ navigation, route }) {
                         newStyle.pressable,
                         { borderBottomWidth: i == 2 ? 0 : 1 },
                       ]}
-                      key={i}>
+                      key={i}
+                    >
                       <Text style={[newStyle.text]}>{doc}</Text>
                     </Pressable>
                   ))}
                 </View>
               )}
-              <ExButton style={{
-                marginTop:2
-              }}
+              <ExButton
+                style={{
+                  marginTop: 2,
+                }}
                 value={gender}
                 onPress={() => {
                   setGenderPress((t) => !t);
@@ -220,45 +259,55 @@ export default function YourInformation({ navigation, route }) {
                 }}
               />
             </View>
-            <View style={{flex:1}}>
+            <View style={{ flex: 1 }}>
               {/* <AutoComplete
                 innerRef={suggestionBox}
                 value={position}
                 onChange={setPosition}
                 onFocus={() => setGenderPress(false)}
               /> */}
-              <Input placeholder={"Your position"} onFocus={() => setGenderPress(false)} onChange={setPosition} value={position} style={[styles.input,{marginTop:3,marginLeft:15}]}/>
+              <Input
+                placeholder={isBn ? "অবস্থান/পজিশন" : "Your position"}
+                onFocus={() => setGenderPress(false)}
+                onChange={setPosition}
+                value={position}
+                style={[styles.input, { marginTop: 3, marginLeft: 15 }]}
+              />
               <View
-            style={{
-              position: "absolute",
-              width: width - 135,
-              bottom:55,
-              zIndex:100,
-              left:15,
-              backgroundColor:"#ffffff"
-            }}>
-              <OptionCart Child={(data) => (
-                <Cart
-                  onPress={() => {
-                    setPosition(data?.doc?.title)
-                    setTimeout(() => {
-                      setPos([]);
-                    }, 100);
-                  }}
-                  title={data?.doc?.title}
-                  key={data?.index}
-                  index={data?.index}
+                style={{
+                  position: "absolute",
+                  width: width - 135,
+                  bottom: 55,
+                  zIndex: 100,
+                  left: 15,
+                  backgroundColor: "#ffffff",
+                }}
+              >
+                <OptionCart
+                  Child={(data) => (
+                    <Cart
+                      onPress={() => {
+                        setPosition(data?.doc?.title);
+                        setTimeout(() => {
+                          setPos([]);
+                        }, 100);
+                      }}
+                      title={data?.doc?.title}
+                      key={data?.index}
+                      index={data?.index}
+                    />
+                  )}
+                  data={pos}
                 />
-              )}
-              data={pos}/>
               </View>
               {specialtyError && (
                 <Text
                   style={{
                     marginVertical: 3,
                     color: "red",
-                    marginLeft:10
-                  }}>
+                    marginLeft: 10,
+                  }}
+                >
                   {specialtyError}
                 </Text>
               )}
@@ -268,13 +317,21 @@ export default function YourInformation({ navigation, route }) {
             active={name && gender && position ? true : false}
             disabled={!name || !position || !gender ? true : false}
             onPress={() => {
-              setSpecialtyError()
+              setSpecialtyError();
               if (name?.split("")?.length > 20) {
-                setNameError("*Name must with in 20 character");
+                setNameError(
+                  isBn
+                    ? "সর্বোচ্চ ২০ টি অক্ষর এর মধ্যে হতে হবে"
+                    : "*Name must within 20 character"
+                );
                 return;
               }
               if (position?.split("")?.length > 25) {
-                setSpecialtyError("*Position must with in 25 character");
+                setSpecialtyError(
+                  isBn
+                    ? "সর্বোচ্চ ২৫ টি অক্ষর এর মধ্যে হতে হবে"
+                    : "*Position must within 25 character"
+                );
                 return;
               }
               dispatch({ type: "NAME", playload: name });
@@ -283,9 +340,9 @@ export default function YourInformation({ navigation, route }) {
               navigation.navigate("Stakeholder", {
                 data: {
                   serviceCenterName: data?.serviceCenterName,
-                  serviceCategory:data?.serviceCategory,
-                  skills:data?.skills,
-                  facilities:data?.facilities,
+                  serviceCategory: data?.serviceCategory,
+                  skills: data?.skills,
+                  facilities: data?.facilities,
                   providerName: name,
                   gender: gender,
                   position: position,
@@ -293,7 +350,7 @@ export default function YourInformation({ navigation, route }) {
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </OutsideView>
       </ScrollView>
@@ -575,27 +632,34 @@ const vectorImage = `<svg width="353" height="230" viewBox="0 0 353 230" fill="n
 const text = `If you are registering as an individual, simply fill in your name and gender, and for the "position" field, you can enter any title or role that best describes you, such as "freelancer" or "consultant." If you are registering as a company, you can still use your own name and provide your position within the company.
 By providing this information, you will help us connect you with the right buyers and sellers on our platform. Thank you for choosing our marketplace and we look forward to seeing you succeed!`;
 
-const ExButton = ({ value, onPress, innerRef,style }) => {
+const ExButton = ({ value, onPress, innerRef, style }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <Pressable
       ref={innerRef}
       onPress={onPress}
-      style={[{
-        width: 80,
-        height: 45,
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        borderColor: "#767676",
-        borderWidth: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      },style]}>
+      style={[
+        {
+          width: 80,
+          height: 45,
+          borderRadius: 5,
+          paddingHorizontal: 10,
+          borderColor: "#767676",
+          borderWidth: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        style,
+      ]}
+    >
       <Text
         style={{
           color: "#767676",
           fontSize: 14,
-        }}>
-        {value ? value : "Gender"}
+        }}
+      >
+        {value ? value : isBn ? "লিঙ্গ" : "Gender"}
       </Text>
     </Pressable>
   );

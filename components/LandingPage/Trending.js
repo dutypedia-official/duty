@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,29 +9,37 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  Pressable
+  Pressable,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useDispatch, useSelector } from "react-redux";
 import customStyle from "../../assets/stylesheet";
-import { getLikeGigs, getRating, getTrendingServices, setLikeGigs } from "../../Class/service";
+import {
+  getLikeGigs,
+  getRating,
+  getTrendingServices,
+  setLikeGigs,
+} from "../../Class/service";
 import { getJson, storeData, storeJson } from "../../Class/storage";
 import { setSaveList } from "../../Reducers/saveList";
 import ActivityLoader from "../ActivityLoader";
 import Avatar from "../Avatar";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
-export default function Trending({onMore,navigation,refresh}) {
-  const [data,setData]=useState()
-  useEffect(()=>{
-    fetchData()
-    getData()
-  },[refresh])
+export default function Trending({ onMore, navigation, refresh }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
+  const [data, setData] = useState();
+  useEffect(() => {
+    fetchData();
+    getData();
+  }, [refresh]);
   const getData = async () => {
     try {
       const { data } = await getTrendingServices();
       setData(data?.gigs);
-      await storeJson("trending",data?.gigs)
+      await storeJson("trending", data?.gigs);
       //console.log(data?.gigs[0])
     } catch (err) {
       console.error(err.message);
@@ -46,28 +54,38 @@ export default function Trending({onMore,navigation,refresh}) {
     }
   };
   return (
-    <View style={{marginBottom:14}}>
+    <View style={{ marginBottom: 14 }}>
       <View
         style={[
           customStyle.flexBox,
           { marginTop: 34, marginBottom: 18, marginHorizontal: 20 },
-        ]}>
-        <Text style={customStyle.landingHeadLine}>All time trending</Text>
-        <TouchableOpacity onPress={()=>onMore(data)}>
-          <Text style={customStyle.landingButtonText}>See all</Text>
+        ]}
+      >
+        <Text style={customStyle.landingHeadLine}>
+          {isBn ? "সব সময়ের জনপ্রিয়" : "All time trending"}
+        </Text>
+        <TouchableOpacity onPress={() => onMore(data)}>
+          <Text style={customStyle.landingButtonText}>
+            {isBn ? "আরও দেখুন" : "See all"}
+          </Text>
         </TouchableOpacity>
       </View>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
         <View style={{ width: 14 }} />
-        {data&&data.map((doc,i)=>(
-          <TrendingCart data={doc} onPress={() => {
-            navigation?.navigate("OtherProfile", {
-              serviceId: doc?.service?.id,
-              data: doc,
-            });
-          }} key={i} />
-        ))}
-       {!data && (
+        {data &&
+          data.map((doc, i) => (
+            <TrendingCart
+              data={doc}
+              onPress={() => {
+                navigation?.navigate("OtherProfile", {
+                  serviceId: doc?.service?.id,
+                  data: doc,
+                });
+              }}
+              key={i}
+            />
+          ))}
+        {!data && (
           <View style={[customStyle.fullBox, { height: 220 }]}>
             <ActivityLoader />
           </View>
@@ -82,7 +100,7 @@ export default function Trending({onMore,navigation,refresh}) {
     </View>
   );
 }
-export const TrendingCart = ({data,onPress}) => {
+export const TrendingCart = ({ data, onPress }) => {
   const [like, setLike] = useState(false);
   const [rating, setRating] = useState(0);
   const saveList = useSelector((state) => state.saveList);
@@ -107,7 +125,7 @@ export const TrendingCart = ({data,onPress}) => {
     if (!user.token) {
       setLike(false);
     }
-  }, [user]); 
+  }, [user]);
   const addToSaveList = async () => {
     if (!data) {
       return;
@@ -118,7 +136,7 @@ export const TrendingCart = ({data,onPress}) => {
     //console.log(response.data.gigs)
     dispatch(setSaveList(response.data.gigs));
   };
-  
+
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View>
@@ -139,7 +157,8 @@ export const TrendingCart = ({data,onPress}) => {
             }
             addToSaveList();
             setLike((t) => !t);
-          }}>
+          }}
+        >
           <AntDesign
             name={like ? "heart" : "hearto"}
             size={16}
@@ -149,20 +168,26 @@ export const TrendingCart = ({data,onPress}) => {
       </View>
       <View style={styles.lineBox}>
         <Text style={styles.headLine} numberOfLines={2}>
-        {data
+          {data
             ? data.title
             : "devlop,customize web app and fix bug using vue js,p and other things"}
         </Text>
         <View
           style={[
             customStyle.flexBox,
-            { marginTop: 8, justifyContent: "space-between",alignItems:"flex-end" },
-          ]}>
+            {
+              marginTop: 8,
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+            },
+          ]}
+        >
           <View
             style={{
               flexDirection: "row",
               flex: 2,
-            }}>
+            }}
+          >
             <View>
               <Avatar
                 style={styles.avatar}
@@ -176,14 +201,15 @@ export const TrendingCart = ({data,onPress}) => {
             <View
               style={{
                 flex: 1,
-              }}>
+              }}
+            >
               <Text style={styles.smallText} numberOfLines={1}>
-              {data
+                {data
                   ? `${data.service.providerInfo.name}`
                   : "Easin Arafat It consulting center"}
               </Text>
               <Text style={styles.mediumText} numberOfLines={1}>
-              {data
+                {data
                   ? data.service.serviceCenterName
                   : "Easin Arafat It consulting center"}
               </Text>
@@ -192,12 +218,14 @@ export const TrendingCart = ({data,onPress}) => {
           <View style={{ flex: 0.5 }} />
           <View
             style={{
-              
               alignItems: "center",
-            }}>
+            }}
+          >
             <View style={styles.chipContainer}>
               <SvgXml width={"8"} xml={star} />
-              <Text style={styles.chipText}>{rating > parseInt(rating) ? rating : `${rating}.0`}</Text>
+              <Text style={styles.chipText}>
+                {rating > parseInt(rating) ? rating : `${rating}.0`}
+              </Text>
             </View>
             <Text style={styles.hugeText}>{data ? data.price : "00"}৳</Text>
           </View>
@@ -208,24 +236,24 @@ export const TrendingCart = ({data,onPress}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    width: width -80,
+    width: width - 80,
     borderColor: "#F1EFEF",
     borderWidth: 1,
     margin: 6,
     borderTopLeftRadius: 12,
-    borderTopRightRadius:12,
-    borderBottomLeftRadius:12,
-    borderBottomRightRadius:12,
+    borderTopRightRadius: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
     overflow: "hidden",
   },
   image: {
-    width: width -80,
+    width: width - 80,
     height: 160,
   },
   lineBox: {
     marginVertical: 12,
     paddingHorizontal: 8,
-    flex:1
+    flex: 1,
   },
   headLine: {
     fontSize: 14,

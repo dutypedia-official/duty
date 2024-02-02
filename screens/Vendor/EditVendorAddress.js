@@ -8,7 +8,7 @@ import {
   Text,
   StyleSheet,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import Group from "./../../assets/Images/Group.png";
@@ -28,8 +28,10 @@ import TextArea from "../../components/TextArea";
 import { updateData } from "../../Class/update";
 import { getService } from "../../Class/service";
 import ActivityLoader from "../../components/ActivityLoader";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
-export default function EditVendorAddress({ navigation ,route}) {
+export default function EditVendorAddress({ navigation, route }) {
   const [type, setType] = useState("Only me");
   const [visible, setVisible] = React.useState(false);
   const [layoutHeight, setLayoutHeight] = useState(0);
@@ -44,16 +46,18 @@ export default function EditVendorAddress({ navigation ,route}) {
   const [select, setSelect] = useState();
   const [districtError, setDistrictError] = useState();
   const [areaError, setAreaError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   // variables
   const snapPoints = useMemo(() => ["70%"], []);
   const handleSheetChanges = useCallback((index) => {
     //console.log('handleSheetChanges', index);
     setIndex(index);
   }, []);
-  const oldAddress=route?.params?.address;
-  const [loader,setLoader]=useState(false)
-  const vendor=useSelector(state=>state.vendor)
-  const user=useSelector(state=>state.user)
+  const oldAddress = route?.params?.address;
+  const [loader, setLoader] = useState(false);
+  const vendor = useSelector((state) => state.vendor);
+  const user = useSelector((state) => state.user);
 
   const openMenu = () => setVisible(true);
 
@@ -70,58 +74,62 @@ export default function EditVendorAddress({ navigation ,route}) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  React.useEffect(()=>{
-    if(oldAddress){
-        setDivision(oldAddress?.region)
-        setDistrict(oldAddress?.city)
-        setArea(oldAddress?.area)
-        setAddress(oldAddress?.address)
+  React.useEffect(() => {
+    if (oldAddress) {
+      setDivision(oldAddress?.region);
+      setDistrict(oldAddress?.city);
+      setArea(oldAddress?.area);
+      setAddress(oldAddress?.address);
     }
-  },[])
+  }, []);
 
-  const updateInfo=()=>{
-    setLoader(true)
-    updateData(user.token,{
-      serviceId:vendor.service.id,
-      address:{
-        address:address,
-        area:area,
-        city:district,
-        region:division,
-      }
-    }).then(res=>{
-      updateVendorInfo()
-    }).catch(err=>{
-      setLoader(false)
-      Alert.alert(err.response.data.msg)
-      console.error(err.response.data.msg)
+  const updateInfo = () => {
+    setLoader(true);
+    updateData(user.token, {
+      serviceId: vendor.service.id,
+      address: {
+        address: address,
+        area: area,
+        city: district,
+        region: division,
+      },
     })
-  }
-  const updateVendorInfo=async()=>{
-    const res=await getService(user.token,vendor.service.id);
-    if(res){
-      setLoader(false)
+      .then((res) => {
+        updateVendorInfo();
+      })
+      .catch((err) => {
+        setLoader(false);
+        Alert.alert(err.response.data.msg);
+        console.error(err.response.data.msg);
+      });
+  };
+  const updateVendorInfo = async () => {
+    const res = await getService(user.token, vendor.service.id);
+    if (res) {
+      setLoader(false);
       dispatch({ type: "SET_VENDOR", playload: res.data });
-      navigation.navigate("VendorProfile")
+      navigation.navigate("VendorProfile");
     }
-  }
-  if(loader){
-    return(
-        <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-            <ActivityLoader/>
-        </View>
-    )
+  };
+  if (loader) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityLoader />
+      </View>
+    );
   }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <Image
             style={{
               width: width - 40,
@@ -137,43 +145,50 @@ export default function EditVendorAddress({ navigation ,route}) {
               <Text
                 style={{
                   fontWeight: "500",
-                  
+
                   fontSize: 24,
                   marginLeft: 8,
                   flex: 1,
-                }}>
-                Tips for address
+                }}
+              >
+                {isBn ? "ঠিকানার অ্যাড করার জন্য টিপস:" : "Tips for address"}
               </Text>
             </View>
-            <ViewMore
-            view={true}
-            style={{
-              marginTop: 24,
-            }}
-            lowHeight={70}
-            width={167}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={[styles.spText, { marginTop: 0 }]}>
-                Set Your Address: As a seller, you may need to provide your
-                address for internal purposes. If you are a company, please
-                provide your business address. If you are an individual without
-                a physical service center, you can provide your current
-                location. Please note that your address will not be visible to
-                buyers, it will only be used for internal purposes. day, please
-                enter your preferred working hours instead. This will help
-                buyers determine whether your services fit their needs.
-              </Text>
-            }
-          />
+            <ReadMore
+              containerStyle={{
+                marginTop: 24,
+              }}
+              content={
+                isBn ? (
+                  <Text style={[styles.spText, { marginTop: 0 }]}>
+                    আপনার ঠিকানা সেট করুন: একজন বিক্রেতা হিসাবে, আপনাকে
+                    ইন্টারনাল কাজের জন্য আপনার ঠিকানা দিতে হবে৷ আপনার যদি একটি
+                    কোম্পানি থাকে তাহলে আপনার কোম্পানির ঠিকানা প্রদান করুন৷ আপনি
+                    যদি কোনও ফিজিক্যাল সার্ভিস সেন্টার ছাড়াই একজন ব্যক্তি হন
+                    তবে আপনি আপনার বর্তমান ঠিকানা দিতে পারেন৷ দয়া করে মনে
+                    রাখবেন যে আপনার ঠিকানা ক্রেতাদের দেখানো হবে না, এটি
+                    শুধুমাত্র ইন্টারনাল উদ্দেশ্যে ব্যবহার করা হবে৷
+                  </Text>
+                ) : (
+                  <Text style={[styles.spText, { marginTop: 0 }]}>
+                    Set Your Address: As a seller, you may need to provide your
+                    address for internal purposes. If you are a company, please
+                    provide your business address. If you are an individual
+                    without a physical service center, you can provide your
+                    current location. Please note that your address will not be
+                    visible to buyers, it will only be used for internal
+                    purposes. day, please enter your preferred working hours
+                    instead. This will help buyers determine whether your
+                    services fit their needs.
+                  </Text>
+                )
+              }
+            />
           </View>
           <View>
-            <Text style={[newStyle.text, { marginTop: 0 }]}>Division</Text>
+            <Text style={[newStyle.text, { marginTop: 0 }]}>
+              {isBn ? "বিভাগ" : "Division"}
+            </Text>
             <InputButton
               value={division}
               onPress={() => {
@@ -181,12 +196,12 @@ export default function EditVendorAddress({ navigation ,route}) {
                 setIndex(0);
               }}
               style={[styles.input, { marginTop: 8, borderColor: "#a3a3a3" }]}
-              placeholder={"Division"}
+              placeholder={isBn ? "বিভাগ" : "Division"}
             />
 
             <View style={{ flexDirection: "row", marginTop: 12 }}>
               <View>
-                <Text style={newStyle.text}>District</Text>
+                <Text style={newStyle.text}>{isBn ? "জেলা" : "District"}</Text>
                 <InputButton
                   error={districtError}
                   onPress={() => {
@@ -196,7 +211,7 @@ export default function EditVendorAddress({ navigation ,route}) {
                       setDistrictError("Select division");
                       return;
                     }
-                    setSelect("District");
+                    setSelect(isBn ? "জেলা" : "District");
                     setIndex(0);
                   }}
                   value={district}
@@ -208,19 +223,21 @@ export default function EditVendorAddress({ navigation ,route}) {
                       borderColor: "#a3a3a3",
                     },
                   ]}
-                  placeholder="District"
+                  placeholder={isBn ? "জেলা" : "District"}
                 />
               </View>
               <View style={{ width: 13 }} />
               <View>
-                <Text style={newStyle.text}>Thana</Text>
+                <Text style={newStyle.text}>{isBn ? "এরিয়া" : "Area"}</Text>
                 <InputButton
                   error={areaError}
                   onPress={() => {
                     setDistrictError();
                     setAreaError();
                     if (!district) {
-                      setAreaError("Select district");
+                      setAreaError(
+                        isBn ? "জেলা/উপজিলা নির্বাচন করুন" : "Select district"
+                      );
                       return;
                     }
                     setSelect("Area");
@@ -235,23 +252,26 @@ export default function EditVendorAddress({ navigation ,route}) {
                       borderColor: "#a3a3a3",
                     },
                   ]}
-                  placeholder="Thana"
+                  placeholder={isBn ? "এরিয়া" : "Area"}
                 />
               </View>
             </View>
-            <Text style={[newStyle.text, { marginTop: 12 }]}>Address</Text>
+            <Text style={[newStyle.text, { marginTop: 12 }]}>
+              {isBn ? "ঠিকানা" : "Address"}
+            </Text>
             <TextArea
               value={address}
               onChange={setAddress}
               style={[styles.input, { marginTop: 8, borderColor: "#a3a3a3" }]}
-              placeholder={"Address"}
+              placeholder={isBn ? "ঠিকানা" : "Address"}
             />
-           
-            <IconButton onPress={updateInfo}
+
+            <IconButton
+              onPress={updateInfo}
               active={division && district && area ? true : false}
               disabled={division && district && area ? false : true}
-              style={[styles.button,{marginTop:36}]}
-              title={"Update"}
+              style={[styles.button, { marginTop: 36 }]}
+              title={isBn ? "আপডেট করুন" : "Update"}
             />
           </View>
         </View>
@@ -272,7 +292,8 @@ export default function EditVendorAddress({ navigation ,route}) {
         index={index}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+      >
         {select == "Division" ? (
           <Screen
             onChange={(e) => {
@@ -336,7 +357,7 @@ const arrow = `<svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="
 const newStyle = StyleSheet.create({
   text: {
     fontSize: 16,
-    
+
     fontWeight: "400",
   },
 });

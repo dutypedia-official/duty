@@ -36,6 +36,7 @@ import { AllData } from "../Data/AllData";
 import { serverToLocal } from "../Class/dataConverter";
 import { getAllGigs } from "../Class/service";
 import { useSelector, useDispatch } from "react-redux";
+import useLang from "../Hooks/UseLang";
 
 const PARALLAX_HEIGHT = 330;
 const HEADER_BAR_HEIGHT = 92;
@@ -43,6 +44,8 @@ const SNAP_START_THRESHOLD = 50;
 const SNAP_STOP_THRESHOLD = 330;
 
 const CategoryList = ({ navigation, route }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const {
     onMomentumScrollEnd,
     onScroll,
@@ -275,14 +278,15 @@ const CategoryList = ({ navigation, route }) => {
                     fontSize: 18,
                   }}
                 >
-                  Sub Categories
+                  {isBn ? "সাব ক্যাটাগরি" : "Sub Categories"}
                 </Text>
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                 >
                   {SubCategories.map((doc, i) => (
-                    <Cart active={doc.title==SelectSubCategory?true: false}
+                    <Cart
+                      active={doc.title == SelectSubCategory ? true : false}
                       onPress={() => {
                         setSelectSubCategory(doc.title);
                       }}
@@ -296,13 +300,18 @@ const CategoryList = ({ navigation, route }) => {
             {SubCategories.length === 0 && <View style={{ height: 30 }} />}
             {Data &&
               Data.map((doc, i) => (
-                <SearchItem onPress={()=>{
-                  navigation.navigate("OtherProfile",{serviceId:doc?doc.service.id:null,data:doc})
-                }}
+                <SearchItem
+                  onPress={() => {
+                    navigation.navigate("OtherProfile", {
+                      serviceId: doc ? doc.service.id : null,
+                      data: doc,
+                    });
+                  }}
                   key={i}
-                  data={doc} navigation={navigation}
+                  data={doc}
+                  navigation={navigation}
                   testID={simsScreenTestIDs.contentTestID}
-                /> 
+                />
               ))}
             {Data && Data.length == 0 && (
               <View
@@ -320,7 +329,7 @@ const CategoryList = ({ navigation, route }) => {
                     marginTop: 20,
                   }}
                 >
-                  No data found!
+                  {isBn ? "কোনও তথ্য পাওয়া যায়নি" : "No data found!"}
                 </Text>
               </View>
             )}
@@ -353,7 +362,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Cart = ({ title, onPress,active }) => {
+const Cart = ({ title, onPress, active }) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -366,7 +375,7 @@ const Cart = ({ title, onPress,active }) => {
         style={{
           width: 120,
           height: 80,
-          backgroundColor: !active? primaryColor:'green',
+          backgroundColor: !active ? primaryColor : "green",
           margin: 5,
           borderRadius: 5,
           alignItems: "center",
@@ -384,7 +393,7 @@ const Cart = ({ title, onPress,active }) => {
       >
         <Text
           style={{
-            color:active?'white': textColor,
+            color: active ? "white" : textColor,
             fontFamily: "Poppins-Medium",
             fontSize: 16,
           }}

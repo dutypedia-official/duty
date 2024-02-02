@@ -13,6 +13,7 @@ import IconButton from "../IconButton";
 import { ScrollView } from "react-native-gesture-handler";
 import { AllData } from "../../Data/AllData";
 import { MotiView } from "moti";
+import useLang from "../../Hooks/UseLang";
 
 export default function SearchBar({
   beforeStyle,
@@ -27,10 +28,11 @@ export default function SearchBar({
   subData,
   onSubCategory,
   onSelectCategory,
-  selectedSub
+  selectedSub,
 }) {
   const [searchKey, setSearchKey] = useState(value);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   if (active) {
     return (
       <Animated.View entering={StretchInY}>
@@ -67,6 +69,8 @@ const NormalScreen = ({ beforeStyle, onChange, onPress, style, value }) => {
   const ref = useRef();
   const [write, setWrite] = React.useState(false);
   const [wid, setWidth] = React.useState(0);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <Pressable
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
@@ -85,13 +89,15 @@ const NormalScreen = ({ beforeStyle, onChange, onPress, style, value }) => {
         },
         style,
         beforeStyle,
-      ]}>
+      ]}
+    >
       <MotiView
         animate={{ width: write ? wid - 50 : 100 }}
         transition={{
           type: "timing",
           duration: 350,
-        }}>
+        }}
+      >
         <TextInput
           ref={ref}
           value={value}
@@ -102,7 +108,7 @@ const NormalScreen = ({ beforeStyle, onChange, onPress, style, value }) => {
               setWrite(false);
             }
           }}
-          placeholder="Search service"
+          placeholder={isBn ? "সার্ভিস খুঁজুন" : "Search service"}
           style={[
             styles.text,
             {
@@ -130,10 +136,11 @@ const Container = ({
   subData,
   onSubCategory,
   onSelectCategory,
-  selectedSub
+  selectedSub,
 }) => {
   const [search, setSearch] = useState();
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const onSearch = (val) => {
     if (!val) {
       return;
@@ -167,7 +174,8 @@ const Container = ({
             flexDirection: "row",
             alignItems: "center",
             flex: 1,
-          }}>
+          }}
+        >
           <TextInput
             autoFocus={false}
             value={value}
@@ -197,33 +205,34 @@ const Container = ({
           style={{
             flexDirection: "row",
             marginBottom: 18,
-          }}>
+          }}
+        >
           <View style={{ width: 22 }} />
-          {search?.data?.length>0&&!subData&&(
+          {search?.data?.length > 0 && !subData && (
             <IconButton
-            active={"All" == category ? true : false}
-            style={styles.button}
-            onPress={() => {
-              if (subData && onSubCategory) {
-                onSubCategory((v) => (v != "All" ? "All" : undefined));
-              } else {
-                onCategory((v) => (v != "All" ? "All" : undefined));
-              }
-            }}
-            title={"All"}
-          />
+              active={"All" == category ? true : false}
+              style={styles.button}
+              onPress={() => {
+                if (subData && onSubCategory) {
+                  onSubCategory((v) => (v != "All" ? "All" : undefined));
+                } else {
+                  onCategory((v) => (v != "All" ? "All" : undefined));
+                }
+              }}
+              title={isBn ? "সব" : "All"}
+            />
           )}
-          {subData?.length>0&&(
+          {subData?.length > 0 && (
             <IconButton
-            active={"All" == selectedSub ? true : false}
-            style={styles.button}
-            onPress={() => {
-              if (subData && onSubCategory) {
-                onSubCategory((v) => (v != "All" ? "All" : undefined));
-              } 
-            }}
-            title={"All"}
-          />
+              active={"All" == selectedSub ? true : false}
+              style={styles.button}
+              onPress={() => {
+                if (subData && onSubCategory) {
+                  onSubCategory((v) => (v != "All" ? "All" : undefined));
+                }
+              }}
+              title={isBn ? "সব" : "All"}
+            />
           )}
           {search &&
             !subData &&
@@ -233,10 +242,9 @@ const Container = ({
                 key={i}
                 style={styles.button}
                 onPress={() => {
-                  
                   onCategory((v) => (v != doc?.title ? doc.title : undefined));
                   if (onSelectCategory && doc.data) {
-                    onSelectCategory(doc.data,doc?.title);
+                    onSelectCategory(doc.data, doc?.title);
                   }
                 }}
                 title={doc.title}

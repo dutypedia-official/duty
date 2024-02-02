@@ -58,6 +58,7 @@ import ServiceListViewer from "../components/ServiceListViewer";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import ViewMore from "../Hooks/ViewMore";
 import ReadMore from "../components/ReadMore";
+import useLang from "../Hooks/UseLang";
 
 const { width, height } = Dimensions.get("window");
 const FixedService = (props) => {
@@ -93,6 +94,8 @@ const FixedService = (props) => {
       type: "SUBS",
     },
   ];
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [Facilities, setFacilities] = React.useState([]);
   const [NewDataList, setNewDataList] = React.useState(null);
   const [ServiceList, setServiceList] = React.useState([]);
@@ -200,11 +203,9 @@ const FixedService = (props) => {
       });
       setCategory(data?.service?.category);
       setActiveServiceData(arr);
-      
     }
   }, [data]);
 
- 
   React.useEffect(() => {
     if (newUser && Data) {
       setLoader(true);
@@ -238,15 +239,8 @@ const FixedService = (props) => {
     }
   }, [Data]);
 
-  if (
-    Loader ||
-    !Data ||
-    !RelatedServices ||
-    !UnRelatedServices 
-  ) {
-    return (
-      <ProfileSkeleton/>
-    );
+  if (Loader || !Data || !RelatedServices || !UnRelatedServices) {
+    return <ProfileSkeleton />;
   }
 
   return (
@@ -287,7 +281,8 @@ const FixedService = (props) => {
           }
 
           setOffset(currentOffset);
-        }}>
+        }}
+      >
         <Carousel
           style={{
             backgroundColor: "black",
@@ -367,83 +362,87 @@ const FixedService = (props) => {
             paddingVertical: 3,
             borderRadius: 20,
             top: height - ((height * 30) / 100 + 70),
-          }}>
+          }}
+        >
           <Text
             style={{
               fontFamily: "Poppins-Medium",
               fontSize: 14,
               color: primaryColor,
-            }}>
+            }}
+          >
             {imageIndex + 1} Of 4
           </Text>
         </View>
-        {newUser?.user?.username!=Data?.service?.user?.username&&(
+        {newUser?.user?.username != Data?.service?.user?.username && (
           <View
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 10,
-            height: height - (height * 30) / 100,
-            justifyContent: "center",
-            elevation: 2,
-            zIndex: 100,
-          }}>
-          <Menu
-            contentStyle={{
-              backgroundColor: primaryColor,
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 10,
+              height: height - (height * 30) / 100,
+              justifyContent: "center",
+              elevation: 2,
+              zIndex: 100,
             }}
-            visible={Visible}
-            onDismiss={() => {
-              setVisible(!Visible);
-            }}
-            anchor={
-              <SvgXml
-                onPress={() => {
-                  setVisible(!Visible);
-                  //console.log("sadfa");
-                }}
-                style={{
-                  shadowOffset: {
-                    width: 0,
-                    height: 3,
-                  },
-                  shadowColor: "#DDDDDD",
-                  shadowRadius: Platform.OS == "ios" ? 4 : 20,
-                  elevation: 0,
-                  shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
-                  marginLeft: 0,
-                }}
-                xml={threeDot}
-                height={Platform.OS == "ios" ? "50" : "45"}
-                width={Platform.OS == "ios" ? "50" : "45"}
-              />
-            }>
-            <Menu.Item
-              onPress={() => {
-                navigation.navigate("Support_1");
+          >
+            <Menu
+              contentStyle={{
+                backgroundColor: primaryColor,
+              }}
+              visible={Visible}
+              onDismiss={() => {
                 setVisible(!Visible);
               }}
-              title="Report"
-            />
-            {/* <Menu.Item onPress={() => {}} title="Copy URL" /> */}
-          </Menu>
+              anchor={
+                <SvgXml
+                  onPress={() => {
+                    setVisible(!Visible);
+                    //console.log("sadfa");
+                  }}
+                  style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 3,
+                    },
+                    shadowColor: "#DDDDDD",
+                    shadowRadius: Platform.OS == "ios" ? 4 : 20,
+                    elevation: 0,
+                    shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
+                    marginLeft: 0,
+                  }}
+                  xml={threeDot}
+                  height={Platform.OS == "ios" ? "50" : "45"}
+                  width={Platform.OS == "ios" ? "50" : "45"}
+                />
+              }
+            >
+              <Menu.Item
+                onPress={() => {
+                  navigation.navigate("Support_1");
+                  setVisible(!Visible);
+                }}
+                title="Report"
+              />
+              {/* <Menu.Item onPress={() => {}} title="Copy URL" /> */}
+            </Menu>
 
-          <SvgXml
-            style={{
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowColor: "#DDDDDD",
-              shadowRadius: Platform.OS == "ios" ? 4 : 20,
-              elevation: 5,
-              shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
-            }}
-            xml={loveIcon}
-            height={Platform.OS == "ios" ? "50" : "45"}
-            width={Platform.OS == "ios" ? "50" : "45"}
-          />
-          {/* <SvgXml
+            <SvgXml
+              style={{
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowColor: "#DDDDDD",
+                shadowRadius: Platform.OS == "ios" ? 4 : 20,
+                elevation: 5,
+                shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
+              }}
+              xml={loveIcon}
+              height={Platform.OS == "ios" ? "50" : "45"}
+              width={Platform.OS == "ios" ? "50" : "45"}
+            />
+            {/* <SvgXml
             style={{
               shadowOffset: {
                 width: 0,
@@ -459,7 +458,7 @@ const FixedService = (props) => {
             width={Platform.OS == "ios" ? "50" : "45"}
           /> */}
 
-          {/* <SvgXml
+            {/* <SvgXml
             onPress={() => {
               navigation.navigate("Message", { data: Data });
             }}
@@ -477,7 +476,7 @@ const FixedService = (props) => {
             height={Platform.OS == "ios" ? "50" : "45"}
             width={Platform.OS == "ios" ? "50" : "45"}
           /> */}
-        </View>
+          </View>
         )}
 
         <View
@@ -487,20 +486,23 @@ const FixedService = (props) => {
             borderTopRightRadius: 30,
             marginTop: -30,
             overflow: "hidden",
-          }}>
+          }}
+        >
           <View
             style={{
               paddingHorizontal: 20,
               paddingVertical: 0,
               backgroundColor: primaryColor,
-            }}>
+            }}
+          >
             <Text
               style={{
                 color: "#BEBBBB",
                 fontSize: 16,
                 fontFamily: "Poppins-SemiBold",
                 marginTop: 20,
-              }}>
+              }}
+            >
               #Fixed Service
             </Text>
             <View style={{ flex: 0.5 }} />
@@ -513,7 +515,8 @@ const FixedService = (props) => {
                 color: textColor,
                 paddingHorizontal: 20,
                 marginTop: 15,
-              }}>
+              }}
+            >
               {Title}
             </Text>
 
@@ -521,7 +524,8 @@ const FixedService = (props) => {
               style={{
                 marginHorizontal: 20,
                 paddingTop: 15,
-              }}>
+              }}
+            >
               {/* <AnimatedHeight
                 onChange={(height) => {
                   //setNewNavigation(newHeight + 55 + height);
@@ -531,11 +535,14 @@ const FixedService = (props) => {
                 button={true}
                 text={Description}
               /> */}
-              <ReadMore content={Description}/>
+              <ReadMore content={Description} />
             </View>
-            
           </View>
-          <ServiceListViewer skills={data?.skills} serviceCategory={{name:data?.service?.category}} facilities={Facilities}/>
+          <ServiceListViewer
+            skills={data?.skills}
+            serviceCategory={{ name: data?.service?.category }}
+            facilities={Facilities}
+          />
           <View
             style={{
               backgroundColor: primaryColor,
@@ -544,49 +551,48 @@ const FixedService = (props) => {
               justifyContent: "space-between",
               marginHorizontal: 20,
               marginVertical: 25,
-            }}>
+            }}
+          >
             <Text
               style={{
                 fontSize: Platform.OS == "ios" ? 17 : 15.5,
                 color: textColor,
 
                 fontFamily: "Poppins-SemiBold",
-              }}>
+              }}
+            >
               From {Price} ৳
             </Text>
-            
           </View>
           <View style={{ backgroundColor: primaryColor }}>
-            {newUser?.user?.username!=Data?.service?.user?.username&&(
+            {newUser?.user?.username != Data?.service?.user?.username && (
               <IconButton
-              onPress={() => {
-                if (newUser && newUser.token) {
-                  navigation.navigate("ServiceOrder", {
-                    type: "ONETIME",
-                    gigs: data,
-                    data: data,
-                    facilities:Facilities,
-                    serviceList:data?.skills
-                  });
-                } else {
-                  navigation.navigate("LogIn");
-                  return;
-                }
-
-                
-              }}
-              style={{
-                borderRadius: 5,
-                marginHorizontal: 20,
-                backgroundColor: "#FEA31E",
-                borderWidth: 0,
-                marginVertical: 0,
-                color: textColor,
-                marginTop: 0,
-                height: 40,
-              }}
-              title={`Continue`}
-            />
+                onPress={() => {
+                  if (newUser && newUser.token) {
+                    navigation.navigate("ServiceOrder", {
+                      type: "ONETIME",
+                      gigs: data,
+                      data: data,
+                      facilities: Facilities,
+                      serviceList: data?.skills,
+                    });
+                  } else {
+                    navigation.navigate("LogIn");
+                    return;
+                  }
+                }}
+                style={{
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                  backgroundColor: "#FEA31E",
+                  borderWidth: 0,
+                  marginVertical: 0,
+                  color: textColor,
+                  marginTop: 0,
+                  height: 40,
+                }}
+                title={`Continue`}
+              />
             )}
           </View>
         </View>
@@ -596,7 +602,8 @@ const FixedService = (props) => {
           style={{
             backgroundColor: primaryColor,
             marginTop: 15,
-          }}>
+          }}
+        >
           {RelatedServices.length > 4 && (
             <View>
               <Text
@@ -606,7 +613,8 @@ const FixedService = (props) => {
                   color: textColor,
                   paddingHorizontal: 20,
                   paddingVertical: 15,
-                }}>
+                }}
+              >
                 Related Service
               </Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -627,8 +635,9 @@ const FixedService = (props) => {
                   color: textColor,
                   paddingHorizontal: 20,
                   paddingVertical: 15,
-                }}>
-                You Might Also Like
+                }}
+              >
+                {isBn ? "কিছু পছন্দের সার্ভিস" : "You Might Also Like"}
               </Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={{ width: 10 }} />
@@ -671,19 +680,20 @@ const FixedService = (props) => {
           </Pressable>
         </Animated.View>
       )} */}
-      
-      {index==-1&&(
+
+      {index == -1 && (
         <View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}>
-        <FixedBackHeader
-          navigation={navigation}
-          Yoffset={offset ? offset : 0}
-        />
-      </View>
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        >
+          <FixedBackHeader
+            navigation={navigation}
+            Yoffset={offset ? offset : 0}
+          />
+        </View>
       )}
       {/* <BottomSheet
         ref={sheetRef}

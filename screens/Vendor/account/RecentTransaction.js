@@ -5,56 +5,62 @@ import { useSelector } from "react-redux";
 import { getAllTransactions } from "../../../Class/account";
 import IconButton from "../../../components/IconButton";
 import TransactionCart from "./TransactionCart";
+import useLang from "../../../Hooks/UseLang";
 
-export default function RecentTransaction({navigation}) {
+export default function RecentTransaction({ navigation }) {
   const [data, setData] = useState();
-  const user=useSelector(state=>state.user)
-  const vendor=useSelector(state=>state.vendor)
-
-  useEffect(()=>{
-    if(user&&vendor){
-      getAllTransactions(user.token,vendor.service.id,3,0).then(res=>{
-        setData(res.data.orders)
-      }).catch(err=>{
-        console.error(err.response.data.msg)
-      })
+  const user = useSelector((state) => state.user);
+  const vendor = useSelector((state) => state.vendor);
+  const { language } = useLang();
+  const isBn = language == "Bn";
+  useEffect(() => {
+    if (user && vendor) {
+      getAllTransactions(user.token, vendor.service.id, 3, 0)
+        .then((res) => {
+          setData(res.data.orders);
+        })
+        .catch((err) => {
+          console.error(err.response.data.msg);
+        });
     }
-  },[])
+  }, []);
   return (
     <View
       style={{
         flex: 1,
-      }}>
-      {data&&data.length>0 && (
+      }}
+    >
+      {data && data.length > 0 && (
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
             marginVertical: 10,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 16,
-            }}>
-            Recent Transaction
+            }}
+          >
+            {isBn ? "সর্বশেষ লেনদেন" : "Recent Transaction"}
           </Text>
-          <IconButton onPress={()=>{
-            navigation.navigate("AllTransactions")
-          }}
+          <IconButton
+            onPress={() => {
+              navigation.navigate("AllTransactions");
+            }}
             style={{
               borderWidth: 0,
               fontSize: 16,
             }}
             Icon={() => <SvgXml xml={icon} />}
-            title={"view all"}
+            title={isBn ? "সব দেখুন" : "view all"}
           />
         </View>
       )}
-      {data&&data.map((doc,i)=>(
-        <TransactionCart key={i} data={doc}/>
-      ))}
-      {data&&data.length==0&&(<NoThing/>)}
+      {data && data.map((doc, i) => <TransactionCart key={i} data={doc} />)}
+      {data && data.length == 0 && <NoThing />}
     </View>
   );
 }
@@ -64,19 +70,22 @@ const icon = `<svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns=
 `;
 export const NoThing = () => {
   return (
-    <View style={{
-      flex:1,
-      justifyContent:"center",
-      alignItems:"center",
-      paddingVertical:20
-    }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 20,
+      }}
+    >
       <Text
         style={{
           fontSize: 16,
           color: "black",
           textAlign: "center",
-        }}>
-        No Transaction found
+        }}
+      >
+        {isBn ? "কোনও লেনদেন নেই" : "No Transaction found"}
       </Text>
     </View>
   );

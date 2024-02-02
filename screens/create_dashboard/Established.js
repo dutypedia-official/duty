@@ -23,14 +23,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import PageChip from "./components/PageChip";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function Established({ navigation, route }) {
-  const businessForm=useSelector(state=>state.businessForm)
-  const dispatch=useDispatch()
+  const businessForm = useSelector((state) => state.businessForm);
+  const dispatch = useDispatch();
   const [date, setDate] = useState(businessForm?.startDate?.day);
   const data = route?.params?.data;
-  const [layoutHeight,setLayoutHeight]=useState(0)
-  const isFocused=useIsFocused()
+  const [layoutHeight, setLayoutHeight] = useState(0);
+  const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -48,21 +52,24 @@ export default function Established({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
-      <PageChip currentPage={7} totalPage={14}/>
+        <PageChip currentPage={7} totalPage={14} />
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -70,40 +77,62 @@ export default function Established({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for set up the established/starting date
+              {isBn
+                ? "প্রতিষ্ঠিত/শুরু করার তারিখ সেট আপ করার জন্য টিপস:"
+                : "Tips for set up the established/starting date"}
             </Text>
           </View>
-          <ViewMore
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            width={145}
-            height={layoutHeight}
-            component={
-              <Text onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)} 
-              style={[styles.spText,{marginTop:0}]}>
-                Please provide the establishment date of your company.{" "}
-                <Text style={{ fontWeight: "700" }}>
-                  If you are an individual
-                </Text>{" "}
-                without a company, please enter the date you started working as
-                a freelancer or the current date. Note that this field cannot be
-                left blank, as it helps us connect you with the right buyers and
-                sellers. Thanks for choosing our marketplace, and we look
-                forward to helping you succeed!
-              </Text>
+            content={
+              isBn ? (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  আপনার কোম্পানির প্রতিষ্ঠার তারিখ প্রদান করুন৷ আপনি যদি
+                  কোম্পানি ছাড়া একজন{" "}
+                  <Text style={{ fontWeight: "700" }}>ফ্রিল্যান্সার</Text> হন,
+                  তাহলে অনুগ্রহ করে আপনি যে তারিখে ফ্রিল্যান্সার হিসেবে কাজ শুরু
+                  করেছেন বা আজকের তারিখটি লিখুন৷ মনে রাখবেন এই জায়গাটা ফাঁকা
+                  রাখা যাবে না, কারণ এটি আপনাকে সঠিক ক্রেতা এবং বিক্রেতাদের সাথে
+                  সম্পর্ক তৈরি করতে আমাদের সাহায্য করে৷। আমাদের মার্কেটপ্লেস
+                  বেছে নেওয়ার জন্য ধন্যবাদ, এবং আমরা আপনাকে সফল হতে সাহায্য
+                  করার জন্য সর্বদা প্রস্তুত!
+                </Text>
+              ) : (
+                <Text
+                  onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+                  style={[styles.spText, { marginTop: 0 }]}
+                >
+                  Please provide the establishment date of your company.{" "}
+                  <Text style={{ fontWeight: "700" }}>
+                    If you are an individual
+                  </Text>{" "}
+                  without a company, please enter the date you started working
+                  as a freelancer or the current date. Note that this field
+                  cannot be left blank, as it helps us connect you with the
+                  right buyers and sellers. Thanks for choosing our marketplace,
+                  and we look forward to helping you succeed!
+                </Text>
+              )
             }
           />
           <Text style={[styles.headLine, { marginTop: 36 }]}>
-            Established/starting date
+            {isBn ? "প্রতিষ্ঠিত/শুরু করার তারিখ" : "Established/starting date"}
           </Text>
-          <CustomInput value={date} onChange={(e)=>{
-            if(e>new Date()){
-              setDate(new Date())
-              return
-            }
-            setDate(e)
-          }} />
+          <CustomInput
+            value={date}
+            onChange={(e) => {
+              if (e > new Date()) {
+                setDate(new Date());
+                return;
+              }
+              setDate(e);
+            }}
+          />
           <IconButton
             active={date ? true : false}
             disabled={date ? false : true}
@@ -116,22 +145,22 @@ export default function Established({ navigation, route }) {
                   year: date,
                 },
               });
-              navigation.navigate("WorkingTime",{
-                data:{
+              navigation.navigate("WorkingTime", {
+                data: {
                   serviceCenterName: data.serviceCenterName,
                   providerName: data.providerName,
                   gender: data.gender,
                   position: data.position,
-                  numberOfTeam:data.numberOfTeam,
-                  established:date,
-                  serviceCategory:data?.serviceCategory,
-                  skills:data?.skills,
-                  facilities:data?.facilities,
-                }
+                  numberOfTeam: data.numberOfTeam,
+                  established: date,
+                  serviceCategory: data?.serviceCategory,
+                  skills: data?.skills,
+                  facilities: data?.facilities,
+                },
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>
@@ -167,17 +196,19 @@ const CustomInput = ({ value, onChange }) => {
         height: 45,
         borderRadius: 4,
         marginTop: 24,
-      }}>
+      }}
+    >
       <SvgXml xml={dateIcon} />
       <Text
         style={{
           marginLeft: 10,
           fontSize: 14,
           color: "#767676",
-        }}>
+        }}
+      >
         {value ? serverTimeToLocalDate(value) : "dd/mm/yyyy"}
       </Text>
-      <DateTimePickerModal 
+      <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
         themeVariant="light"

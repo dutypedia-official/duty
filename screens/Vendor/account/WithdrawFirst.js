@@ -16,6 +16,7 @@ import ActivityLoader from "../../../components/ActivityLoader";
 import IconButton from "../../../components/IconButton";
 import Input from "../../../components/Input";
 import RadioButton from "../../../components/RadioButton";
+import useLang from "../../../Hooks/UseLang";
 
 export default function WithdrawFirst({ navigation, route }) {
   const [ownerShipError, setOwnerShipError] = useState();
@@ -40,6 +41,8 @@ export default function WithdrawFirst({ navigation, route }) {
   const vendor = useSelector((state) => state.vendor);
   const [routingNumber, setRoutingNumber] = useState();
   const [routingNumberError, setRoutingNumberError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(id)
   const save = async () => {
     setNameError();
@@ -51,32 +54,48 @@ export default function WithdrawFirst({ navigation, route }) {
     setHolderNameError();
     setRoutingNumberError();
     if (!bankName) {
-      setBankNameError("*Bank name is required");
+      setBankNameError(isBn ? "*ব্যাংক নেম আবশ্যক" : "*Bank name is required");
       return;
     }
     if (!branchName) {
-      setBranchNameError("*Branch name is required");
+      setBranchNameError(
+        isBn ? "*ব্রাঞ্চ নেম আবশ্যক" : "*Branch name is required"
+      );
       return;
     }
     if (!routingNumber) {
-      setRoutingNumberError("*Routing number is required");
+      setRoutingNumberError(
+        isBn ? "*রাওউটিং নম্বর আবশ্যক" : "*Routing number is required"
+      );
       return;
     }
     if (!accountNumber) {
-      setAccountNumberError("*Account Number is required");
+      setAccountNumberError(
+        isBn ? "*অ্যাকাউন্ট নম্বর আবশ্যক" : "*Account Number is required"
+      );
       return;
     }
     if (!holderName) {
-      setHolderNameError("*Account holder name is required");
+      setHolderNameError(
+        isBn
+          ? "*অ্যাকাউন্ট দাতার নাম আবশ্যক"
+          : "*Account holder name is required"
+      );
       return;
     }
 
     if (!name && accountHolder == "Other") {
-      setNameError("*Relationship name is required");
+      setNameError(
+        isBn
+          ? "*সম্পর্কের নাম নির্বাচন করা আবশ্যক"
+          : "*Relationship name is required"
+      );
       return;
     }
     if (!accountHolder) {
-      setAccountHolderError("*Select account holder");
+      setAccountHolderError(
+        isBn ? "*Select account holder" : "*Select account holder"
+      );
       return;
     }
     setLoader(true);
@@ -89,25 +108,25 @@ export default function WithdrawFirst({ navigation, route }) {
       accountHolderName: holderName,
       relation: accountHolder === "Other" ? name : accountHolder,
       routingNumber: routingNumber,
-    }).then((res) => {
-      setLoader(false);
-      navigation.navigate("WithdrawSecond", {
-        data: {
-          bankName: bankName,
-          branchName: branchName,
-          accountNumber: accountNumber,
-          accountHolder: holderName,
-          relation: accountHolder,
-          otherType: name,
-          amount: amount,
-        },
-      });
     })
+      .then((res) => {
+        setLoader(false);
+        navigation.navigate("WithdrawSecond", {
+          data: {
+            bankName: bankName,
+            branchName: branchName,
+            accountNumber: accountNumber,
+            accountHolder: holderName,
+            relation: accountHolder,
+            otherType: name,
+            amount: amount,
+          },
+        });
+      })
       .catch((err) => {
         setLoader(false);
         Alert.alert(err.response.data.msg);
-      })
-      
+      });
   };
   useEffect(() => {
     getBankDetails(user.token, id)
@@ -149,18 +168,22 @@ export default function WithdrawFirst({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
-          <Text style={[styles.smallText, styles.gap1]}>Bank Information</Text>
+          }}
+        >
+          <Text style={[styles.smallText, styles.gap1]}>
+            {isBn ? "ব্যাংকের তথ্য" : "Bank Information"}
+          </Text>
           <Input
             error={bankNameError}
             value={bankName}
             onChange={(e) => setBankName(e)}
-            placeholder={"Bank name"}
+            placeholder={isBn ? "ব্যাংক নেম" : "Bank name"}
             style={[styles.input, styles.gap1]}
           />
 
@@ -168,14 +191,14 @@ export default function WithdrawFirst({ navigation, route }) {
             error={branchNameError}
             value={branchName}
             onChange={(e) => setBranchName(e)}
-            placeholder={"Branch name"}
+            placeholder={isBn ? "ব্রাঞ্চ নেম" : "Branch name"}
             style={[styles.input, styles.gap2]}
           />
           <Input
             error={routingNumberError}
             value={routingNumber}
             onChange={(e) => setRoutingNumber(e)}
-            placeholder={"Routing number"}
+            placeholder={isBn ? "রাওউটিং নম্বর" : "Routing number"}
             style={[styles.input, styles.gap2]}
           />
 
@@ -183,32 +206,34 @@ export default function WithdrawFirst({ navigation, route }) {
             error={accountNumberError}
             value={accountNumber}
             onChange={setAccountNumber}
-            placeholder={"Account Number"}
+            placeholder={isBn ? "অ্যাকাউন্ট নম্বর" : "Account Number"}
             style={[styles.input, styles.gap2]}
           />
           <Input
             error={holderNameError}
             value={holderName}
             onChange={setHolderName}
-            placeholder={"Account holder name"}
+            placeholder={isBn ? "অ্যাকাউন্ট দাতার নাম" : "Account holder name"}
             style={[styles.input, styles.gap2]}
           />
           <Text style={[styles.smallText, styles.gap1]}>
-            Realation with Account holder ?
+            {isBn
+              ? "অ্যাকাউন্ট দাতার সাথে আপনার সম্পর্ক কি ?"
+              : "Realation with Account holder ?"}
           </Text>
           <View style={styles.gap1} />
           <RadioButton
             value={accountHolder == "Myself" ? true : false}
             onChange={() => setAccountHolder("Myself")}
             dark={true}
-            title={"Myself"}
+            title={isBn ? "আমি নিজে" : "Myself"}
             style={styles.radio}
           />
           <RadioButton
             value={accountHolder == "Father" ? true : false}
             onChange={() => setAccountHolder("Father")}
             dark={true}
-            title={"Father"}
+            title={isBn ? "বাবা" : "Father"}
             style={styles.radio}
           />
           <RadioButton
@@ -216,41 +241,43 @@ export default function WithdrawFirst({ navigation, route }) {
             onChange={() => setAccountHolder("Mother")}
             style={styles.radio}
             dark={true}
-            title={"Mother"}
+            title={isBn ? "মা" : "Mother"}
           />
           <RadioButton
             value={accountHolder == "Brother" ? true : false}
             onChange={() => setAccountHolder("Brother")}
             style={styles.radio}
             dark={true}
-            title={"Brother"}
+            title={isBn ? "ভাই" : "Brother"}
           />
           <RadioButton
             value={accountHolder == "Sister" ? true : false}
             onChange={() => setAccountHolder("Sister")}
             style={styles.radio}
             dark={true}
-            title={"Sister"}
+            title={isBn ? "বোন" : "Sister"}
           />
           <RadioButton
             value={accountHolder == "Other" ? true : false}
             onChange={() => setAccountHolder("Other")}
             style={styles.radio}
             dark={true}
-            title={"Other"}
+            title={isBn ? "অন্যকিছু" : "Other"}
           />
           {accountHolder == "Other" && (
             <Input
               error={nameError}
               value={name}
               onChange={setName}
-              placeholder={"Type Relation name"}
+              placeholder={isBn ? "সম্পর্কটির নাম লিখুন" : "Type Relation name"}
               style={[styles.input, styles.gap1]}
             />
           )}
           {accountHolderError && (
             <Text style={[styles.smallText, { color: "red", marginTop: 14 }]}>
-              Select relationship
+              {isBn
+                ? "অ্যাকাউন্ট দাতার সাথে আপনার সম্পর্ক কি?"
+                : "Select relationship"}
             </Text>
           )}
           <IconButton
@@ -265,7 +292,7 @@ export default function WithdrawFirst({ navigation, route }) {
             style={{
               marginVertical: 20,
             }}
-            title={"Save and continue"}
+            title={isBn ? "সংরক্ষণ করে এগিয়ে যান" : "Save and continue"}
           />
         </View>
       </ScrollView>

@@ -12,9 +12,17 @@ import { getOnlineUsers, getSocket } from "../../Class/socket";
 import ActivityLoader from "../../components/ActivityLoader";
 import ChatHeader from "../../components/ChatHeader";
 import SearchBar from "../../components/SearchBar";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
-export default function ContactList({ navigation, seller, onClose, data ,bottomRef,setIndex}) {
+export default function ContactList({
+  navigation,
+  seller,
+  onClose,
+  data,
+  bottomRef,
+  setIndex,
+}) {
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 300);
   const translateY = diffClamp.interpolate({
@@ -29,6 +37,8 @@ export default function ContactList({ navigation, seller, onClose, data ,bottomR
   const isFocused = useIsFocused();
   const chatSearchRef = useSelector((state) => state.chatSearchRef);
   //const searchX=route?.params?.search;
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (user && vendor) {
@@ -70,7 +80,8 @@ export default function ContactList({ navigation, seller, onClose, data ,bottomR
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityLoader />
       </View>
     );
@@ -79,15 +90,16 @@ export default function ContactList({ navigation, seller, onClose, data ,bottomR
     <View
       style={{
         paddingHorizontal: 20,
-        flex:1
-      }}>
+        flex: 1,
+      }}
+    >
       {Members &&
         Members.map((doc, i) => (
           <ChatMemberCart
             data={data}
             onPress={() => {
-              bottomRef?.current.close()
-              setIndex(-1)
+              bottomRef?.current.close();
+              setIndex(-1);
               // if (onClose) {
               //   onClose({
               //     data: {
@@ -102,7 +114,7 @@ export default function ContactList({ navigation, seller, onClose, data ,bottomR
                   users: [doc],
                 },
                 username: doc.user.username,
-                serviceId:doc.serviceId
+                serviceId: doc.serviceId,
               });
             }}
             userId={doc.user.id}
@@ -114,15 +126,22 @@ export default function ContactList({ navigation, seller, onClose, data ,bottomR
         ))}
 
       {Members && Members.length == 0 && (
-        <View style={[customStyle.fullBox,{minHeight:height-250}]}>
+        <View style={[customStyle.fullBox, { minHeight: height - 250 }]}>
           {/* <SvgXml xml={noResult} /> */}
           <Text
             style={{
               marginVertical: 20,
               textAlign: "center",
               fontSize: 24,
-            }}>
-            {chatSearchRef ? "Ops, No Result" : "No Member Added"}
+            }}
+          >
+            {chatSearchRef
+              ? isBn
+                ? "কোনও রেজাল্ট পাওয়া যায়নি"
+                : "Ops, No Result"
+              : isBn
+              ? "কোনও সদস্য নেই"
+              : "No Member Added"}
           </Text>
         </View>
       )}
@@ -132,11 +151,11 @@ export default function ContactList({ navigation, seller, onClose, data ,bottomR
             marginVertical: 20,
             textAlign: "center",
             fontSize: 16,
-          }}>
+          }}
+        >
           Ops! Please logged in as ''Vendor''
         </Text>
       )}
-      
     </View>
   );
 }
@@ -275,4 +294,3 @@ const noResult = `<svg width="165" height="216" viewBox="0 0 165 216" fill="none
 <path d="M66.1248 95.9929C65.9432 97.0175 65.5643 97.6847 64.9247 97.8118C64.151 97.9706 63.5509 97.5655 63.2903 96.9301C63.0061 96.2471 62.8008 95.4449 62.8718 94.7221C62.9903 93.5466 64.2141 93.1574 65.0274 94.0391C65.5248 94.5712 65.7695 95.3337 66.1248 95.9929Z" fill="#F5F2EB"/>
 </svg>
 `;
-

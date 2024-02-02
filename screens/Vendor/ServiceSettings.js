@@ -81,7 +81,8 @@ const ServiceSettings = ({ navigation, route }) => {
     <View
       style={{
         height: 500,
-      }}>
+      }}
+    >
       <View style={{ backgroundColor: primaryColor }}>
         {/* <Text
           style={{
@@ -118,7 +119,8 @@ const ServiceSettings = ({ navigation, route }) => {
               zIndex: 100,
               width: "100%",
               backgroundColor: "#ffffff",
-            }}>
+            }}
+          >
             <ActivityLoader />
           </View>
         )}
@@ -132,7 +134,8 @@ const ServiceSettings = ({ navigation, route }) => {
               zIndex: 100,
               width: "100%",
               backgroundColor: "#ffffff",
-            }}>
+            }}
+          >
             <ActivityLoader />
           </View>
         )}
@@ -181,7 +184,8 @@ const Cart = ({ title, value, i, data, setLoader }) => {
     <View
       style={{
         flexDirection: "row",
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -192,13 +196,15 @@ const Cart = ({ title, value, i, data, setLoader }) => {
           borderBottomColor: "#e5e5e5",
           paddingVertical: 10,
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 15,
             fontFamily: "Poppins-Medium",
             marginLeft: 5,
-          }}>
+          }}
+        >
           {title}
         </Text>
         <View>

@@ -253,15 +253,16 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
   };
 
   const loadData = (res) => {
-    setData(res.data.order)
-    getOfflineOrders(user.token,vendor.service.id).then(res=>{
-      dispatch(setOfflineOrders(res.data.orders))
-      setLoader(false);
-    }).catch(err=>{
-      setLoader(false);
-      console.error(err.response.data.msg)
-    })
-    
+    setData(res.data.order);
+    getOfflineOrders(user.token, vendor.service.id)
+      .then((res) => {
+        dispatch(setOfflineOrders(res.data.orders));
+        setLoader(false);
+      })
+      .catch((err) => {
+        setLoader(false);
+        console.error(err.response.data.msg);
+      });
   };
   const loadDataSubs = async () => {
     if (index == null) {
@@ -283,13 +284,15 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
     } catch (e) {
       console.warn(e.message);
     }
-    getOfflineOrders(user.token,vendor.service.id).then(res=>{
-      dispatch(setOfflineOrders(res.data.orders))
-      setLoader(false);
-    }).catch(err=>{
-      setLoader(false);
-      console.error(err.response.data.msg)
-    })
+    getOfflineOrders(user.token, vendor.service.id)
+      .then((res) => {
+        dispatch(setOfflineOrders(res.data.orders));
+        setLoader(false);
+      })
+      .catch((err) => {
+        setLoader(false);
+        console.error(err.response.data.msg);
+      });
   };
   const loadDataInstallment = async () => {
     if (index == null) {
@@ -311,13 +314,15 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
     } catch (e) {
       console.warn(e.message);
     }
-    getOfflineOrders(user.token,vendor.service.id).then(res=>{
-      dispatch(setOfflineOrders(res.data.orders))
-      setLoader(false);
-    }).catch(err=>{
-      setLoader(false);
-      console.error(err.response.data.msg)
-    })
+    getOfflineOrders(user.token, vendor.service.id)
+      .then((res) => {
+        dispatch(setOfflineOrders(res.data.orders));
+        setLoader(false);
+      })
+      .catch((err) => {
+        setLoader(false);
+        console.error(err.response.data.msg);
+      });
   };
 
   if (Loader) {
@@ -331,7 +336,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
     <SafeAreaView
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <ScrollView ref={ref} showsVerticalScrollIndicator={false}>
         <View
           style={{
@@ -339,7 +345,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             marginVertical: 20,
             flexDirection: "row",
             alignItems: "center",
-          }}>
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               if (userInfo) {
@@ -360,7 +367,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               alignItems: "center",
               borderColor: "#e5e5e5",
               overflow: "hidden",
-            }}>
+            }}
+          >
             {userInfo && userInfo.profilePhoto ? (
               <Image
                 style={{
@@ -376,19 +384,19 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
           <View
             style={{
               marginLeft: 15,
-            }}>
+            }}
+          >
             <Text
               numberOfLines={1}
               style={{
                 fontSize: width < 350 ? 16 : 18,
                 fontFamily: "Poppins-Medium",
                 color: textColor,
-              }}>
+              }}
+            >
               {userInfo ? `${userInfo.name}` : "--"}{" "}
             </Text>
-            <Text>
-              {userInfo ? `${userInfo.gender.toUpperCase()}` : "(-)"}
-            </Text>
+            <Text>{userInfo ? `${userInfo.gender.toUpperCase()}` : "(-)"}</Text>
           </View>
         </View>
         <View style={{ flexDirection: "row", marginHorizontal: 20 }}>
@@ -397,7 +405,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             style={[
               styles.view,
               { borderBottomColor: backgroundColor, flex: 2 },
-            ]}>
+            ]}
+          >
             {data && (
               <Text
                 style={{
@@ -406,7 +415,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   fontFamily: "Poppins-Medium",
                   fontSize: width < 350 ? 14 : 16,
                   marginTop: 0,
-                }}>
+                }}
+              >
                 {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
                 Service
               </Text>
@@ -421,27 +431,31 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             paddingHorizontal: 10,
             marginVertical: 20,
             flexDirection: "row",
-          }}>
+          }}
+        >
           <View>
             <Text
               style={{
                 fontSize: width < 350 ? 14 : 16,
                 fontFamily: "Poppins-Medium",
                 color: textColor,
-              }}>
+              }}
+            >
               Order Id: {data ? data.id : "Unknown Id"}
             </Text>
           </View>
           <View
             style={{
               justifyContent: "center",
-            }}>
+            }}
+          >
             <View
               style={{
                 width: width / 3,
                 height: 50,
                 overflow: "hidden",
-              }}>
+              }}
+            >
               <Barcode
                 height="50"
                 width="150"
@@ -458,7 +472,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 color: textColor,
                 width: width / 3,
                 marginLeft: 5,
-              }}>
+              }}
+            >
               {data
                 ? data.id.split("").map((doc, i) => {
                     return `${doc}`;
@@ -473,13 +488,15 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               flexDirection: "row",
               justifyContent: "space-between",
               marginTop: 20,
-            }}>
+            }}
+          >
             <Text
               style={{
                 fontSize: width < 350 ? 18 : 20,
                 fontFamily: "Poppins-Medium",
                 color: textColor,
-              }}>
+              }}
+            >
               Service/Item Name
             </Text>
 
@@ -489,7 +506,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 fontFamily: "Poppins-Medium",
                 color: textColor,
                 textAlign: "center",
-              }}>
+              }}
+            >
               Date:{" "}
               {data && data.createdAt
                 ? stringDate(data.createdAt)
@@ -507,16 +525,18 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             style={[
               styles.smallText,
               { fontSize: width < 350 ? 14 : 16, marginBottom: 5 },
-            ]}>
+            ]}
+          >
             Add What Service Do You Want To Sell
           </Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-          {ListData && ListData.length > 0 && (
+            {ListData && ListData.length > 0 && (
               <Text
                 style={{
                   color: "#606060",
                   fontSize: width < 350 ? 14 : 16,
-                }}>
+                }}
+              >
                 {ListData.map((doc, i) => {
                   return i == 0 ? doc.data.title : `, ${doc.data.title}`;
                 })}
@@ -524,7 +544,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             )}
             {ListData.length == 0 && (
               <Text
-                style={{ color: "#606060", fontSize: width < 350 ? 16 : 18 }}>
+                style={{ color: "#606060", fontSize: width < 350 ? 16 : 18 }}
+              >
                 N/A
               </Text>
             )}
@@ -607,7 +628,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 fontFamily: "Poppins-Medium",
                 color: textColor,
                 marginVertical: 10,
-              }}>
+              }}
+            >
               Extra Facilities
             </Text>
 
@@ -615,7 +637,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
-              }}>
+              }}
+            >
               {data &&
               data.status == "WAITING_FOR_ACCEPT" &&
               data.type != "ONETIME" &&
@@ -658,7 +681,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                         style={{
                           width: "100%",
                           marginTop: 5,
-                        }}>{`${i + 1}. ${doc.title}`}</Text>
+                        }}
+                      >{`${i + 1}. ${doc.title}`}</Text>
                     )
                   )}
               {FacilitiesError && (
@@ -676,13 +700,15 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               paddingVertical: 20,
               marginHorizontal: 10,
               marginTop: 20,
-            }}>
+            }}
+          >
             <Text
               style={{
                 fontSize: width < 350 ? 18 : 20,
                 color: textColor,
                 fontFamily: "Poppins-Medium",
-              }}>
+              }}
+            >
               Facilities
             </Text>
             {/* <View style={{ marginTop: 10 }}>
@@ -709,12 +735,14 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             )}
           </View> */}
             <View
-              style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 10 }}>
+              style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 10 }}
+            >
               {Facilities && Facilities.length > 0 ? (
                 <Text
                   style={{
                     fontSize: width < 350 ? 14 : 16,
-                  }}>
+                  }}
+                >
                   {Facilities.map((doc, i) => {
                     return `${i == 0 ? "" : ", "}${doc.title}`;
                   })}
@@ -723,7 +751,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 <Text
                   style={{
                     color: "#505050",
-                  }}>
+                  }}
+                >
                   N/A
                 </Text>
               )}
@@ -741,7 +770,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               paddingVertical: 20,
               marginHorizontal: 20,
               marginTop: 20,
-            }}>
+            }}
+          >
             <Text style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}>
               Price
             </Text>
@@ -762,18 +792,22 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               marginVertical: 15,
               justifyContent: "center",
               alignItems: "center",
-            }}>
+            }}
+          >
             <Pressable
               style={{
                 alignItems: "flex-end",
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "flex-end",
-                }}>
+                }}
+              >
                 <Text
-                  style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}>
+                  style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}
+                >
                   {installmentData
                     ? installmentData.installmentType.replace(/ly/g, "")
                     : ""}
@@ -788,7 +822,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                       width: 90,
                       textAlign: "right",
                     },
-                  ]}>
+                  ]}
+                >
                   {installmentData
                     ? (
                         installmentData.totalAmount /
@@ -804,7 +839,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                       fontSize: 16,
                       color: "#666666",
                       marginVertical: 5,
-                    }}>
+                    }}
+                  >
                     Advanced Payment
                   </Text>
                   <Text
@@ -814,7 +850,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                       marginVertical: 5,
                       textAlign: "right",
                       width: 90,
-                    }}>
+                    }}
+                  >
                     {installmentData?.advancedPaymentAmount}৳
                   </Text>
                 </View>
@@ -832,7 +869,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "flex-end",
-                }}>
+                }}
+              >
                 <Text style={styles.newText}>Total</Text>
 
                 <Text
@@ -842,7 +880,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                       width: 90,
                       textAlign: "right",
                     },
-                  ]}>
+                  ]}
+                >
                   {installmentData?.totalAmount}৳
                 </Text>
               </View>
@@ -863,18 +902,22 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               marginVertical: 15,
               justifyContent: "center",
               alignItems: "center",
-            }}>
+            }}
+          >
             <Pressable
               style={{
                 alignItems: "flex-end",
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "flex-end",
-                }}>
+                }}
+              >
                 <Text
-                  style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}>
+                  style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}
+                >
                   {data ? data.subsData.subscriptionType : ""}
                 </Text>
 
@@ -886,7 +929,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                       width: 80,
                       textAlign: "right",
                     },
-                  ]}>
+                  ]}
+                >
                   {data ? data.subsData.amount + "৳" : "Pice is empty"}
                 </Text>
               </View>
@@ -898,7 +942,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                         fontSize: 16,
                         color: "#666666",
                         marginVertical: 5,
-                      }}>
+                      }}
+                    >
                       {data.subsData.otherChargeName}
                     </Text>
                     <Text
@@ -908,7 +953,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                         marginVertical: 5,
                         textAlign: "right",
                         width: 80,
-                      }}>
+                      }}
+                    >
                       {data.subsData.otherChargeAmount}৳
                     </Text>
                   </View>
@@ -925,7 +971,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "flex-end",
-                    }}>
+                    }}
+                  >
                     <Text style={styles.newText}>Total</Text>
 
                     <Text
@@ -935,7 +982,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                           width: 80,
                           textAlign: "right",
                         },
-                      ]}>
+                      ]}
+                    >
                       {data.subsData.amount +
                         parseInt(
                           data.subsData.otherChargeAmount
@@ -965,12 +1013,14 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               paddingVertical: 0,
               marginHorizontal: 20,
               marginTop: 20,
-            }}>
+            }}
+          >
             <Text
               style={[
                 styles.text,
                 { fontSize: width < 350 ? 18 : 20, marginBottom: 10 },
-              ]}>
+              ]}
+            >
               Total Installment
             </Text>
             <Text style={[styles.newText, { marginBottom: 20 }]}>
@@ -989,12 +1039,14 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               paddingVertical: 0,
               marginHorizontal: 20,
               marginTop: 20,
-            }}>
+            }}
+          >
             <Text
               style={[
                 styles.text,
                 { fontSize: width < 350 ? 18 : 20, marginBottom: 10 },
-              ]}>
+              ]}
+            >
               Duration
             </Text>
             <Text style={[styles.newText, { marginBottom: 20 }]}>
@@ -1018,7 +1070,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             borderBottomColor: "#C0FFD7",
             paddingVertical: 20,
             marginHorizontal: 20,
-          }}>
+          }}
+        >
           <Text style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}>
             Delivery Date
           </Text>
@@ -1027,7 +1080,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               flexDirection: "row",
               marginTop: 10,
               paddingHorizontal: 20,
-            }}>
+            }}
+          >
             <Text style={[styles.smallText, { flex: 0 }]}>
               {data
                 ? serverTimeToLocalDate(data.deliveryDateFrom)
@@ -1065,20 +1119,23 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               style={{
                 width: "100%",
                 alignItems: "flex-end",
-              }}>
+              }}
+            >
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("SubscriptionDates", {
                     subsData: data.subsData,
                     date: data.deliveryDateFrom,
                   });
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 14,
                     marginTop: 10,
                     textDecorationLine: "underline",
-                  }}>
+                  }}
+                >
                   View all delivery date
                 </Text>
               </TouchableOpacity>
@@ -1094,7 +1151,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               borderBottomColor: "#C0FFD7",
               paddingVertical: 20,
               marginHorizontal: 20,
-            }}>
+            }}
+          >
             <Text style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}>
               Payment Date
             </Text>
@@ -1103,14 +1161,16 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 flexDirection: "row",
                 marginTop: 10,
                 paddingHorizontal: 20,
-              }}>
+              }}
+            >
               <Text style={[styles.smallText, { flex: 0 }]}>
                 {data
                   ? serverTimeToLocalDate(data.deliveryDateFrom)
                   : "Unavailable Date"}{" "}
               </Text>
               <Text
-                style={[styles.smallText, { flex: 0, marginHorizontal: 10 }]}>
+                style={[styles.smallText, { flex: 0, marginHorizontal: 10 }]}
+              >
                 To
               </Text>
               {data && data.subsData ? (
@@ -1141,20 +1201,23 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               style={{
                 width: "100%",
                 alignItems: "flex-end",
-              }}>
+              }}
+            >
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("SubscriptionDates", {
                     subsData: data.subsData,
                     date: data.deliveryDateFrom,
                   });
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 14,
                     marginTop: 10,
                     textDecorationLine: "underline",
-                  }}>
+                  }}
+                >
                   View all payment date
                 </Text>
               </TouchableOpacity>
@@ -1169,7 +1232,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             borderBottomColor: "#C0FFD7",
             paddingVertical: 20,
             marginHorizontal: 20,
-          }}>
+          }}
+        >
           <Text style={[styles.text, { fontSize: width < 350 ? 18 : 20 }]}>
             Payment Status
           </Text>
@@ -1192,13 +1256,15 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 borderRadius: 15,
                 paddingHorizontal: 15,
                 marginVertical: 10,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: "white",
                   fontSize: width < 350 ? 14 : 15,
                   fontFamily: "Poppins-Medium",
-                }}>
+                }}
+              >
                 {subsOrder && subsOrder.paid && subsOrder.status != "REFUNDED"
                   ? "Paid"
                   : subsOrder &&
@@ -1229,13 +1295,15 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 borderRadius: 15,
                 paddingHorizontal: 15,
                 marginVertical: 10,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: "white",
                   fontSize: width < 350 ? 14 : 15,
                   fontFamily: "Poppins-Medium",
-                }}>
+                }}
+              >
                 {installmentOrder &&
                 installmentOrder.paid &&
                 installmentOrder.status != "REFUNDED"
@@ -1264,13 +1332,15 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 borderRadius: 15,
                 paddingHorizontal: 15,
                 marginVertical: 10,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: "white",
                   fontSize: width < 350 ? 14 : 15,
                   fontFamily: "Poppins-Medium",
-                }}>
+                }}
+              >
                 {data && data.paid && data.status != "REFUNDED"
                   ? "Paid"
                   : data && data.paid && data.status == "REFUNDED"
@@ -1288,7 +1358,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             borderBottomColor: "#C0FFD7",
             paddingVertical: 20,
             marginHorizontal: 20,
-          }}>
+          }}
+        >
           <Text style={[styles.text, { fontSize: width < 350 ? 16 : 18 }]}>
             Service Status
           </Text>
@@ -1316,7 +1387,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
             borderBottomColor: "#C0FFD7",
             paddingVertical: 20,
             marginHorizontal: 20,
-          }}>
+          }}
+        >
           <Text style={[styles.text, { fontSize: width < 350 ? 20 : 22 }]}>
             Introduction
           </Text>
@@ -1332,7 +1404,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                 width: "100%",
                 flexDirection: "row",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <AntDesign style={{}} name="file1" size={20} color="black" />
               <Text
                 style={{
@@ -1341,7 +1414,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   marginRight: 20,
                   marginVertical: 5,
                   marginLeft: 10,
-                }}>
+                }}
+              >
                 {data.attachment.substring(
                   data.attachment.lastIndexOf("/") + 1
                 )}
@@ -1365,7 +1439,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                     style={{
                       fontSize: width < 350 ? 14 : 16,
                       color: textColor,
-                    }}>
+                    }}
+                  >
                     When Delivered The Order Then Click
                   </Text>
                 )}
@@ -1408,23 +1483,31 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   />
                 )}
             </View>
-            
+
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-end",
                 flexWrap: "wrap",
-              }}>
+              }}
+            >
               {subsOrder.status === "WAITING_FOR_PAYMENT" && (
                 <IconButton
                   onPress={() => {
                     //console.log(subsOrder)
-                    makePaymentOfflineSubscription(user.token,data.id,data.subsData.subscriptionType,
-                      subsOrder.dateFrom,subsOrder.dateTo).then(res=>{
-                        loadDataSubs()
-                      }).catch(err=>{
-                        console.warn(err.response.data.msg)
+                    makePaymentOfflineSubscription(
+                      user.token,
+                      data.id,
+                      data.subsData.subscriptionType,
+                      subsOrder.dateFrom,
+                      subsOrder.dateTo
+                    )
+                      .then((res) => {
+                        loadDataSubs();
                       })
+                      .catch((err) => {
+                        console.warn(err.response.data.msg);
+                      });
                   }}
                   style={{
                     backgroundColor: "#4ADE80",
@@ -1462,7 +1545,7 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                               cancelOfflineSubs(user.token, subsOrder.id)
                                 .then((res) => {
                                   //console.log(res.data);
-                                  loadDataSubs()
+                                  loadDataSubs();
                                 })
                                 .catch((err) => {
                                   setLoader(false);
@@ -1500,7 +1583,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   textAlign: "center",
                   marginHorizontal: 20,
                   marginVertical: 20,
-                }}>
+                }}
+              >
                 Order Refund
               </Text>
             )}
@@ -1512,33 +1596,37 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   fontFamily: "Poppins-Medium",
                   textAlign: "center",
                   marginVertical: 20,
-                }}>
+                }}
+              >
                 Order Completed
               </Text>
             )}
           </>
         ) : type == "INSTALLMENT" && installmentOrder ? (
           <>
-            
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-end",
                 flexWrap: "wrap",
-              }}>
-                {installmentOrder &&
+              }}
+            >
+              {installmentOrder &&
                 (installmentOrder.status == "ACCEPTED" ||
                   installmentOrder.status == "WAITING_FOR_PAYMENT") && (
                   <IconButton
                     onPress={() => {
                       setLoader(true);
                       //console.log(installmentData)
-                      if (index == 0&&installmentData.advancedPayment) {
-                        makeOfflineAdvancedPaymentInstallment(user.token, data.id)
+                      if (index == 0 && installmentData.advancedPayment) {
+                        makeOfflineAdvancedPaymentInstallment(
+                          user.token,
+                          data.id
+                        )
                           .then((res) => {
                             if (res) {
-                              Alert.alert("Payment success")
-                              
+                              Alert.alert("Payment success");
+
                               //console.log(res.data)
                               loadDataInstallment(
                                 res.data.receiverId,
@@ -1547,8 +1635,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                             }
                           })
                           .catch((err) => {
-                            Alert.alert(err.response.data.msg)
-                            
+                            Alert.alert(err.response.data.msg);
+
                             setLoader(false);
                           });
                         return;
@@ -1562,7 +1650,7 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                       )
                         .then((res) => {
                           if (res) {
-                            Alert.alert("Payment success")
+                            Alert.alert("Payment success");
                             //console.log(res.data)
                             loadDataInstallment(
                               res.data.receiverId,
@@ -1571,8 +1659,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                           }
                         })
                         .catch((err) => {
-                          Alert.alert(err.response.data.msg)
-                          
+                          Alert.alert(err.response.data.msg);
+
                           setLoader(false);
                         });
                     }}
@@ -1585,7 +1673,7 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                       marginRight: 0,
                       width: 120,
                       height: 40,
-                      marginRight:20
+                      marginRight: 20,
                     }}
                     title="Make Paid"
                   />
@@ -1654,7 +1742,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   textAlign: "center",
                   marginHorizontal: 20,
                   marginVertical: 20,
-                }}>
+                }}
+              >
                 Order Refund
               </Text>
             )}
@@ -1666,7 +1755,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   fontFamily: "Poppins-Medium",
                   textAlign: "center",
                   marginVertical: 20,
-                }}>
+                }}
+              >
                 Order Completed
               </Text>
             )}
@@ -1686,7 +1776,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                     style={{
                       fontSize: width < 350 ? 14 : 16,
                       color: textColor,
-                    }}>
+                    }}
+                  >
                     When completed the order click complete
                   </Text>
                 )}
@@ -1702,11 +1793,13 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                     onPress={() => {
                       try {
                         setLoader(true);
-                        completeOfflineOrderDelivery(user.token,data.id).then(res=>{
-                          loadData(res)
-                        }).catch(err=>{
-                          console.error(err.response.data.msg)
-                        })
+                        completeOfflineOrderDelivery(user.token, data.id)
+                          .then((res) => {
+                            loadData(res);
+                          })
+                          .catch((err) => {
+                            console.error(err.response.data.msg);
+                          });
                       } catch (e) {
                         console.warn(e.message);
                       }
@@ -1726,21 +1819,24 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   />
                 )}
             </View>
-            
+
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-end",
                 flexWrap: "wrap",
-              }}>
+              }}
+            >
               {data.status === "ACCEPTED" && (
                 <IconButton
                   onPress={() => {
-                    makeOfflinePayment(user.token,data.id).then(res=>{
-                      loadData(res)
-                    }).catch(err=>{
-                      console.error(err.response.data.msg)
-                    })
+                    makeOfflinePayment(user.token, data.id)
+                      .then((res) => {
+                        loadData(res);
+                      })
+                      .catch((err) => {
+                        console.error(err.response.data.msg);
+                      });
                   }}
                   style={{
                     backgroundColor: "#4ADE80",
@@ -1845,7 +1941,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                     color: backgroundColor,
                     textAlign: "center",
                     marginBottom: 30,
-                  }}>
+                  }}
+                >
                   You Requested for extra time
                 </Text>
               )}
@@ -1855,22 +1952,26 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
               isVisible={Refound}
               mode="date"
               onConfirm={(e) => {
-                
                 if (dateDifference(data.deliveryDateTo, e) > 0) {
                   setRefoundDate(e);
                   try {
                     setRefound(false);
                     setLoader(true);
-                    changeOfflineOrderDateDelivery(user.token,data.id,dateConverter(e)).then(res=>{
-                      loadData(res)
-                    }).catch(err=>{
-                      setLoader(false);
-                      console.error(err.response.data.msg)
-                    })
+                    changeOfflineOrderDateDelivery(
+                      user.token,
+                      data.id,
+                      dateConverter(e)
+                    )
+                      .then((res) => {
+                        loadData(res);
+                      })
+                      .catch((err) => {
+                        setLoader(false);
+                        console.error(err.response.data.msg);
+                      });
                   } catch (err) {
                     console.warn(err.message);
                   }
-                  
                 } else {
                   setRefound(false);
                   Alert.alert(
@@ -1892,7 +1993,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   textAlign: "center",
                   marginHorizontal: 20,
                   marginVertical: 20,
-                }}>
+                }}
+              >
                 Order Refund
               </Text>
             )}
@@ -1904,7 +2006,8 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
                   fontFamily: "Poppins-Medium",
                   textAlign: "center",
                   marginVertical: 20,
-                }}>
+                }}
+              >
                 Order Completed
               </Text>
             )}

@@ -34,6 +34,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import PageChip from "./components/PageChip";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function Location({ navigation, route }) {
   const businessForm = useSelector((state) => state.businessForm);
@@ -52,6 +54,8 @@ export default function Location({ navigation, route }) {
   const [select, setSelect] = useState();
   const [districtError, setDistrictError] = useState();
   const [areaError, setAreaError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   // variables
   const snapPoints = useMemo(() => ["70%"], []);
@@ -77,14 +81,16 @@ export default function Location({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <PageChip currentPage={12} totalPage={14} />
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <Image
             style={{
               width: width - 40,
@@ -97,38 +103,52 @@ export default function Location({ navigation, route }) {
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
               }}
               xml={icon}
             />
-            <Text style={[styles.headLine, { flex: 1 }]}>Tips for address</Text>
+            <Text style={[styles.headLine, { flex: 1 }]}>
+              {isBn ? "ঠিকানার অ্যাড করার জন্য টিপস:" : "Tips for address"}
+            </Text>
           </View>
-          <ViewMore
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            width={142}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={[styles.spText, { marginTop: 0 }]}>
-                Set Your Address: As a seller, you may need to provide your
-                address for internal purposes. If you are a company, please
-                provide your business address. If you are an individual without
-                a physical service center, you can provide your current
-                location. Please note that your address will not be visible to
-                buyers, it will only be used for internal purposes. day, please
-                enter your preferred working hours instead. This will help
-                buyers determine whether your services fit their needs.
-              </Text>
+            content={
+              isBn ? (
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  আপনার ঠিকানা সেট করুন: একজন বিক্রেতা হিসাবে, আপনাকে ইন্টারনাল
+                  কাজের জন্য আপনার ঠিকানা দিতে হবে৷ আপনার যদি একটি কোম্পানি থাকে
+                  তাহলে আপনার কোম্পানির ঠিকানা প্রদান করুন৷ আপনি যদি কোনও
+                  ফিজিক্যাল সার্ভিস সেন্টার ছাড়াই একজন ব্যক্তি হন তবে আপনি
+                  আপনার বর্তমান ঠিকানা দিতে পারেন৷ দয়া করে মনে রাখবেন যে আপনার
+                  ঠিকানা ক্রেতাদের দেখানো হবে না, এটি শুধুমাত্র ইন্টারনাল
+                  উদ্দেশ্যে ব্যবহার করা হবে৷
+                </Text>
+              ) : (
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  Set Your Address: As a seller, you may need to provide your
+                  address for internal purposes. If you are a company, please
+                  provide your business address. If you are an individual
+                  without a physical service center, you can provide your
+                  current location. Please note that your address will not be
+                  visible to buyers, it will only be used for internal purposes.
+                  day, please enter your preferred working hours instead. This
+                  will help buyers determine whether your services fit their
+                  needs.
+                </Text>
+              )
             }
           />
 
-          <Text style={[styles.headLine, { marginTop: 36 }]}>Address</Text>
+          <Text style={[styles.headLine, { marginTop: 36 }]}>
+            {isBn ? "ঠিকানা" : "Address"}
+          </Text>
           <InputButton
             value={division}
             onPress={() => {
@@ -136,7 +156,7 @@ export default function Location({ navigation, route }) {
               setIndex(0);
             }}
             style={styles.input}
-            placeholder={"Division"}
+            placeholder={isBn ? "বিভাগ" : "Division"}
           />
 
           <View style={{ flexDirection: "row", marginTop: 8 }}>
@@ -146,7 +166,9 @@ export default function Location({ navigation, route }) {
                 setDistrictError();
                 setAreaError();
                 if (!division) {
-                  setDistrictError("Select division");
+                  setDistrictError(
+                    isBn ? "বিভাগ সিলেক্ট করুন" : "Select division"
+                  );
                   return;
                 }
                 setSelect("District");
@@ -154,7 +176,7 @@ export default function Location({ navigation, route }) {
               }}
               value={district}
               style={[styles.input, { marginTop: 0, width: width / 2 - 28 }]}
-              placeholder="District"
+              placeholder={isBn ? "জেলা/উপজিলা" : "District/upazila"}
             />
             <View style={{ width: 16 }} />
             <InputButton
@@ -163,7 +185,9 @@ export default function Location({ navigation, route }) {
                 setDistrictError();
                 setAreaError();
                 if (!district) {
-                  setAreaError("Select district");
+                  setAreaError(
+                    isBn ? "জেলা/উপজিলা নির্বাচন করুন" : "Select district"
+                  );
                   return;
                 }
                 setSelect("Area");
@@ -171,7 +195,7 @@ export default function Location({ navigation, route }) {
               }}
               value={area}
               style={[styles.input, { marginTop: 0, width: width / 2 - 28 }]}
-              placeholder="Area"
+              placeholder={isBn ? "এরিয়া" : "Area"}
             />
           </View>
           <Input
@@ -183,7 +207,7 @@ export default function Location({ navigation, route }) {
               setAddress(e);
             }}
             style={[styles.input, { marginTop: 8 }]}
-            placeholder={"Address"}
+            placeholder={isBn ? "ঠিকানা" : "Address"}
           />
 
           <IconButton
@@ -223,7 +247,7 @@ export default function Location({ navigation, route }) {
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>
@@ -243,7 +267,8 @@ export default function Location({ navigation, route }) {
         index={index}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+      >
         {select == "Division" ? (
           <Screen
             onChange={(e) => {
@@ -1025,7 +1050,8 @@ export const Screen = ({ select, value, onChange, onClose, type }) => {
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <Text
         style={{
           marginVertical: 12,
@@ -1033,13 +1059,15 @@ export const Screen = ({ select, value, onChange, onClose, type }) => {
           fontSize: 20,
           width: "100%",
           textAlign: "center",
-        }}>
+        }}
+      >
         {type ? type : "Division"}
       </Text>
       <BottomSheetScrollView
         contentContainerStyle={{
           backgroundColor: "#ffffff",
-        }}>
+        }}
+      >
         {type == "Division" &&
           DistrictList.map((doc, i) => (
             <Pressable
@@ -1049,7 +1077,8 @@ export const Screen = ({ select, value, onChange, onClose, type }) => {
                 }
               }}
               style={newStyles.box}
-              key={i}>
+              key={i}
+            >
               <Text style={newStyles.textSp}>{doc.title}</Text>
               {select == doc.title && <SvgXml xml={tick} />}
             </Pressable>
@@ -1064,7 +1093,8 @@ export const Screen = ({ select, value, onChange, onClose, type }) => {
                   }
                 }}
                 style={newStyles.box}
-                key={i}>
+                key={i}
+              >
                 <Text style={newStyles.textSp}>{doc}</Text>
                 {select == doc && <SvgXml xml={tick} />}
               </Pressable>
@@ -1079,7 +1109,8 @@ export const Screen = ({ select, value, onChange, onClose, type }) => {
                 }
               }}
               style={newStyles.box}
-              key={i}>
+              key={i}
+            >
               <Text style={newStyles.textSp}>{doc}</Text>
               {select == doc && <SvgXml xml={tick} />}
             </Pressable>

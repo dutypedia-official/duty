@@ -24,6 +24,7 @@ import { createSupport } from "../../Class/service";
 import { useSelector } from "react-redux";
 import { uploadFile } from "../../Class/upload";
 import ActivityLoader from "../../components/ActivityLoader";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 const status = [
   "Cancel Order",
@@ -48,6 +49,8 @@ export default function SupportForm({ navigation, route }) {
   const [visible, setVisible] = useState(false);
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   // callbacks
   const handleSheetChange = React.useCallback((index) => {
@@ -109,28 +112,32 @@ export default function SupportForm({ navigation, route }) {
       style={{
         flex: 1,
         paddingTop: inset?.top,
-      }}>
+      }}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             alignItems: "center",
             marginTop: 20,
             marginBottom: 24,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontWeight: "500",
               fontSize: 24,
 
               alignItems: "center",
-            }}>
+            }}
+          >
             Support Center
           </Text>
         </View>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vector} />
           <Text
             style={{
@@ -139,8 +146,11 @@ export default function SupportForm({ navigation, route }) {
 
               fontWeight: "500",
               marginTop: 36,
-            }}>
-            Please follow the steps below
+            }}
+          >
+            {isBn
+              ? "নীচের পদক্ষেপগুলি অনুসরণ করুন"
+              : "Please follow the steps below"}
           </Text>
           <ViewMore
             view={true}
@@ -156,19 +166,26 @@ export default function SupportForm({ navigation, route }) {
             component={
               <View
                 onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}>
+                style={{ width: "100%" }}
+              >
                 <TextOp
                   style={{ marginTop: 0, minHeight: 0 }}
                   number={"1"}
                   view={true}
-                  text={"Please select a subject from the subject list"}
+                  text={
+                    isBn
+                      ? "বিষয় তালিকা থেকে একটি বিষয় নির্বাচন করুন"
+                      : "Please select a subject from the subject list"
+                  }
                 />
                 <TextOp
                   style={{ marginTop: 5, minHeight: 20 }}
                   number={"2"}
                   view={true}
                   text={
-                    "Please provide a detailed description of your issue and limit your questions to topics related to our platform. Do not include any personal information."
+                    isBn
+                      ? "অনুগ্রহ করে আপনার সমস্যার একটি বিশদ বিবরণ প্রদান করুন এবং আমাদের প্ল্যাটফর্মের সাথে সম্পর্কিত বিষয়গুলিতে আপনার প্রশ্ন সীমাবদ্ধ করুন৷ কোন ব্যক্তিগত তথ্য অন্তর্ভুক্ত করবেন না৷"
+                      : "Please provide a detailed description of your issue and limit your questions to topics related to our platform. Do not include any personal information."
                   }
                 />
                 <TextOp
@@ -176,7 +193,9 @@ export default function SupportForm({ navigation, route }) {
                   number={"3"}
                   view={true}
                   text={
-                    "If you need to provide us with any proof or documents related to a service issue, you can attach them by using the attachment feature."
+                    isBn
+                      ? "আপনি যদি আমাদের পরিষেবা সংক্রান্ত সমস্যা সম্পর্কিত কোনও প্রমাণ বা ডকুমেন্ট পাঠাতে চান তবে আপনি ডকুমেন্ট সংযুক্ত বাটনটি ব্যবহার করে সেগুলি সংযুক্ত করে আমাদের পাঠাতে পারবেন।"
+                      : "If you need to provide us with any proof or documents related to a service issue, you can attach them by using the attachment feature."
                   }
                 />
               </View>
@@ -187,14 +206,22 @@ export default function SupportForm({ navigation, route }) {
             style={{
               fontSize: 20,
               fontWeight: "500",
-            }}>
-            Subject<Text style={{ color: "red" }}>*</Text>
+            }}
+          >
+            {isBn ? "বিষয়" : "Subject"}
+            <Text style={{ color: "red" }}>*</Text>
           </Text>
           <InputButton
             onPress={() => setIndex(0)}
             Icon={() => <SvgXml xml={down} />}
             style={[styles.input, { marginTop: 24 }]}
-            placeholder={!subject ? "Select Subject" : subject}
+            placeholder={
+              !subject
+                ? isBn
+                  ? "বিষয় নির্বাচন করুন"
+                  : "Select Subject"
+                : subject
+            }
           />
           {subject == "Delete My Account" && (
             <Text
@@ -202,10 +229,11 @@ export default function SupportForm({ navigation, route }) {
                 fontSize: 14,
                 color: "#484848",
                 marginTop: 12,
-              }}>
-              ❗️If you have any orders that are currently under processing, we
-              kindly request that you wait until the orders are complete. Thank
-              you for your understanding and patience.
+              }}
+            >
+              {isBn
+                ? "❗️যদি আপনার কোনো অর্ডার থাকে যা বর্তমানে প্রক্রিয়াধীন আছে, আমরা অনুগ্রহ করে অনুরোধ করছি আপনি অর্ডার সম্পূর্ণ না হওয়া পর্যন্ত অপেক্ষা করুন।আপনার বোঝার এবং ধৈর্য্যের জন্য আপনাকে ধন্যবাদ।"
+                : "❗️If you have any orders that are currently under processing, we kindly request that you wait until the orders are complete. Thank you for your understanding and patience."}
             </Text>
           )}
           <View style={{ height: 24 }} />
@@ -213,22 +241,25 @@ export default function SupportForm({ navigation, route }) {
             style={{
               fontSize: 20,
               fontWeight: "500",
-            }}>
-            Description<Text style={{ color: "red" }}>*</Text>
+            }}
+          >
+            {isBn ? "বিবরণ" : "Description"}
+            <Text style={{ color: "red" }}>*</Text>
           </Text>
           <TextArea
             value={description}
             onChange={setDescription}
             style={[styles.input, { marginTop: 24 }]}
-            placeholder={"Write here..."}
+            placeholder={isBn ? "এখানে লিখুন..." : "Write here..."}
           />
           <View style={{ height: 24 }} />
           <Text
             style={{
               fontSize: 20,
               fontWeight: "500",
-            }}>
-            Attachments
+            }}
+          >
+            {isBn ? "ডকুমেন্ট সংযুক্ত" : "Attachments"}
           </Text>
 
           {!Document ? (
@@ -249,20 +280,23 @@ export default function SupportForm({ navigation, route }) {
                   borderColor: "#AFAFAF",
                   justifyContent: "center",
                   alignItems: "center",
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 16,
                     fontWeight: "600",
                     color: "#009FE3",
-                  }}>
-                  Add Photo{" "}
+                  }}
+                >
+                  {isBn ? "ছবি" : "Add Photo"}{" "}
                   <Text
                     style={{
                       color: "#A6A4A4",
                       fontWeight: "400",
-                    }}>
-                    or Drop File Here
+                    }}
+                  >
+                    {isBn ? "অথবা ফাইল সংযুক্ত করুন" : "or Drop File Here"}
                   </Text>
                 </Text>
               </Pressable>
@@ -271,8 +305,11 @@ export default function SupportForm({ navigation, route }) {
                   color: "#EC2700",
                   marginTop: 8,
                   fontSize: 14,
-                }}>
-                Please do not share any personal Information
+                }}
+              >
+                {isBn
+                  ? "অনুগ্রহ করে কোনো ব্যক্তিগত তথ্য শেয়ার করবেন না"
+                  : "Please do not share any personal Information"}
               </Text>
             </View>
           ) : (
@@ -283,12 +320,14 @@ export default function SupportForm({ navigation, route }) {
                 flexDirection: "row",
                 alignItems: "center",
                 flex: 1,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   marginRight: 10,
                   flex: 1,
-                }}>
+                }}
+              >
                 {Document.name}
               </Text>
               <Ionicons
@@ -309,7 +348,7 @@ export default function SupportForm({ navigation, route }) {
             onPress={submit}
             disabled={subject && description ? false : true}
             active={subject && description ? true : false}
-            title={"Submit"}
+            title={isBn ? "জমা দিন" : "Submit"}
           />
         </View>
       </ScrollView>
@@ -329,7 +368,8 @@ export default function SupportForm({ navigation, route }) {
         ref={sheetRef}
         index={index}
         snapPoints={snapPoints}
-        onChange={handleSheetChange}>
+        onChange={handleSheetChange}
+      >
         <Text
           style={{
             fontSize: 16,
@@ -337,7 +377,8 @@ export default function SupportForm({ navigation, route }) {
             color: "#1A1A1A",
             fontWeight: "500",
             textAlign: "center",
-          }}>
+          }}
+        >
           Select
         </Text>
         <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
@@ -371,21 +412,24 @@ export default function SupportForm({ navigation, route }) {
           setSubject();
           setDescription();
           setDocument();
-        }}>
+        }}
+      >
         <View
           style={{
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml xml={next} />
           <Text
             style={{
               fontSize: 24,
               fontWeight: "500",
-            }}>
-            Your request is submited!
+            }}
+          >
+            {isBn ? "অনুরোধ জমা দেওয়া হয়েছে !" : "Your request is submited!"}
           </Text>
           <Text
             style={{
@@ -393,8 +437,11 @@ export default function SupportForm({ navigation, route }) {
 
               fontWeight: "400",
               color: "#4D4E4F",
-            }}>
-            If you have another inquiry, please go back to the{" "}
+            }}
+          >
+            {isBn
+              ? "আপনার যদি অন্য কোনো প্রশ্ন থাকে, অনুগ্রহ করে ফিরে যান"
+              : "If you have another inquiry, please go back to the"}{" "}
           </Text>
           <Text
             onPress={() => {
@@ -408,8 +455,9 @@ export default function SupportForm({ navigation, route }) {
 
               fontWeight: "400",
               color: "#4ADE80",
-            }}>
-            Support Box.
+            }}
+          >
+            {isBn ? "সাপোর্ট বক্সে" : "Support Box."}
           </Text>
         </View>
       </Modal>
@@ -656,13 +704,15 @@ const Box = ({ title, onPress, style, select }) => {
           alignItems: "center",
         },
         style,
-      ]}>
+      ]}
+    >
       <Text
         style={{
           fontSize: 16,
           lineHeight: 24,
           fontWeight: "400",
-        }}>
+        }}
+      >
         {title}
       </Text>
       {select && <SvgXml xml={right} />}

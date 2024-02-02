@@ -10,64 +10,72 @@ import {
 import { EvilIcons, AntDesign } from "@expo/vector-icons";
 import { secondaryColor, primaryColor, textColor } from "../assets/colors";
 import { StatusBar } from "expo-status-bar";
+import useLang from "../Hooks/UseLang";
 
 const BackHeader = (props) => {
   const navigation = props.navigation;
-  const ref= React.useRef();
+  const ref = React.useRef();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View>
-      <StatusBar/>
+      <StatusBar />
       <View style={styles.box}>
-      <View
-        style={{
-          flexDirection: "row",
-          width:'100%'
-        }}
-      >
-        <AntDesign
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+          }}
+        >
+          <AntDesign
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={{
+              marginLeft: 20,
+              zIndex: 500,
+            }}
+            name="left"
+            size={22}
+            color="black"
+          />
+          <Text style={styles.text}>{props.title ? props.title : "Duty"}</Text>
+        </View>
+        <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
+            //navigation.navigate("SearchScreen");
+            if (ref) {
+              ref.current.focus();
+            }
           }}
-          style={{
-            marginLeft: 20,
-            zIndex:500
-          }}
-          name="left"
-          size={22}
-          color="black"
-        />
-        <Text style={styles.text}>{props.title?props.title:'Duty'}</Text>
+          style={styles.input}
+        >
+          <EvilIcons
+            style={{
+              marginRight: 10,
+            }}
+            name="search"
+            size={24}
+            color={textColor}
+          />
+          <TextInput
+            ref={ref}
+            value={props.value}
+            onChangeText={props.onChange}
+            placeholder={
+              props.placeholder
+                ? props.placeholder
+                : isBn
+                ? "ডিউটিতে খুঁজুন"
+                : "Search On Duty"
+            }
+            style={{
+              color: textColor,
+              width: props.inputWidth ? props.inputWidth : 120,
+            }}
+          ></TextInput>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          //navigation.navigate("SearchScreen");
-          if(ref){
-            ref.current.focus();
-          }
-        }}
-        style={styles.input}
-      >
-        <EvilIcons
-          style={{
-            marginRight: 10,
-          }}
-          name="search"
-          size={24}
-          color={textColor}
-        />
-        <TextInput ref={ref}
-          value={props.value}
-          onChangeText={props.onChange}
-          placeholder={
-            props.placeholder ? props.placeholder : "Search On Duty"
-          }
-          style={{
-            color: textColor,
-            width:props.inputWidth? props.inputWidth:120
-          }}
-        ></TextInput>
-      </TouchableOpacity>
-    </View>
     </View>
   );
 };
@@ -78,15 +86,15 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: secondaryColor,
-    paddingTop:5
+    paddingTop: 5,
   },
   text: {
     color: textColor,
     fontSize: 20,
     fontFamily: "Poppins-SemiBold",
-    flex:1,
+    flex: 1,
     textAlign: "center",
-    marginLeft:-44
+    marginLeft: -44,
   },
   input: {
     margin: 20,
@@ -98,6 +106,5 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 15,
-    
   },
 });

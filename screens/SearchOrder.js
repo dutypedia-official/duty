@@ -50,6 +50,7 @@ import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import UserOrderHeader from "../Hooks/UserOrderHeader";
 import { setOrderRef } from "../Reducers/orderRef";
 import SearchOrderHeader from "../Hooks/SearchOrderHeader";
+import useLang from "../Hooks/UseLang";
 
 //import { Screens } from "./Vendor/Order";
 const Tab = createMaterialTopTabNavigator();
@@ -93,19 +94,15 @@ const SearchOrder = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-        
-      }}>
+      }}
+    >
       <View
         style={{
           height: inset?.top,
         }}
       />
-      
-      <SearchOrderHeader
-        navigation={navigation}
-        allOrders={allOrders}
-        
-      />
+
+      <SearchOrderHeader navigation={navigation} allOrders={allOrders} />
       <Tab.Navigator
         initialRouteName={type}
         screenOptions={{
@@ -115,10 +112,10 @@ const SearchOrder = ({ navigation, route }) => {
           },
           tabBarStyle: {
             backgroundColor: "#ffffff",
-            
           },
           tabBarScrollEnabled: true,
-        }}>
+        }}
+      >
         {initialState.map((doc, i) => (
           <Tab.Screen
             options={{
@@ -127,14 +124,16 @@ const SearchOrder = ({ navigation, route }) => {
                   style={{
                     fontWeight: "500",
                     fontSize: 16,
-                    
+
                     color: focused ? "#000000" : "#A3A3A3",
-                  }}>
+                  }}
+                >
                   {`${initialState[i].title}`}
                   <Text
                     style={{
                       fontSize: 12,
-                    }}>
+                    }}
+                  >
                     ({allOrders[i]})
                   </Text>
                 </Text>
@@ -157,6 +156,8 @@ const SearchOrder = ({ navigation, route }) => {
 export default SearchOrder;
 const Screens = ({ navigation, route }) => {
   const isDark = useSelector((state) => state.isDark);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const colors = new Color(isDark);
   const primaryColor = colors.getPrimaryColor();
   const secondaryColor = colors.getSecondaryColor();
@@ -394,8 +395,9 @@ const Screens = ({ navigation, route }) => {
             style={{
               fontSize: 24,
               marginTop: 24,
-            }}>
-            No Order Found
+            }}
+          >
+            {isBn ? "কোনও অর্ডার নেই" : "No Order Found"}
           </Text>
         </View>
       )}
@@ -409,7 +411,8 @@ const Screens = ({ navigation, route }) => {
         ref={bottomSheetRef}
         index={parseInt(Index)}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+      >
         <BottomSheetScrollView>
           {AllStatus.map((doc, i) => (
             <IconButton

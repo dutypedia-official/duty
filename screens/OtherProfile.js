@@ -74,6 +74,7 @@ import ServiceTab from "./SellerProfile/ServiceTab";
 import ReadMore from "../components/ReadMore";
 import PictureViewer from "./SellerProfile/PictureViewer";
 import customStyle from "../assets/stylesheet";
+import useLang from "../Hooks/UseLang";
 
 const { width, height } = Dimensions.get("window");
 const OtherProfile = (props) => {
@@ -141,12 +142,12 @@ const OtherProfile = (props) => {
   const [userInfo, setUserInfo] = useState();
   const [individualRating, setIndividualRating] = useState();
   const [reviews, setReviews] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const slug =
-  props.route && props.route.params.slug
-    ? props.route.params.slug
-    : null;
+    props.route && props.route.params.slug ? props.route.params.slug : null;
 
-  //console.log(SeeMore) 
+  //console.log(SeeMore)
 
   React.useEffect(() => {
     if (isFocused) {
@@ -213,7 +214,7 @@ const OtherProfile = (props) => {
           setLoader(false);
           console.warn(error.response.data);
         });
-    }else if(slug){
+    } else if (slug) {
       setActiveServiceData(null);
       setRelatedServices(null);
       setUnRelatedServices(null);
@@ -262,7 +263,7 @@ const OtherProfile = (props) => {
           console.warn(error.response.data);
         });
     }
-  }, [serviceId, data, Refresh,slug]);
+  }, [serviceId, data, Refresh, slug]);
 
   React.useEffect(() => {
     if (newUser && data) {
@@ -352,11 +353,12 @@ const OtherProfile = (props) => {
                 bottom: 20,
                 backgroundColor: "#4ADE80",
                 borderRadius: 25,
-              }}>
+              }}
+            >
               <Pressable
                 onPress={() => {
                   if (!newUser.token || !userInfo) {
-                    navigation.navigate("LogIn");
+                    navigation.navigate(isBn ? "লগইন" : "LogIn");
                     return;
                   }
                   if (newUser.user.id == userInfo.id) {
@@ -377,7 +379,8 @@ const OtherProfile = (props) => {
                     username: userInfo.username,
                     serviceId: data?.service?.id,
                   });
-                }}>
+                }}
+              >
                 <SvgXml xml={messageIcon} height="50" width={"50"} />
               </Pressable>
             </Animated.View>
@@ -470,6 +473,8 @@ const RatingArea = ({
   data,
 }) => {
   const primaryColor = "white";
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   return (
     <>
@@ -479,12 +484,13 @@ const RatingArea = ({
           marginTop: 0,
           paddingVertical: 25,
           paddingTop: 25,
-        }}>
+        }}
+      >
         <RatingView
           style={{
             marginHorizontal: 20,
           }}
-          title="Seller Communication"
+          title={isBn ? "বিক্রেতা যোগাযোগ মান" : "Seller Communication"}
           rate={individualRating?.communicationRating}
         />
         <RatingView
@@ -492,7 +498,7 @@ const RatingArea = ({
             marginHorizontal: 20,
             marginTop: 5,
           }}
-          title="Service As Describe"
+          title={isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as Describe"}
           rate={individualRating?.describeRating}
         />
         <RatingView
@@ -500,7 +506,7 @@ const RatingArea = ({
             marginHorizontal: 20,
             marginTop: 5,
           }}
-          title="Service Quality"
+          title={isBn ? "পরিষেবার গুণমান" : "Service Quality"}
           rate={individualRating?.qualityRating}
         />
       </View>
@@ -514,7 +520,8 @@ const RatingArea = ({
         style={{
           backgroundColor: primaryColor,
           marginTop: 0,
-        }}>
+        }}
+      >
         {RelatedServices?.length > 0 && (
           <View>
             <Text
@@ -524,8 +531,9 @@ const RatingArea = ({
                 color: textColor,
                 paddingHorizontal: 20,
                 paddingVertical: 15,
-              }}>
-              Related Service
+              }}
+            >
+              {isBn ? "সম্পর্কিত আরও সার্ভিস" : "Related Service"}
             </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={{ width: 10 }} />
@@ -561,8 +569,9 @@ const RatingArea = ({
                 color: textColor,
                 paddingHorizontal: 20,
                 paddingVertical: 15,
-              }}>
-              You Might Also Like
+              }}
+            >
+              {isBn ? "কিছু পছন্দের সার্ভিস" : "You Might Also Like"}
             </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={{ width: 10 }} />
@@ -622,6 +631,8 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
   const Data = params.Data;
   const Price = params.Price;
   const startingHeight = 120;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //const fullHeight = calculateHeight(Description, 25);
   const animatedHeight = React.useRef(
     new Animation.Value(startingHeight)
@@ -662,7 +673,8 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
             color: textColor,
             paddingHorizontal: 20,
             marginTop: 20,
-          }}>
+          }}
+        >
           {gigs?.title}
         </Text>
 
@@ -670,7 +682,8 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
           style={{
             marginHorizontal: 20,
             marginVertical: 15,
-          }}>
+          }}
+        >
           {/* <AnimatedHeight button={true} text={Description} /> */}
           <ReadMore content={gigs?.description} />
         </View>
@@ -690,7 +703,8 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
               onPress={() => {
                 setModalVisible(gigs?.images[index]);
                 console.log(gigs?.images[index]);
-              }}>
+              }}
+            >
               <Image
                 style={{
                   width: width,
@@ -714,13 +728,15 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
           justifyContent: "space-between",
           marginHorizontal: 20,
           marginVertical: 25,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: Platform.OS == "ios" ? 17 : 15.5,
             color: textColor,
             fontFamily: "Poppins-SemiBold",
-          }}>
+          }}
+        >
           From {gigs?.price} ৳
         </Text>
       </View>
@@ -729,16 +745,16 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
           <IconButton
             onPress={() => {
               //params?.onOpen();
-              if(!newUser?.token){
-                navigation.navigate("LogIn")
-                return
+              if (!newUser?.token) {
+                navigation.navigate("LogIn");
+                return;
               }
               navigation.navigate("ServiceOrder", {
                 data: Data,
                 type: "STARTING",
                 price: gigs?.price,
-                title:gigs?.title,
-                id:gigs?.id
+                title: gigs?.title,
+                id: gigs?.id,
               });
             }}
             style={{
@@ -751,7 +767,7 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
               marginTop: 0,
               height: 40,
             }}
-            title="Offer Now"
+            title={isBn ? "দরদাম করুন" : "Offer Now"}
           />
         )}
       </View>
@@ -759,7 +775,8 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
       <Modal
         animationType="slide"
         visible={Boolean(modalVisible)}
-        onRequestClose={() => setModalVisible()}>
+        onRequestClose={() => setModalVisible()}
+      >
         <PictureViewer onClose={() => setModalVisible()} url={modalVisible} />
       </Modal>
     </View>
@@ -767,6 +784,8 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
 };
 
 const FixedScreen = ({ navigation, route, params }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //const params = route.params;
   const [FixedService, setFixedService] = useState();
   const onPress = params.onPress;
@@ -817,7 +836,8 @@ const FixedScreen = ({ navigation, route, params }) => {
           flexWrap: "wrap",
           marginHorizontal: 10,
           marginVertical: 20,
-        }}>
+        }}
+      >
         {Active &&
           FixedService.map(
             (doc, i) =>
@@ -832,7 +852,8 @@ const FixedScreen = ({ navigation, route, params }) => {
               marginVertical: 15,
               alignItems: "center",
               width: "100%",
-            }}>
+            }}
+          >
             <IconButton
               onPress={() => {
                 setContent((val) => val + 2);
@@ -855,13 +876,15 @@ const FixedScreen = ({ navigation, route, params }) => {
               justifyContent: "center",
               width: "100%",
             }}
-            entering={FadeIn}>
+            entering={FadeIn}
+          >
             <View
               style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <SvgXml
                 xml={serviceIcon}
                 style={{ marginVertical: 100 }}
@@ -881,13 +904,15 @@ const FixedScreen = ({ navigation, route, params }) => {
               justifyContent: "center",
               width: "100%",
             }}
-            entering={FadeIn}>
+            entering={FadeIn}
+          >
             <View
               style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <SvgXml
                 xml={serviceIcon}
                 style={{ marginVertical: 100 }}
@@ -902,7 +927,8 @@ const FixedScreen = ({ navigation, route, params }) => {
           style={{
             backgroundColor: primaryColor,
             marginTop: 0,
-          }}>
+          }}
+        >
           {RelatedServices?.length > 2 && (
             <View>
               <Text
@@ -912,14 +938,16 @@ const FixedScreen = ({ navigation, route, params }) => {
                   color: textColor,
                   paddingHorizontal: 10,
                   paddingVertical: 15,
-                }}>
+                }}
+              >
                 Related Service
               </Text>
               <View
                 style={{
                   flexDirection: "row",
                   flexWrap: "wrap",
-                }}>
+                }}
+              >
                 {RelatedServices &&
                   RelatedServices.map((doc, i) =>
                     i < 6 ? (
@@ -957,14 +985,16 @@ const FixedScreen = ({ navigation, route, params }) => {
                   color: textColor,
                   paddingHorizontal: 10,
                   paddingVertical: 15,
-                }}>
-                You Might Also Like
+                }}
+              >
+                {isBn ? "কিছু পছন্দের সার্ভিস" : "You Might Also Like"}
               </Text>
               <View
                 style={{
                   flexDirection: "row",
                   flexWrap: "wrap",
-                }}>
+                }}
+              >
                 {UnRelatedServices.map((doc, i) =>
                   i < 50 ? (
                     <TopSellerCard
@@ -1048,7 +1078,8 @@ const PackageScreen = ({ navigation, route, params }) => {
           flexDirection: "row",
           flexWrap: "wrap",
           marginVertical: 20,
-        }}>
+        }}
+      >
         {Active &&
           PackageService &&
           PackageService.map(
@@ -1072,7 +1103,8 @@ const PackageScreen = ({ navigation, route, params }) => {
               marginVertical: 15,
               alignItems: "center",
               width: "100%",
-            }}>
+            }}
+          >
             <IconButton
               onPress={() => {
                 setContent((val) => val + 2);
@@ -1095,13 +1127,15 @@ const PackageScreen = ({ navigation, route, params }) => {
               justifyContent: "center",
               width: "100%",
             }}
-            entering={FadeIn}>
+            entering={FadeIn}
+          >
             <View
               style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <SvgXml
                 xml={serviceIcon}
                 style={{ marginVertical: 100 }}
@@ -1121,13 +1155,15 @@ const PackageScreen = ({ navigation, route, params }) => {
               justifyContent: "center",
               width: "100%",
             }}
-            entering={FadeIn}>
+            entering={FadeIn}
+          >
             <View
               style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <SvgXml
                 xml={serviceIcon}
                 style={{ marginVertical: 100 }}
@@ -1142,7 +1178,8 @@ const PackageScreen = ({ navigation, route, params }) => {
           style={{
             backgroundColor: primaryColor,
             marginTop: 0,
-          }}>
+          }}
+        >
           {RelatedServices && RelatedServices.length > 2 && (
             <View>
               <Text
@@ -1152,14 +1189,16 @@ const PackageScreen = ({ navigation, route, params }) => {
                   color: textColor,
                   paddingHorizontal: 10,
                   paddingVertical: 15,
-                }}>
+                }}
+              >
                 Related Service
               </Text>
               <View
                 style={{
                   flexDirection: "row",
                   flexWrap: "wrap",
-                }}>
+                }}
+              >
                 {RelatedServices &&
                   RelatedServices.map((doc, i) =>
                     i < 6 ? (
@@ -1197,14 +1236,16 @@ const PackageScreen = ({ navigation, route, params }) => {
                   color: textColor,
                   paddingHorizontal: 10,
                   paddingVertical: 15,
-                }}>
+                }}
+              >
                 You Might Also Like
               </Text>
               <View
                 style={{
                   flexDirection: "row",
                   flexWrap: "wrap",
-                }}>
+                }}
+              >
                 {UnRelatedServices.map((doc, i) =>
                   i < 50 ? (
                     <TopSellerCard

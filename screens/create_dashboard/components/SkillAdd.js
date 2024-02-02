@@ -19,30 +19,38 @@ import ViewMore from "../../../Hooks/ViewMore";
 import { styles } from "../BusinessTitle";
 import CommonHeader from "../CommonHeader";
 import OptionCart, { Cart } from "./OptionCart";
+import useLang from "../../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
-export default function SkillAdd({ onClose, onSelect, category,categoryName,oldSkills }) {
-  const [skills, setSkills] = useState(oldSkills?oldSkills:[]);
+export default function SkillAdd({
+  onClose,
+  onSelect,
+  category,
+  categoryName,
+  oldSkills,
+}) {
+  const [skills, setSkills] = useState(oldSkills ? oldSkills : []);
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [text, setText] = useState();
   const [data, setData] = useState([]);
   const user = useSelector((state) => state.user);
   const [AllCategories, setAllCategories] = useState();
-  const [All,setAll]=useState([])
-  const [AllData,setAllData]=useState([])
- 
+  const [All, setAll] = useState([]);
+  const [AllData, setAllData] = useState([]);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   useEffect(() => {
     if (text && text?.split("")?.length > 1) {
       const filteredCategory =
-      text === ""
-        ? AllData
-        : AllData.filter((cat) =>
-            cat.name
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .startsWith(text.toLowerCase().replace(/\s+/g, ""))
-          );
+        text === ""
+          ? AllData
+          : AllData.filter((cat) =>
+              cat.name
+                .toLowerCase()
+                .replace(/\s+/g, "")
+                .startsWith(text.toLowerCase().replace(/\s+/g, ""))
+            );
       setData(filteredCategory);
       //console.log(arr[0].title)
     } else {
@@ -50,42 +58,40 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
     }
   }, [text]);
   useEffect(() => {
-   
     getCategorySkills(user.token, category).then((res) => {
       setAll(res.data.suggestions);
-      setAllCategories(res.data.suggestions)
+      setAllCategories(res.data.suggestions);
     });
-   
-    getSkillSuggestion(user.token,categoryName).then(res=>{
-      setAllData(res.data.skills)
-      
-    })
-    
-  }, [categoryName,category]);
-  
+
+    getSkillSuggestion(user.token, categoryName).then((res) => {
+      setAllData(res.data.skills);
+    });
+  }, [categoryName, category]);
+
   useEffect(() => {
-    if (All&&skills.length>0) {
+    if (All && skills.length > 0) {
       try {
-        let arr=[]
-        All.map((doc)=>{
+        let arr = [];
+        All.map((doc) => {
           let a = skills.filter((d) => d == doc);
           if (a?.length == 0) {
-            arr.push(doc)
+            arr.push(doc);
           }
-        })
-        setAllCategories(arr)
+        });
+        setAllCategories(arr);
       } catch (e) {
         console.log(e.message);
       }
-    }else{
-      setAllCategories(All)
+    } else {
+      setAllCategories(All);
     }
-  }, [skills?.length,All?.length]);
+  }, [skills?.length, All?.length]);
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 20}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 20}
+    >
       <Heder
         onSelect={() => {
           onClose ? onClose(false) : null;
@@ -97,8 +103,9 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
         showsVerticalScrollIndicator={false}
         style={{
           paddingHorizontal: 20,
-        }}>
-        {AllCategories&&AllCategories?.length>0 && (
+        }}
+      >
+        {AllCategories && AllCategories?.length > 0 && (
           <ViewMore
             view={true}
             style={{
@@ -117,24 +124,28 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
                   width: "100%",
                   flexDirection: "row",
                   flexWrap: "wrap",
-                }}>
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 16,
                     fontWeight: "600",
                     lineHeight: 24,
                     marginRight: 15,
-                  }}>
-                  Suggest Skill{""}
+                  }}
+                >
+                  {isBn ? "সাজেস্ট স্কিল" : "Suggest Skill"}
+                  {""}
                 </Text>
                 {AllCategories.map((doc, i) => (
-                  <Text onPress={()=>{
-                    try {
-                      setSkills((d) => [...d, doc]);
-                    } catch (e) {
-                      console.log(e.message);
-                    }
-                  }}
+                  <Text
+                    onPress={() => {
+                      try {
+                        setSkills((d) => [...d, doc]);
+                      } catch (e) {
+                        console.log(e.message);
+                      }
+                    }}
                     key={i}
                     style={{
                       fontSize: 14,
@@ -142,7 +153,8 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
                       lineHeight: 24,
                       textDecorationLine: "underline",
                       marginRight: 15,
-                    }}>
+                    }}
+                  >
                     {doc}
                   </Text>
                 ))}
@@ -169,9 +181,14 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
               flexDirection: "row",
               justifyContent: "space-between",
               marginTop: 12,
-            }}>
-            <Text style={styles.text}>Max 25 characters </Text>
-            <Text style={styles.text}>Max 50 skill </Text>
+            }}
+          >
+            <Text style={styles.text}>
+              {isBn ? "সর্বোচ্চ ২৫ টি অক্ষর" : "Max 25 characters"}{" "}
+            </Text>
+            <Text style={styles.text}>
+              {isBn ? "সর্বোচ্চ ৫০টি  স্কিল" : "Max 50 skill"}{" "}
+            </Text>
           </View>
           {skills && skills.length > 0 && (
             <View
@@ -180,7 +197,8 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
                 flexDirection: "row",
                 flexWrap: "wrap",
                 marginHorizontal: -4,
-              }}>
+              }}
+            >
               {skills.map((doc, i) => (
                 <BT
                   onDelete={() => {
@@ -199,7 +217,8 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
               top: 70,
               zIndex: 300,
               backgroundColor: "#ffffff",
-            }}>
+            }}
+          >
             <OptionCart
               Child={(data) => (
                 <Cart
@@ -224,6 +243,8 @@ export default function SkillAdd({ onClose, onSelect, category,categoryName,oldS
 }
 const Heder = ({ onBack, onSelect }) => {
   const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
@@ -233,7 +254,8 @@ const Heder = ({ onBack, onSelect }) => {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-      }}>
+      }}
+    >
       <Pressable onPress={onBack}>
         <SvgXml xml={back} />
       </Pressable>
@@ -242,8 +264,9 @@ const Heder = ({ onBack, onSelect }) => {
           fontSize: 24,
           fontWeight: "500",
           color: "#1A1A1A",
-        }}>
-        Add Skill
+        }}
+      >
+        {isBn ? "স্কিল অ্যাড করুন" : "Add Skill"}
       </Text>
       <Text
         onPress={onSelect}
@@ -251,8 +274,9 @@ const Heder = ({ onBack, onSelect }) => {
           color: "#4ADE80",
           fontSize: 20,
           fontWeight: "400",
-        }}>
-        Done
+        }}
+      >
+        {isBn ? "সম্পন্ন" : "Done"}
       </Text>
     </View>
   );
@@ -262,6 +286,8 @@ const back = `<svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns=
 </svg>
 `;
 const AddBox = ({ onChange, onWrite, value }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [text, setText] = useState(value);
   useEffect(() => {
     if (onWrite) {
@@ -285,7 +311,8 @@ const AddBox = ({ onChange, onWrite, value }) => {
         alignItems: "center",
         borderColor: "#A3A3A3",
         marginTop: 24,
-      }}>
+      }}
+    >
       <TextInput
         returnKeyType="done"
         returnKeyLabel="add"
@@ -298,7 +325,6 @@ const AddBox = ({ onChange, onWrite, value }) => {
             setText();
           }
         }}
-        
         value={text}
         onChangeText={(e) => {
           if (e?.split("")?.length > 25) {
@@ -309,7 +335,7 @@ const AddBox = ({ onChange, onWrite, value }) => {
         style={{
           flex: 1,
         }}
-        placeholder="Type Skill"
+        placeholder={isBn ? "স্কিল লিখুন" : "Type Skill"}
       />
       <Pressable
         onPress={() => {
@@ -331,14 +357,16 @@ const AddBox = ({ onChange, onWrite, value }) => {
           alignItems: "center",
           borderLeftWidth: 1,
           borderLeftColor: "#A3A3A3",
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 14,
 
             color: text ? "#ffffff" : "#767676",
-          }}>
-          Add
+          }}
+        >
+          {isBn ? "অ্যাড" : "Add"}
         </Text>
       </Pressable>
     </View>
@@ -353,7 +381,8 @@ const BT = ({ title, onDelete }) => {
         borderRadius: 4,
         padding: 8,
         margin: 4,
-      }}>
+      }}
+    >
       <SvgXml
         onPress={onDelete}
         style={{

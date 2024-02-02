@@ -40,7 +40,8 @@ import ActivityLoader from "../../components/ActivityLoader";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { convertServerFacilities } from "../../Class/dataConverter";
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
+import useLang from "../../Hooks/UseLang";
 
 const Service = ({ navigation, route }) => {
   const [CenterName, setCenterName] = React.useState();
@@ -59,7 +60,7 @@ const Service = ({ navigation, route }) => {
   const businessForm = useSelector((state) => state.businessForm);
   const [Price, setPrice] = React.useState();
   const [PriceError, setPriceError] = React.useState();
-  const facilities=route?.params?.facilities
+  const facilities = route?.params?.facilities;
   const [Facilities, setFacilities] = React.useState([]);
   const [FacilitiesError, setFacilitiesError] = React.useState();
   const [FacilitiesCounter, setFacilitiesCounter] = React.useState(0);
@@ -82,20 +83,18 @@ const Service = ({ navigation, route }) => {
   const params = route.params;
   const type = params?.type;
   const subsData = params?.subsData;
-  const installmentData=params?.installmentData;
-  const isFocused=useIsFocused()
-  
+  const installmentData = params?.installmentData;
+  const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
-      
-      try{
-        const gigs = vendor.service.gigs.filter(
-          (d) => d.type == "STARTING"
-        );
-        setFacilities(convertServerFacilities(gigs[0].facilites))
-      }catch(err){
-        console.error(err.message)
+      try {
+        const gigs = vendor.service.gigs.filter((d) => d.type == "STARTING");
+        setFacilities(convertServerFacilities(gigs[0].facilites));
+      } catch (err) {
+        console.error(err.message);
       }
       //console.log("hidden")
       dispatch(setHideBottomBar(true));
@@ -107,7 +106,6 @@ const Service = ({ navigation, route }) => {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  
 
   React.useEffect(() => {
     setFacilitiesCounter(0);
@@ -152,31 +150,47 @@ const Service = ({ navigation, route }) => {
     setImageError(null);
 
     if (!CenterName) {
-      setCenterNameError("This field is required");
+      setCenterNameError(
+        isBn ? "সার্ভিস টাইটেল এর নাম আবশ্যক" : "This field is required"
+      );
       return;
     }
     if (!Speciality && !direct) {
-      setSpecialityError("This field is required");
+      setSpecialityError(isBn ? "" : "This field is required");
       return;
     }
     if (!Description) {
-      setDescriptionError("This field is required");
+      setDescriptionError(
+        isBn ? "সার্ভিস এর বিবরণ আবশ্যক" : "This field is required"
+      );
       return;
     }
     if (!About && !direct) {
-      setAboutError("This field is required");
+      setAboutError(
+        isBn ? "ঘরটি অবশ্যই পূরণ করতে হবে" : "This field is required"
+      );
       return;
     }
     if (!FirstImage || !SecondImage || !ThirdImage || !ForthImage) {
-      setImageError("*All picture must be upload");
+      setImageError(
+        isBn ? "সকল ছবি অ্যাড করা আবশ্যক" : "*All picture must be upload"
+      );
       return;
     }
-    if (!Price && direct && type != "SUBS" && type!="INSTALLMENT") {
-      setPriceError("Price field is required");
+    if (!Price && direct && type != "SUBS" && type != "INSTALLMENT") {
+      setPriceError(
+        isBn
+          ? "একটি মূল্য দেয়া আবশ্যক ( সর্বনিম্ন ৫০ টাকা )"
+          : "Price field is required"
+      );
       return;
     }
     if (FacilitiesCounter == 0 && direct && type != "SUBS") {
-      setFacilitiesError("Please select any facilities");
+      setFacilitiesError(
+        isBn
+          ? "অন্তত একটি অতিরিক্ত সুবিধা নির্বাচন করতে হবে"
+          : "Please select any facilities"
+      );
       return;
     }
     dispatch({ type: "SERVICE_TITLE", playload: CenterName });
@@ -191,8 +205,7 @@ const Service = ({ navigation, route }) => {
       dispatch({ type: "PRICE", playload: Price });
       dispatch({ type: "FACILITIES", playload: Facilities });
     }
-    
-    
+
     if (direct) {
       //ongoing function-------------
       setLoader(true);
@@ -203,9 +216,9 @@ const Service = ({ navigation, route }) => {
       blobImages.push(fileFromURL(ForthImage));
       const result = await uploadFile(blobImages, user.token);
       if (Array.isArray(result)) {
-        if (type=="SUBS") {
+        if (type == "SUBS") {
           if (!subsData) {
-            Alert.alert("Invalid Data format");
+            Alert.alert(isBn ? "ভুল তথ্য দেয়া হয়েছে" : "Invalid Data format");
             return;
           }
           //console.log("ok")
@@ -228,9 +241,9 @@ const Service = ({ navigation, route }) => {
               setLoader(false);
             });
           return;
-        }else if(type=="INSTALLMENT"){
+        } else if (type == "INSTALLMENT") {
           if (!installmentData) {
-            Alert.alert("Invalid Data format");
+            Alert.alert(isBn ? "ভুল তথ্য দেয়া হয়েছে" : "Invalid Data format");
             return;
           }
           //console.log("ok")
@@ -254,7 +267,7 @@ const Service = ({ navigation, route }) => {
               console.warn(err.response);
               setLoader(false);
             });
-          return
+          return;
         }
         //console.log("df")
         //console.log(params.data)
@@ -267,7 +280,7 @@ const Service = ({ navigation, route }) => {
             price: parseInt(Price),
             description: Description,
             packageData: undefined,
-            facilities:Facilities
+            facilities: Facilities,
           },
           params.data,
           result,
@@ -283,26 +296,28 @@ const Service = ({ navigation, route }) => {
             //   navigation.navigate("VendorPackageService", { data: res.data.gig });
             // }
             navigation.navigate("VendorProfile", { direct: res.data.gig });
-            
           })
           .catch((err) => {
-            Alert.alert("Ops!","Something went wrong try again")
+            Alert.alert(
+              isBn ? "কিছু ভুল হয়েছে আবার চেষ্টা করুন" : "Ops!",
+              "Something went wrong try again"
+            );
             console.warn(err.response);
             setLoader(false);
           });
 
-        return
+        return;
       }
       setLoader(false);
-     Alert.alert("Image save failed")
-      return;  
+      Alert.alert(isBn ? "ছবি আপলোড হতে ব্যর্থ হয়েছে" : "Image save failed");
+      return;
     }
     navigation.navigate("Address");
   };
   if (Loader) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
     );
   }
@@ -332,44 +347,83 @@ const Service = ({ navigation, route }) => {
                 paddingHorizontal: 20,
               }}
             >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                }}>
-                <Text
+              {isBn ? (
+                <View
                   style={{
-                    fontSize: 22,
-                    fontFamily: "Poppins-Bold",
-                    color: "black",
-                    
-                  }}>
-                  Upload{"\n"}Your
-                </Text>
-                <Text
+                    flex: 1,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: "Poppins-Bold",
+                      color: "black",
+                    }}
+                  >
+                    ভাল{"\n"}মানের
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: "Poppins-Bold",
+                      color: "#DA1E37",
+                    }}
+                  >
+                    ছবি <Text style={{ color: "black" }}>আপলোড</Text>
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: "Poppins-Bold",
+                      color: "#6366F1",
+                    }}
+                  >
+                    করুন
+                  </Text>
+                </View>
+              ) : (
+                <View
                   style={{
-                    fontSize: 22,
-                    fontFamily: "Poppins-Bold",
-                    color: "#DA1E37",
-                    
-                  }}>
-                  High <Text style={{color:"black"}}>Quality</Text>
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 22,
-                    fontFamily: "Poppins-Bold",
-                    color: "#6366F1",
-                    
-                  }}>
-                  Photo
-                </Text>
-              </View>
+                    flex: 1,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: "Poppins-Bold",
+                      color: "black",
+                    }}
+                  >
+                    Upload{"\n"}Your
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: "Poppins-Bold",
+                      color: "#DA1E37",
+                    }}
+                  >
+                    High <Text style={{ color: "black" }}>Quality</Text>
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: "Poppins-Bold",
+                      color: "#6366F1",
+                    }}
+                  >
+                    Photo
+                  </Text>
+                </View>
+              )}
               <View
                 style={{
                   flex: 1.5,
-                  alignItems:"flex-end"
-                }}>
+                  alignItems: "flex-end",
+                }}
+              >
                 {/* <SvgXml xml={vectorImage} height="200" width={"190"}/> */}
                 <Image
                   style={{
@@ -440,7 +494,7 @@ const Service = ({ navigation, route }) => {
                 paddingHorizontal: 20,
               }}
             >
-              Service Describe
+              {isBn ? "সার্ভিস এর বিবরণ" : "Service Describe"}
             </Text>
             <View style={{}}>
               <Input
@@ -452,7 +506,9 @@ const Service = ({ navigation, route }) => {
                   if (val.length <= 50) {
                     setCenterName(val);
                   } else {
-                    setCenterNameError("*Max is 50 character.");
+                    setCenterNameError(
+                      isBn ? "সর্বোচ্চ ৫০ টি অক্ষর" : "*Max is 50 character."
+                    );
                   }
                 }}
                 onSubmitEditing={() => {
@@ -467,7 +523,7 @@ const Service = ({ navigation, route }) => {
                   marginTop: 0,
                   marginLeft: 20,
                 }}
-                placeholder="Service title"
+                placeholder={isBn ? "সার্ভিসের টাইটেল" : "Service title"}
               />
             </View>
             {!direct && <View style={{ height: 10 }} />}
@@ -482,7 +538,11 @@ const Service = ({ navigation, route }) => {
                   if (val.length <= 100) {
                     setSpeciality(val);
                   } else {
-                    setSpecialityError("*Character must be between 100");
+                    setSpecialityError(
+                      isBn
+                        ? "অক্ষর অবশ্যই ১০০ অক্ষর এর মধ্যে হতে হবে"
+                        : "*Character must be between 100"
+                    );
                   }
                 }}
                 onSubmitEditing={() => {
@@ -493,7 +553,7 @@ const Service = ({ navigation, route }) => {
                 style={{
                   borderWidth: 1,
                 }}
-                placeholder="Speciality"
+                placeholder={isBn ? "যে সব বিষয়ে বিশেষত্ব" : "Speciality"}
               />
             )}
             <View style={{ height: 10 }} />
@@ -513,7 +573,11 @@ const Service = ({ navigation, route }) => {
                   if (val.length <= 2000) {
                     setDescription(val);
                   } else {
-                    setDescriptionError("*Character must be between 2000");
+                    setDescriptionError(
+                      isBn
+                        ? "অক্ষর অবশ্যই ২০০০ অক্ষর এর মধ্যে হতে হবে"
+                        : "*Character must be between 2000"
+                    );
                   }
                 }}
                 onSubmitEditing={() => {
@@ -523,7 +587,7 @@ const Service = ({ navigation, route }) => {
                     priceRef.current.focus();
                   }
                 }}
-                placeholder="Description"
+                placeholder={isBn ? "বিবরণ" : "Description"}
               />
             </View>
             <View style={{ height: 10 }} />
@@ -544,13 +608,17 @@ const Service = ({ navigation, route }) => {
                   if (val.length <= 2000) {
                     setAbout(val);
                   } else {
-                    setAboutError("Character should be between 2000");
+                    setAboutError(
+                      isBn
+                        ? "অক্ষর অবশ্যই ২০০০ অক্ষর এর মধ্যে হতে হবে"
+                        : "Character should be between 2000"
+                    );
                   }
                 }}
-                placeholder="About Company"
+                placeholder={isBn ? "কোম্পানীর সম্পর্কে" : "About Company"}
               />
             )}
-            {direct && type != "SUBS"&&type!="INSTALLMENT" ? (
+            {direct && type != "SUBS" && type != "INSTALLMENT" ? (
               <Input
                 innerRef={priceRef}
                 value={Price}
@@ -565,7 +633,7 @@ const Service = ({ navigation, route }) => {
                   width: width - 40,
                   marginLeft: 20,
                 }}
-                placeholder="Price"
+                placeholder={isBn ? "দাম" : "Price"}
               />
             ) : null}
 
@@ -580,7 +648,9 @@ const Service = ({ navigation, route }) => {
                   },
                 ]}
               >
-                Choose your facilities (Optional)
+                {isBn
+                  ? "অতিরিক্ত সুবিধা নির্বাচন করুন( আবশ্যক না)"
+                  : "Choose your facilities (Optional)"}
               </Text>
             )}
             {Array.isArray(Facilities) &&
@@ -626,7 +696,7 @@ const Service = ({ navigation, route }) => {
                     marginHorizontal: 10,
                     marginVertical: 5,
                   }}
-                  title={"Add More"}
+                  title={isBn ? "আরও অ্যাড করুন" : "Add More"}
                 />
               </View>
             )}
@@ -657,7 +727,15 @@ const Service = ({ navigation, route }) => {
                 marginBottom: 0,
                 marginHorizontal: 20,
               }}
-              title={direct ? "Confirm" : "Continue"}
+              title={
+                direct
+                  ? isBn
+                    ? "নিশ্চিত করুন"
+                    : "Confirm"
+                  : isBn
+                  ? "পরবর্তী"
+                  : "Continue"
+              }
             />
             <TouchableOpacity
               onPress={() => {
@@ -671,10 +749,9 @@ const Service = ({ navigation, route }) => {
               <Text
                 style={{
                   fontSize: 16,
-                  
                 }}
               >
-                Back
+                {isBn ? "ফিরে জান" : "Back"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -745,7 +822,6 @@ export const ImageButton = ({ style, onChange, value }) => {
       alignItems: "center",
       marginVertical: 5,
       borderColor: "#e6e6e6",
-
     },
   });
   if (image) {
@@ -758,8 +834,8 @@ export const ImageButton = ({ style, onChange, value }) => {
         <TouchableOpacity
           onPress={() => {
             setImage(null);
-            if(onChange){
-              onChange(null)
+            if (onChange) {
+              onChange(null);
             }
           }}
           style={{
@@ -1021,6 +1097,8 @@ const addIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="12.261" height="
 const AddFacilities = ({ onCancel, onConfirm }) => {
   const [Name, setName] = React.useState();
   const [NameError, setNameError] = React.useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   return (
     <View
@@ -1047,7 +1125,7 @@ const AddFacilities = ({ onCancel, onConfirm }) => {
             marginVertical: 20,
           }}
         >
-          Add Facilities
+          {isBn ? "অতিরিক্ত সুবিধা অ্যাড করুন" : "Add Facilities"}
         </Text>
         <Input
           error={NameError}
@@ -1069,7 +1147,9 @@ const AddFacilities = ({ onCancel, onConfirm }) => {
             onPress={() => {
               setNameError();
               if (!Name) {
-                setNameError("*This field is required");
+                setNameError(
+                  isBn ? "ঘরটি অবশ্যই পূরণ করতে হবে" : "*This field is required"
+                );
                 return;
               }
               if (onConfirm) {
@@ -1082,7 +1162,7 @@ const AddFacilities = ({ onCancel, onConfirm }) => {
               backgroundColor: "#4ADE80",
               color: "white",
             }}
-            title={"Confirm"}
+            title={isBn ? "নিশ্চিত করুন" : "Confirm"}
           />
           <IconButton
             onPress={() => {
@@ -1096,7 +1176,7 @@ const AddFacilities = ({ onCancel, onConfirm }) => {
               backgroundColor: "#FF0000",
               color: "white",
             }}
-            title={"Cancel"}
+            title={isBn ? "বাতিল করুন" : "Cancel"}
           />
         </View>
       </View>

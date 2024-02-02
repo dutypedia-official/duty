@@ -37,6 +37,8 @@ import { updateData, updateGigsData } from "../../Class/update";
 import ActivityLoader from "../../components/ActivityLoader";
 import { getService } from "../../Class/service";
 import { convertServerFacilities } from "../../Class/dataConverter";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function EditAbout({ navigation, route }) {
   const businessForm = useSelector((state) => state.businessForm);
@@ -45,6 +47,8 @@ export default function EditAbout({ navigation, route }) {
   const [date, setDate] = useState();
   const [aboutError, setAboutError] = useState();
   const data = route?.params?.data;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [Service, setService] = React.useState([
     {
       id: 1,
@@ -74,7 +78,7 @@ export default function EditAbout({ navigation, route }) {
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
   const gigs = vendor.service.gigs.filter((d) => d.type == "STARTING");
-  const scrollRef=useRef()
+  const scrollRef = useRef();
   React.useEffect(() => {
     if (businessForm?.facilities) {
       setService(businessForm.facilities);
@@ -150,20 +154,23 @@ export default function EditAbout({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 24,
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} xml={vectorImage} />
           <View
             style={{
               flexDirection: "row",
               flex: 1,
               marginTop: 36,
-            }}>
+            }}
+          >
             <SvgXml
               style={{
                 marginRight: 8,
@@ -171,66 +178,78 @@ export default function EditAbout({ navigation, route }) {
               xml={icon}
             />
             <Text style={[styles.headLine, { flex: 1 }]}>
-              Tips for about your business
+              {isBn
+                ? "আপনার ব্যবসার সম্পর্কে টিপস:"
+                : "Tips for about your business"}
             </Text>
           </View>
-          <ViewMore
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            width={142}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={[styles.spText, { marginTop: 0 }]}>
-                Introduce your business and what makes it unique. Share your
-                goals, vision, and what you can offer to potential buyers in a
-                genuine way that reflects your business's personality and
-                values. Avoid using buzzwords or generic language that doesn't
-                truly represent your brand. Remember to regularly update this
-                section with any changes to your business, to help you stay
-                relevant and attract new buyers.
-              </Text>
+            content={
+              isBn ? (
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  {`আপনার ব্যবসার সাথে পরিচয় করিয়ে দিন এবং আপনার ব্যবসায়ের আকর্ষণীয় দিকগুলো ব্যাখ্যা করুন৷ আপনার লক্ষ্য এবং দৃষ্টিভঙ্গি শেয়ার করুন৷ আপনি ক্রেতাদের যা অফার করবেন তা সঠিক নিয়মে করুন এবং এটি যেন আপনার ব্যবসায়ের ব্যক্তিত্ব এবং মূল্যবোধকে ফুটিয়ে তুলে৷ আপনার ব্র্যান্ডের/কোম্পানির প্রতিনিধিত্ব করে না এমন ওয়ার্ড এবং ল্যাংগুয়েজ এড়িয়ে চলুন যেমন: (বাজওয়ার্ড এবং জেনেরিক ল্যাংগুয়েজ)৷ আপনি নিজেকে প্রাসঙ্গিক রাখতে এবং নতুন ক্রেতাদের আকৃষ্ট করতে আপনার ব্যবসায়ের যেকোনো পরিবর্তনের সাথে এই অংশ/সেকশন টি নিয়মিত আপডেট রাখুন৷।
+
+আমাদের প্রোফাইলে আপনাকে স্বাগতম! 😊 আমরা আমাদের ক্লায়েন্টদের হাই-কোয়ালিটির সার্ভিস প্রদানের জন্য অভিজ্ঞ প্রফেশনাল একটি টিম।আমাদের প্রধান লক্ষ্য হল সময়মত, দক্ষ এবং সাশ্রয়ী সমাধান দিয়ে আমাদের ক্লায়েন্টদের চাহিদা বজায় রাখা৷😎 বছরের পর বছর ধরে অভিজ্ঞতার সাথে, আমরা এই ইন্ডাস্ট্রিতে আমাদের ক্লায়েন্টদের চাহিদা পূরণ করে তাদের খুশি করায় তারা আমাদের উপর আত্মবিশ্বাসী৷ আমাদের সার্ভিসগুলো বিবেচনা করে আমাদের সাথে কাজ করার জন্য আপনাকে ধন্যবাদ,!"😍
+                `}
+                </Text>
+              ) : (
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  Introduce your business and what makes it unique. Share your
+                  goals, vision, and what you can offer to potential buyers in a
+                  genuine way that reflects your business's personality and
+                  values. Avoid using buzzwords or generic language that doesn't
+                  truly represent your brand. Remember to regularly update this
+                  section with any changes to your business, to help you stay
+                  relevant and attract new buyers.
+                </Text>
+              )
             }
           />
 
           <Text style={[styles.headLine, { marginTop: 36 }]}>
-            About Your Business
+            {isBn ? "আপনার ব্যবসার সম্পর্কে" : "About Your Business"}
           </Text>
           <TextArea
             error={aboutError}
             style={styles.input}
             value={about}
             onChange={(e) => {
-              if(scrollRef){
-                scrollRef?.current?.scrollToEnd()
+              if (scrollRef) {
+                scrollRef?.current?.scrollToEnd();
               }
               setAbout(e);
             }}
-            placeholder={"Type here"}
+            placeholder={isBn ? "এখানে লিখুন" : "Type here"}
           />
           <Text style={styles.text}>
-            Max 2000/{about ? about?.split("")?.length : "0"} characters{" "}
+            {isBn ? "সর্বোচ্চ" : "Max"} 2000/
+            {about ? about?.split("")?.length : "0"}{" "}
+            {isBn ? "অক্ষর" : "characters"}{" "}
           </Text>
-          
+
           <IconButton
             active={about ? true : false}
             disabled={about ? false : true}
             onPress={() => {
               if (about?.split("")?.length > 2000) {
-                setAboutError("*Max 2000 character");
+                setAboutError(
+                  isBn ? "*সর্বোচ্চ ২০০০ টি অক্ষর" : "*Max 2000 character"
+                );
                 return;
               }
               updateInfo();
             }}
             style={styles.button}
-            title={"Update"}
+            title={isBn ? "আপডেট করুন" : "Update"}
           />
           <Modal
             transparent={true}
             visible={buttonVisible}
-            onRequestClose={() => setButtonVisible(false)}>
+            onRequestClose={() => setButtonVisible(false)}
+          >
             <AddCard
               onSelect={(e) => {
                 setService((d) => [
@@ -267,13 +286,15 @@ const AddCard = ({ onClose, onSelect }) => {
             padding: 20,
           },
           customStyle.shadow,
-        ]}>
+        ]}
+      >
         <Text
           style={{
             fontSize: 20,
             fontWeight: "500",
             textAlign: "center",
-          }}>
+          }}
+        >
           Add Feature
         </Text>
         <Input

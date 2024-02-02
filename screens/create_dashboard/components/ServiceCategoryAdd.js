@@ -15,89 +15,108 @@ import { AllData } from "../../../Data/AllData";
 import { styles } from "../BusinessTitle";
 import CommonHeader from "../CommonHeader";
 import OptionCart, { Cart } from "./OptionCart";
+import useLang from "../../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
-export default function ServiceCategoryAdd({ onClose,onSelect }) {
+export default function ServiceCategoryAdd({ onClose, onSelect }) {
   const [text, setText] = useState();
   const [data, setData] = useState();
-  const user=useSelector(state=>state.user)
-  const [key,setKey]=useState()
-  const [categories,setCategories]=useState()
-
+  const user = useSelector((state) => state.user);
+  const [key, setKey] = useState();
+  const [categories, setCategories] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
-    if (text&&text?.split("")?.length>1&&categories) {
+    if (text && text?.split("")?.length > 1 && categories) {
       const filteredCategory =
-      text === ""
-        ? categories
-        : categories.filter((cat) =>
-            cat.name
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .startsWith(text.toLowerCase().replace(/\s+/g, ""))
-          );
+        text === ""
+          ? categories
+          : categories.filter((cat) =>
+              cat.name
+                .toLowerCase()
+                .replace(/\s+/g, "")
+                .startsWith(text.toLowerCase().replace(/\s+/g, ""))
+            );
       setData(filteredCategory);
       //console.log(arr[0].title)
     } else {
       setData([]);
     }
-  }, [text,categories]);
-  useEffect(()=>{
-    getCategory(user.token).then(res=>{
-      setCategories(res.data.categories)
-    })
-  },[])
+  }, [text, categories]);
+  useEffect(() => {
+    getCategory(user.token).then((res) => {
+      setCategories(res.data.categories);
+    });
+  }, []);
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={20}>
-      <CommonHeader onPress={() => onClose(false)} title={"Service Category"} />
+      keyboardVerticalOffset={20}
+    >
+      <CommonHeader
+        onPress={() => onClose(false)}
+        title={isBn ? "সার্ভিস ক্যাটাগরি" : "Service Category"}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
           flex: 1,
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <Text style={[styles.headLine, { lineHeight: 32, marginTop: 24 }]}>
-          Which service category best describes your business?
+          {isBn
+            ? "কোন সার্ভিস ক্যাটাগরি আপনার ব্যবসাকে ভালভাবে উপস্থাপন করে?"
+            : "Which service category best describes your business?"}
         </Text>
         <View>
-          <Input returnKeyType={"done"} onSubmitEditing={()=>{
-            if(onSelect){
-              onSelect(text,key?key:{
-                name:text
-              })
-          }
-          if(onClose){
-              onClose(false)
-          }
-          }}
+          <Input
+            returnKeyType={"done"}
+            onSubmitEditing={() => {
+              if (onSelect) {
+                onSelect(
+                  text,
+                  key
+                    ? key
+                    : {
+                        name: text,
+                      }
+                );
+              }
+              if (onClose) {
+                onClose(false);
+              }
+            }}
             value={text}
-            onChange={e=>{
-                if(e?.split("").length>50){
-                    return
-                }
-                setText(e)
+            onChange={(e) => {
+              if (e?.split("").length > 50) {
+                return;
+              }
+              setText(e);
             }}
             style={[styles.input]}
-            placeholder={"Type here"}
+            placeholder={isBn ? "এখানে লিখুন" : "Type here"}
           />
-          <Text style={styles.text}>Max 50 characters </Text>
+          <Text style={styles.text}>
+            {isBn ? "সর্বোচ্চ ৫০টি অক্ষর" : "Max 50 characters"}{" "}
+          </Text>
           <View
             style={{
               position: "absolute",
               width: width - 40,
-              top:70,
-              zIndex:100,
-              backgroundColor:"#ffffff"
-            }}>
+              top: 70,
+              zIndex: 100,
+              backgroundColor: "#ffffff",
+            }}
+          >
             <OptionCart
               Child={(data) => (
                 <Cart
                   onPress={() => {
                     setText(data?.doc?.name);
-                    setKey(data?.doc)
+                    setKey(data?.doc);
                     setTimeout(() => {
                       setData([]);
                     }, 100);
@@ -111,25 +130,31 @@ export default function ServiceCategoryAdd({ onClose,onSelect }) {
             />
           </View>
         </View>
-        <IconButton onPress={()=>{
-            if(onSelect){
-                onSelect(text,key?key:{
-                  name:key,
-                })
+        <IconButton
+          onPress={() => {
+            if (onSelect) {
+              onSelect(
+                text,
+                key
+                  ? key
+                  : {
+                      name: key,
+                    }
+              );
             }
-            if(onClose){
-                onClose(false)
+            if (onClose) {
+              onClose(false);
             }
-            
-        }} active={text?true:false}
-        disabled={text?false:true}
+          }}
+          active={text ? true : false}
+          disabled={text ? false : true}
           style={[
             styles.button,
             {
-              marginTop:height-350
+              marginTop: height - 350,
             },
           ]}
-          title={"Done"}
+          title={isBn ? "সম্পন্ন হয়েছে" : "Done"}
         />
       </ScrollView>
     </KeyboardAvoidingView>

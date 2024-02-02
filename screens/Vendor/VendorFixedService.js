@@ -58,7 +58,10 @@ import {
   getGigById,
 } from "../../Class/service";
 import { useSelector, useDispatch } from "react-redux";
-import { convertServerFacilities, serverToLocal } from "../../Class/dataConverter";
+import {
+  convertServerFacilities,
+  serverToLocal,
+} from "../../Class/dataConverter";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 const Tab = createMaterialTopTabNavigator();
 import useHandleScroll from "../../components/constants/FabView";
@@ -142,7 +145,7 @@ const VendorFixedService = (props) => {
   );
   const params = props.route.params;
   //const data = params.data;
-  const [data,setNData]=useState(params.data)
+  const [data, setNData] = useState(params.data);
   const [newNavigation, setNewNavigation] = React.useState(1100);
   const [imageIndex, setImageIndex] = React.useState(0);
   const [scrollEnabled, setScrollEnabled] = React.useState(false);
@@ -151,7 +154,7 @@ const VendorFixedService = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [scrollDirection, setScrollDirection] = React.useState(false);
   const isFocused = useIsFocused();
- 
+
   React.useEffect(() => {
     if (isFocused) {
       dispatch(setHideBottomBar(true));
@@ -207,30 +210,28 @@ const VendorFixedService = (props) => {
           }
         });
       });
-     
+
       setActiveServiceData(arr);
-      
     }
-  }, [data,isFocused]);
-  useEffect(()=>{
-    if(data){
-      getGigById(newUser.token,data.id).then(res=>{
-        setNData(res.data.gig)
-        setFacilities(convertServerFacilities(res.data.gig.facilites));
-        //console.log(res.data.gig.facilites)
-      }).catch(err=>{
-        console.error(err.response.data.msg)
-      })
+  }, [data, isFocused]);
+  useEffect(() => {
+    if (data) {
+      getGigById(newUser.token, data.id)
+        .then((res) => {
+          setNData(res.data.gig);
+          setFacilities(convertServerFacilities(res.data.gig.facilites));
+          //console.log(res.data.gig.facilites)
+        })
+        .catch((err) => {
+          console.error(err.response.data.msg);
+        });
     }
-  },[isFocused])
+  }, [isFocused]);
 
-
-  if (
-    !Data
-  ) {
+  if (!Data) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
     );
   }
@@ -292,7 +293,6 @@ const VendorFixedService = (props) => {
             setImageIndex(index);
           }}
           renderItem={({ index }) => (
-           
             <Image
               source={{ uri: Images[index] }}
               fit="cover"
@@ -451,7 +451,7 @@ const VendorFixedService = (props) => {
               backgroundColor: primaryColor,
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems:"center"
+              alignItems: "center",
             }}
           >
             <Text
@@ -459,18 +459,18 @@ const VendorFixedService = (props) => {
                 color: "#BEBBBB",
                 fontSize: 16,
                 fontFamily: "Poppins-SemiBold",
-                marginTop:10
+                marginTop: 10,
               }}
             >
               #Fixed Service
             </Text>
 
-            <TouchableOpacity style={{
-              
-            }} onPress={()=>{
-              
-              navigation.navigate("EditService",{data:data,gigs:data})
-            }}>
+            <TouchableOpacity
+              style={{}}
+              onPress={() => {
+                navigation.navigate("EditService", { data: data, gigs: data });
+              }}
+            >
               <SvgXml xml={editIcon} height="50" width={"50"} />
             </TouchableOpacity>
           </View>
@@ -502,20 +502,25 @@ const VendorFixedService = (props) => {
                 button={true}
                 text={Description}
               /> */}
-              <ReadMore content={Description}/>
+              <ReadMore content={Description} />
             </View>
-            
           </View>
-          <ServiceListViewer onEdit={()=>{
-            navigation.navigate("EditServiceList", {
-                skills:data.skills,
-                category:data?.service?.category,
+          <ServiceListViewer
+            onEdit={() => {
+              navigation.navigate("EditServiceList", {
+                skills: data.skills,
+                category: data?.service?.category,
                 facilities: Facilities,
                 name: "VendorOrderDetails",
                 data: "ONETIME",
                 gigs: data,
               });
-          }} editable={true} skills={Data?.skills} facilities={Facilities} serviceCategory={{name:data?.service?.category}}/>
+            }}
+            editable={true}
+            skills={Data?.skills}
+            facilities={Facilities}
+            serviceCategory={{ name: data?.service?.category }}
+          />
           <View
             style={{
               backgroundColor: primaryColor,
@@ -536,63 +541,10 @@ const VendorFixedService = (props) => {
             >
               From {Price} ৳
             </Text>
-            
           </View>
-          
         </View>
 
         <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
-        {/* <View
-          style={{
-            backgroundColor: primaryColor,
-            marginTop: 15,
-          }}
-        >
-          {RelatedServices.length > 4 && (
-            <View>
-              <Text
-                style={{
-                  fontSize: Platform.OS == "ios" ? 22 : 20.5,
-                  fontFamily: "Poppins-SemiBold",
-                  color: textColor,
-                  paddingHorizontal: 20,
-                  paddingVertical: 15,
-                }}
-              >
-                Related Service
-              </Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={{ width: 10 }} />
-                {RelatedServices.map((doc, i) => (
-                  <RelatedService data={doc} key={i} navigation={navigation} />
-                ))}
-              </ScrollView>
-            </View>
-          )}
-
-          {UnRelatedServices.length > 0 && (
-            <View>
-              <Text
-                style={{
-                  fontSize: Platform.OS == "ios" ? 22 : 20.5,
-                  fontFamily: "Poppins-SemiBold",
-                  color: textColor,
-                  paddingHorizontal: 20,
-                  paddingVertical: 15,
-                }}
-              >
-                You Might Also Like
-              </Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={{ width: 10 }} />
-                {UnRelatedServices.map((doc, i) => (
-                  <RelatedService data={doc} key={i} navigation={navigation} />
-                ))}
-                <View style={{ width: 10 }} />
-              </ScrollView>
-            </View>
-          )}
-        </View> */}
 
         <View style={{ height: 70 }} />
       </ScrollView>

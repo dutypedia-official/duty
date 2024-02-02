@@ -13,11 +13,14 @@ import { sendOTP } from "../../Class/auth";
 import ActivityLoader from "../../components/ActivityLoader";
 import IconButton from "../../components/IconButton";
 import Input from "../../components/Input";
+import useLang from "../../Hooks/UseLang";
 
 export default function SignUp_1({ navigation, route }) {
   const [number, setNumber] = useState();
   const [error, setError] = useState();
   const [loader, setLoader] = useState(false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const sendOtp = async () => {
     setLoader(true);
     setError();
@@ -27,8 +30,8 @@ export default function SignUp_1({ navigation, route }) {
       })
       .finally((res) => {
         setLoader(false);
-        
-        if(!error){
+
+        if (!error) {
           navigation.navigate("SignUp_2", { number: number });
         }
       });
@@ -45,26 +48,30 @@ export default function SignUp_1({ navigation, route }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-      <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <SvgXml width={"100%"} style={signUpStyle.mt28} xml={vector} />
           <Text style={[signUpStyle.headLine, signUpStyle.mt44]}>
-            Enter Your Phone Number
+            {isBn ? "আপনার ফোন নাম্বার লিখুন" : "Enter Your Phone Number"}
           </Text>
           <Text style={[signUpStyle.mt8, signUpStyle.text]}>
-          Your privacy is important to us. Rest assured, your number will only be used for verification purposes.
+            {isBn
+              ? "আপনার গোপনীয়তা আমাদের কাছে গুরুত্বপূর্ণ৷ নিশ্চিন্ত থাকুন, আপনার নম্বরটি শুধুমাত্র যাচাইকরণের উদ্দেশ্যে ব্যবহার করা হবে৷"
+              : "Your privacy is important to us. Rest assured, your number will only be used for verification purposes."}
           </Text>
           <Input
             error={error}
             keyboardType={"number-pad"}
             value={number}
-            onChange={e=>{
-              setNumber(e)
-              setError()
+            onChange={(e) => {
+              setNumber(e);
+              setError();
             }}
             style={[signUpStyle.input, signUpStyle.mt18]}
             placeholder={"01*********"}
@@ -77,17 +84,21 @@ export default function SignUp_1({ navigation, route }) {
         onPress={() => {
           let arr = number.split("");
           if (arr.length != 11) {
-            setError("*Number is not valid");
+            setError(
+              isBn ? "আপনি ভুল মোবাইল নম্বর দিয়েছেন" : "*Number is not valid"
+            );
             return;
           }
           if (arr[0] != "0" || arr[1] != "1") {
-            setError("*Number is not valid");
+            setError(
+              isBn ? "আপনি ভুল মোবাইল নম্বর দিয়েছেন" : "*Number is not valid"
+            );
             return;
           }
           sendOtp();
         }}
         style={signUpStyle.button}
-        title={"Continue"}
+        title={isBn ? "পরবর্তি" : "Continue"}
       />
     </KeyboardAvoidingView>
   );
@@ -314,7 +325,6 @@ const signUpStyle = StyleSheet.create({
   headLine: {
     fontSize: 24,
     fontWeight: "700",
-    
   },
   text: {
     fontSize: 14,

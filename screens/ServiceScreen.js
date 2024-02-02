@@ -12,11 +12,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import customStyle from "../assets/stylesheet";
 import ServiceHeader from "../components/LandingPage/ServiceHeader";
 import { TopSellerCard } from "../components/LandingPage/TopSeller";
+import useLang from "../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 export default function ServiceScreen({ onMore, navigation, route }) {
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 200);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const translateY = diffClamp.interpolate({
     inputRange: [0, 200],
     outputRange: [0, -200],
@@ -34,7 +37,8 @@ export default function ServiceScreen({ onMore, navigation, route }) {
       }}
       stickyHeaderHiddenOnScroll={true}
       stickyHeaderIndices={[0]}
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+    >
       <Animated.View
         style={[
           {
@@ -46,15 +50,19 @@ export default function ServiceScreen({ onMore, navigation, route }) {
             zIndex: 500,
             overflow: "hidden",
           },
-        ]}>
+        ]}
+      >
         <ServiceHeader navigation={navigation} />
       </Animated.View>
       <View
         style={[
           customStyle.flexBox,
           { marginTop: 0, marginBottom: 18, marginHorizontal: 20 },
-        ]}>
-        <Text style={customStyle.landingHeadLine}>Top Seller</Text>
+        ]}
+      >
+        <Text style={customStyle.landingHeadLine}>
+          {isBn ? "সেরা বিক্রেতা" : "Top Seller"}
+        </Text>
         {/* <TouchableOpacity onPress={onMore}>
           <Text style={customStyle.landingButtonText}>See all</Text>
         </TouchableOpacity> */}
@@ -65,13 +73,18 @@ export default function ServiceScreen({ onMore, navigation, route }) {
             marginHorizontal: 14,
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent:  "flex-start",
+            justifyContent: "flex-start",
             marginBottom: 22,
-          }}>
+          }}
+        >
           {data.map((doc, i) => (
-            <TopSellerCard onPress={()=>{
-              navigation?.navigate("OtherProfile",{data:doc,serviceId:doc?.service?.id})
-            }}
+            <TopSellerCard
+              onPress={() => {
+                navigation?.navigate("OtherProfile", {
+                  data: doc,
+                  serviceId: doc?.service?.id,
+                });
+              }}
               key={i}
               height={130}
               data={doc}
@@ -81,13 +94,17 @@ export default function ServiceScreen({ onMore, navigation, route }) {
           ))}
         </View>
       )}
-      {!data&&(
-        <View style={{
-          height:200,
-          justifyContent:"center",
-          alignItems:"center"
-        }}>
-          <Text style={customStyle.mediumText}>No Seller!</Text>
+      {!data && (
+        <View
+          style={{
+            height: 200,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={customStyle.mediumText}>
+            {isBn ? "কোনও বিক্রেতা নেই" : "No Seller!"}
+          </Text>
         </View>
       )}
     </ScrollView>

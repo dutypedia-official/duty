@@ -1,24 +1,31 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { SvgXml } from "react-native-svg";
+import useLang from "../../../Hooks/UseLang";
 
-export default function WithdrawFinal({navigation}) {
-  
+export default function WithdrawFinal({ navigation }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
+
   return (
     <View style={styles.container}>
-     
-        <SvgXml xml={icon} />
-        <Text style={styles.largeFont}>Request Successfully sent</Text>
-        <Text style={styles.smallText}>
-          "Thank you for your request to withdraw funds. We're reviewing it now
-          and will process it in 5 business days. Your bank may take extra time
-          to process it, but we'll confirm with you when it's done. Let us know
-          if you have any questions. Thanks for using our platform!"
-        </Text>
-        <Text onPress={()=>{
-          navigation.navigate("VendorAccountBalance")
-        }} style={styles.mediumText}>Back to dashboard</Text>
-      
+      <SvgXml xml={icon} />
+      <Text style={styles.largeFont}>
+        {isBn ? "অনুরোধ সফলভাবে পাঠানো হয়েছে" : "Request Successfully sent"}
+      </Text>
+      <Text style={styles.smallText}>
+        {isBn
+          ? "টাকা উত্তোলনের অনুরোধের জন্য আপনাকে ধন্যবাদ। আমরা এখন এটি পর্যালোচনা করছি এবং 5 কর্মদিবসের মধ্যে এটি প্রক্রিয়া করব। আপনার ব্যাঙ্ক এটি প্রক্রিয়া করতে অতিরিক্ত সময় নিতে পারে, তবে এটি হয়ে গেলে আমরা আপনাকে নিশ্চিত করব। আপনার যদি কোন প্রশ্ন থাকে সেটা আমাদের জানাতে পারেন। আমাদের প্ল্যাটফর্ম ব্যবহার করার জন্য ধন্যবাদ!"
+          : "Thank you for your request to withdraw funds. We're reviewing it now and will process it in 5 business days. Your bank may take extra time to process it, but we'll confirm with you when it's done. Let us know if you have any questions. Thanks for using our platform!"}
+      </Text>
+      <Text
+        onPress={() => {
+          navigation.navigate("VendorAccountBalance");
+        }}
+        style={styles.mediumText}
+      >
+        {isBn ? "ড্যাশবোর্ডে ফিরে যান" : "Back to dashboard"}
+      </Text>
     </View>
   );
 }
@@ -34,18 +41,18 @@ const styles = StyleSheet.create({
   },
   largeFont: {
     fontSize: 24,
-    color:"#4CD964",
-    marginTop:32
+    color: "#4CD964",
+    marginTop: 32,
   },
   mediumText: {
     fontSize: 16,
-    textDecorationLine:"underline",
-    marginTop:24
+    textDecorationLine: "underline",
+    marginTop: 24,
   },
   smallText: {
     fontSize: 12,
-    marginTop:24,
-    textAlign:"center"
+    marginTop: 24,
+    textAlign: "center",
   },
 });
 const icon = `<svg width="76" height="77" viewBox="0 0 76 77" fill="none" xmlns="http://www.w3.org/2000/svg">

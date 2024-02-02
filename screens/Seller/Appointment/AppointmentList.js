@@ -51,6 +51,8 @@ export default function AppointmentList({ navigation, route }) {
   const colors = new Color(isDark);
   const backgroundColor = colors.getBackgroundColor();
   const name = "Upcoming";
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const isFocused = useIsFocused();
   React.useLayoutEffect(() => {
@@ -76,7 +78,8 @@ export default function AppointmentList({ navigation, route }) {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size={"small"} color={backgroundColor} />
       </View>
     );
@@ -91,7 +94,8 @@ export default function AppointmentList({ navigation, route }) {
             flexDirection: "row",
             paddingHorizontal: 20,
             paddingVertical: 10,
-          }}>
+          }}
+        >
           <Chip
             onPress={() => {
               setActive("Upcoming");
@@ -167,11 +171,13 @@ const Chip = ({ title, active, onPress }) => {
         paddingHorizontal: 15,
         borderWidth: active ? 0 : 1,
         borderColor: "#E2E2E2",
-      }}>
+      }}
+    >
       <Text
         style={{
           color: active ? "white" : "black",
-        }}>
+        }}
+      >
         {title}
       </Text>
     </TouchableOpacity>
@@ -179,16 +185,19 @@ const Chip = ({ title, active, onPress }) => {
 };
 import appointment from "../../../assets/appointment.jpeg";
 import { Cart } from "../../Vendor/Appointment/VendorAppointmentList";
+import useLang from "../../../Hooks/UseLang";
 const NoAppointment = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        height:height-200,
-        
-      }}>
+        height: height - 200,
+      }}
+    >
       <Image
         source={appointment}
         style={{
@@ -201,8 +210,9 @@ const NoAppointment = () => {
           fontSize: 16,
           fontFamily: "Poppins-Medium",
           marginTop: 24,
-        }}>
-        No Appointment Found
+        }}
+      >
+        {isBn ? "কোনও অ্যাপয়েন্টমেন্ট নেই" : "No Appointment Found"}
       </Text>
     </View>
   );

@@ -14,6 +14,7 @@ import customStyle from "../../../assets/stylesheet";
 import ActivityLoader from "../../../components/ActivityLoader";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import ReadMore from "../../../components/ReadMore";
+import useLang from "../../../Hooks/UseLang";
 
 export default function NeedExtraTime({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -24,6 +25,8 @@ export default function NeedExtraTime({ navigation, route }) {
   const data = route?.params?.data;
   const [loader, setLoader] = useState(false);
   const user = useSelector((state) => state.user);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -70,7 +73,8 @@ export default function NeedExtraTime({ navigation, route }) {
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <View>
           <IconButton
             onPress={() => setVisible(true)}
@@ -112,13 +116,14 @@ export default function NeedExtraTime({ navigation, route }) {
             marginTop: 32,
             height: 44,
           }}
-          title={"Send Request"}
+          title={isBn ? "অনুরুধ পাঠান" : "Send Request"}
         />
         <View
           style={{
             flexDirection: "row",
             marginTop: 36,
-          }}>
+          }}
+        >
           <SvgXml
             style={{
               marginRight: 8,
@@ -126,7 +131,9 @@ export default function NeedExtraTime({ navigation, route }) {
             xml={light}
           />
           <Text style={[styles.headLine, { flex: 1 }]}>
-            Instructions for Requesting Extra Delivery Time as a Seller on Duty
+            {isBn
+              ? "ডিউটিতে বিক্রেতা হিসাবে অতিরিক্ত ডেলিভারির সময় অনুরোধ করার জন্য নির্দেশাবলী"
+              : "Instructions for Requesting Extra Delivery Time as a Seller on Duty"}
           </Text>
         </View>
         {/* <ViewMore
@@ -160,7 +167,7 @@ export default function NeedExtraTime({ navigation, route }) {
           containerStyle={{
             marginTop: 24,
           }}
-          content={content}
+          content={isBn ? contentBn : content}
         />
         <View style={{ height: 32 }} />
       </View>
@@ -179,6 +186,9 @@ mutually agreed upon solution can be reached. It is important to
 ensure that you can realistically meet the new delivery deadline
 before making a request for extra time. Thank you for your
 cooperation and understanding in this matter.`;
+const contentBn = `আপনি যদি নির্দিষ্ট ডেলিভারি সময়ের মধ্যে আপনার অর্ডার প্রদান করতে অক্ষম হন, তাহলে আপনার ক্রেতার কাছ থেকে অতিরিক্ত সময়ের জন্য অনুরোধ করার অপশন রয়েছে৷।যাইহোক, অনুগ্রহ করে মনে রাখবেন যে ক্রেতা যদি আপনার অতিরিক্ত ডেলিভারি সময়ের অনুরোধ গ্রহণ না করে এবং আপনি বর্তমান ডেলিভারি সময়ের মধ্যে ডেলিভারি করতে অক্ষম হন, তাহলে অর্ডারটি ব্যর্থ হিসাবে চিহ্নিত করা হবে এবং পেমেন্ট ক্রেতাকে ফেরত দেওয়া হবে৷।
+অতিরিক্ত সময়ের জন্য একটি অনুরোধ পাঠানোর আগে, আমরা সুপারিশ করি যে আপনি পরিস্থিতি নিয়ে আলোচনা করতে ক্রেতার সাথে যোগাযোগ করুন এবং দেখতে পারেন যে একটি পারস্পরিক সম্মতিতে সমাধানে পৌঁছানো যায় কিনা৷।অতিরিক্ত সময়ের জন্য অনুরোধ করার আগে আপনি নতুন ডেলিভারির সময়সীমা বাস্তবসম্মতভাবে পূরণ করতে পারেন তা নিশ্চিত করা গুরুত্বপূর্ণ৷।
+আমাদের সহযোগিতা করার জন্য এবং সমস্যা বোঝার জন্য আপনাকে ধন্যবাদ৷।`;
 const calender = `<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M3.91667 1V2.75M12.0833 1V2.75M1 13.25V4.5C1 4.03587 1.18437 3.59075 1.51256 3.26256C1.84075 2.93437 2.28587 2.75 2.75 2.75H13.25C13.7141 2.75 14.1592 2.93437 14.4874 3.26256C14.8156 3.59075 15 4.03587 15 4.5V13.25M1 13.25C1 13.7141 1.18437 14.1592 1.51256 14.4874C1.84075 14.8156 2.28587 15 2.75 15H13.25C13.7141 15 14.1592 14.8156 14.4874 14.4874C14.8156 14.1592 15 13.7141 15 13.25M1 13.25V7.41667C1 6.95254 1.18437 6.50742 1.51256 6.17923C1.84075 5.85104 2.28587 5.66667 2.75 5.66667H13.25C13.7141 5.66667 14.1592 5.85104 14.4874 6.17923C14.8156 6.50742 15 6.95254 15 7.41667V13.25M8 8.58333H8.00622V8.58956H8V8.58333ZM8 10.3333H8.00622V10.3396H8V10.3333ZM8 12.0833H8.00622V12.0896H8V12.0833ZM6.25 10.3333H6.25622V10.3396H6.25V10.3333ZM6.25 12.0833H6.25622V12.0896H6.25V12.0833ZM4.5 10.3333H4.50622V10.3396H4.5V10.3333ZM4.5 12.0833H4.50622V12.0896H4.5V12.0833ZM9.75 8.58333H9.75622V8.58956H9.75V8.58333ZM9.75 10.3333H9.75622V10.3396H9.75V10.3333ZM9.75 12.0833H9.75622V12.0896H9.75V12.0833ZM11.5 8.58333H11.5062V8.58956H11.5V8.58333ZM11.5 10.3333H11.5062V10.3396H11.5V10.3333Z" stroke="#767676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

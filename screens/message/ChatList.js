@@ -20,7 +20,11 @@ import { SvgXml } from "react-native-svg";
 import { useDispatch, useSelector } from "react-redux";
 import customStyle from "../../assets/stylesheet";
 import ChatCart from "../../Cart/ChatCart";
-import { getConversation, getConversationVendor, getMessageUnReadCount } from "../../Class/message";
+import {
+  getConversation,
+  getConversationVendor,
+  getMessageUnReadCount,
+} from "../../Class/message";
 import ActivityLoader from "../../components/ActivityLoader";
 import SearchBar from "../../components/SearchBar";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
@@ -32,9 +36,12 @@ import ChatHeader from "./ChatHeader";
 import { socket } from "../../Class/socket";
 import { getUnreadNotification } from "../../Class/notification";
 import { wait } from "../../action";
-const {height,width}=Dimensions.get("window")
+import useLang from "../../Hooks/UseLang";
+const { height, width } = Dimensions.get("window");
 
 export default function ChatList(props) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 300);
   const translateY = diffClamp.interpolate({
@@ -65,9 +72,9 @@ export default function ChatList(props) {
     sheetRef.current?.close();
     dispatch(setChatBottomRef(null));
   }, []);
-  const vendor=useSelector(state=>state.vendor)
-  const [newMessage,setNewMessage]=useState(false)
-  const [refreshing,setRefreshing]=useState(false)
+  const vendor = useSelector((state) => state.vendor);
+  const [newMessage, setNewMessage] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
@@ -75,7 +82,7 @@ export default function ChatList(props) {
 
   //console.log(chatBottomRef)
   React.useEffect(() => {
-    if (user&&!vendor) {
+    if (user && !vendor) {
       getConversation(user.token)
         .then((res) => {
           setLoader(false);
@@ -87,8 +94,8 @@ export default function ChatList(props) {
           setLoader(false);
           console.warn(err.response.data.msg);
         });
-    }else if(vendor){
-      getConversationVendor(user.token,vendor?.service?.id)
+    } else if (vendor) {
+      getConversationVendor(user.token, vendor?.service?.id)
         .then((res) => {
           setLoader(false);
           setConversations(res.data.conversations);
@@ -101,17 +108,16 @@ export default function ChatList(props) {
         });
     }
     //setNewMessage()
-  }, [user, isFocused,vendor,newMessage,refreshing]);
+  }, [user, isFocused, vendor, newMessage, refreshing]);
 
-  useEffect(()=>{
-    socket?.on("getMessage",e=>{
-      setNewMessage(e)
-    })
+  useEffect(() => {
+    socket?.on("getMessage", (e) => {
+      setNewMessage(e);
+    });
     return () => {
       socket?.off("getMessage");
     };
-  },[])
-  
+  }, []);
 
   const search = (val, data) => {
     if (!Array.isArray(data)) {
@@ -141,7 +147,8 @@ export default function ChatList(props) {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityLoader />
       </View>
     );
@@ -176,26 +183,34 @@ export default function ChatList(props) {
         }
         onScroll={(e) => {
           scrollY.setValue(e.nativeEvent.contentOffset.y);
-        }}>
+        }}
+      >
         <View
           style={{
             minHeight: "100%",
-          }}>
+          }}
+        >
           <View style={{ height: 0 }} />
           {Conversations &&
             Conversations.map((doc, i) => (
               <ChatCart readOnly={doc.readOnly} data={doc} key={i} {...props} />
             ))}
           {Conversations && Conversations.length == 0 && (
-            <View style={[customStyle.fullBox,{height:height-200}]}>
-             
+            <View style={[customStyle.fullBox, { height: height - 200 }]}>
               <Text
                 style={{
                   marginVertical: 20,
                   textAlign: "center",
                   fontSize: 24,
-                }}>
-                {searchX ? "Ops, No Result" : "No Member Added"}
+                }}
+              >
+                {searchX
+                  ? isBn
+                    ? "কোনও রেজাল্ট পাওয়া যায়নি"
+                    : "Ops, No Result"
+                  : isBn
+                  ? "কোনও সদস্য নেই"
+                  : "No Member Added"}
               </Text>
             </View>
           )}
@@ -214,7 +229,8 @@ export default function ChatList(props) {
           index={index}
           enablePanDownToClose={true}
           snapPoints={snapPoints}
-          onChange={handleSheetChange}>
+          onChange={handleSheetChange}
+        >
           {index != -1 && isFocused && (
             <Header
               type={type}
@@ -407,25 +423,36 @@ const noResult = `<svg width="165" height="216" viewBox="0 0 165 216" fill="none
 </svg>
 `;
 const Header = ({ type, onConfirm, onChange, value }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
         backgroundColor: "#4ADE80",
         paddingHorizontal: 20,
         paddingVertical: 24,
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: 20,
             fontWeight: "700",
             color: "#fff",
-          }}>
-          {type == "Search" ? "Seller List" : "Member List"}
+          }}
+        >
+          {type == "Search"
+            ? isBn
+              ? "সদস্যের লিস্ট"
+              : "Seller List"
+            : isBn
+            ? "বিক্রেতার লিস্ট"
+            : "Member List"}
         </Text>
         <Text
           onPress={onConfirm}
@@ -433,8 +460,9 @@ const Header = ({ type, onConfirm, onChange, value }) => {
             fontSize: 16,
             fontWeight: "400",
             color: "#fff",
-          }}>
-          Done
+          }}
+        >
+          {isBn ? "সম্পন্ন" : "Done"}
         </Text>
       </View>
       <View
@@ -447,12 +475,13 @@ const Header = ({ type, onConfirm, onChange, value }) => {
           alignItems: "center",
           paddingHorizontal: 8,
           justifyContent: "space-between",
-        }}>
+        }}
+      >
         <TextInput
           onChangeText={onChange}
           value={value}
           style={{ flex: 1 }}
-          placeholder="Type Name"
+          placeholder={isBn ? "এখানে লিখুন" : "Type Name"}
         />
         <SvgXml xml={search} />
       </View>

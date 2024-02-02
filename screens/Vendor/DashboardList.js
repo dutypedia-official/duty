@@ -29,6 +29,7 @@ import IconButton from "../../components/IconButton";
 import Frame from "../../assets/Images/Frame.png";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
+import useLang from "../../Hooks/UseLang";
 
 const DashboardList = ({ navigation, route }) => {
   const vendorInfo = useSelector((state) => state.vendorInfo);
@@ -46,6 +47,8 @@ const DashboardList = ({ navigation, route }) => {
   const vendorOrders = useSelector((state) => state.vendorOrders);
   const inset = useSafeAreaInsets();
   const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (user) {
@@ -89,7 +92,8 @@ const DashboardList = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size="small" color={backgroundColor} />
       </View>
     );
@@ -115,7 +119,8 @@ const DashboardList = ({ navigation, route }) => {
       style={{
         paddingTop: inset?.top,
         flex: 1,
-      }}>
+      }}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
@@ -123,7 +128,8 @@ const DashboardList = ({ navigation, route }) => {
             alignItems: "center",
 
             justifyContent: "center",
-          }}>
+          }}
+        >
           <SvgXml xml={icon} />
         </View>
         <Image
@@ -137,8 +143,11 @@ const DashboardList = ({ navigation, route }) => {
 
             fontWeight: "500",
             marginHorizontal: 20,
-          }}>
-          Login or create your business account
+          }}
+        >
+          {isBn
+            ? "আপনার ব্যবসায়িক অ্যাকাউন্ট নির্বাচন করুন বা একটি ব্যবসায়িক অ্যাকাউন্ট তৈরি করুন।"
+            : "Login or create your business account"}
         </Text>
         <View
           style={{
@@ -146,7 +155,8 @@ const DashboardList = ({ navigation, route }) => {
             alignItems: "center",
           }}
           showsHorizontalScrollIndicator={false}
-          horizontal={true}>
+          horizontal={true}
+        >
           <View style={{ height: 32 }} />
           {Data &&
             Data.map((doc, i) => <Cart key={i} onChange={click} data={doc} />)}
@@ -158,8 +168,11 @@ const DashboardList = ({ navigation, route }) => {
                 marginBottom: 38,
                 width: "100%",
                 textAlign: "center",
-              }}>
-              No account found
+              }}
+            >
+              {isBn
+                ? "কোনো ব্যবসায়িক অ্যাকাউন্ট পাওয়া যায়নি"
+                : "No account found"}
             </Text>
           )}
           {/* <Cart onChange={click} data={data} /> */}
@@ -180,7 +193,15 @@ const DashboardList = ({ navigation, route }) => {
 
             marginVertical: 28,
           }}
-          title={"Create an another business account"}
+          title={
+            Data?.length === 0
+              ? isBn
+                ? "একটি ব্যবসায়িক অ্যাকাউন্ট খুলুন"
+                : "Create a business account"
+              : isBn
+              ? "আরও একটি ব্যবসায়িক অ্যাকাউন্ট তৈরি করুন"
+              : "Create another business account"
+          }
         />
         {/* <Button
         onPress={() => {
@@ -228,7 +249,8 @@ const Cart = ({ data, onChange }) => {
         if (onChange) {
           onChange(id);
         }
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -236,7 +258,8 @@ const Cart = ({ data, onChange }) => {
           backgroundColor: primaryColor,
           paddingVertical: 12,
           alignItems: "center",
-        }}>
+        }}
+      >
         <View
           style={{
             backgroundColor: "#e5e5e5",
@@ -247,7 +270,8 @@ const Cart = ({ data, onChange }) => {
             alignItems: "center",
             marginRight: 12,
             overflow: "hidden",
-          }}>
+          }}
+        >
           {image ? (
             <Image
               style={{
@@ -268,7 +292,8 @@ const Cart = ({ data, onChange }) => {
               fontSize: 16,
               fontWeight: "400",
               color: "#1A1A1A",
-            }}>
+            }}
+          >
             {title ? title : "Sazzad It Center"}
           </Text>
         </View>
@@ -276,7 +301,8 @@ const Cart = ({ data, onChange }) => {
           <Pressable
             style={{
               marginLeft: 20,
-            }}>
+            }}
+          >
             <View
               style={{
                 width: 12,
@@ -291,12 +317,14 @@ const Cart = ({ data, onChange }) => {
                 top: -4,
                 zIndex: 100,
                 right: -3,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: 8,
                   color: "#fff",
-                }}>
+                }}
+              >
                 {count}
               </Text>
             </View>
@@ -322,4 +350,4 @@ const plus = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns=
 const msg = `<svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.93359 0.882813L18.0273 0.875L18.3398 0.984375C18.5117 1.04297 18.7578 1.15234 18.8828 1.22656C19.0078 1.30078 19.2188 1.47656 19.3477 1.61719C19.4805 1.75781 19.6445 1.97656 19.7148 2.10547C19.7812 2.23438 19.875 2.47266 19.918 2.63281C19.9922 2.89844 20 3.03516 20 5.15234L17.5352 6.98828C16.1758 8 14.5625 9.19922 13.9492 9.65625C13.3359 10.1133 12.4805 10.7461 12.0508 11.0664C11.6211 11.3828 11.1602 11.6992 11.0234 11.7695C10.8906 11.8359 10.6719 11.918 10.5352 11.9492C10.4023 11.9805 10.1602 12.0078 10 12.0078C9.83984 12.0078 9.59766 11.9805 9.46094 11.9492C9.32812 11.918 9.10938 11.8359 8.97266 11.7695C8.83984 11.6992 6.76562 10.1836 0 5.15234V4.05859C0 3.08203 0.0078125 2.92969 0.078125 2.65234C0.125 2.48047 0.214844 2.23438 0.285156 2.10547C0.355469 1.97656 0.519531 1.75781 0.652344 1.61719C0.78125 1.47656 0.992188 1.30078 1.11719 1.22656C1.24219 1.15234 1.47656 1.04297 1.64062 0.984375L1.93359 0.882813ZM1.79688 2.67578C1.70703 2.76172 1.62109 2.89453 1.60156 2.97656C1.57812 3.05859 1.5625 3.40625 1.5625 3.75V4.375C7.71094 8.94531 9.56641 10.3125 9.66016 10.3594C9.76172 10.4141 9.89062 10.4492 10 10.4492C10.1055 10.4492 10.2383 10.4141 10.3398 10.3594C10.4336 10.3125 12.293 8.94531 14.4727 7.32422L18.4375 4.375C18.418 2.98438 18.4141 2.95703 18.3164 2.80859C18.2617 2.72266 18.1484 2.60938 18.0625 2.55859L17.9102 2.46094C5.40625 2.44922 2.15234 2.46094 2.07812 2.48047C2.00781 2.5 1.88281 2.58984 1.79688 2.67578ZM0.0195312 7.12891C0.0273438 7.12891 0.378906 7.38281 1.5625 8.26172L1.58203 15.0391L1.67969 15.1914C1.73047 15.2773 1.84375 15.3906 2.08203 15.5469H17.9102L18.0625 15.4492C18.1484 15.3945 18.2617 15.2812 18.418 15.043L18.4375 8.26172L19.1992 7.69531C19.6172 7.38281 19.9688 7.12891 19.9805 7.12891C19.9883 7.12891 20 8.90625 20 11.082C20 14.9492 19.9961 15.043 19.918 15.3516C19.875 15.5234 19.7812 15.7656 19.7148 15.8945C19.6445 16.0234 19.4805 16.2461 19.3477 16.3828C19.2148 16.5234 19.0039 16.6992 18.8789 16.7773C18.7539 16.8516 18.5117 16.9609 18.0273 17.125H1.97266L1.65625 17.0195C1.48438 16.9609 1.24219 16.8516 1.11719 16.7773C0.992188 16.6992 0.78125 16.5234 0.648438 16.3828C0.515625 16.2461 0.351562 16.0234 0.285156 15.8945C0.214844 15.7656 0.125 15.5312 0.078125 15.3711C0 15.082 0 15.0039 0 11.1016C0 8.91406 0.0078125 7.12891 0.0195312 7.12891Z" fill="#555555"/>
 </svg>
-`
+`;

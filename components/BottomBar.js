@@ -24,6 +24,7 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import useLang from "../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 const BottomBar = (props) => {
@@ -44,8 +45,10 @@ const BottomBar = (props) => {
   const hideBottomBar = useSelector((state) => state.hideBottomBar);
   const unReadNotification = useSelector((state) => state.unReadNotification);
   //const routes = useRoute();
-  console.log(unReadNotification)
+  console.log(unReadNotification);
   const [translateValue] = useState(new Animated.Value(0));
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (vendor) {
@@ -133,7 +136,8 @@ const BottomBar = (props) => {
           style={{
             width: width / 5,
             transform: [{ translateX: translateValue }],
-          }}>
+          }}
+        >
           <Animated.View
             style={[
               {
@@ -165,7 +169,8 @@ const BottomBar = (props) => {
           }
           press(0);
         }}
-        style={styles.button}>
+        style={styles.button}
+      >
         {vendor ? (
           <>
             {route == 0 ? (
@@ -174,7 +179,7 @@ const BottomBar = (props) => {
               <SvgXml xml={order} height="20" width="18" />
             )}
             <Text style={[styles.text, route == 0 ? styles.active : null]}>
-              Order
+              {isBn ? "অর্ডার" : "Order"}
             </Text>
           </>
         ) : (
@@ -185,7 +190,7 @@ const BottomBar = (props) => {
               <SvgXml xml={home} height="24" width="24" />
             )}
             <Text style={[styles.text, route == 0 ? styles.active : null]}>
-              Home
+              {isBn ? "হোম" : "Home"}
             </Text>
           </>
         )}
@@ -210,7 +215,8 @@ const BottomBar = (props) => {
 
           setRoute(1);
         }}
-        style={styles.button}>
+        style={styles.button}
+      >
         {vendor ? (
           <>
             {route == 1 ? (
@@ -219,7 +225,7 @@ const BottomBar = (props) => {
               <SvgXml xml={appointment} height="20" width="20" />
             )}
             <Text style={[styles.text, route == 1 ? styles.active : null]}>
-              Appointment
+              {isBn ? "অ্যাপয়েন্টমেন্ট" : "Appointment"}
             </Text>
           </>
         ) : (
@@ -230,7 +236,7 @@ const BottomBar = (props) => {
               <SvgXml xml={search} height="20" width="20" />
             )}
             <Text style={[styles.text, route == 1 ? styles.active : null]}>
-              Search
+              {isBn ? "খুঁজুন" : "Search"}
             </Text>
           </>
         )}
@@ -250,14 +256,15 @@ const BottomBar = (props) => {
           }
           navigation.navigate("Message");
         }}
-        style={styles.button}>
+        style={styles.button}
+      >
         {route == 2 ? (
           <SvgXml xml={activeMessage} height="20" width="20" />
         ) : (
           <SvgXml xml={message} height="20" width="20" />
         )}
         <Text style={[styles.text, route == 2 ? styles.active : null]}>
-          Message
+          {isBn ? "ম্যাসেজ" : "Message"}
         </Text>
       </Pressable>
       <Pressable
@@ -279,7 +286,8 @@ const BottomBar = (props) => {
           navigation.navigate("Notification");
           setRoute(3);
         }}
-        style={styles.button}>
+        style={styles.button}
+      >
         {unReadNotification > 0 && (
           <Badge
             style={{
@@ -287,7 +295,8 @@ const BottomBar = (props) => {
               top: -5,
               left: 25,
               zIndex: 100,
-            }}>
+            }}
+          >
             {unReadNotification}
           </Badge>
         )}
@@ -297,7 +306,7 @@ const BottomBar = (props) => {
           <SvgXml xml={notification} height="20" width="20" />
         )}
         <Text style={[styles.text, route == 3 ? styles.active : null]}>
-          Notification
+          {isBn ? "নোটিফিকেশন" : "Notification"}
         </Text>
       </Pressable>
       <Pressable
@@ -325,7 +334,8 @@ const BottomBar = (props) => {
             setRoute(4);
           }
         }}
-        style={styles.button}>
+        style={styles.button}
+      >
         {vendor ? (
           <>
             {route == 4 ? (
@@ -334,7 +344,7 @@ const BottomBar = (props) => {
               <SvgXml xml={profile} height="20" width="20" />
             )}
             <Text style={[styles.text, route == 4 ? styles.active : null]}>
-              Profile
+              {isBn ? "প্রোফাইল" : "Profile"}
             </Text>
           </>
         ) : (
@@ -345,7 +355,7 @@ const BottomBar = (props) => {
               <SvgXml xml={profile} height="20" width="20" />
             )}
             <Text style={[styles.text, route == 4 ? styles.active : null]}>
-              Profile
+              {isBn ? "প্রোফাইল" : "Profile"}
             </Text>
           </>
         )}

@@ -20,6 +20,7 @@ import { updateData, updateGigsData } from "../../Class/update";
 import { getGigs, getService } from "../../Class/service";
 import ActivityLoader from "../../components/ActivityLoader";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
+import useLang from "../../Hooks/UseLang";
 const Tab = createMaterialTopTabNavigator();
 const { width, height } = Dimensions.get("window");
 
@@ -28,7 +29,9 @@ const EditServiceList = (props) => {
   const facilities = params?.facilities;
   const skills = params?.skills;
   const category = params?.category;
-  const selected=params?.selected;
+  const selected = params?.selected;
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const ListSelection = useSelector((state) => state.ListSelection);
   const isDark = useSelector((state) => state.isDark);
@@ -37,7 +40,7 @@ const EditServiceList = (props) => {
   const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
   const dispatch = useDispatch();
-  const [Data, setData] = React.useState(selected?selected:[]);
+  const [Data, setData] = React.useState(selected ? selected : []);
   const [DataError, setDataError] = React.useState();
   const [Facilities, setFacilities] = React.useState([]);
   const isFocused = useIsFocused();
@@ -63,15 +66,15 @@ const EditServiceList = (props) => {
   React.useEffect(() => {
     if (getGigs) {
       setData(gigs?.skills);
-    } 
+    }
     //console.log(NewDataList)
     //setData(ListSelection);
-  }, [gigs.id,isFocused]);
+  }, [gigs.id, isFocused]);
   const updateData = () => {
     setLoader(true);
     updateGigsData(user.token, {
       gigId: gigs.id,
-      skills: Data
+      skills: Data,
     })
       .then((res) => {
         updateVendorInfo();
@@ -109,19 +112,18 @@ const EditServiceList = (props) => {
             {...props}
             id={true}
           />
-        )}>
-       <Tab.Screen
+        )}
+      >
+        <Tab.Screen
           name={"Service List"}
           component={ComponentScreen}
           initialParams={{
             setData: setData,
             Data: gigs?.skills,
-            category:category,
-            skills:skills,
-            
+            category: category,
+            skills: skills,
           }}
         />
-        
       </Tab.Navigator>
       <View>
         {DataError && (
@@ -131,15 +133,19 @@ const EditServiceList = (props) => {
           onPress={() => {
             //console.log(Data.length)
             if (Data && Data.length < 2) {
-              setDataError("*Please select one and more options");
+              setDataError(
+                isBn
+                  ? "আরো একটি অপশন নির্বাচন করুন"
+                  : "*Please select one and more options"
+              );
             }
-            if(facilities){
-              navigation.navigate("EditExtraFacilities",{
-                skills:Data,
-                facilities:facilities,
-                gigs:gigs
-              })
-              return
+            if (facilities) {
+              navigation.navigate("EditExtraFacilities", {
+                skills: Data,
+                facilities: facilities,
+                gigs: gigs,
+              });
+              return;
             }
             updateData();
           }}
@@ -152,7 +158,15 @@ const EditServiceList = (props) => {
             marginHorizontal: 20,
             width: width - 40,
           }}
-          title={facilities?"Continue":"Update"}
+          title={
+            facilities
+              ? isBn
+                ? "পরবর্তী"
+                : "Continue"
+              : isBn
+              ? "আপডেট করুন"
+              : "Update"
+          }
         />
       </View>
     </SafeAreaView>
@@ -163,11 +177,11 @@ export default EditServiceList;
 const ComponentScreen = (props) => {
   const params = props.route.params;
   //console.log(params);
-  const skills=params?.skills;
-  const category=params?.category;
-  const Data=params?.Data;
-  const setData=params?.setData;
-//console.log(skills)
+  const skills = params?.skills;
+  const category = params?.category;
+  const Data = params?.Data;
+  const setData = params?.setData;
+  //console.log(skills)
   const styles = StyleSheet.create({
     view: {
       marginHorizontal: 20,
@@ -179,10 +193,9 @@ const ComponentScreen = (props) => {
     },
   });
 
-  
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={[styles.view]} >
+      <View style={[styles.view]}>
         <Text style={styles.text}>{category}</Text>
 
         {skills &&
@@ -195,21 +208,13 @@ const ComponentScreen = (props) => {
               }}
               key={i}
               value={
-                Array.isArray(Data) &&
-                Data.filter(
-                  (d) =>
-                    d == doc
-                    
-                ).length > 0
+                Array.isArray(Data) && Data.filter((d) => d == doc).length > 0
                   ? true
                   : false
               }
               onChange={(e) => {
                 try {
-                  let arr = Data.filter(
-                    (d) =>
-                      d==e
-                  );
+                  let arr = Data.filter((d) => d == e);
                   //console.log(arr);
                   if (arr.length > 0) {
                     //console.log(e);

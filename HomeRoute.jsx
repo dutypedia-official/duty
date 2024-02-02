@@ -88,6 +88,7 @@ import SignUp_2 from "./screens/signup/SignUp_2";
 import SignUp_3 from "./screens/signup/SignUp_3";
 import Reset from "./screens/signup/Reset";
 import ServiceScreen from "./screens/ServiceScreen";
+import useLang from "./Hooks/UseLang";
 
 const Stack = createStackNavigator();
 
@@ -99,6 +100,8 @@ const HomeRoute = ({ navigation }) => {
   const interestCategory = useSelector((state) => state.interestCategory);
   const [Loader, setLoader] = React.useState(false);
   const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   if (Loader) {
     return (
@@ -119,7 +122,9 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         name="AllPackageList"
         options={{
-          header: (props) => <SubHeader title="Fixed Price" {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "একদাম" : "Fixed Price"} {...props} />
+          ),
         }}
         component={AllPackageList}
       />
@@ -157,7 +162,12 @@ const HomeRoute = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader title="Confirm Order" {...props} />,
+          header: (props) => (
+            <SubHeader
+              title={isBn ? "অর্ডার নিশ্চিত করুন" : "Confirm Order"}
+              {...props}
+            />
+          ),
         }}
         name="FixedOffers"
         component={FixedOffers}
@@ -177,7 +187,12 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <SubHeader {...props} title={"Cancel confirmation"} />
+            <SubHeader
+              {...props}
+              title={
+                isBn ? "বাতিল করার জন্য নিশ্চিত করুন" : "Cancel confirmation"
+              }
+            />
           ),
         }}
         name="CancelOrderConfirmation"
@@ -186,7 +201,9 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         name="Company Calender"
         options={{
-          header: (props) => <SubHeader {...props} title={"Working Time"} />,
+          header: (props) => (
+            <SubHeader {...props} title={isBn ? "কাজের সময়" : "Working Time"} />
+          ),
         }}
         component={CompanyCalendar}
       />
@@ -234,7 +251,11 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader no={true} {...props} title={"Business account"} />
+            <CommonHeader
+              no={true}
+              {...props}
+              title={isBn ? "ব্যবসায়ী অ্যাকাউন্ট" : "Business account"}
+            />
           ),
         }}
         name="InitialServiceCreate"
@@ -243,7 +264,10 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Business Title"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "ব্যবসার টাইটেল" : "Business Title"}
+            />
           ),
         }}
         name="BusinessTitle"
@@ -252,7 +276,10 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Your Information"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "আপনার তথ্য" : "Your Information"}
+            />
           ),
         }}
         name="YourInformation"
@@ -260,43 +287,65 @@ const HomeRoute = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Stakeholder"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={isBn ? "অংশীদার" : "Stakeholder"} />
+          ),
         }}
         name="Stakeholder"
         component={StakeHolder}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Established"} />,
+          header: (props) => (
+            <CommonHeader
+              {...props}
+              title={isBn ? "প্রতিষ্ঠিত" : "Established"}
+            />
+          ),
         }}
         name="Established"
         component={Established}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Working Time"} />,
+          header: (props) => (
+            <CommonHeader
+              {...props}
+              title={isBn ? "কাজের সময়" : "Working Time"}
+            />
+          ),
         }}
         name="WorkingTime"
         component={WorkingTime}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Pricing"} />,
+          header: (props) => (
+            <CommonHeader
+              {...props}
+              title={isBn ? "দাম নির্ধারণ" : "Pricing"}
+            />
+          ),
         }}
         name="NewPricing"
         component={NewPricing}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Skills"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={isBn ? "আপনার স্কিল" : "Skills"} />
+          ),
         }}
         name="Skills"
         component={Skills}
-      /> 
+      />
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Service Describe"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "সার্ভিসের বিবরণ" : "Service Describe"}
+            />
           ),
         }}
         name="ServiceDescribe"
@@ -304,14 +353,21 @@ const HomeRoute = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Location"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={isBn ? "ঠিকানা" : "Location"} />
+          ),
         }}
         name="Location"
         component={Location}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"About"} />,
+          header: (props) => (
+            <CommonHeader
+              {...props}
+              title={isBn ? "আপনার ব্যবসার সম্পর্কে" : "About"}
+            />
+          ),
         }}
         name="About"
         component={About}
@@ -358,7 +414,10 @@ const HomeRoute = ({ navigation }) => {
         name="ServiceCategory"
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Service Category"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "সার্ভিস ক্যাটাগরি" : "Service Category"}
+            />
           ),
         }}
         component={ServiceCategory}
@@ -367,7 +426,10 @@ const HomeRoute = ({ navigation }) => {
         name="ExtraFacilities"
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Extra Facilities"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "অতিরিক্ত সুবিধা" : "Extra Facilities"}
+            />
           ),
         }}
         component={ExtraFacilities}
@@ -376,7 +438,10 @@ const HomeRoute = ({ navigation }) => {
         name="ProfileKeyword"
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Profile Keyword"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "প্রোফাইল কীওয়ার্ড" : "Profile Keyword"}
+            />
           ),
         }}
         component={ProfileKeyWord}
@@ -391,7 +456,9 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         name="Pricing"
         options={{
-          header: (props) => <SubHeader title="Pricing" {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "দাম নির্ধারণ" : "Pricing"} {...props} />
+          ),
         }}
         component={Pricing}
       />
@@ -406,7 +473,9 @@ const HomeRoute = ({ navigation }) => {
       <Stack.Screen
         name="Address"
         options={{
-          header: (props) => <SubHeader title="Address" {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "ঠিকানা" : "Address"} {...props} />
+          ),
         }}
         component={Address}
       />
@@ -431,19 +500,26 @@ const HomeRoute = ({ navigation }) => {
         name="InstructionOrder"
         component={InstructionOrder}
       />
-      
-        <Stack.Screen
-          options={{ header:(props)=><SubHeader title={"User information"} {...props}/> }}
-          name="SignUp_3"
-          component={SignUp_3}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="ServiceScreen"
-          component={ServiceScreen}
-        />
+
+      <Stack.Screen
+        options={{
+          header: (props) => (
+            <SubHeader
+              title={isBn ? "ব্যবহারকারীর তথ্য" : "User information"}
+              {...props}
+            />
+          ),
+        }}
+        name="SignUp_3"
+        component={SignUp_3}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="ServiceScreen"
+        component={ServiceScreen}
+      />
     </Stack.Navigator>
   );
 };
