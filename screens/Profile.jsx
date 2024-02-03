@@ -146,6 +146,8 @@ const Stack = createStackNavigator();
 const Profile = ({ navigation }) => {
   const vendorInfo = useSelector((state) => state.vendorInfo);
   const vendor = useSelector((state) => state.vendor);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //const user=useSelector(state=>state.user)
   //console.log(user.user.id)
   return (
@@ -193,7 +195,10 @@ const Profile = ({ navigation }) => {
         name="EditVendorInfo"
         options={{
           header: (props) => (
-            <SubHeader title="Personal Information" {...props} />
+            <SubHeader
+              title={isBn ? "ব্যক্তিগত তথ্য" : "Personal Information"}
+              {...props}
+            />
           ),
         }}
         component={EditVendorInfo}
@@ -229,7 +234,10 @@ const Profile = ({ navigation }) => {
         name="FeedBack"
         options={{
           header: (props) => (
-            <AllReviewHeader title="Client feedback" {...props} />
+            <AllReviewHeader
+              title={isBn ? "ক্লায়েন্ট ফিডব্যাক" : "Client feedback"}
+              {...props}
+            />
           ),
         }}
         component={FeedBack}
@@ -248,7 +256,10 @@ const Profile = ({ navigation }) => {
         name="EditService"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditService}
@@ -257,7 +268,10 @@ const Profile = ({ navigation }) => {
         name="EditServicePrice"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditServicePrice}
@@ -266,7 +280,10 @@ const Profile = ({ navigation }) => {
         name="EditPackageService"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditPackageService}
@@ -275,7 +292,10 @@ const Profile = ({ navigation }) => {
         name="EditPackageScreen"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={AddScreen}
@@ -284,7 +304,10 @@ const Profile = ({ navigation }) => {
         name="EditSubscriptionService"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditSubscriptionService}
@@ -293,7 +316,10 @@ const Profile = ({ navigation }) => {
         name="EditInstallmentService"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditInstallmentService}
@@ -302,7 +328,10 @@ const Profile = ({ navigation }) => {
         name="EditServiceList"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditServiceList}
@@ -311,7 +340,10 @@ const Profile = ({ navigation }) => {
         name="EditSubCategory"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditSubCategory}
@@ -338,7 +370,10 @@ const Profile = ({ navigation }) => {
         name="EditSubCategory_1"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditSubCategory}
@@ -347,7 +382,10 @@ const Profile = ({ navigation }) => {
         name="EditTableData"
         options={{
           header: (props) => (
-            <SubHeader title="Service Information" {...props} />
+            <SubHeader
+              title={isBn ? "সার্ভিসের তথ্য" : "Service Information"}
+              {...props}
+            />
           ),
         }}
         component={EditTableData}
@@ -522,7 +560,9 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         name="AddNotice"
         options={{
-          header: (props) => <SubHeader title="Add Notice" {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "অ্যাড নোটিশ" : "Add Notice"} {...props} />
+          ),
         }}
         component={AddNotice}
       />
@@ -578,14 +618,18 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         name="Review"
         options={{
-          header: (props) => <SubHeader title="Review" {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "রিভিউ" : "Review"} {...props} />
+          ),
         }}
         component={Review}
       />
       <Stack.Screen
         name="AllPackageList"
         options={{
-          header: (props) => <SubHeader title="Fixed Price" {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "একদাম" : "Fixed Price"} {...props} />
+          ),
         }}
         component={AllPackageList}
       />
@@ -597,7 +641,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <SubHeader {...props} title={"Important Notice"} />
+            <SubHeader
+              {...props}
+              title={isBn ? "গুরুত্বপূর্ণ নোটিশ" : "Important Notice"}
+            />
           ),
         }}
         name="ImportantNotice"
@@ -605,7 +652,12 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader {...props} title={"Payment status"} />,
+          header: (props) => (
+            <SubHeader
+              {...props}
+              title={isBn ? "পেমেন্ট এর অবস্থা" : "Payment status"}
+            />
+          ),
         }}
         name="PaymentStatus"
         component={PaymentStatus}
@@ -618,7 +670,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <SubHeader {...props} title={"Cancel confirmation"} />
+            <SubHeader
+              {...props}
+              title={isBn ? "বাতিল করতে নিশ্চিত করুন" : "Cancel confirmation"}
+            />
           ),
         }}
         name="CancelOrderConfirmation"
@@ -626,7 +681,12 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader title={"Select Service"} {...props} />,
+          header: (props) => (
+            <SubHeader
+              title={isBn ? "সার্ভিস নির্বাচন করুন" : "Select Service"}
+              {...props}
+            />
+          ),
         }}
         name="AddServiceList_1"
         component={AddServiceList}
@@ -733,7 +793,9 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         name="Company Calender"
         options={{
-          header: (props) => <SubHeader {...props} title={"Working Time"} />,
+          header: (props) => (
+            <SubHeader {...props} title={isBn ? "কাজের সময়" : "Working Time"} />
+          ),
         }}
         component={CompanyCalendar}
       />
@@ -777,27 +839,40 @@ const Profile = ({ navigation }) => {
         component={Email}
       />
       <Stack.Screen
-        options={{ header: (props) => <SubHeader title="Email" {...props} /> }}
+        options={{
+          header: (props) => (
+            <SubHeader title={isBn ? "ই-মেইল" : "Email"} {...props} />
+          ),
+        }}
         name="EditEmail"
         component={EditEmail}
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader title={"Mobile"} {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "মোবাইল" : "Mobile"} {...props} />
+          ),
         }}
         name="Mobile"
         component={Mobile}
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader title={"Feedback"} {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "ফিডব্যাক" : "Feedback"} {...props} />
+          ),
         }}
         name="ClintFeedBack"
         component={ClintFeedBack}
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader title={"Clint feedback"} {...props} />,
+          header: (props) => (
+            <SubHeader
+              title={isBn ? "ক্লায়েন্ট ফিডব্যাক" : "Clint feedback"}
+              {...props}
+            />
+          ),
         }}
         name="FeedBackMessage"
         component={FeedBackMessage}
@@ -809,14 +884,18 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader {...props} title="Location" />,
+          header: (props) => (
+            <SubHeader {...props} title={isBn ? "ঠিকানা" : "Location"} />
+          ),
         }}
         name="VendorAddress"
         component={VendorAddress}
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader {...props} title="Location" />,
+          header: (props) => (
+            <SubHeader {...props} title={isBn ? "ঠিকানা" : "Location"} />
+          ),
         }}
         name="EditVendorAddress"
         component={EditVendorAddress}
@@ -855,7 +934,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Business Title"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "ব্যবসার টাইটেল" : "Business Title"}
+            />
           ),
         }}
         name="EditBusinessTitle"
@@ -864,7 +946,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Your Information"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "আপনার তথ্য" : "Your Information"}
+            />
           ),
         }}
         name="EditYourInformation"
@@ -872,7 +957,9 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Stakeholder"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={isBn ? "অংশীদার" : "Stakeholder"} />
+          ),
         }}
         name="EditStakeHolder"
         component={EditStakeHolder}
@@ -880,7 +967,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Profile Keywords"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "প্রোফাইল কীওয়ার্ড" : "Profile Keywords"}
+            />
           ),
         }}
         name="EditKeywords"
@@ -889,7 +979,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Extra Facilities"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "অতিরিক্ত সুবিধা" : "Extra Facilities"}
+            />
           ),
         }}
         name="EditExtraFacilities"
@@ -898,7 +991,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <CommonHeader {...props} title={"Service Category"} />
+            <CommonHeader
+              {...props}
+              title={isBn ? "সার্ভিস ক্যাটাগরি" : "Service Category"}
+            />
           ),
         }}
         name="EditServiceCategory"
@@ -906,14 +1002,21 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"Skills"} />,
+          header: (props) => (
+            <CommonHeader {...props} title={isBn ? "স্কিল" : "Skills"} />
+          ),
         }}
         name="EditSkills"
         component={EditSkills}
       />
       <Stack.Screen
         options={{
-          header: (props) => <CommonHeader {...props} title={"About"} />,
+          header: (props) => (
+            <CommonHeader
+              {...props}
+              title={isBn ? "আপনার সম্পর্কে" : "About"}
+            />
+          ),
         }}
         name="EditAbout"
         component={EditAbout}
@@ -932,7 +1035,10 @@ const Profile = ({ navigation }) => {
       <Stack.Screen
         options={{
           header: (props) => (
-            <SubHeader title={"User information"} {...props} />
+            <SubHeader
+              title={isBn ? "ব্যবহারকারীর তথ্য" : "User information"}
+              {...props}
+            />
           ),
         }}
         name="SignUp_3"

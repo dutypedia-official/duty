@@ -15,6 +15,7 @@ import ViewMore from "../../Hooks/ViewMore";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { styles } from "../create_dashboard/BusinessTitle";
 import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function Mobile({ navigation, route }) {
   const [type, setType] = useState("Only me");
@@ -167,30 +168,15 @@ export default function Mobile({ navigation, route }) {
                 : "Why We Require Your Mobile Number on Our Platform?"}
             </Text>
           </View>
-          <ViewMore
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            width={"37%"}
-            height={layoutHeight}
-            component={
-              <Text
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={[styles.spText, { marginTop: 1 }]}
-              >
-                At Duty, we understand that your mobile number is a crucial part
-                of your account registration process. Your mobile number is used
-                for verification purposes, and in case you forget your password
-                or ID, it helps to retrieve your account information.{"\n"} We
-                take the security of your mobile number very seriously, and we
-                want to assure you that we do not share any codes or information
-                sent to your mobile number with anyone. Additionally, we provide
-                an option for you to keep your mobile number private, so no one
-                can see it without your consent.{"\n"} Please be assured that we
-                will do our best to protect your mobile number and keep it
-                secure at all times. Thank you for choosing Duty as your
-                preferred online platform, and we look forward to providing you
-                with a secure and convenient user experience
+            content={
+              <Text style={[styles.spText, { marginTop: 1 }]}>
+                {isBn
+                  ? `At Duty, we understand that your mobile number is a crucial partof your account registration process. Your mobile number is usedfor verification purposes, and in case you forget your passwordor ID, it helps to retrieve your account information.{"\n"} Wetake the security of your mobile number very seriously, and wewant to assure you that we do not share any codes or informationsent to your mobile number with anyone. Additionally, we providean option for you to keep your mobile number private, so no onecan see it without your consent.{"\n"} Please be assured that wewill do our best to protect your mobile number and keep itsecure at all times. Thank you for choosing Duty as yourpreferred online platform, and we look forward to providing youwith a secure and convenient user experience`
+                  : "ডিউটিতে, আমরা বুঝি যে আপনার মোবাইল নম্বর আপনার অ্যাকাউন্ট রেজিস্ট্রেশন প্রক্রিয়ার একটি গুরুত্বপূর্ণ অংশ৷।আপনার মোবাইল নম্বরটি যাচাইকরণের উদ্দেশ্যে ব্যবহার করা হয়, এবং আপনি যদি আপনার পাসওয়ার্ড বা আইডি ভুলে যান, এটি আপনার অ্যাকাউন্টের তথ্য পুনরুদ্ধার করতে সহায়তা করে৷ আমরা আপনার মোবাইল নম্বরের নিরাপত্তাকে অত্যন্ত গুরুত্ব সহকারে নিই, এবং আমরা আপনাকে নিশ্চিত করতে চাই যে আমরা আপনার মোবাইল নম্বরে পাঠানো কোনো কোড বা তথ্য কারো সাথে শেয়ার করব না৷।উপরন্তু, আমরা আপনার মোবাইল নম্বরটি গোপন রাখার জন্য একটি বিকল্প পদ্ধতি প্রদান করি, যাতে আপনার সম্মতি ছাড়া কেউ এটি দেখতে না পারে৷। অনুগ্রহ করে আশ্বস্ত হন যে আমরা আপনার মোবাইল নম্বর সুরক্ষিত রাখতে এবং এটিকে সর্বদা সুরক্ষিত রাখার জন্য যথাসাধ্য চেষ্টা করব৷। আপনার পছন্দের অনলাইন প্ল্যাটফর্ম হিসাবে ডিউটিকে বেছে নেওয়ার জন্য আপনাকে ধন্যবাদ, এবং আমরা আপনাকে একটি নিরাপদ এবং সুবিধাজনক ব্যবহারকারীর অভিজ্ঞতা প্রদানের জন্য উন্মুখ"}
               </Text>
             }
           />

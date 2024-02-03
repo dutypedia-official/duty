@@ -100,7 +100,7 @@ export default function AppointmentList({ navigation, route }) {
             onPress={() => {
               setActive("Upcoming");
             }}
-            title={"Upcoming"}
+            title={isBn ? "সামনের" : "Upcoming"}
             active={Active == "Upcoming" ? true : false}
           />
           <View
@@ -112,7 +112,7 @@ export default function AppointmentList({ navigation, route }) {
             onPress={() => {
               setActive("Previous");
             }}
-            title={"Previous"}
+            title={isBn ? "আগের" : "Previous"}
             active={Active == "Previous" ? true : false}
           />
         </View>

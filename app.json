@@ -3,7 +3,7 @@
     "name": "Duty",
     "scheme": "duty",
     "slug": "duty",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -33,7 +33,7 @@
     "ios": {
       "associatedDomains": ["applinks:duty.com.bd"],
       "supportsTablet": true,
-      "buildNumber": "5",
+      "buildNumber": "7",
       "infoPlist": {},
       "bitcode": false,
       "bundleIdentifier": "com.duty.bd",
