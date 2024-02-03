@@ -3,7 +3,13 @@ import { useIsFocused } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
-import { Platform, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Platform,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import IconButton from "../../components/IconButton";
 import Button from "../../components/Button";
@@ -23,7 +29,7 @@ export default function PackageList({ navigation, route }) {
   const params = route.params;
   const userId = params.userId;
   const data = params.data;
-  const offline=params.offline;
+  const offline = params.offline;
   const [packageData, setPackageData] = React.useState();
   const primaryColor = "white";
 
@@ -94,7 +100,7 @@ export default function PackageList({ navigation, route }) {
                 doc: doc,
                 data: data,
                 userId: userId,
-                offline:offline
+                offline: offline,
               }}
               component={Screen}
             />
@@ -108,7 +114,7 @@ export const Screen = ({ navigation, route }) => {
   const data = params.data;
   const doc = params.doc;
   const userId = params.userId;
-  const offline=params.offline;
+  const offline = params.offline;
   const primaryColor = "white";
   const textColor = "black";
   //const setPrice=params.setPrice;
@@ -180,13 +186,9 @@ export const Screen = ({ navigation, route }) => {
       //setActiveServiceData(arr);
       dispatch({
         type: "SET_NEW_LIST_DATA",
-        playload: 
-          data.skills
+        playload: data.skills,
       });
-      setNewDataList(
-        serverToLocal(data.skills)
-      );
-     
+      setNewDataList(serverToLocal(data.skills));
     }
   }, [data + doc]);
   // React.useEffect(() => {
@@ -293,15 +295,18 @@ export const Screen = ({ navigation, route }) => {
           marginHorizontal: 20,
         }}
       />
-      
-      <ServiceListViewer skills={data?.skills} serviceCategory={{name:data?.service?.category}}/>
+
+      <ServiceListViewer
+        skills={data?.skills}
+        serviceCategory={{ name: data?.service?.category }}
+      />
       <IconButton
         onPress={() => {
           navigation.navigate("SelectDate", {
             data: data,
             userId: userId,
             selectedPackage: doc,
-            offline:offline
+            offline: offline,
           });
         }}
         style={{
@@ -309,24 +314,24 @@ export const Screen = ({ navigation, route }) => {
           marginVertical: 20,
           backgroundColor: "#4ADE80",
           height: 35,
-          marginBottom:15
+          marginBottom: 15,
         }}
         title={"Select"}
       />
       <IconButton
         onPress={() => {
-          navigation.goBack()
+          navigation.goBack();
         }}
         style={{
           marginHorizontal: 20,
           marginVertical: 0,
           backgroundColor: "transparent",
           height: 35,
-          borderWidth:0
+          borderWidth: 0,
         }}
         title={"Back"}
       />
-      <View style={{height:20}}/>
+      <View style={{ height: 20 }} />
     </ScrollView>
   );
 };

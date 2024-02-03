@@ -196,7 +196,8 @@ const DutyPediaUser = (props) => {
   const [AllData, setAllData] = React.useState();
   const [refreshing, setRefreshing] = React.useState(false);
   const [Refresh, setRefresh] = React.useState(false);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
@@ -259,7 +260,7 @@ const DutyPediaUser = (props) => {
             marginVertical: 12,
           }}
         >
-          Member list
+          {isBn ? "সদস্যের তালিকা" : "Member list"}
         </Text>
         <Input
           rightIcon={
@@ -288,7 +289,7 @@ const DutyPediaUser = (props) => {
             marginHorizontal: 0,
             borderBottomWidth: 0,
           }}
-          placeholder="Search By User"
+          placeholder={isBn ? "সদস্য খুঁজুন" : "Search Member"}
         />
       </View>
       <ScrollView
@@ -364,7 +365,8 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
   const [selectUser, setSelectUser] = useState();
   const vendorOrders = useSelector((state) => state.vendorOrders);
   const [totalOrder, setTotalOrder] = useState(0);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   useEffect(() => {
     if (vendorOrders) {
       let number = 0;
@@ -470,8 +472,12 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
         onRequestClose={() => setAlertVisible(false)}
       >
         <AlertModal
-          title="Hey"
-          subTitle={"Are you sure want to delete this?"}
+          title={isBn ? "নিশ্চিত করুন" : "Confirm"}
+          subTitle={
+            isBn
+              ? "মেম্বারটি চিরতরে মুছে ফেলতে নিশ্চিত করুন"
+              : "Confirm if you want to delete this member?"
+          }
           onChange={(e) => {
             if (e == "ok") {
               //console.log(user.token);
@@ -541,7 +547,11 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
                   justifyContent: "flex-start",
                   height: 40,
                 }}
-                title={`Send Message To ${selectUser}`}
+                title={
+                  isBn
+                    ? `${selectUser} কে ম্যাসেজ পাঠান`
+                    : `Send Message To ${selectUser}`
+                }
               />
               <IconButton
                 onPress={() => {
@@ -556,7 +566,9 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
                   justifyContent: "flex-start",
                   height: 40,
                 }}
-                title={`Remove ${selectUser}`}
+                title={
+                  isBn ? `${selectUser} কে মুছে ফেলুন` : `Remove ${selectUser}`
+                }
               />
             </View>
           </View>

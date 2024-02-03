@@ -71,7 +71,7 @@ export default function ReviewScreen({ navigation }) {
               backgroundColor: "#ffffff",
               marginVertical: 8,
             }}
-            title={isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as Describe"}
+            title={isBn ? "বর্ণনা হিসাবে পরিষেবা" : "Service as Describe"}
             rate={overall?.describeRating ? overall?.describeRating : 0}
           />
           <RatingView

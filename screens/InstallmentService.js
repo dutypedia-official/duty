@@ -146,18 +146,18 @@ const InstallmentService = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [scrollDirection, setScrollDirection] = React.useState(false);
   const [subsData, setSubsData] = React.useState();
-  const isFocused=useIsFocused()
-  const [selectedPackage,setSelectedPackage]=React.useState()
-  const [services,setServices]=React.useState()
-  const [InstallmentData,setInstallmentData]=useState()
+  const isFocused = useIsFocused();
+  const [selectedPackage, setSelectedPackage] = React.useState();
+  const [services, setServices] = React.useState();
+  const [InstallmentData, setInstallmentData] = useState();
 
-  React.useEffect(()=>{
-    if(isFocused){
-      dispatch(setHideBottomBar(true))
-    }else{
-      dispatch(setHideBottomBar(false))
+  React.useEffect(() => {
+    if (isFocused) {
+      dispatch(setHideBottomBar(true));
+    } else {
+      dispatch(setHideBottomBar(false));
     }
-  },[isFocused])
+  }, [isFocused]);
 
   //console.log(SeeMore)
   const wait = (timeout) => {
@@ -188,7 +188,7 @@ const InstallmentService = (props) => {
       setImages(data.images);
       //console.log(data.subsData)
       setPrice(data.installmentData.totalAmount);
-      setInstallmentData(data.installmentData)
+      setInstallmentData(data.installmentData);
       //console.log(data.installmentData)
       //setSubsData(data.subsData)
       setTitle(data.title);
@@ -320,7 +320,7 @@ const InstallmentService = (props) => {
     !Data ||
     !RelatedServices ||
     !UnRelatedServices ||
-    !NewDataList 
+    !NewDataList
   ) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -328,7 +328,6 @@ const InstallmentService = (props) => {
       </View>
     );
   }
-
 
   return (
     <View style={{ flex: 1, backgroundColor: primaryColor }}>
@@ -450,7 +449,7 @@ const InstallmentService = (props) => {
             />
           )}
         />
-       
+
         <View
           style={{
             position: "absolute",
@@ -633,10 +632,9 @@ const InstallmentService = (props) => {
                 text={Description}
               />
             </View>
-            
           </View>
           <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
-          
+
           <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
           <View
             style={{
@@ -710,18 +708,18 @@ const InstallmentService = (props) => {
                       title={NewDataList.length > 0 && NewDataList[0].mainTitle}
                     />
                   )}
-                  {Facilities&&Facilities.length!=0&&(
+                  {Facilities && Facilities.length != 0 && (
                     <Button
-                    onPress={() => {
-                      setActiveService("Extra Facilities");
-                    }}
-                    style={
-                      ActiveService == "Extra Facilities"
-                        ? styles.activeButton
-                        : styles.inactiveButton
-                    }
-                    title={"Extra Facilities"}
-                  />
+                      onPress={() => {
+                        setActiveService("Extra Facilities");
+                      }}
+                      style={
+                        ActiveService == "Extra Facilities"
+                          ? styles.activeButton
+                          : styles.inactiveButton
+                      }
+                      title={"Extra Facilities"}
+                    />
                   )}
                 </View>
                 <View
@@ -768,7 +766,6 @@ const InstallmentService = (props) => {
                           fontSize: Platform.OS == "ios" ? 16.5 : 15,
                           fontFamily: "Poppins-SemiBold",
                           color: "#95979D",
-                          
                         }}
                       >
                         Extra Facilities
@@ -806,7 +803,7 @@ const InstallmentService = (props) => {
               justifyContent: "space-between",
               marginHorizontal: 20,
               marginVertical: 25,
-              marginBottom:0
+              marginBottom: 0,
             }}
           >
             <Text
@@ -816,7 +813,8 @@ const InstallmentService = (props) => {
                 fontFamily: "Poppins-Medium",
               }}
             >
-              {InstallmentData?.installmentType} {(Price/InstallmentData.installmentCount).toFixed(2)} ৳
+              {InstallmentData?.installmentType}{" "}
+              {(Price / InstallmentData.installmentCount).toFixed(2)} ৳
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -848,20 +846,26 @@ const InstallmentService = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <View style={{
-            flexDirection:"row",
-            justifyContent:"space-between",
-            paddingHorizontal:20,
-            marginBottom:25,
-            marginTop:5
-          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingHorizontal: 20,
+              marginBottom: 25,
+              marginTop: 5,
+            }}
+          >
             {/* <Text style={{
                 fontSize:Platform.OS == "ios" ? 15 : 14
             }}>Duration ({data.subsData.payAsYouGo?"Pay As Go":data.subsData.totalDuration+" "+`${data.subsData.subscriptionType=="Monthly"?"Month":data.subsData.subscriptionType=="Yearly"?"Year":"Week"}`})</Text> */}
-            {InstallmentData&&InstallmentData.advancedPaymentAmount&&(
-                <Text style={{
-                    fontSize:Platform.OS == "ios" ? 15 : 14,
-                }}>Advanced Payment {InstallmentData?.advancedPaymentAmount}৳</Text>
+            {InstallmentData && InstallmentData.advancedPaymentAmount && (
+              <Text
+                style={{
+                  fontSize: Platform.OS == "ios" ? 15 : 14,
+                }}
+              >
+                Advanced Payment {InstallmentData?.advancedPaymentAmount}৳
+              </Text>
             )}
           </View>
           <View style={{ backgroundColor: primaryColor }}>
@@ -870,10 +874,10 @@ const InstallmentService = (props) => {
                 navigation.navigate("OfferNow", {
                   type: "INSTALLMENT",
                   gigs: data,
-                  data:data,
-                  selectedPackage:null,
-                  services:null,
-                  category:Category
+                  data: data,
+                  selectedPackage: null,
+                  services: null,
+                  category: Category,
                 });
               }}
               style={{
@@ -974,14 +978,19 @@ const InstallmentService = (props) => {
           </Pressable>
         </Animated.View>
       )} */}
-       <View style={{
-        position:"absolute",
-        top:0,
-        left:0,
-        zIndex:100
-       }}>
-       <FixedBackHeader navigation={navigation} Yoffset={offset?offset:0}/>
-       </View>
+      <View
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: 100,
+        }}
+      >
+        <FixedBackHeader
+          navigation={navigation}
+          Yoffset={offset ? offset : 0}
+        />
+      </View>
     </View>
   );
 };
@@ -1227,66 +1236,73 @@ const backIcon = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww
 export const Screen = ({ navigation, route }) => {
   const params = route.params;
   const data = params.data;
-  const setPrice=params.setPrice;
-  const setSelectedPackage=params.setSelectedPackage;
+  const setPrice = params.setPrice;
+  const setSelectedPackage = params.setSelectedPackage;
   const setNewNavigation = params.setNewNavigation;
-  const [feature,setFeature]=React.useState()
-  const isFocused=useIsFocused()
-  const [layoutHeight,setLayoutHeight]=React.useState()
+  const [feature, setFeature] = React.useState();
+  const isFocused = useIsFocused();
+  const [layoutHeight, setLayoutHeight] = React.useState();
 
-  React.useLayoutEffect(()=>{
-    
-    if(data){
-        setFeature(data.features)
+  React.useLayoutEffect(() => {
+    if (data) {
+      setFeature(data.features);
     }
-  },[data])
-  React.useEffect(()=>{
-    if(isFocused&&setPrice){
-      setSelectedPackage(data)
-      setPrice(data.price)
+  }, [data]);
+  React.useEffect(() => {
+    if (isFocused && setPrice) {
+      setSelectedPackage(data);
+      setPrice(data.price);
     }
-
-  },[isFocused])
-  React.useEffect(()=>{
-    if(layoutHeight){
-      setNewNavigation(val=>{
-        if(val<(layoutHeight+50)){
-          return layoutHeight+50
-        }else{
-          return val
+  }, [isFocused]);
+  React.useEffect(() => {
+    if (layoutHeight) {
+      setNewNavigation((val) => {
+        if (val < layoutHeight + 50) {
+          return layoutHeight + 50;
+        } else {
+          return val;
         }
-      })
+      });
     }
-  },[layoutHeight])
+  }, [layoutHeight]);
 
-  const NewRows=({doc})=>{
-    return(
-        <View style={{
-            flexDirection:"row",
-            justifyContent:"space-between",
-            marginVertical:10
-        }}>
-            <Text style={{
-              fontSize:Platform.OS=="ios"? 16.5:15,
-              fontFamily:"Poppins-Medium",
-              color:textColor
-            }}>{doc.title}</Text>
-            <SvgXml xml={doc.isAvailable?Available:notAvailable} height="20" width={"20"}/>
-        </View>
-    )
-  }
+  const NewRows = ({ doc }) => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginVertical: 10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: Platform.OS == "ios" ? 16.5 : 15,
+            fontFamily: "Poppins-Medium",
+            color: textColor,
+          }}
+        >
+          {doc.title}
+        </Text>
+        <SvgXml
+          xml={doc.isAvailable ? Available : notAvailable}
+          height="20"
+          width={"20"}
+        />
+      </View>
+    );
+  };
 
   return (
     <View
       style={{
-        paddingHorizontal:20,
-        paddingVertical:15,
-        
+        paddingHorizontal: 20,
+        paddingVertical: 15,
       }}
       onLayout={(e) => {
         const offsetHeight = e.nativeEvent.layout.height;
-        if(!layoutHeight||layoutHeight<offsetHeight){
-          setLayoutHeight(offsetHeight)
+        if (!layoutHeight || layoutHeight < offsetHeight) {
+          setLayoutHeight(offsetHeight);
         }
         // setNewNavigation((val) => {
         //   if (!val || val < offsetHeight) {
@@ -1297,19 +1313,15 @@ export const Screen = ({ navigation, route }) => {
         // });
       }}
     >
-        {
-            feature&&feature.map((doc,i)=>(
-                <NewRows key={i} doc={doc}/> 
-            ))
-        }
+      {feature && feature.map((doc, i) => <NewRows key={i} doc={doc} />)}
     </View>
   );
 };
-const notAvailable=`<svg xmlns="http://www.w3.org/2000/svg" width="17" height="3" viewBox="0 0 17 3">
+const notAvailable = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="3" viewBox="0 0 17 3">
 <line id="Line_5979" data-name="Line 5979" x2="14" transform="translate(1.5 1.5)" fill="none" stroke="#666" stroke-linecap="round" stroke-width="3"/>
 </svg>
-`
-const Available=`<svg xmlns="http://www.w3.org/2000/svg" width="14.889" height="14.515" viewBox="0 0 14.889 14.515">
+`;
+const Available = `<svg xmlns="http://www.w3.org/2000/svg" width="14.889" height="14.515" viewBox="0 0 14.889 14.515">
 <path id="Path_20918" data-name="Path 20918" d="M45.921,37.151a.439.439,0,0,1,.456.619q-4.083,6.579-8.168,13.156a1.53,1.53,0,0,1-1.056.715,1.423,1.423,0,0,1-1.326-.507l-3.935-4.82a1.551,1.551,0,0,1,.326-2.272,1.536,1.536,0,0,1,1.155-.239,1.552,1.552,0,0,1,.771.393q1.366,1.24,2.729,2.482a.364.364,0,0,0,.52-.049L45.646,37.3A.44.44,0,0,1,45.921,37.151Z" transform="translate(-31.537 -37.144)" fill="#4ade80"/>
 </svg>
-`
+`;

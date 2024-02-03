@@ -603,6 +603,8 @@ const OfflineScreens = ({ navigation, route }) => {
   const primaryColor = colors.getPrimaryColor();
   const assentColor = colors.getAssentColor();
   const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [initialState, setInitialState] = React.useState([
     {
       title: "Bargaining",
@@ -727,7 +729,7 @@ const OfflineScreens = ({ navigation, route }) => {
               color: textColor,
             }}
           >
-            No Order Found
+            {isBn ? "কোনও অর্ডার নেই" : "No Order Found"}
           </Text>
         </View>
       )}

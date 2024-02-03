@@ -794,7 +794,7 @@ const FinalReview = (props) => {
               }}
             >
               {isBn
-                ? "...কোম্পানির ক্যালেন্ডার, ঠিকানা এবং টিম"
+                ? "...কাজের সময়, ঠিকানা এবং টিম"
                 : "...Company Calender, Location & Team"}
             </Text>
           </Pressable>
@@ -830,7 +830,7 @@ const FinalReview = (props) => {
                 });
               }}
               Icon={() => <SvgXml xml={calenderIcon} height="22" width="22" />}
-              title={isBn ? "কোম্পানির ক্যালেন্ডার" : "Company Calender"}
+              title={isBn ? "কাজের সময়" : "Company Calender"}
             />
             <ProfileOption
               onPress={() => {

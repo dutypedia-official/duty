@@ -821,20 +821,28 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader title={"Location"} {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "ঠিকানা" : "Location"} {...props} />
+          ),
         }}
         name="UserLocation"
         component={Location}
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader title="Location" {...props} />,
+          header: (props) => (
+            <SubHeader title={isBn ? "ঠিকানা" : "Location"} {...props} />
+          ),
         }}
         name="EditLocation"
         component={EditLocation}
       />
       <Stack.Screen
-        options={{ header: (props) => <SubHeader title="Email" {...props} /> }}
+        options={{
+          header: (props) => (
+            <SubHeader title={isBn ? "ই-মেইল" : "Email"} {...props} />
+          ),
+        }}
         name="Email"
         component={Email}
       />
@@ -1526,7 +1534,7 @@ const MainProfile = (props) => {
               onPress={() => {
                 navigation.navigate("SaveList");
               }}
-              title={isBn ? "ফেভারিট" : "Favorite"}
+              title={isBn ? "পছন্দের লিস্ট" : "Favorite"}
               icon={love}
             />
           </View>

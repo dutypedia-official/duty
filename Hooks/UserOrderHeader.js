@@ -49,14 +49,16 @@ export default function UserOrderHeader({
       style={{
         backgroundColor: "#ffffff",
         paddingHorizontal: 20,
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
-          justifyContent:  "space-between",
+          justifyContent: "space-between",
           paddingVertical: 16,
           paddingBottom: 6,
-        }}>
+        }}
+      >
         {!vendor && (
           <Pressable onPress={onSearch}>
             <SvgXml width={"20"} height={"20"} xml={search} />
@@ -77,7 +79,8 @@ export default function UserOrderHeader({
             onPress={onFilter}
             style={{
               marginLeft: 20,
-            }}>
+            }}
+          >
             <SvgXml xml={filter} />
           </Pressable>
         </View>

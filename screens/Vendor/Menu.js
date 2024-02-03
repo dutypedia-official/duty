@@ -158,7 +158,7 @@ const Menu = ({ navigation }) => {
           <Cart
             onPress={() => navigation.navigate("VendorAccountBalance")}
             Icon={account}
-            title={isBn ? "আ্যকাউন্ট ব্যালেন্স" : "Account Balance"}
+            title={isBn ? "অ্যাকাউন্ট ব্যালেন্স" : "Account Balance"}
             text={`${info?.balance}৳`}
           />
           <Cart

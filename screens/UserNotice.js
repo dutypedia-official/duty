@@ -271,7 +271,8 @@ export default function UserNotice({ navigation, route }) {
 const NoticeCart = ({ data, navigation, setData }) => {
   //console.log(data)
   const vendor = useSelector((state) => state.vendor);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{

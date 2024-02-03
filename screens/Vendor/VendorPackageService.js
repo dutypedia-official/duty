@@ -142,7 +142,7 @@ const VendorPackageService = (props) => {
   );
   const params = props.route.params;
   //const data = params.data;
-  const [data,setNData]=useState(params.data)
+  const [data, setNData] = useState(params.data);
   const [newNavigation, setNewNavigation] = React.useState(200);
   const [imageIndex, setImageIndex] = React.useState(0);
   const [scrollEnabled, setScrollEnabled] = React.useState(false);
@@ -212,30 +212,28 @@ const VendorPackageService = (props) => {
       });
       setCategory(data?.service?.category);
       setActiveServiceData(arr);
-      
     }
   }, [data]);
 
   React.useEffect(() => {
     //console.log(scrollEnabled);
   }, [scrollEnabled]);
-  useEffect(()=>{
-    if(data){
-      getGigById(newUser.token,data.id).then(res=>{
-        setNData(res.data.gig)
-      }).catch(err=>{
-        console.error(err.response.data.msg)
-      })
+  useEffect(() => {
+    if (data) {
+      getGigById(newUser.token, data.id)
+        .then((res) => {
+          setNData(res.data.gig);
+        })
+        .catch((err) => {
+          console.error(err.response.data.msg);
+        });
     }
-  },[isFocused])
+  }, [isFocused]);
 
-  if (
-    !Data
-   
-  ) {
+  if (!Data) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-       <ActivityLoader/>
+        <ActivityLoader />
       </View>
     );
   }
@@ -515,9 +513,14 @@ const VendorPackageService = (props) => {
             >
               #Package Service
             </Text>
-            <TouchableOpacity onPress={()=>{
-              navigation.navigate("EditPackageService",{data:data,gigs:data})
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("EditPackageService", {
+                  data: data,
+                  gigs: data,
+                });
+              }}
+            >
               <SvgXml xml={editIcon} height="50" width={"50"} />
             </TouchableOpacity>
           </View>
@@ -549,9 +552,11 @@ const VendorPackageService = (props) => {
                 button={true}
                 text={Description}
               /> */}
-              <ReadMore containerStyle={{marginBottom:15}} content={Description}/>
+              <ReadMore
+                containerStyle={{ marginBottom: 15 }}
+                content={Description}
+              />
             </View>
-            
           </View>
           <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
           <View
@@ -617,15 +622,20 @@ const VendorPackageService = (props) => {
             </Tab.Navigator>
           </View>
           <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
-          <ServiceListViewer onEdit={()=>{
-            navigation.navigate("EditServiceList", {
-              skills:data.skills,
-              category:data?.service?.category,
-              name: "VendorOrderDetails",
-              data: "PACKAGE",
-              gigs: data,
-            });
-          }} editable={true} skills={data?.skills} serviceCategory={{name:data?.service?.category}} />
+          <ServiceListViewer
+            onEdit={() => {
+              navigation.navigate("EditServiceList", {
+                skills: data.skills,
+                category: data?.service?.category,
+                name: "VendorOrderDetails",
+                data: "PACKAGE",
+                gigs: data,
+              });
+            }}
+            editable={true}
+            skills={data?.skills}
+            serviceCategory={{ name: data?.service?.category }}
+          />
           <View
             style={{
               backgroundColor: primaryColor,
@@ -649,7 +659,6 @@ const VendorPackageService = (props) => {
               onPress={() => {
                 navigation.navigate("Service List_1", {
                   NewDataList: NewDataList,
-                  
                 });
               }}
               style={{

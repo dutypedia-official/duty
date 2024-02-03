@@ -50,7 +50,8 @@ import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import UserOrderHeader from "../Hooks/UserOrderHeader";
 import { setOrderRef } from "../Reducers/orderRef";
 import { setHideBottomBar } from "../Reducers/hideBottomBar";
-const {width,height}=Dimensions.get("window")
+import useLang from "../Hooks/UseLang";
+const { width, height } = Dimensions.get("window");
 //import { Screens } from "./Vendor/Order";
 const Tab = createMaterialTopTabNavigator();
 
@@ -95,14 +96,14 @@ const ManageOrder = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-       
-      }}>
+      }}
+    >
       <View
         style={{
           height: inset?.top,
         }}
       />
-     <StatusBar backgroundColor="white"/>
+      <StatusBar backgroundColor="white" />
       <UserOrderHeader
         onFilter={() => {
           dispatch(setOrderRef(orderRef ? false : true));
@@ -122,10 +123,10 @@ const ManageOrder = ({ navigation, route }) => {
           },
           tabBarStyle: {
             backgroundColor: "#ffffff",
-            
           },
           tabBarScrollEnabled: true,
-        }}>
+        }}
+      >
         {initialState.map((doc, i) => (
           <Tab.Screen
             options={{
@@ -134,14 +135,16 @@ const ManageOrder = ({ navigation, route }) => {
                   style={{
                     fontWeight: "500",
                     fontSize: 16,
-                    
+
                     color: focused ? "#000000" : "#A3A3A3",
-                  }}>
+                  }}
+                >
                   {`${initialState[i].title} `}
                   <Text
                     style={{
                       fontSize: 12,
-                    }}>
+                    }}
+                  >
                     {allOrders[i]}
                   </Text>
                 </Text>
@@ -182,6 +185,8 @@ const Screens = ({ navigation, route }) => {
   const [Refresh, setRefresh] = React.useState(false);
   const [Loader, setLoader] = React.useState(false);
   const [Orders, setOrders] = React.useState(null);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const reload =
     route.params && route.params.reload ? route.params.reload : null;
 
@@ -198,37 +203,38 @@ const Screens = ({ navigation, route }) => {
   const [Search, setSearch] = React.useState();
   const [Filter, setFilter] = React.useState();
   const [Index, setIndex] = React.useState(-1);
+
   const [AllStatus, setAllStatus] = React.useState([
     {
-      title: "Waiting For Accept",
+      title: isBn ? "এখন গ্রহণ করেনি" : "Waiting For Accept",
       icon: waitionIcon,
     },
     {
-      title: "Due",
+      title: isBn ? "বাকি" : "Due",
       icon: dueIcon,
     },
     {
-      title: "Paid",
+      title: isBn ? "পরিশোধ হয়েছে" : "Paid",
       icon: paidIcon,
     },
     {
-      title: "Processing",
+      title: isBn ? "অর্ডারটি প্রক্রিয়াকরণ হচ্ছে" : "Processing",
       icon: processingIcon,
     },
     {
-      title: "Delivered",
+      title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
       icon: deliveryIcon,
     },
     {
-      title: "Order Completed",
+      title: isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed",
       icon: completeIcon,
     },
     {
-      title: "Order Canceled",
+      title: isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Order Canceled",
       icon: cancelIcon,
     },
     {
-      title: "Refund",
+      title: isBn ? "টাকা ফেরত দেয়া হয়েছে" : "Refund",
       icon: refundIcon,
     },
   ]);
@@ -284,23 +290,23 @@ const Screens = ({ navigation, route }) => {
               }
             });
           });
-         // setLoader(false);
+          // setLoader(false);
           //console.log(res.data.total)
           setTotal(res.data.total);
         })
         .catch((err) => {
-         // setLoader(false);
+          // setLoader(false);
           console.error(err.response.data.msg);
         });
     }
-  }, [ Refresh]);
+  }, [Refresh]);
   React.useEffect(() => {
     socket.on("updateOrder", (e) => {
       //e = e?.order;
       setRefresh((val) => !val);
     });
     socket.on("getOrder", (e) => {
-     // e = e?.order;
+      // e = e?.order;
       setRefresh((val) => !val);
     });
     return () => {
@@ -374,8 +380,8 @@ const Screens = ({ navigation, route }) => {
           }
           navigation.navigate("OrderDetails", {
             data: item,
-            orderId:item?.id,
-            type:item?.type
+            orderId: item?.id,
+            type: item?.type,
           });
         }}
         key={item.id}
@@ -411,8 +417,9 @@ const Screens = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1, paddingVertical: 8 }}>
       {Orders && Orders.length > 0 && (
-        <FlatList onRefresh={onRefresh}
-         refreshing={refreshing}
+        <FlatList
+          onRefresh={onRefresh}
+          refreshing={refreshing}
           showsVerticalScrollIndicator={false}
           data={Orders}
           keyExtractor={(item, i) => i}
@@ -431,8 +438,9 @@ const Screens = ({ navigation, route }) => {
             style={{
               fontSize: 24,
               marginTop: 24,
-            }}>
-            No Order Found
+            }}
+          >
+            {isBn ? "কোনও অর্ডার নেই" : "No Order Found"}
           </Text>
         </View>
       )}
@@ -457,7 +465,8 @@ const Screens = ({ navigation, route }) => {
         ref={bottomSheetRef}
         index={parseInt(Index)}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+      >
         <BottomSheetScrollView>
           {AllStatus.map((doc, i) => (
             <IconButton
@@ -488,28 +497,7 @@ const Screens = ({ navigation, route }) => {
 const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="15.069" height="14.313" viewBox="0 0 15.069 14.313">
 <path id="Path_19954" data-name="Path 19954" d="M4.449,13.449a8.24,8.24,0,0,1,7.364.606,7.274,7.274,0,0,1,1.894,1.7,6.332,6.332,0,0,1,1.362,3.8v.184a6.279,6.279,0,0,1-.98,3.24,7.185,7.185,0,0,1-2.454,2.345,8.242,8.242,0,0,1-7.168.506A10.731,10.731,0,0,1,2.5,26.65a15.434,15.434,0,0,1-2.2.512.262.262,0,0,1-.295-.2V26.9a.414.414,0,0,1,.114-.213A3.522,3.522,0,0,0,.8,25.4a10.3,10.3,0,0,0,.4-2.1,6.516,6.516,0,0,1-.956-1.975A6.37,6.37,0,0,1,0,19.728v-.179a6.332,6.332,0,0,1,1.376-3.817,7.444,7.444,0,0,1,3.072-2.284m-.635,5.2a1,1,0,1,0,1.1.535,1.007,1.007,0,0,0-1.1-.535m3.531,0a1,1,0,1,0,1.072.509,1.008,1.008,0,0,0-1.072-.509m3.5,0a1,1,0,1,0,1.08.5A1.007,1.007,0,0,0,10.847,18.651Z" transform="translate(0 -12.853)" fill="#546a79"/>
 </svg>`;
-const exporters = (key) => {
-  switch (key) {
-    case "WAITING_FOR_ACCEPT":
-      return "Waiting for accept";
-    case "ACCEPTED":
-      return "Accepted";
-    case "WAITING_FOR_PAYMENT":
-      return "Waiting for payment";
-    case "PROCESSING":
-      return "Processing";
-    case "DELIVERED":
-      return "Delivered";
-    case "REFUNDED":
-      return "Refunded";
-    case "CANCELLED":
-      return "Cancelled";
-    case "COMPLETED":
-      return "Completed";
-    default:
-      return "Unknown";
-  }
-};
+
 const plus = `<svg xmlns="http://www.w3.org/2000/svg" width="13.709" height="13.709" viewBox="0 0 13.709 13.709">
 <path id="add-line" d="M18.181,11.327h-5.8v-5.8a.527.527,0,0,0-1.055,0v5.8h-5.8A.527.527,0,0,0,5,11.854a.48.48,0,0,0,.527.5h5.8v5.832a.527.527,0,1,0,1.055,0v-5.8h5.8a.527.527,0,1,0,0-1.055Z" transform="translate(-4.999 -5)" fill="#666"/>
 </svg>

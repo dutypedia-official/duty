@@ -51,7 +51,10 @@ export default function WithdrawSecond({ navigation, route }) {
       return;
     }
     if (!check) {
-      Alert.alert("", "Accept terms and conditions");
+      Alert.alert(
+        "",
+        isBn ? "শর্তাবলী গ্রহণ করা আবশ্যক" : "Accept terms and conditions"
+      );
       return;
     }
     setLoader(true);

@@ -18,10 +18,11 @@ const { width, height } = Dimensions.get("window");
 import { AreaList } from "../../Data/area";
 import { DivisionList } from "../../Data/division";
 import { DistrictList } from "../../Data/district";
-import {useSelector,useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import IconButton from "../../components/IconButton";
 import { useIsFocused } from "@react-navigation/native";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
+import useLang from "../../Hooks/UseLang";
 
 const Address = ({ navigation }) => {
   const DATA = ["Dhaka", "Borishal", "Slyhet"];
@@ -37,7 +38,9 @@ const Address = ({ navigation }) => {
   const [AddressError, setAddressError] = React.useState();
   const dispatch = useDispatch();
   const businessForm = useSelector((state) => state.businessForm);
-  const isFocused=useIsFocused()
+  const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const searchDistrict = (value) => {
     if (value) {
@@ -56,20 +59,19 @@ const Address = ({ navigation }) => {
     }
   };
   React.useEffect(() => {
-    if(businessForm&&businessForm.division){
-      setDivision(businessForm.division)
+    if (businessForm && businessForm.division) {
+      setDivision(businessForm.division);
     }
-    if(businessForm&&businessForm.district){
-      setDistrict(businessForm.district)
+    if (businessForm && businessForm.district) {
+      setDistrict(businessForm.district);
     }
-    if(businessForm&&businessForm.area){
-      setArea(businessForm.area)
+    if (businessForm && businessForm.area) {
+      setArea(businessForm.area);
     }
-    if(businessForm&&businessForm.address){
-      setAddress(businessForm.address)
+    if (businessForm && businessForm.address) {
+      setAddress(businessForm.address);
     }
-
-  },[businessForm])
+  }, [businessForm]);
   const checkValidity = () => {
     setDivisionError(null);
     setDistrictError(null);
@@ -87,10 +89,10 @@ const Address = ({ navigation }) => {
       setAreaError("This field is required");
       return;
     }
-    dispatch({type: 'DIVISION',playload:Division})
-    dispatch({type:'DISTRICT',playload:District})
-    dispatch({type:'AREA',playload:Area})
-    dispatch({type:'ADDRESS',playload:address})
+    dispatch({ type: "DIVISION", playload: Division });
+    dispatch({ type: "DISTRICT", playload: District });
+    dispatch({ type: "AREA", playload: Area });
+    dispatch({ type: "ADDRESS", playload: address });
     navigation.navigate("Review");
   };
   React.useEffect(() => {
@@ -144,7 +146,8 @@ const Address = ({ navigation }) => {
           >
             Step to Go
           </Text>
-          <DropDown value={Division}
+          <DropDown
+            value={Division}
             error={DivisionError}
             style={{
               marginTop: "40%",
@@ -162,7 +165,8 @@ const Address = ({ navigation }) => {
               flexDirection: "row",
             }}
           >
-            <DropDown value={District}
+            <DropDown
+              value={District}
               error={DistrictError}
               style={{
                 marginTop: "10%",
@@ -177,7 +181,8 @@ const Address = ({ navigation }) => {
               }}
               message="Please select division first."
             />
-            <DropDown value={Area}
+            <DropDown
+              value={Area}
               error={AreaError}
               onChange={(val) => {
                 setArea(val);
@@ -219,7 +224,7 @@ const Address = ({ navigation }) => {
               borderWidth: 0,
               height: 45,
             }}
-            title="Continue"
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>

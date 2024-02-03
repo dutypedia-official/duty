@@ -340,7 +340,7 @@ export default function SellerInformation({ Data, newUser, navigation }) {
             }}
           >
             {isBn
-              ? "...কোম্পানির ক্যালেন্ডার, নোটিশ এবং টিম"
+              ? "...কাজের সময়, নোটিশ এবং টিম"
               : "...Company Calender, Notice & Team"}
           </Text>
         </Pressable>
@@ -369,7 +369,7 @@ export default function SellerInformation({ Data, newUser, navigation }) {
               });
             }}
             Icon={() => <SvgXml xml={calenderIcon} height="22" width="22" />}
-            title={isBn ? "কোম্পানির ক্যালেন্ডার" : "Company Calender"}
+            title={isBn ? "কাজের সময়" : "Company Calender"}
           />
           <ProfileOption
             onPress={() => {

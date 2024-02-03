@@ -18,15 +18,18 @@ import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { StatusBar } from "expo-status-bar";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
-export default function Location({navigation}) {
+export default function Location({ navigation }) {
   const [type, setType] = useState("Only me");
   const [visible, setVisible] = React.useState(false);
   const [layoutHeight, setLayoutHeight] = useState(0);
-  const isFocused=useIsFocused()
-  const dispatch=useDispatch()
-  const user=useSelector(state=>state.user)
-
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
@@ -42,19 +45,20 @@ export default function Location({navigation}) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  useEffect(()=>{
-    if(user){
-      setType(user?.user?.hideAddress?"Only me":"Public")
-      console.log(user?.user?.address)
+  useEffect(() => {
+    if (user) {
+      setType(user?.user?.hideAddress ? "Only me" : "Public");
+      console.log(user?.user?.address);
     }
-  },[user?.user?.address,user?.user?.address])
+  }, [user?.user?.address, user?.user?.address]);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <StatusBar backgroundColor="white"/>
+      <StatusBar backgroundColor="white" />
       <View
         style={{
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <Image
           style={{
             width: width - 40,
@@ -67,17 +71,20 @@ export default function Location({navigation}) {
           style={{
             alignItems: "flex-end",
             marginTop: 36,
-          }}>
-          <Pressable onPress={()=>{
-            navigation.navigate("EditLocation")
-          }}>
+          }}
+        >
+          <Pressable
+            onPress={() => {
+              navigation.navigate("EditLocation");
+            }}
+          >
             <Text
               style={{
                 textDecorationLine: "underline",
                 fontSize: 16,
-                
-              }}>
-              Edit
+              }}
+            >
+              {isBn ? "সংশোধন করুন" : "Edit"}
             </Text>
           </Pressable>
           <View
@@ -85,16 +92,30 @@ export default function Location({navigation}) {
               flexDirection: "row",
               width: "100%",
               marginVertical: 4,
-            }}>
+            }}
+          >
             <SvgXml xml={address} />
             <Text
               style={{
                 fontWeight: "500",
-                
+
                 fontSize: 16,
                 marginLeft: 10,
-              }}>
-              {user?.user?.address?`${user?.user?.address.division}, ${user?.user?.address.district}, ${user?.user?.address?.thana}${user?.user?.address.address?", ":""}${user?.user?.address.address?user?.user?.address.address:""}`:"No address added!"}
+              }}
+            >
+              {user?.user?.address
+                ? `${user?.user?.address.division}, ${
+                    user?.user?.address.district
+                  }, ${user?.user?.address?.thana}${
+                    user?.user?.address.address ? ", " : ""
+                  }${
+                    user?.user?.address.address
+                      ? user?.user?.address.address
+                      : ""
+                  }`
+                : isBn
+                ? "কোন ঠিকানা অ্যাড করা হয়নি"
+                : "No address added!"}
             </Text>
           </View>
           <MenuItem
@@ -109,40 +130,53 @@ export default function Location({navigation}) {
                 LeftIcon={() => (
                   <SvgXml xml={type == "Only me" ? onlyme : pub} />
                 )}
-               // Icon={() => <SvgXml xml={arrow} />}
+                // Icon={() => <SvgXml xml={arrow} />}
                 //onPress={openMenu}
                 title={type}
               />
             }
           />
         </View>
-        <View style={{marginBottom:32}}>
+        <View style={{ marginBottom: 32 }}>
           <View style={{ flexDirection: "row", marginTop: 36 }}>
             <SvgXml xml={light} />
             <Text
               style={{
                 fontWeight: "500",
-                
+
                 fontSize: 24,
                 marginLeft: 8,
                 flex: 1,
-              }}>
-              Why are we asking for your address?
+              }}
+            >
+              {isBn
+                ? "আমরা আপনার ঠিকানা জানতে চাইছি কেন?"
+                : "Why are we asking for your address?"}
             </Text>
           </View>
-          <ViewMore view={true}
-            style={{
+          <ReadMore
+            containerStyle={{
               marginTop: 24,
             }}
-            lowHeight={70}
-            width={167}
-            position={{
-              bottom: 0,
-            }}
-            height={layoutHeight}
-            component={
-              <View style={{width:"100%"}}
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}>
+            content={
+              isBn ? (
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  {`ডিউটিতে, আমরা বুঝি যে আপনার মোবাইল নম্বর আপনার অ্যাকাউন্ট রেজিস্ট্রেশন প্রক্রিয়ার একটি গুরুত্বপূর্ণ অংশ৷।আপনার মোবাইল নম্বরটি যাচাইকরণের উদ্দেশ্যে ব্যবহার করা হয়, এবং আপনি যদি আপনার পাসওয়ার্ড বা আইডি ভুলে যান, এটি আপনার অ্যাকাউন্টের তথ্য পুনরুদ্ধার করতে সহায়তা করে৷
+আমরা আপনার মোবাইল নম্বরের নিরাপত্তাকে অত্যন্ত গুরুত্ব সহকারে নিই, এবং আমরা আপনাকে নিশ্চিত করতে চাই যে আমরা আপনার মোবাইল নম্বরে পাঠানো কোনো কোড বা তথ্য কারো সাথে শেয়ার করব না৷।উপরন্তু, আমরা আপনার মোবাইল নম্বরটি গোপন রাখার জন্য একটি বিকল্প পদ্ধতি প্রদান করি, যাতে আপনার সম্মতি ছাড়া কেউ এটি দেখতে না পারে৷।
+অনুগ্রহ করে আশ্বস্ত হন যে আমরা আপনার মোবাইল নম্বর সুরক্ষিত রাখতে এবং এটিকে সর্বদা সুরক্ষিত রাখার জন্য যথাসাধ্য চেষ্টা করব৷। আপনার পছন্দের অনলাইন প্ল্যাটফর্ম হিসাবে ডিউটিকে বেছে নেওয়ার জন্য আপনাকে ধন্যবাদ, এবং আমরা আপনাকে একটি নিরাপদ এবং সুবিধাজনক ব্যবহারকারীর অভিজ্ঞতা প্রদানের জন্য উন্মুখ
+
+ডিউটিতে, আমরা বুঝতে পারি যে আপনার গোপনীয়তা আপনার কাছে গুরুত্বপূর্ণ৷।তাই আমরা আপনাকে "শুধু আমি" বিকল্পটি নির্বাচন করে আপনার ঠিকানা তথ্য গোপন রাখার বিকল্প অফার করি৷ এর মানে হল যে আপনার সম্মতি ছাড়া অন্য কেউ আপনার ঠিকানা দেখতে পারবে না৷।
+
+যাইহোক, আপনার অবস্থানের তথ্য প্রদান করা আমাদের প্ল্যাটফর্মে আপনার অভিজ্ঞতাকে ব্যাপকভাবে উন্নত করতে পারে৷।আপনার অবস্থান ভাগ করে নেওয়ার মাধ্যমে, আপনি সহজেই আপনার কাছাকাছি উপলব্ধ পণ্য এবং সার্ভিসগুলি খুঁজে পেতে পারেন, যা আপনার অনুসন্ধানকে আরও দক্ষ করে তোলে এবং আপনার মূল্যবান সময় সাশ্রয় করে৷
+
+এছাড়াও, সম্ভাব্য ক্রেতা বা বিক্রেতাদের সাথে আপনার ঠিকানা শেয়ার করা আপনার এবং তাদের মধ্যে নির্বিঘ্ন এবং নিরাপদ সংযোগের জন্য প্রয়োজনীয়৷ এটি নিশ্চিত করে যে আপনার লেনদেনগুলি মসৃণ এবং ঝামেলা-মুক্ত, পণ্য বা সার্ভিসগুলি সঠিক স্থানে সরবরাহ করা হয়েছে৷।
+
+নিশ্চিন্ত থাকুন যে আমরা ডিউটিতে গোপনীয়তা এবং নিরাপত্তা খুব গুরুত্ব সহকারে নিই৷ আপনার লেনদেন সহজতর করার জন্য আমরা শুধুমাত্র প্রাসঙ্গিক পক্ষের সাথে আপনার তথ্য শেয়ার করি এবং আপনার ডেটা গোপন ও সুরক্ষিত রাখা হয়৷।
+
+আপনার ঠিকানা তথ্য দিয়ে আমাদের বিশ্বাস করার জন্য আপনাকে ধন্যবাদ৷।আমরা আপনাকে আমাদের প্ল্যাটফর্মে একটি নিরাপদ, সুবিধাজনক এবং আনন্দদায়ক কেনাকাটার অভিজ্ঞতা প্রদান করতে প্রতিশ্রুতিবদ্ধ.`}
+                </Text>
+              ) : (
+                <View style={{ width: "100%" }}>
                   <Text style={[styles.spText, { marginTop: 0 }]}>
                     At Duty, we understand that your privacy is important to
                     you. That's why we offer you the option to keep your address
@@ -175,7 +209,8 @@ export default function Location({navigation}) {
                     are committed to providing you with a safe, convenient, and
                     enjoyable shopping experience on our platform
                   </Text>
-              </View>
+                </View>
+              )
             }
           />
         </View>

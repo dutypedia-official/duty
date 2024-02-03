@@ -1,6 +1,7 @@
 import React from "react";
 import { Dimensions, Pressable, Text, View } from "react-native";
 import { SvgXml } from "react-native-svg";
+import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 export default function FlatCart({
@@ -11,10 +12,13 @@ export default function FlatCart({
   type,
   disableGo,
   onPress,
-  Private
+  Private,
 }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
-    <Pressable onPress={onPress}
+    <Pressable
+      onPress={onPress}
       style={[
         {
           flexDirection: "row",
@@ -26,29 +30,35 @@ export default function FlatCart({
           paddingRight: 16,
           borderBottomColor: "#E6E6E6",
           width: width - 52,
-          
         },
         style,
-      ]}>
+      ]}
+    >
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
-        }}>
-        <SvgXml style={{
-          opacity:Private?.4:1
-        }} xml={icon} />
+        }}
+      >
+        <SvgXml
+          style={{
+            opacity: Private ? 0.4 : 1,
+          }}
+          xml={icon}
+        />
         <View
           style={{
             marginLeft: 16,
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 14,
-             
+
               fontWeight: "500",
-              opacity:Private?.4:1
-            }}>
+              opacity: Private ? 0.4 : 1,
+            }}
+          >
             {title}
           </Text>
           <Text
@@ -56,8 +66,13 @@ export default function FlatCart({
               color: "#484848",
               fontSize: 12,
               marginTop: 4,
-            }}>
-            {value ? value : `Add your ${title.toLowerCase()}`}
+            }}
+          >
+            {value
+              ? value
+              : isBn
+              ? `আপনার ${title.toLowerCase()} অ্যাড করুন`
+              : `Add your ${title.toLowerCase()}`}
           </Text>
         </View>
       </View>
@@ -66,13 +81,15 @@ export default function FlatCart({
           style={{
             flexDirection: "row",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Text
             style={{
               color: "#484848",
               fontSize: 12,
               marginTop: 4,
-            }}>
+            }}
+          >
             {type}
           </Text>
           <SvgXml

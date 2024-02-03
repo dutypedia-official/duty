@@ -142,6 +142,7 @@ const FixedService = (props) => {
   const snapPoints = React.useMemo(() => ["90%"], []);
   const [index, setIndex] = React.useState(-1);
   const sheetRef = React.useRef(null);
+
   const handleSheetChange = React.useCallback((index) => {
     setIndex(index);
   }, []);
@@ -422,7 +423,7 @@ const FixedService = (props) => {
                   navigation.navigate("Support_1");
                   setVisible(!Visible);
                 }}
-                title="Report"
+                title={isBn ? "রিপোর্ট" : "Report"}
               />
               {/* <Menu.Item onPress={() => {}} title="Copy URL" /> */}
             </Menu>
@@ -553,16 +554,29 @@ const FixedService = (props) => {
               marginVertical: 25,
             }}
           >
-            <Text
-              style={{
-                fontSize: Platform.OS == "ios" ? 17 : 15.5,
-                color: textColor,
+            {isBn ? (
+              <Text
+                style={{
+                  fontSize: Platform.OS == "ios" ? 17 : 15.5,
+                  color: textColor,
 
-                fontFamily: "Poppins-SemiBold",
-              }}
-            >
-              From {Price} ৳
-            </Text>
+                  fontFamily: "Poppins-SemiBold",
+                }}
+              >
+                একদাম {Price} ৳
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: Platform.OS == "ios" ? 17 : 15.5,
+                  color: textColor,
+
+                  fontFamily: "Poppins-SemiBold",
+                }}
+              >
+                From {Price} ৳
+              </Text>
+            )}
           </View>
           <View style={{ backgroundColor: primaryColor }}>
             {newUser?.user?.username != Data?.service?.user?.username && (
@@ -591,7 +605,7 @@ const FixedService = (props) => {
                   marginTop: 0,
                   height: 40,
                 }}
-                title={`Continue`}
+                title={isBn ? "সার্ভিসটি ক্রয় করুন" : `Continue`}
               />
             )}
           </View>

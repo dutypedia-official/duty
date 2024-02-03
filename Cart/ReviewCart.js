@@ -17,20 +17,24 @@ import { dateDifference, numToArray } from "./../action";
 const { width, height } = Dimensions.get("window");
 import AnimatedHeight from "./../Hooks/AnimatedHeight";
 import Avatar from "../components/Avatar";
-import LargeText,{ExtraLargeText} from "../Hooks/LargeText";
+import LargeText, { ExtraLargeText } from "../Hooks/LargeText";
 import { types } from "./../screens/Vendor/account/types";
 import { useSelector } from "react-redux";
 import customStyle from "../assets/stylesheet";
-import ViewMore from "../Hooks/ViewMore"
+import ViewMore from "../Hooks/ViewMore";
+import useLang from "../Hooks/UseLang";
 
-const ReviewCart = ({ navigation, data, individualRating,service }) => {
+const ReviewCart = ({ navigation, data, individualRating, service }) => {
   const [height, setHeight] = useState(220);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(service)
   return (
     <View
       style={{
         backgroundColor: primaryColor,
-      }}>
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -38,19 +42,22 @@ const ReviewCart = ({ navigation, data, individualRating,service }) => {
           marginBottom: 10,
           paddingHorizontal: 20,
           marginTop: 5,
-        }}>
+        }}
+      >
         <Text style={styles.text1}>
-          {data?.length < 9 ? `0${data?.length}` : data?.length} Review
+          {data?.length < 9 ? `0${data?.length}` : data?.length}{" "}
+          {isBn ? "রিভিও" : "Review"}
         </Text>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("AllReview", {
               individualRating: individualRating,
               data: data,
-              service:service?.service
+              service: service?.service,
             });
-          }}>
-          <Text style={styles.text1}>See All</Text>
+          }}
+        >
+          <Text style={styles.text1}>{isBn ? "সব দেখুন" : "See All"}</Text>
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -58,7 +65,8 @@ const ReviewCart = ({ navigation, data, individualRating,service }) => {
           paddingBottom: 20,
         }}
         horizontal={true}
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+      >
         <View style={{ width: 10 }} />
         {data &&
           data.map((doc, i) => (
@@ -83,8 +91,9 @@ const ReviewCart = ({ navigation, data, individualRating,service }) => {
                 marginVertical: 50,
                 textAlign: "center",
                 flex: 1,
-              }}>
-              No Rating
+              }}
+            >
+              {isBn ? "কোনও রিভিও নেই" : "No Rating"}
             </Text>
           </View>
         )}
@@ -122,7 +131,7 @@ export const Cart = ({
   data,
   style,
   onLayout,
-  service
+  service,
 }) => {
   const [button, setButton] = useState(true);
   const [day, setDay] = useState(dateDifference(data?.createdAt, new Date()));
@@ -142,13 +151,15 @@ export const Cart = ({
           marginTop: 28,
         },
         style,
-      ]}>
+      ]}
+    >
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-        }}>
+        }}
+      >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Avatar
             style={{
@@ -164,15 +175,14 @@ export const Cart = ({
           />
           <View style={{ marginLeft: 10 }}>
             <Text style={[styles.text1]}>
-              {data
-                ? `${data?.user?.name}`
-                : "Sumaiya Alam"}
+              {data ? `${data?.user?.name}` : "Sumaiya Alam"}
             </Text>
             <Text
               style={[
                 styles.text1,
                 { fontWeight: "400", color: "#767676", marginTop: 4 },
-              ]}>
+              ]}
+            >
               {day
                 ? `${
                     day == 0
@@ -192,10 +202,8 @@ export const Cart = ({
           </View>
         </View>
         <Text
-          style={[
-            styles.text1,
-            { justifySelf: "flex-end", fontWeight: "400" },
-          ]}>
+          style={[styles.text1, { justifySelf: "flex-end", fontWeight: "400" }]}
+        >
           {data
             ? types.filter((d) => d.type.match(data?.order?.type))[0]?.title
             : "Bargaining"}
@@ -204,7 +212,8 @@ export const Cart = ({
       <View
         style={{
           flex: 1,
-        }}>
+        }}
+      >
         {data && data.text && (
           <LargeText
             fontStyle={{
@@ -224,11 +233,13 @@ export const Cart = ({
             flexDirection: "row",
             justifyContent: "space-between",
             marginTop: 12,
-          }}>
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
-            }}>
+            }}
+          >
             <SvgXml xml={star} />
             <Text
               style={[
@@ -237,7 +248,8 @@ export const Cart = ({
                   marginLeft: 10,
                   fontWeight: "500",
                 },
-              ]}>
+              ]}
+            >
               {data?.qualityRating > parseInt(data?.qualityRating)
                 ? data?.qualityRating?.toFixed(1)
                 : `${data?.qualityRating}.0`}
@@ -253,7 +265,8 @@ export const Cart = ({
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <SvgXml xml={replay} />
               <Text
                 style={[
@@ -264,7 +277,8 @@ export const Cart = ({
                     marginLeft: 10,
                     lineHeight: 17,
                   },
-                ]}>
+                ]}
+              >
                 Replay
               </Text>
             </TouchableOpacity>
@@ -282,12 +296,14 @@ export const Cart = ({
             <View
               style={{
                 marginLeft: 64,
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                }}>
+                }}
+              >
                 <Avatar
                   source={{ uri: service?.profilePhoto }}
                   style={{ height: 25, width: 25, borderWidth: 0 }}
@@ -334,7 +350,6 @@ export const Cart = ({
                   </Text>
                 }
               /> */}
-              
             </View>
           </>
         )}
@@ -368,13 +383,15 @@ export const CartView = ({
           marginTop: 28,
         },
         style,
-      ]}>
+      ]}
+    >
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-        }}>
+        }}
+      >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Avatar
             style={{
@@ -398,7 +415,8 @@ export const CartView = ({
               style={[
                 styles.text1,
                 { fontWeight: "400", color: "#767676", marginTop: 4 },
-              ]}>
+              ]}
+            >
               {day
                 ? `${
                     day == 0
@@ -418,10 +436,8 @@ export const CartView = ({
           </View>
         </View>
         <Text
-          style={[
-            styles.text1,
-            { justifySelf: "flex-end", fontWeight: "400" },
-          ]}>
+          style={[styles.text1, { justifySelf: "flex-end", fontWeight: "400" }]}
+        >
           {data
             ? types.filter((d) => d.type.match(data?.order?.type))[0]?.title
             : "Bargaining"}
@@ -430,7 +446,8 @@ export const CartView = ({
       <View
         style={{
           flex: 1,
-        }}>
+        }}
+      >
         {data && data.text && (
           <LargeText
             fontStyle={{
@@ -449,11 +466,13 @@ export const CartView = ({
             flexDirection: "row",
             justifyContent: "space-between",
             marginTop: 12,
-          }}>
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
-            }}>
+            }}
+          >
             <SvgXml xml={star} />
             <Text
               style={[
@@ -462,7 +481,8 @@ export const CartView = ({
                   marginLeft: 10,
                   fontWeight: "500",
                 },
-              ]}>
+              ]}
+            >
               {data?.qualityRating > parseInt(data?.qualityRating)
                 ? data?.qualityRating
                 : `${data?.qualityRating}.0`}
@@ -481,12 +501,14 @@ export const CartView = ({
             <View
               style={{
                 marginLeft: 64,
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                }}>
+                }}
+              >
                 <Avatar
                   source={{ uri: user?.user?.profilePhoto }}
                   style={{ height: 25, width: 25, borderWidth: 0 }}

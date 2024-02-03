@@ -75,6 +75,7 @@ import UserOrderHeader from "../../Hooks/UserOrderHeader";
 import { setOrderRef } from "../../Reducers/orderRef";
 import customStyle from "../../assets/stylesheet";
 import SearchOrderHeader from "../../Hooks/SearchOrderHeader";
+import useLang from "../../Hooks/UseLang";
 const Tab = createMaterialTopTabNavigator();
 
 const Stack = createStackNavigator();
@@ -206,7 +207,8 @@ const VendorSearchOrder = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityLoader />
       </View>
     );
@@ -216,8 +218,8 @@ const VendorSearchOrder = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-        
-      }}>
+      }}
+    >
       <StatusBar style="dark" backgroundColor="#ffffff" />
       <View
         style={{
@@ -238,38 +240,40 @@ const VendorSearchOrder = ({ navigation, route }) => {
       />
       {offlineOrder == false && (
         <Tab.Navigator
-        screenOptions={{
-          tabBarIndicatorStyle: {
-            backgroundColor: "#767676",
-            height: 3,
-          },
-          tabBarStyle: {
-            backgroundColor: "#ffffff",
-            
-          },
-          tabBarScrollEnabled: true,
-        }}>
+          screenOptions={{
+            tabBarIndicatorStyle: {
+              backgroundColor: "#767676",
+              height: 3,
+            },
+            tabBarStyle: {
+              backgroundColor: "#ffffff",
+            },
+            tabBarScrollEnabled: true,
+          }}
+        >
           {initialState.map((doc, i) => (
             <Tab.Screen
-            options={{
-              tabBarLabel: ({ focused, color }) => (
-                <Text
-                  style={{
-                    fontWeight: "500",
-                    fontSize: 16,
-                    
-                    color: focused ? "#000000" : "#A3A3A3",
-                  }}>
-                  {`${initialState[i].title}`}
+              options={{
+                tabBarLabel: ({ focused, color }) => (
                   <Text
                     style={{
-                      fontSize: 12,
-                    }}>
-                    ({allOrders[i]})
+                      fontWeight: "500",
+                      fontSize: 16,
+
+                      color: focused ? "#000000" : "#A3A3A3",
+                    }}
+                  >
+                    {`${initialState[i].title}`}
+                    <Text
+                      style={{
+                        fontSize: 12,
+                      }}
+                    >
+                      ({allOrders[i]})
+                    </Text>
                   </Text>
-                </Text>
-              ),
-            }}
+                ),
+              }}
               key={i}
               name={doc.type}
               component={Screens}
@@ -297,28 +301,31 @@ const VendorSearchOrder = ({ navigation, route }) => {
             },
             tabBarScrollEnabled: true,
             tabBarPressColor: "white",
-          }}>
+          }}
+        >
           {initialStateOffline.map((doc, i) => (
             <Tab.Screen
-            options={{
-              tabBarLabel: ({ focused, color }) => (
-                <Text
-                  style={{
-                    fontWeight: "500",
-                    fontSize: 16,
-                    
-                    color: focused ? "#ffffff" : "#E8E8E8",
-                  }}>
-                  {`${initialState[i].title}`}
+              options={{
+                tabBarLabel: ({ focused, color }) => (
                   <Text
                     style={{
-                      fontSize: 12,
-                    }}>
-                    ({allOrders[i]})
+                      fontWeight: "500",
+                      fontSize: 16,
+
+                      color: focused ? "#ffffff" : "#E8E8E8",
+                    }}
+                  >
+                    {`${initialState[i].title}`}
+                    <Text
+                      style={{
+                        fontSize: 12,
+                      }}
+                    >
+                      ({allOrders[i]})
+                    </Text>
                   </Text>
-                </Text>
-              ),
-            }}
+                ),
+              }}
               key={i}
               name={doc.type}
               component={OfflineScreens}
@@ -332,7 +339,8 @@ const VendorSearchOrder = ({ navigation, route }) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <ActivityLoader />
         </View>
       )}
@@ -341,7 +349,8 @@ const VendorSearchOrder = ({ navigation, route }) => {
         ref={bottomSheetRef}
         index={parseInt(Index)}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+      >
         <BottomSheetScrollView>
           {AllStatus.map((doc, i) => (
             <IconButton
@@ -418,7 +427,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
         if (onSelect) {
           onSelect(data.id);
         }
-      }}>
+      }}
+    >
       <View
         style={{
           backgroundColor: open ? "#F2F2F6" : primaryColor,
@@ -426,16 +436,19 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
           paddingVertical: 0,
           paddingTop: 0,
           marginVertical: 8,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             paddingVertical: 4,
-          }}>
+          }}
+        >
           <View
-            style={{ flexDirection: "row", alignItems: "center", flex: 1.3 }}>
+            style={{ flexDirection: "row", alignItems: "center", flex: 1.3 }}
+          >
             <View
               style={{
                 borderWidth: 1,
@@ -446,7 +459,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                 alignItems: "center",
                 overflow: "hidden",
                 borderColor: "#e5e5e5",
-              }}>
+              }}
+            >
               {data && !user && data.user && data.user.profilePhoto ? (
                 <Image
                   style={{
@@ -471,14 +485,16 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
               style={{
                 marginLeft: 12,
                 flex: 1,
-              }}>
+              }}
+            >
               {user ? (
                 <Text
                   numberOfLines={1}
                   style={{
                     fontSize: 16,
                     fontWeight: "700",
-                  }}>
+                  }}
+                >
                   {data?.service?.serviceCenterName}
                 </Text>
               ) : (
@@ -487,7 +503,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                   style={{
                     fontSize: 16,
                     fontWeight: "700",
-                  }}>
+                  }}
+                >
                   {data
                     ? user
                       ? `${data.service.providerInfo.title}`
@@ -502,7 +519,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                   fontSize: 12,
                   fontWeight: "400",
                   marginTop: 4,
-                }}>
+                }}
+              >
                 {data && data.status ? exporters(data.status) : "Unknown"}{" "}
                 <Text
                   numberOfLines={1}
@@ -515,7 +533,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                         : "#7566FF",
                     fontSize: 12,
                     fontWeight: "400",
-                  }}>
+                  }}
+                >
                   (
                   {data && data.paid && data.status != "REFUNDED"
                     ? "Paid"
@@ -538,7 +557,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
               backgroundColor:
                 data?.status == "REFUNDED" ? "#EC2700" : "#4ADE80",
               marginLeft: 30,
-            }}>
+            }}
+          >
             {type == "SUBS" ? (
               <Text
                 numberOfLines={1}
@@ -547,7 +567,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                   color: "white",
                   fontWeight: "500",
                   textAlign: "center",
-                }}>
+                }}
+              >
                 {data.subsData.subscriptionType}{" "}
                 {data ? data.subsData.amount : "0"}
                 <Text style={{ fontWeight: "700" }}>৳</Text>
@@ -560,7 +581,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                   color: "white",
                   fontWeight: "500",
                   textAlign: "center",
-                }}>
+                }}
+              >
                 {data.installmentData?.installmentType}{" "}
                 {data
                   ? (
@@ -576,7 +598,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                   fontSize: 12,
                   color: "white",
                   fontWeight: "500",
-                }}>
+                }}
+              >
                 {data ? data.amount : "0"}
                 <Text style={{ fontWeight: "700" }}>৳</Text>
               </Text>
@@ -586,7 +609,8 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                   fontSize: 12,
                   color: "white",
                   fontWeight: "500",
-                }}>
+                }}
+              >
                 {data ? data.offerPrice : "0"}
                 <Text style={{ fontWeight: "700" }}>৳</Text>
               </Text>
@@ -735,6 +759,8 @@ export const Screens = ({ navigation, route }) => {
   const key = route.params.key;
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const searchOrderRef = useSelector((state) => state.searchOrderRef);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -769,7 +795,7 @@ export const Screens = ({ navigation, route }) => {
           console.error(err.response.data.msg);
         });
     }
-  }, [ Refresh]);
+  }, [Refresh]);
 
   React.useEffect(() => {
     if (AllOrders) {
@@ -820,7 +846,6 @@ export const Screens = ({ navigation, route }) => {
     }
   }, [orderListFilter]);
   React.useEffect(() => {
-    
     if (AllOrders) {
       if (!searchOrderRef) {
         setNewOrders(AllOrders);
@@ -894,7 +919,8 @@ export const Screens = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size="small" color={backgroundColor} />
       </View>
     );
@@ -922,8 +948,9 @@ export const Screens = ({ navigation, route }) => {
             style={{
               fontSize: 24,
               marginTop: 24,
-            }}>
-            No Order Found
+            }}
+          >
+            {isBn ? "কোনও অর্ডার নেই" : "No Order Found"}
           </Text>
         </View>
       )}
@@ -1118,7 +1145,8 @@ export const OfflineScreens = ({ navigation, route }) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <ActivityIndicator size="small" color={backgroundColor} />
       </View>
     );
@@ -1143,7 +1171,8 @@ export const OfflineScreens = ({ navigation, route }) => {
         onScroll={(e) => {
           scrollY.setValue(e.nativeEvent.contentOffset.y);
           //scroll;
-        }}>
+        }}
+      >
         <A.View
           style={[
             {
@@ -1154,7 +1183,8 @@ export const OfflineScreens = ({ navigation, route }) => {
               backgroundColor: secondaryColor,
               zIndex: 500,
             },
-          ]}>
+          ]}
+        >
           <View
             style={{
               flexDirection: "row",
@@ -1163,7 +1193,8 @@ export const OfflineScreens = ({ navigation, route }) => {
               justifyContent: "space-between",
               marginBottom: 15,
               marginTop: 20,
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -1174,7 +1205,8 @@ export const OfflineScreens = ({ navigation, route }) => {
                 flex: 2,
                 borderRadius: 20,
                 justifyContent: "flex-start",
-              }}>
+              }}
+            >
               <AntDesign
                 style={{ marginRight: 10 }}
                 name="search1"
@@ -1313,23 +1345,27 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
         if (onSelect) {
           onSelect(data.id);
         }
-      }}>
+      }}
+    >
       <View
         style={{
           backgroundColor: open ? "#F2F2F6" : primaryColor,
           paddingHorizontal: 10,
           paddingVertical: 0,
           paddingTop: 0,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             paddingTop: 5,
-          }}>
+          }}
+        >
           <View
-            style={{ flexDirection: "row", alignItems: "center", flex: 1.3 }}>
+            style={{ flexDirection: "row", alignItems: "center", flex: 1.3 }}
+          >
             <View
               style={{
                 borderWidth: 1,
@@ -1340,7 +1376,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                 alignItems: "center",
                 overflow: "hidden",
                 borderColor: "#e5e5e5",
-              }}>
+              }}
+            >
               {data && data.profilePhoto ? (
                 <Image
                   style={{
@@ -1358,14 +1395,16 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                 marginLeft: 10,
                 flex: 1,
                 marginRight: 20,
-              }}>
+              }}
+            >
               <Text
                 numberOfLines={1}
                 style={{
                   color: textColor,
                   fontSize: 16,
                   fontFamily: "Poppins-Medium",
-                }}>
+                }}
+              >
                 {userInfo ? userInfo.name : "...."}
               </Text>
               <Text
@@ -1374,7 +1413,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                   fontSize: 14,
                   color: textColor,
                   fontFamily: "Poppins-Medium",
-                }}>
+                }}
+              >
                 {userInfo ? userInfo.gender : "...."}
               </Text>
             </View>
@@ -1385,7 +1425,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
               alignItems: "center",
               flex: 1,
               paddingHorizontal: 10,
-            }}>
+            }}
+          >
             <Text>Status</Text>
             <Text style={{ color: "#4ADE80", textAlign: "center" }}>
               {data && data.status ? exporters(data.status) : "Unknown"}
@@ -1398,7 +1439,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                 paddingVertical: 10,
                 width: "100%",
                 justifyContent: "center",
-              }}>
+              }}
+            >
               {type == "SUBS" ? (
                 <Text
                   numberOfLines={1}
@@ -1407,7 +1449,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                     color: textColor,
                     fontFamily: "Poppins-Medium",
                     textAlign: "center",
-                  }}>
+                  }}
+                >
                   {data.subsData.subscriptionType}{" "}
                   {data ? data.subsData.amount : "0"}৳
                 </Text>
@@ -1419,7 +1462,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                     color: textColor,
                     fontFamily: "Poppins-Medium",
                     textAlign: "center",
-                  }}>
+                  }}
+                >
                   {data.installmentData?.installmentType}{" "}
                   {data
                     ? (
@@ -1436,7 +1480,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                     color: textColor,
                     fontFamily: "Poppins-Medium",
                     textAlign: "center",
-                  }}>
+                  }}
+                >
                   Price {data ? data.amount : "0"}৳
                 </Text>
               )}
@@ -1444,14 +1489,16 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
               <View
                 style={{
                   flexDirection: "row",
-                }}>
+                }}
+              >
                 <Text
                   numberOfLines={1}
                   style={{
                     color: data.paid ? backgroundColor : "red",
                     fontSize: 15,
                     fontFamily: "Poppins-Medium",
-                  }}>
+                  }}
+                >
                   {data && data.paid && data.status != "REFUNDED"
                     ? "Paid"
                     : data && data.paid && data.status == "REFUNDED"
@@ -1488,7 +1535,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
               style={{
                 flexDirection: "row",
                 marginTop: 20,
-              }}>
+              }}
+            >
               <View style={{ flex: 1 }}>
                 <Text
                   style={{
@@ -1496,7 +1544,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                     fontFamily: "Poppins-Medium",
                     color: textColor,
                     textAlign: "center",
-                  }}>
+                  }}
+                >
                   Service Name
                 </Text>
               </View>
@@ -1508,7 +1557,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                     color: textColor,
                     marginLeft: 15,
                     textAlign: "center",
-                  }}>
+                  }}
+                >
                   Status
                 </Text>
               </View>
@@ -1521,20 +1571,23 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                 justifyContent: "center",
                 marginTop: 10,
                 marginBottom: 10,
-              }}>
+              }}
+            >
               <View
                 style={{
                   flex: 1,
                   alignItems: "center",
                   paddingHorizontal: 10,
-                }}>
+                }}
+              >
                 <Text
                   numberOfLines={2}
                   style={{
                     color: textColor,
                     fontSize: 14,
                     fontFamily: "Poppins-Medium",
-                  }}>
+                  }}
+                >
                   {data
                     ? data.service.gigs[0].title
                     : "I will give you a best service"}
@@ -1545,7 +1598,8 @@ export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
                   flex: 1,
                   alignItems: "center",
                   paddingHorizontal: 10,
-                }}>
+                }}
+              >
                 <Text style={{ color: "#4ADE80" }}>
                   {data && data.status ? exporters(data.status) : "Unknown"}
                 </Text>

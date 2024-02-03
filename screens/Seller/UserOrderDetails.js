@@ -36,7 +36,10 @@ import {
   getDutyFee,
 } from "../../Class/service";
 import Barcode from "./../../components/Barcode";
-import { convertServerFacilities, serverToLocal } from "../../Class/dataConverter";
+import {
+  convertServerFacilities,
+  serverToLocal,
+} from "../../Class/dataConverter";
 import Toast from "react-native-root-toast";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { socket } from "../../Class/socket";
@@ -117,16 +120,16 @@ const UserOrderDetails = ({ navigation, route }) => {
     }
   }, [isFocused]);
   useEffect(() => {
-    if (orderId&&isFocused) {
+    if (orderId && isFocused) {
       setLoader(false);
       dataLoader(orderId);
     }
-  }, [orderId,refreshing,isFocused]);
+  }, [orderId, refreshing, isFocused]);
   React.useEffect(() => {
     //console.log(data.selectedServices);
     //console.warn(subsOrder)
     if (data) {
-     setListData(data.selectedServices)
+      setListData(data.selectedServices);
     }
     if (
       data &&
@@ -173,9 +176,9 @@ const UserOrderDetails = ({ navigation, route }) => {
   };
   React.useEffect(() => {
     socket.on("updateOrder", (e) => {
-      if(orderId){
+      if (orderId) {
         dataLoader(orderId);
-      }else{
+      } else {
         setLoader(false);
       }
     });
@@ -249,7 +252,8 @@ const UserOrderDetails = ({ navigation, route }) => {
     <SafeAreaView
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -261,7 +265,8 @@ const UserOrderDetails = ({ navigation, route }) => {
             }}
           />
         }
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <InfoCart
           onClick={() => {
             navigation.navigate("OtherProfile", {
@@ -278,7 +283,7 @@ const UserOrderDetails = ({ navigation, route }) => {
             navigation.navigate("ChatScreen", {
               data: {
                 users: [newUser],
-                service:data?.service,
+                service: data?.service,
                 serviceId: data?.service?.id,
               },
               username: data.service.user.username,
@@ -293,7 +298,9 @@ const UserOrderDetails = ({ navigation, route }) => {
         <View style={styles.textContainer}>
           <Text style={styles.text}>
             {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
-            {data?.type=="PACKAGE"?`- ${data?.selectedPackage?.name}`:"service"}
+            {data?.type == "PACKAGE"
+              ? `- ${data?.selectedPackage?.name}`
+              : "service"}
           </Text>
         </View>
         <OrderInfo
@@ -359,7 +366,8 @@ const UserOrderDetails = ({ navigation, route }) => {
         {data?.status == "DELIVERED" && (
           <View>
             <Text
-              style={[styles.text, { marginBottom: 12, marginHorizontal: 20 }]}>
+              style={[styles.text, { marginBottom: 12, marginHorizontal: 20 }]}
+            >
               Click 'Recived' or Auto-Receive in 72 Hours
             </Text>
             <IconButton

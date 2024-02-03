@@ -252,7 +252,7 @@ Thank you for taking the time to maximize your profile and showcase your experti
               });
             }}
             style={styles.button}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </ScrollView>

@@ -14,7 +14,6 @@ import { FAB } from "react-native-paper";
 import { TabBar } from "./UserProfile";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
 const Tab = createMaterialTopTabNavigator();
 
 export default function OfflineProfile({ navigation, route }) {
@@ -55,14 +54,15 @@ export default function OfflineProfile({ navigation, route }) {
   const user = route.params.user;
   const [Orders, setOrders] = React.useState();
   const [AllOrders, setAllOrders] = React.useState();
-  const [SliderRef,setSliderRef]=React.useState()
-  const ref=React.useRef()
+  const [SliderRef, setSliderRef] = React.useState();
+  const ref = React.useRef();
 
   const dispatch = useDispatch();
 
-  const ViewBox = ({ Icon, title,onPress }) => {
+  const ViewBox = ({ Icon, title, onPress }) => {
     return (
-      <TouchableOpacity onPress={onPress?onPress:null}
+      <TouchableOpacity
+        onPress={onPress ? onPress : null}
         style={{
           width: width / 4 - 20,
           height: width / 4 - 30,
@@ -75,13 +75,13 @@ export default function OfflineProfile({ navigation, route }) {
       >
         <SvgXml xml={Icon} height="22" width="22" />
         {title && (
-          <Text numberOfLines={1}
+          <Text
+            numberOfLines={1}
             style={{
-              fontSize:width<350?8:10,
+              fontSize: width < 350 ? 8 : 10,
               color: textColor,
               fontFamily: "Poppins-Medium",
               marginTop: 9,
-              
             }}
           >
             {title}
@@ -103,11 +103,9 @@ export default function OfflineProfile({ navigation, route }) {
       setOrders(arr);
     }
   }, [Active, AllOrders]);
-    
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
@@ -186,10 +184,16 @@ export default function OfflineProfile({ navigation, route }) {
         >
           {/* <ViewBox Icon={callIcon} title="Call" />
         <ViewBox Icon={chatIcon} title="Chat" /> */}
-          <ViewBox onPress={()=>{
-           
-            navigation.navigate("MemberAppointment",{user:user,offline:true})
-          }} Icon={calenderIcon} title="Appointment" />
+          <ViewBox
+            onPress={() => {
+              navigation.navigate("MemberAppointment", {
+                user: user,
+                offline: true,
+              });
+            }}
+            Icon={calenderIcon}
+            title="Appointment"
+          />
           <ViewBox Icon={threeDot} title="" />
         </View>
         <View
@@ -270,9 +274,10 @@ export default function OfflineProfile({ navigation, route }) {
             marginTop: 20,
           }}
         >
-          <TouchableOpacity onPress={()=>{
-            navigation.navigate("Note",{user:user,offline:true})
-          }}
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Note", { user: user, offline: true });
+            }}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -350,7 +355,7 @@ export default function OfflineProfile({ navigation, route }) {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{height:20}}/>
+        <View style={{ height: 20 }} />
         <View style={{ minHeight: 500 }}>
           <TabBar offline={true} userId={user.id} />
         </View>
@@ -369,8 +374,8 @@ export default function OfflineProfile({ navigation, route }) {
           justifyContent: "center",
           alignItems: "center",
         }}
-        onPress={()=>{
-          navigation.navigate("VendorServiceList",{userId:user.id})
+        onPress={() => {
+          navigation.navigate("VendorServiceList", { userId: user.id });
         }}
       />
     </SafeAreaView>
@@ -428,5 +433,3 @@ const threeDot = `<svg xmlns="http://www.w3.org/2000/svg" width="18.448" height=
 </g>
 </svg>
 `;
-
-

@@ -53,7 +53,7 @@ export default function ClintFeedBack({ navigation, route }) {
             />
           </View>
           <Text style={[styles.font, styles.mt24]}>
-            {isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as described rating"}
+            {isBn ? "বর্ণনা হিসাবে পরিষেবা" : "Service as described rating"}
           </Text>
           <View style={[styles.flexBox, styles.mt16]}>
             <Rating

@@ -219,11 +219,8 @@ const PackageService = (props) => {
       });
       setCategory(data?.service?.category);
       setActiveServiceData(arr);
-      
     }
   }, [data]);
-
- 
 
   React.useEffect(() => {
     if (newUser && Data) {
@@ -262,16 +259,8 @@ const PackageService = (props) => {
     console.log(scrollEnabled);
   }, [scrollEnabled]);
 
-  if (
-    Loader ||
-    !Data ||
-    !RelatedServices ||
-    !UnRelatedServices
-    
-  ) {
-    return (
-      <ProfileSkeleton/>
-    );
+  if (Loader || !Data || !RelatedServices || !UnRelatedServices) {
+    return <ProfileSkeleton />;
   }
 
   return (
@@ -324,7 +313,8 @@ const PackageService = (props) => {
 
           scrollY.setValue(e.nativeEvent.contentOffset.y);
           setOffset(currentOffset);
-        }}>
+        }}
+      >
         <Carousel
           style={{
             backgroundColor: "black",
@@ -342,7 +332,6 @@ const PackageService = (props) => {
             setImageIndex(index);
           }}
           renderItem={({ index }) => (
-            
             <Image
               source={{ uri: Images[index] }}
               fit="cover"
@@ -370,83 +359,87 @@ const PackageService = (props) => {
             paddingVertical: 3,
             borderRadius: 20,
             top: height - ((height * 30) / 100 + 70),
-          }}>
+          }}
+        >
           <Text
             style={{
               fontFamily: "Poppins-Medium",
               fontSize: 14,
               color: primaryColor,
-            }}>
+            }}
+          >
             {imageIndex + 1} Of 4
           </Text>
         </View>
-       {newUser?.user?.username!=Data?.service?.user?.username&&(
-         <View
-         style={{
-           position: "absolute",
-           top: 0,
-           right: 10,
-           height: height - (height * 30) / 100,
-           justifyContent: "center",
-           elevation: 2,
-           zIndex: 100,
-         }}>
-         <Menu
-           contentStyle={{
-             backgroundColor: primaryColor,
-           }}
-           visible={Visible}
-           onDismiss={() => {
-             setVisible(!Visible);
-           }}
-           anchor={
-             <SvgXml
-               onPress={() => {
-                 setVisible(!Visible);
-                 //console.log("sadfa");
-               }}
-               style={{
-                 shadowOffset: {
-                   width: 0,
-                   height: 3,
-                 },
-                 shadowColor: "#DDDDDD",
-                 shadowRadius: Platform.OS == "ios" ? 4 : 20,
-                 elevation: 0,
-                 shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
-                 marginLeft: 0,
-               }}
-               xml={threeDot}
-               height={Platform.OS == "ios" ? "50" : "45"}
-               width={Platform.OS == "ios" ? "50" : "45"}
-             />
-           }>
-           <Menu.Item
-             onPress={() => {
-               navigation.navigate("Support_1");
-               setVisible(!Visible);
-             }}
-             title="Report"
-           />
-           {/* <Menu.Item onPress={() => {}} title="Copy URL" /> */}
-         </Menu>
+        {newUser?.user?.username != Data?.service?.user?.username && (
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 10,
+              height: height - (height * 30) / 100,
+              justifyContent: "center",
+              elevation: 2,
+              zIndex: 100,
+            }}
+          >
+            <Menu
+              contentStyle={{
+                backgroundColor: primaryColor,
+              }}
+              visible={Visible}
+              onDismiss={() => {
+                setVisible(!Visible);
+              }}
+              anchor={
+                <SvgXml
+                  onPress={() => {
+                    setVisible(!Visible);
+                    //console.log("sadfa");
+                  }}
+                  style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 3,
+                    },
+                    shadowColor: "#DDDDDD",
+                    shadowRadius: Platform.OS == "ios" ? 4 : 20,
+                    elevation: 0,
+                    shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
+                    marginLeft: 0,
+                  }}
+                  xml={threeDot}
+                  height={Platform.OS == "ios" ? "50" : "45"}
+                  width={Platform.OS == "ios" ? "50" : "45"}
+                />
+              }
+            >
+              <Menu.Item
+                onPress={() => {
+                  navigation.navigate("Support_1");
+                  setVisible(!Visible);
+                }}
+                title="Report"
+              />
+              {/* <Menu.Item onPress={() => {}} title="Copy URL" /> */}
+            </Menu>
 
-         <SvgXml
-           style={{
-             shadowOffset: {
-               width: 0,
-               height: 3,
-             },
-             shadowColor: "#DDDDDD",
-             shadowRadius: Platform.OS == "ios" ? 4 : 20,
-             elevation: 5,
-             shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
-           }}
-           xml={loveIcon}
-           height={Platform.OS == "ios" ? "50" : "45"}
-           width={Platform.OS == "ios" ? "50" : "45"}
-         />
-         {/* <SvgXml
+            <SvgXml
+              style={{
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowColor: "#DDDDDD",
+                shadowRadius: Platform.OS == "ios" ? 4 : 20,
+                elevation: 5,
+                shadowOpacity: Platform.OS == "ios" ? 0.5 : 1,
+              }}
+              xml={loveIcon}
+              height={Platform.OS == "ios" ? "50" : "45"}
+              width={Platform.OS == "ios" ? "50" : "45"}
+            />
+            {/* <SvgXml
            style={{
              shadowOffset: {
                width: 0,
@@ -461,10 +454,8 @@ const PackageService = (props) => {
            height={Platform.OS == "ios" ? "50" : "45"}
            width={Platform.OS == "ios" ? "50" : "45"}
          /> */}
-
-         
-       </View>
-       )}
+          </View>
+        )}
 
         <View
           style={{
@@ -473,20 +464,23 @@ const PackageService = (props) => {
             borderTopRightRadius: 30,
             marginTop: -30,
             overflow: "hidden",
-          }}>
+          }}
+        >
           <View
             style={{
               paddingHorizontal: 20,
               paddingVertical: 0,
               backgroundColor: primaryColor,
-            }}>
+            }}
+          >
             <Text
               style={{
                 color: "#BEBBBB",
                 fontSize: 16,
                 fontFamily: "Poppins-SemiBold",
                 marginTop: 20,
-              }}>
+              }}
+            >
               #Package Service
             </Text>
             <View style={{ flex: 0.5 }} />
@@ -499,7 +493,8 @@ const PackageService = (props) => {
                 color: textColor,
                 paddingHorizontal: 20,
                 marginTop: 15,
-              }}>
+              }}
+            >
               {Title}
             </Text>
 
@@ -507,7 +502,8 @@ const PackageService = (props) => {
               style={{
                 marginHorizontal: 20,
                 paddingTop: 15,
-              }}>
+              }}
+            >
               {/* <AnimatedHeight
                 onChange={(height) => {
                   //setNewNavigation(newHeight + 55 + height);
@@ -517,17 +513,20 @@ const PackageService = (props) => {
                 button={true}
                 text={Description}
               /> */}
-              <ReadMore containerStyle={{
-                marginBottom:15
-              }} content={Description}/>
+              <ReadMore
+                containerStyle={{
+                  marginBottom: 15,
+                }}
+                content={Description}
+              />
             </View>
-            
           </View>
           <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
           <View
             style={{
               height: newNavigation,
-            }}>
+            }}
+          >
             <Tab.Navigator
               screenOptions={{
                 tabBarStyle: {
@@ -554,7 +553,8 @@ const PackageService = (props) => {
                 tabBarScrollEnabled: true,
                 tabBarPressColor: primaryColor,
                 swipeEnabled: false,
-              }}>
+              }}
+            >
               {packageData &&
                 packageData.map((doc, i) => (
                   <Tab.Screen
@@ -565,7 +565,8 @@ const PackageService = (props) => {
                             color: focused ? "#4ADE80" : "black",
                             fontFamily: "Poppins-SemiBold",
                             fontSize: Platform.OS == "ios" ? 16.5 : 15,
-                          }}>
+                          }}
+                        >
                           {doc.price}৳
                         </Text>
                       ),
@@ -584,7 +585,10 @@ const PackageService = (props) => {
             </Tab.Navigator>
           </View>
           <View style={{ height: 2, backgroundColor: "#FAFAFA" }} />
-          <ServiceListViewer skills={data?.skills} serviceCategory={{name:data?.service?.category}}/> 
+          <ServiceListViewer
+            skills={data?.skills}
+            serviceCategory={{ name: data?.service?.category }}
+          />
           <View
             style={{
               backgroundColor: primaryColor,
@@ -592,59 +596,60 @@ const PackageService = (props) => {
               justifyContent: "space-between",
               marginHorizontal: 20,
               marginVertical: 25,
-            }}>
+            }}
+          >
             <Text
               style={{
                 fontSize: Platform.OS == "ios" ? 17 : 15.5,
                 color: textColor,
 
                 fontFamily: "Poppins-SemiBold",
-              }}>
+              }}
+            >
               From {Price} ৳
             </Text>
-          
           </View>
           <View style={{ backgroundColor: primaryColor }}>
-            {newUser?.user?.username!=Data?.service?.user?.username&&(
+            {newUser?.user?.username != Data?.service?.user?.username && (
               <IconButton
-              onPress={() => {
-                if (newUser && newUser.token) {
-                  //console.log(selectedPackage)
-                  navigation.navigate("ServiceOrder", {
+                onPress={() => {
+                  if (newUser && newUser.token) {
+                    //console.log(selectedPackage)
+                    navigation.navigate("ServiceOrder", {
+                      type: "PACKAGE",
+                      gigs: data,
+                      data: data,
+                      serviceList: data?.skills,
+                      selectedPackage: selectedPackage,
+                      services: data.services,
+                      category: Category,
+                    });
+                    return;
+                  } else {
+                    navigation.navigate("LogIn");
+                    return;
+                  }
+                  navigation.navigate("OfferNow", {
                     type: "PACKAGE",
                     gigs: data,
                     data: data,
-                    serviceList: data?.skills,
                     selectedPackage: selectedPackage,
                     services: data.services,
                     category: Category,
                   });
-                  return;
-                } else {
-                  navigation.navigate("LogIn");
-                  return;
-                }
-                navigation.navigate("OfferNow", {
-                  type: "PACKAGE",
-                  gigs: data,
-                  data: data,
-                  selectedPackage: selectedPackage,
-                  services: data.services,
-                  category: Category,
-                });
-              }}
-              style={{
-                borderRadius: 5,
-                marginHorizontal: 20,
-                backgroundColor: "#FEA31E",
-                borderWidth: 0,
-                marginVertical: 0,
-                color: textColor,
-                marginTop: 0,
-                height: 40,
-              }}
-              title={`Continue`}
-            />
+                }}
+                style={{
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                  backgroundColor: "#FEA31E",
+                  borderWidth: 0,
+                  marginVertical: 0,
+                  color: textColor,
+                  marginTop: 0,
+                  height: 40,
+                }}
+                title={`Continue`}
+              />
             )}
           </View>
         </View>
@@ -654,7 +659,8 @@ const PackageService = (props) => {
           style={{
             backgroundColor: primaryColor,
             marginTop: 15,
-          }}>
+          }}
+        >
           {RelatedServices.length > 4 && (
             <View>
               <Text
@@ -664,7 +670,8 @@ const PackageService = (props) => {
                   color: textColor,
                   paddingHorizontal: 20,
                   paddingVertical: 15,
-                }}>
+                }}
+              >
                 Related Service
               </Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -685,7 +692,8 @@ const PackageService = (props) => {
                   color: textColor,
                   paddingHorizontal: 20,
                   paddingVertical: 15,
-                }}>
+                }}
+              >
                 You Might Also Like
               </Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -736,7 +744,8 @@ const PackageService = (props) => {
             position: "absolute",
             top: 0,
             left: 0,
-          }}>
+          }}
+        >
           <FixedBackHeader
             navigation={navigation}
             Yoffset={offset ? offset : 0}
@@ -1049,13 +1058,15 @@ export const Screen = ({ navigation, route }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           marginVertical: 10,
-        }}>
+        }}
+      >
         <Text
           style={{
             fontSize: Platform.OS == "ios" ? 16.5 : 15,
             fontFamily: "Poppins-Medium",
             color: textColor,
-          }}>
+          }}
+        >
           {doc.title}
         </Text>
         <SvgXml
@@ -1085,7 +1096,8 @@ export const Screen = ({ navigation, route }) => {
         //     val;
         //   }
         // });
-      }}>
+      }}
+    >
       {feature && feature.map((doc, i) => <NewRows key={i} doc={doc} />)}
     </View>
   );

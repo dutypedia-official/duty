@@ -130,7 +130,7 @@ export default function SupportForm({ navigation, route }) {
               alignItems: "center",
             }}
           >
-            Support Center
+            {isBn ? "সাহায্য এবং সহায়তা কেন্দ্র" : "Support Center"}
           </Text>
         </View>
         <View

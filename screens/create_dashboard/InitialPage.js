@@ -7,12 +7,15 @@ import { useDispatch } from "react-redux";
 import customStyle from "../../assets/stylesheet";
 import IconButton from "../../components/IconButton";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
+import useLang from "../../Hooks/UseLang";
 const { height, width } = Dimensions.get("window");
 
 export default function InitialPage({ navigation }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -31,8 +34,9 @@ export default function InitialPage({ navigation }) {
       <View
         style={{
           paddingHorizontal: 20,
-          minHeight: height-65,
-        }}>
+          minHeight: height - 65,
+        }}
+      >
         <View style={[customStyle.shadow, { marginTop: 24 }]}>
           <SvgXml width={"100%"} xml={vectorImage} />
         </View>
@@ -41,23 +45,27 @@ export default function InitialPage({ navigation }) {
             fontSize: 16,
 
             fontWeight: "400",
-          }}>
-          We understand that creating an account may take some time, but please
-          take a moment to fill out all the details correctly. Our platform
-          values accuracy and professionalism, and we want to ensure the best
-          experience for all our users.{" "}
+          }}
+        >
+          {isBn
+            ? "আমরা বুঝতে পারি যে একটি অ্যাকাউন্ট তৈরি করতে কিছু সময় নিতে পারে, তবে সঠিকভাবে সমস্ত বিবরণ পূরণ করতে দয়া করে একটু সময় নিন৷ আমাদের প্ল্যাটফর্মের মান সঠিকতা,পেশাদারি এবং আমরা আমাদের সব ব্যবহারকারীদের জন্য সেরা অভিজ্ঞতা নিশ্চিত করতে চাই৷"
+            : "We understand that creating an account may take some time, but please take a moment to fill out all the details correctly. Our platform values accuracy and professionalism, and we want to ensure the best experience for all our users."}{" "}
           <Text
             style={{
               fontWeight: "500",
-            }}>
-            So, take a deep breath, relax, and let's get started on your
-            business journey with Duty."
+            }}
+          >
+            {isBn
+              ? "সুতরাং, একটি গভীর শ্বাস নিন, একটু শিথিল হন, এবং কর্তব্যের সাথে আপনার ব্যবসার যাত্রা শুরু করুন৷"
+              : "So, take a deep breath, relax, and let's get started on your business journey with Duty."}
           </Text>
         </Text>
-        <View style={{
-          flex:1,
-          justifyContent:"flex-end"
-        }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
+        >
           <IconButton
             onPress={() => {
               dispatch({ type: "SET_NEW_DATA", playload: null });
@@ -70,7 +78,7 @@ export default function InitialPage({ navigation }) {
               marginTop: 32,
               marginBottom: 32,
             }}
-            title={"Continue"}
+            title={isBn ? "পরবর্তী" : "Continue"}
           />
         </View>
       </View>

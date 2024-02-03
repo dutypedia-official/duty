@@ -155,7 +155,7 @@ const SaveList = ({ navigation }) => {
                 }}
               >
                 {isBn
-                  ? "আপনার এখন পর্জন্ত কোনও সার্ভিস অ্যাড করা হয়নি"
+                  ? "কোনও সার্ভিস অ্যাড করা হয়নি"
                   : "You did not add any list"}
               </Text>
             </View>

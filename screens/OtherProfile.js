@@ -490,7 +490,7 @@ const RatingArea = ({
           style={{
             marginHorizontal: 20,
           }}
-          title={isBn ? "বিক্রেতা যোগাযোগ মান" : "Seller Communication"}
+          title={isBn ? "বিক্রেতার যোগাযোগের মান" : "Seller Communication"}
           rate={individualRating?.communicationRating}
         />
         <RatingView
@@ -498,7 +498,7 @@ const RatingArea = ({
             marginHorizontal: 20,
             marginTop: 5,
           }}
-          title={isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as Describe"}
+          title={isBn ? "বর্ণনা হিসাবে পরিষেবা" : "Service as Describe"}
           rate={individualRating?.describeRating}
         />
         <RatingView

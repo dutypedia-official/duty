@@ -52,7 +52,7 @@ const AllReview = ({ navigation, route }) => {
             paddingHorizontal: 20,
             paddingVertical: 5,
           }}
-          title={isBn ? "বিক্রেতা যোগাযোগ মান" : "Seller Communication"}
+          title={isBn ? "বিক্রেতার যোগাযোগের মান" : "Seller Communication"}
           rate={individualRating?.communicationRating}
         />
         <RatingView
@@ -61,7 +61,7 @@ const AllReview = ({ navigation, route }) => {
             paddingHorizontal: 20,
             paddingVertical: 5,
           }}
-          title={isBn ? "বর্ণনা হিসাবে পরিষেবা মান" : "Service as Describe"}
+          title={isBn ? "বর্ণনা হিসাবে পরিষেবা" : "Service as Describe"}
           rate={individualRating?.describeRating}
         />
         <RatingView

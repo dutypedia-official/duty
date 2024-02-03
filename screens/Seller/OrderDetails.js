@@ -36,7 +36,10 @@ import {
   getDutyFee,
 } from "../../Class/service";
 import Barcode from "./../../components/Barcode";
-import { convertServerFacilities, serverToLocal } from "../../Class/dataConverter";
+import {
+  convertServerFacilities,
+  serverToLocal,
+} from "../../Class/dataConverter";
 import Toast from "react-native-root-toast";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { socket } from "../../Class/socket";
@@ -98,7 +101,7 @@ const OrderDetails = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    
+
     wait(1000).then(() => setRefreshing(false));
   }, []);
   React.useEffect(() => {
@@ -114,19 +117,18 @@ const OrderDetails = ({ navigation, route }) => {
     }
   }, [isFocused]);
   useEffect(() => {
-    if (orderId&&isFocused) {
+    if (orderId && isFocused) {
       setLoader(false);
       dataLoader(orderId);
-    }else{
+    } else {
       setLoader(false);
     }
-  }, [orderId,refreshing,isFocused]);
+  }, [orderId, refreshing, isFocused]);
   React.useEffect(() => {
     //console.log(data.selectedServices);
     //console.warn(subsOrder)
     if (data) {
-      
-     setListData(data.selectedServices)
+      setListData(data.selectedServices);
     }
     if (
       data &&
@@ -173,7 +175,7 @@ const OrderDetails = ({ navigation, route }) => {
   };
   React.useEffect(() => {
     socket.on("updateOrder", (e) => {
-      if(orderId){
+      if (orderId) {
         dataLoader(orderId);
       }
     });
@@ -247,7 +249,8 @@ const OrderDetails = ({ navigation, route }) => {
     <SafeAreaView
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -259,7 +262,8 @@ const OrderDetails = ({ navigation, route }) => {
             }}
           />
         }
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <InfoCart
           onClick={() => {
             navigation.navigate("OtherProfile", {
@@ -276,7 +280,7 @@ const OrderDetails = ({ navigation, route }) => {
             navigation.navigate("ChatScreen", {
               data: {
                 users: [newUser],
-                service:data?.service,
+                service: data?.service,
                 serviceId: data?.service?.id,
               },
               username: data.service.user.username,
@@ -291,7 +295,9 @@ const OrderDetails = ({ navigation, route }) => {
         <View style={styles.textContainer}>
           <Text style={styles.text}>
             {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
-            {data?.type=="PACKAGE"?`- ${data?.selectedPackage?.name}`:"service"}
+            {data?.type == "PACKAGE"
+              ? `- ${data?.selectedPackage?.name}`
+              : "service"}
           </Text>
         </View>
         <OrderInfo
@@ -357,7 +363,8 @@ const OrderDetails = ({ navigation, route }) => {
         {data?.status == "DELIVERED" && (
           <View>
             <Text
-              style={[styles.text, { marginBottom: 12, marginHorizontal: 20 }]}>
+              style={[styles.text, { marginBottom: 12, marginHorizontal: 20 }]}
+            >
               Click 'Recived' or Auto-Receive in 72 Hours
             </Text>
             <IconButton

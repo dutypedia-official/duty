@@ -930,7 +930,7 @@ const AcceptOrder = (props) => {
             color: textColor,
             marginTop: 12,
           }}
-          title="Confirm"
+          title={isBn?"অর্ডারটি নিশ্চিত করুন":"Confirm"}
         />
       </View>
     </View>

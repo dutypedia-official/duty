@@ -45,6 +45,7 @@ import {
   updateNotice,
 } from "../../Class/notice";
 import { useDispatch, useSelector } from "react-redux";
+import useLang from "../../Hooks/UseLang";
 
 const Notice = (props) => {
   const [ModalVisible, setModalVisible] = React.useState(false);
@@ -302,7 +303,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import IconButton from "../../components/IconButton";
 import ActivityLoader from "../../components/ActivityLoader";
 import { useIsFocused } from "@react-navigation/native";
-import useLang from "../../Hooks/UseLang";
 
 const Cart = ({ value, setData, Data, i, navigation }) => {
   const [Visible, setVisible] = React.useState(false);
@@ -676,7 +676,8 @@ export const ViewCart = (props) => {
   const [value, setValue] = React.useState(props.route.params.value);
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     //console.log(value.id)
   }, []);
@@ -858,8 +859,12 @@ export const ViewCart = (props) => {
         onRequestClose={() => setAlertVisible(false)}
       >
         <AlertModal
-          title="Hey"
-          subTitle={"Are you sure want to delete this?"}
+          title={isBn ? "নিশ্চিত করুন" : "Confirm"}
+          subTitle={
+            isBn
+              ? "নোটিশটি চিরতরে মুছে ফেলতে নিশ্চিত করুন"
+              : "Confirm if you want to delete this notice?"
+          }
           onChange={(e) => {
             if (e == "ok") {
               Delete();

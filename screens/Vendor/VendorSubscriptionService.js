@@ -222,7 +222,9 @@ const VendorSubscriptionService = (props) => {
             type: "SET_NEW_LIST_DATA",
             playload: serverToLocalNew(data.services, data.service.category),
           });
-          setNewDataList(serverToLocalNew(data.services, data.service.category));
+          setNewDataList(
+            serverToLocalNew(data.services, data.service.category)
+          );
         }
       } catch (e) {
         console.warn(e.message);
@@ -270,13 +272,7 @@ const VendorSubscriptionService = (props) => {
     }
   }, [ActiveService + Click + Refresh]);
 
-  
-
-  if (
-    !Data ||
-    
-    !NewDataList
-  ) {
+  if (!Data || !NewDataList) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Loading...</Text>
@@ -548,9 +544,14 @@ const VendorSubscriptionService = (props) => {
               #Subscription Service
             </Text>
 
-            <TouchableOpacity onPress={()=>{
-              navigation.navigate("EditSubscriptionService",{data:data,gigs:data})
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("EditSubscriptionService", {
+                  data: data,
+                  gigs: data,
+                });
+              }}
+            >
               <SvgXml xml={editIcon} height="50" width={"50"} />
             </TouchableOpacity>
           </View>
@@ -627,18 +628,22 @@ const VendorSubscriptionService = (props) => {
               >
                 Service List
               </Text>
-              <TouchableOpacity onPress={()=>{
-                const gigs=vendor.service.gigs.filter(d=>d.type=="STARTING")
-                navigation.navigate("EditServiceList", {
-                  NewDataList: serverToLocalNew(
-                    gigs[0].services.options,
-                    gigs[0].services.category
-                  ),
-                  name: "VendorOrderDetails",
-                  data: "SUBSCRIPTION",
-                  gigs:data
-                });
-              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  const gigs = vendor.service.gigs.filter(
+                    (d) => d.type == "STARTING"
+                  );
+                  navigation.navigate("EditServiceList", {
+                    NewDataList: serverToLocalNew(
+                      gigs[0].services.options,
+                      gigs[0].services.category
+                    ),
+                    name: "VendorOrderDetails",
+                    data: "SUBSCRIPTION",
+                    gigs: data,
+                  });
+                }}
+              >
                 <SvgXml xml={editIcon} height="50" width={"50"} />
               </TouchableOpacity>
             </View>
@@ -697,18 +702,18 @@ const VendorSubscriptionService = (props) => {
                       title={NewDataList.length > 0 && NewDataList[0].mainTitle}
                     />
                   )}
-                  {Facilities&&Facilities.length!=0&&(
+                  {Facilities && Facilities.length != 0 && (
                     <Button
-                    onPress={() => {
-                      setActiveService("Extra Facilities");
-                    }}
-                    style={
-                      ActiveService == "Extra Facilities"
-                        ? styles.activeButton
-                        : styles.inactiveButton
-                    }
-                    title={"Extra Facilities"}
-                  />
+                      onPress={() => {
+                        setActiveService("Extra Facilities");
+                      }}
+                      style={
+                        ActiveService == "Extra Facilities"
+                          ? styles.activeButton
+                          : styles.inactiveButton
+                      }
+                      title={"Extra Facilities"}
+                    />
                   )}
                 </View>
                 <View
@@ -755,7 +760,6 @@ const VendorSubscriptionService = (props) => {
                           fontSize: Platform.OS == "ios" ? 16.5 : 15,
                           fontFamily: "Poppins-SemiBold",
                           color: "#95979D",
-                          
                         }}
                       >
                         Extra Facilities
@@ -771,7 +775,7 @@ const VendorSubscriptionService = (props) => {
                               style={{
                                 fontSize: Platform.OS == "ios" ? 16.5 : 15,
                                 fontFamily: "Poppins-Medium",
-                               
+
                                 color: textColor,
                               }}
                               key={i + 1}

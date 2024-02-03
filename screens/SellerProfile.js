@@ -709,15 +709,27 @@ const BargainingScreen = ({ navigation, route, params, component }) => {
           marginVertical: 25,
         }}
       >
-        <Text
-          style={{
-            fontSize: Platform.OS == "ios" ? 17 : 15.5,
-            color: textColor,
-            fontFamily: "Poppins-SemiBold",
-          }}
-        >
-          From {Price} ৳
-        </Text>
+        {isBn ? (
+          <Text
+            style={{
+              fontSize: Platform.OS == "ios" ? 17 : 15.5,
+              color: textColor,
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            {Price} ৳ থেকে শুরু
+          </Text>
+        ) : (
+          <Text
+            style={{
+              fontSize: Platform.OS == "ios" ? 17 : 15.5,
+              color: textColor,
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            From {Price} ৳
+          </Text>
+        )}
       </View>
       <View style={{ backgroundColor: primaryColor }}>
         {newUser?.user?.id != Data?.service?.user?.id && (

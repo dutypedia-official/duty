@@ -42,7 +42,7 @@ export default function ChooseDateOrder({ navigation, route }) {
           marginTop: inset?.top,
         }}
         navigation={navigation}
-        title={"Chose Delivery Date"}
+        title={isBn ? "ডেলিভারির তারিখ পছন্দ করুন" : "Chose Delivery Date"}
       />
       <ScrollView contentContainerStyle={{ backgroundColor: "#ffffff" }}>
         <View

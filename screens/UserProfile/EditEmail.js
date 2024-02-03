@@ -1,6 +1,13 @@
 import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, Pressable, Text,KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  ScrollView,
+  Pressable,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useDispatch, useSelector } from "react-redux";
 import customStyle from "../../assets/stylesheet";
@@ -14,17 +21,21 @@ import MenuItem from "../../components/Profile/MenuItem";
 import ViewMore from "../../Hooks/ViewMore";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import { styles } from "../create_dashboard/BusinessTitle";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
-export default function EditEmail({navigation,route}) {
+export default function EditEmail({ navigation, route }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const [layoutHeight,setLayoutHeight]=useState(0)
+  const [layoutHeight, setLayoutHeight] = useState(0);
   const [type, setType] = useState("Only me");
   const [visible, setVisible] = React.useState(false);
-  const [email,setEmail]=useState()
-  const user=route?.params?.user;
-  const newUser=useSelector(state=>state.user)
-  const [loader,setLoader]=useState(false)
+  const [email, setEmail] = useState();
+  const user = route?.params?.user;
+  const newUser = useSelector((state) => state.user);
+  const [loader, setLoader] = useState(false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   const openMenu = () => setVisible(true);
 
@@ -41,17 +52,17 @@ export default function EditEmail({navigation,route}) {
       dispatch(setHideBottomBar(false));
     }
   }, [isFocused]);
-  useEffect(()=>{
-    if(user){
-      setEmail(user?.email)
-      setType(user?.hideEmail?"Only me":"Public")
+  useEffect(() => {
+    if (user) {
+      setEmail(user?.email);
+      setType(user?.hideEmail ? "Only me" : "Public");
     }
-  },[user])
+  }, [user]);
   const updateUser = async (types) => {
-    setLoader(true)
+    setLoader(true);
     updateUserData(newUser.token, {
-      hideEmail:type=="Only me"?true:false,
-      email:email
+      hideEmail: type == "Only me" ? true : false,
+      email: email,
     })
       .then((res) => {
         //console.log(res.data)
@@ -59,13 +70,13 @@ export default function EditEmail({navigation,route}) {
         console.warn("Upload Successful");
       })
       .catch((err) => {
-        setLoader(false)
+        setLoader(false);
         console.error(err.response.data.msg);
       });
   };
   const getUser = async (token) => {
     const res = await getUserInfo(newUser.token, newUser.user.id);
-    setLoader(false)
+    setLoader(false);
     storeJson("user", {
       token: token,
       user: res.data.user,
@@ -77,108 +88,116 @@ export default function EditEmail({navigation,route}) {
         user: res.data.user,
       },
     });
-    navigation.goBack()
+    navigation.goBack();
   };
-  if(loader){
-    return(
+  if (loader) {
+    return (
       <View style={customStyle.fullBox}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View
-        style={{
-          paddingHorizontal: 20,
-        }}>
-        <SvgXml
-          style={{
-            marginTop: 36,
-          }}
-          xml={vectorImage}
-        />
-        <View>
-          <View style={{ flexDirection: "row", marginTop: 36 }}>
-            <SvgXml xml={light} />
-            <Text
-              style={{
-                fontWeight: "500",
-                
-                fontSize: 24,
-                marginLeft: 8,
-                flex: 1,
-              }}>
-              Why We Are Asking for Your Email address?
-            </Text>
-          </View>
-          <ViewMore
-            style={{
-              marginTop: 24,
-            }}
-            width={"37%"}
-            height={layoutHeight}
-            component={
-              <Text onLayout={e=>setLayoutHeight(e.nativeEvent.layout.height)} style={[styles.spText, { marginTop: 0 }]}>
-                At Duty, we understand that you may have concerns about
-                providing your email address. However, we would like to assure
-                you that the reason we require your email address is to ensure a
-                seamless connection between you and potential buyers or sellers.{"\n"}
-                Email addresses are an essential part of conducting professional
-                transactions, and we believe that every individual and company
-                should have one. In addition, some service providers may need to
-                send files, videos, or links for delivery purposes. Having a
-                valid email address allows for the easy exchange of such
-                materials. We take privacy and security very seriously at Duty,
-                and we want you to feel safe and secure using our platform. Rest
-                assured that your information is kept confidential and will only
-                be shared with relevant parties in order to facilitate your
-                transactions.{"\n"} If you prefer to keep your email address private,
-                we offer an "Only Me" option, which means that no one else can
-                see your email address without your consent. This option ensures
-                that you have complete control over who can access your personal
-                information.{"\n"} Thank you for choosing Duty as your preferred
-                online marketplace platform. We look forward to providing you
-                with a secure and convenient shopping experience
-              </Text>
-            }
-          />
-        </View>
-        <Input value={email} onChange={setEmail} style={[styles.input,{
-          borderColor:"#A3A3A3",
-          marginBottom:0
-        }]} placeholder={"Email"} />
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
-            alignItems: "flex-end",
-            marginTop: 12,
-          }}>
-          <MenuItem
-            onChange={setType}
-            visible={visible}
-            onClose={closeMenu}
-            button={
-              <IconButton
+            paddingHorizontal: 20,
+          }}
+        >
+          <SvgXml
+            style={{
+              marginTop: 36,
+            }}
+            xml={vectorImage}
+          />
+          <View>
+            <View style={{ flexDirection: "row", marginTop: 36 }}>
+              <SvgXml xml={light} />
+              <Text
                 style={{
-                  borderWidth: 0,
+                  fontWeight: "500",
+
+                  fontSize: 24,
+                  marginLeft: 8,
+                  flex: 1,
                 }}
-                LeftIcon={() => (
-                  <SvgXml xml={type == "Only me" ? onlyme : pub} />
-                )}
-                Icon={() => <SvgXml xml={arrow} />}
-                onPress={openMenu}
-                title={type}
-              />
-            }
+              >
+                {isBn
+                  ? "কেন আমরা আপনার ইমেল ঠিকানার জন্য জিজ্ঞাসা করছি?"
+                  : "Why We Are Asking for Your Email address?"}
+              </Text>
+            </View>
+            <ReadMore
+              containerStyle={{
+                marginTop: 24,
+              }}
+              content={
+                <Text style={[styles.spText, { marginTop: 0 }]}>
+                  {!isBn
+                    ? `At Duty, we understand that you may have concerns about providing your email address. However, we would like to assure you that the reason we require your email address is to ensure a seamless connection between you and potential buyers or sellers.
+Email addresses are an essential part of conducting professional transactions, and we believe that every individual and company should have one. In addition, some service providers may need to send files, videos, or links for delivery purposes. Having a valid email address allows for the easy exchange of such materials. We take privacy and security very seriously at Duty, and we want you to feel safe and secure using our platform. Rest assured that your information is kept confidential and will only be shared with relevant parties in order to facilitate your transactions.
+If you prefer to keep your email address private, we offer an "Only Me" option, which means that no one else can see your email address without your consent. This option ensures that you have complete control over who can access your personal information.
+Thank you for choosing Duty as your preferred online marketplace platform. We look forward to providing you with a secure and convenient shopping experience`
+                    : `ডিউটিতে, আমরা বুঝি যে আপনার ইমেল ঠিকানা প্রদানের বিষয়ে আপনার কনসার্ন থাকতে পারে৷। যাইহোক, আমরা আপনাকে আশ্বস্ত করতে চাই যে আমাদের আপনার ইমেল ঠিকানার প্রয়োজনের কারণ হল আপনার এবং সম্ভাব্য ক্রেতা বা বিক্রেতাদের মধ্যে একটি নিরবচ্ছিন্ন সংযোগ নিশ্চিত করা৷।
+ইমেল ঠিকানা পেশাদার লেনদেন পরিচালনার একটি অপরিহার্য অংশ, এবং আমরা বিশ্বাস করি যে প্রতিটি ব্যক্তি এবং কোম্পানির একটি ইমেল ঠিকানা থাকা উচিত৷ এছাড়াও, কিছু সার্ভিস প্রদানকারীকে বিতরণের উদ্দেশ্যে ফাইল, ভিডিও বা লিঙ্ক পাঠাতে হতে পারে৷। একটি বৈধ ইমেল ঠিকানা থাকলে এই ধরনের উপকরণ সহজে বিনিময় জন্য অনুমতি দেয়৷।
+আমরা ডিউটিতে গোপনীয়তা এবং নিরাপত্তা খুব গুরুত্ব সহকারে নিই, এবং আমরা চাই আপনি আমাদের প্ল্যাটফর্ম ব্যবহার করে নিরাপদ এবং সুরক্ষিত বোধ করুন৷ নিশ্চিত থাকুন যে আপনার তথ্য গোপন রাখা হয়েছে এবং আপনার লেনদেন সহজতর করার জন্য শুধুমাত্র প্রাসঙ্গিক পক্ষের সাথে শেয়ার করা হবে৷।
+আপনি যদি আপনার ইমেল ঠিকানাটি ব্যক্তিগত রাখতে পছন্দ করেন তবে আমরা একটি "শুধু আমি" বিকল্প অফার করি, যার অর্থ হল আপনার সম্মতি ছাড়া অন্য কেউ আপনার ইমেল ঠিকানা দেখতে পারবে না৷ এই বিকল্পটি নিশ্চিত করে যে আপনার ব্যক্তিগত তথ্য কে অ্যাক্সেস করতে পারে তার উপর আপনার সম্পূর্ণ নিয়ন্ত্রণ রয়েছে৷।
+আপনার পছন্দের অনলাইন মার্কেটপ্লেস প্ল্যাটফর্ম হিসেবে ডিউটি বেছে নেওয়ার জন্য আপনাকে ধন্যবাদ৷ আমরা আপনাকে একটি নিরাপদ এবং সুবিধাজনক কেনাকাটার অভিজ্ঞতা প্রদানের জন্য উন্মুখ`}
+                </Text>
+              }
+            />
+          </View>
+          <Input
+            value={email}
+            onChange={setEmail}
+            style={[
+              styles.input,
+              {
+                borderColor: "#A3A3A3",
+                marginBottom: 0,
+              },
+            ]}
+            placeholder={isBn ? "ইমেল" : "Email"}
+          />
+          <View
+            style={{
+              alignItems: "flex-end",
+              marginTop: 12,
+            }}
+          >
+            <MenuItem
+              onChange={setType}
+              visible={visible}
+              onClose={closeMenu}
+              button={
+                <IconButton
+                  style={{
+                    borderWidth: 0,
+                  }}
+                  LeftIcon={() => (
+                    <SvgXml xml={type == "Only me" ? onlyme : pub} />
+                  )}
+                  Icon={() => <SvgXml xml={arrow} />}
+                  onPress={openMenu}
+                  title={type}
+                />
+              }
+            />
+          </View>
+          <IconButton
+            onPress={updateUser}
+            disabled={email ? false : true}
+            active={email ? true : false}
+            style={styles.button}
+            title={isBn ? "আপডেট করুন" : "Update"}
           />
         </View>
-        <IconButton onPress={updateUser} disabled={email?false:true} active={email?true:false} style={styles.button} title={"Update"}/>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }

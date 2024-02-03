@@ -138,35 +138,17 @@ export default function CancelOrderConfirmation({ navigation, route }) {
               marginTop: 24,
             }}
             content={
-              <View
-                onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
-                style={{ width: "100%" }}
-              >
-                <TextOp
-                  style={{ marginTop: 0 }}
-                  text={
-                    isBn
-                      ? "অর্ডারটি বাতিল হয়ে গেলে আপনার সেলার প্রোফাইলের রেটিং এর উপর নেগেটিভ প্রভাব ফেলতে পারে৷"
-                      : "Cancelling an order may negatively impact your seller rating."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={
-                    isBn
-                      ? "আপনি যদি এমন একটি অর্ডার বাতিল করেন যার ইতিমধ্যে পেমেন্ট করা হয়ে গেছে, তখন ক্রেতা রিফান্ডের জন্য অনুরোধ করতে পারে, যার ফলে আপনার আয়ের ক্ষতি হতে পারে৷"
-                      : "If you cancel an order that has already been paid for, the buyer may request a refund, which can result in a loss of revenue for you."
-                  }
-                />
-                <TextOp
-                  style={{ marginTop: 5 }}
-                  text={
-                    isBn
-                      ? "আপনি যদি ঘন ঘন অর্ডার ক্যান্সেল করেন, তাহলে আমাদের নিয়ম ও শর্তাবলী ভঙ্গ হবে যার ফলে আপনার অ্যাকাউন্ট আমাদের টিমের সাথে আলোচনা করে স্থগিত করা হতে পারে৷"
-                      : "If you cancel orders frequently, your account may be flagged and reviewed by our team for potential violation of our terms and conditions."
-                  }
-                />
-              </View>
+              isBn
+                ? `• অর্ডারটি বাতিল হয়ে গেলে আপনার সেলার প্রোফাইলের রেটিং এর উপর নেগেটিভ প্রভাব ফেলতে পারে৷
+
+• আপনি যদি এমন একটি অর্ডার বাতিল করেন যার ইতিমধ্যে পেমেন্ট করা হয়ে গেছে, তখন ক্রেতা রিফান্ডের জন্য অনুরোধ করতে পারে, যার ফলে আপনার আয়ের ক্ষতি হতে পারে৷।
+              
+• আপনি যদি ঘন ঘন অর্ডার ক্যান্সেল করেন, তাহলে আমাদের নিয়ম ও শর্তাবলী ভঙ্গ হবে যার ফলে আপনার অ্যাকাউন্ট আমাদের টিমের সাথে আলোচনা করে স্থগিত করা হতে পারে৷`
+                : `• Cancelling an order may negatively impact your seller rating.
+                
+• If you cancel an order that has already been paid for, the buyer may request a refund, which can result in a loss of revenue for you.
+                
+• If you cancel orders frequently, your account may be flagged and reviewed by our team for potential violation of our terms and conditions.`
             }
           />
         ) : (

@@ -196,8 +196,11 @@ const Support = ({ navigation, route }) => {
           ref={ref}
           style={{ width: "100%", fontSize: 14, fontFamily: "Poppins-Medium" }}
           multiline={true}
-          placeholder="By Describing the most important
-      facts, we can quickly resolve your request."
+          placeholder={
+            isBn
+              ? "সবচেয়ে গুরুত্বপূর্ণ তথ্য বর্ণনা করুন, আমরা দ্রুত আপনার অনুরোধের সমাধান করব..."
+              : "By Describing the most important facts, we can quickly resolve your request."
+          }
         />
       </TouchableOpacity>
       {/* <View
@@ -318,7 +321,15 @@ const Support = ({ navigation, route }) => {
           color: "white",
           marginTop: 30,
         }}
-        title={route.name == "Support_1" ? "Send Report" : "Send Request"}
+        title={
+          route.name == "Support_1"
+            ? isBn
+              ? "রিপোর্টটি পাঠান"
+              : "Send Report"
+            : isBn
+            ? "অনুরোধটি পাঠান"
+            : "Send Request"
+        }
       />
       <IconButton
         onPress={() => {
@@ -329,7 +340,7 @@ const Support = ({ navigation, route }) => {
           marginVertical: 10,
           borderWidth: 0,
         }}
-        title="Back"
+        title={isBn ? "ফিরে যান" : "Back"}
       />
       <Modal
         transparent={true}

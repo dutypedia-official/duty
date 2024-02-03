@@ -35,6 +35,8 @@ import { getUserInfo } from "../../Class/member";
 import { storeJson } from "../../Class/storage";
 import customStyle from "../../assets/stylesheet";
 import ActivityLoader from "../../components/ActivityLoader";
+import useLang from "../../Hooks/UseLang";
+import ReadMore from "../../components/ReadMore";
 
 export default function EditLocation({ navigation }) {
   const [type, setType] = useState("Only me");
@@ -51,6 +53,8 @@ export default function EditLocation({ navigation }) {
   const [select, setSelect] = useState();
   const [districtError, setDistrictError] = useState();
   const [areaError, setAreaError] = useState();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   // variables
   const user = useSelector((state) => state.user);
   const [loader, setLoader] = useState(false);
@@ -78,10 +82,10 @@ export default function EditLocation({ navigation }) {
 
   useEffect(() => {
     if (user?.user?.address) {
-      setDivision(user?.user?.address?.division)
-      setDistrict(user?.user?.address?.district)
-      setArea(user?.user?.address?.thana)
-      setAddress(user?.user?.address?.address)
+      setDivision(user?.user?.address?.division);
+      setDistrict(user?.user?.address?.district);
+      setArea(user?.user?.address?.thana);
+      setAddress(user?.user?.address?.address);
     }
     if (user) {
       setType(user?.user?.hideAddress ? "Only me" : "Public");
@@ -138,12 +142,14 @@ export default function EditLocation({ navigation }) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: 20,
-          }}>
+          }}
+        >
           <Image
             style={{
               width: width - 40,
@@ -159,69 +165,81 @@ export default function EditLocation({ navigation }) {
               <Text
                 style={{
                   fontWeight: "500",
-                  
+
                   fontSize: 24,
                   marginLeft: 8,
                   flex: 1,
-                }}>
-                Why are we asking for your address?
+                }}
+              >
+                {isBn
+                  ? "আমরা আপনার ঠিকানা জানতে চাইছি কেন?"
+                  : "Why are we asking for your address?"}
               </Text>
             </View>
-            <ViewMore
-              view={true}
-              style={{
+            <ReadMore
+              containerStyle={{
                 marginTop: 24,
               }}
-              lowHeight={70}
-              width={167}
-              position={{
-                bottom: 0,
-              }}
-              height={layoutHeight}
-              component={
-                <View
-                  style={{ width: "100%" }}
-                  onLayout={(e) =>
-                    setLayoutHeight(e.nativeEvent.layout.height)
-                  }>
+              content={
+                isBn ? (
                   <Text style={[styles.spText, { marginTop: 0 }]}>
-                    At Duty, we understand that your privacy is important to
-                    you. That's why we offer you the option to keep your address
-                    information private by selecting the "Only Me" option. This
-                    means that no one else will be able to see your address
-                    without your consent.
+                    {`ডিউটিতে, আমরা বুঝি যে আপনার মোবাইল নম্বর আপনার অ্যাকাউন্ট রেজিস্ট্রেশন প্রক্রিয়ার একটি গুরুত্বপূর্ণ অংশ৷।আপনার মোবাইল নম্বরটি যাচাইকরণের উদ্দেশ্যে ব্যবহার করা হয়, এবং আপনি যদি আপনার পাসওয়ার্ড বা আইডি ভুলে যান, এটি আপনার অ্যাকাউন্টের তথ্য পুনরুদ্ধার করতে সহায়তা করে৷
+আমরা আপনার মোবাইল নম্বরের নিরাপত্তাকে অত্যন্ত গুরুত্ব সহকারে নিই, এবং আমরা আপনাকে নিশ্চিত করতে চাই যে আমরা আপনার মোবাইল নম্বরে পাঠানো কোনো কোড বা তথ্য কারো সাথে শেয়ার করব না৷।উপরন্তু, আমরা আপনার মোবাইল নম্বরটি গোপন রাখার জন্য একটি বিকল্প পদ্ধতি প্রদান করি, যাতে আপনার সম্মতি ছাড়া কেউ এটি দেখতে না পারে৷।
+অনুগ্রহ করে আশ্বস্ত হন যে আমরা আপনার মোবাইল নম্বর সুরক্ষিত রাখতে এবং এটিকে সর্বদা সুরক্ষিত রাখার জন্য যথাসাধ্য চেষ্টা করব৷। আপনার পছন্দের অনলাইন প্ল্যাটফর্ম হিসাবে ডিউটিকে বেছে নেওয়ার জন্য আপনাকে ধন্যবাদ, এবং আমরা আপনাকে একটি নিরাপদ এবং সুবিধাজনক ব্যবহারকারীর অভিজ্ঞতা প্রদানের জন্য উন্মুখ
+
+ডিউটিতে, আমরা বুঝতে পারি যে আপনার গোপনীয়তা আপনার কাছে গুরুত্বপূর্ণ৷।তাই আমরা আপনাকে "শুধু আমি" বিকল্পটি নির্বাচন করে আপনার ঠিকানা তথ্য গোপন রাখার বিকল্প অফার করি৷ এর মানে হল যে আপনার সম্মতি ছাড়া অন্য কেউ আপনার ঠিকানা দেখতে পারবে না৷।
+
+যাইহোক, আপনার অবস্থানের তথ্য প্রদান করা আমাদের প্ল্যাটফর্মে আপনার অভিজ্ঞতাকে ব্যাপকভাবে উন্নত করতে পারে৷।আপনার অবস্থান ভাগ করে নেওয়ার মাধ্যমে, আপনি সহজেই আপনার কাছাকাছি উপলব্ধ পণ্য এবং সার্ভিসগুলি খুঁজে পেতে পারেন, যা আপনার অনুসন্ধানকে আরও দক্ষ করে তোলে এবং আপনার মূল্যবান সময় সাশ্রয় করে৷
+
+এছাড়াও, সম্ভাব্য ক্রেতা বা বিক্রেতাদের সাথে আপনার ঠিকানা শেয়ার করা আপনার এবং তাদের মধ্যে নির্বিঘ্ন এবং নিরাপদ সংযোগের জন্য প্রয়োজনীয়৷ এটি নিশ্চিত করে যে আপনার লেনদেনগুলি মসৃণ এবং ঝামেলা-মুক্ত, পণ্য বা সার্ভিসগুলি সঠিক স্থানে সরবরাহ করা হয়েছে৷।
+
+নিশ্চিন্ত থাকুন যে আমরা ডিউটিতে গোপনীয়তা এবং নিরাপত্তা খুব গুরুত্ব সহকারে নিই৷ আপনার লেনদেন সহজতর করার জন্য আমরা শুধুমাত্র প্রাসঙ্গিক পক্ষের সাথে আপনার তথ্য শেয়ার করি এবং আপনার ডেটা গোপন ও সুরক্ষিত রাখা হয়৷।
+
+আপনার ঠিকানা তথ্য দিয়ে আমাদের বিশ্বাস করার জন্য আপনাকে ধন্যবাদ৷।আমরা আপনাকে আমাদের প্ল্যাটফর্মে একটি নিরাপদ, সুবিধাজনক এবং আনন্দদায়ক কেনাকাটার অভিজ্ঞতা প্রদান করতে প্রতিশ্রুতিবদ্ধ.`}
                   </Text>
-                  <Text style={[styles.spText, { marginTop: 24 }]}>
-                    However, providing your location information can greatly
-                    enhance your experience on our platform. By sharing your
-                    location, you can easily find products and services that are
-                    available near you, making your search more efficient and
-                    saving you valuable time.
-                  </Text>
-                  <Text style={[styles.spText, { marginTop: 24 }]}>
-                    In addition, sharing your address with potential buyers or
-                    sellers is necessary for the seamless and secure connection
-                    between you and them. This ensures that your transactions
-                    are smooth and hassle-free, with products or services
-                    delivered to the correct location.
-                  </Text>
-                  <Text style={[styles.spText, { marginTop: 24 }]}>
-                    Rest assured that we take privacy and security very
-                    seriously at Duty. We only share your information with
-                    relevant parties in order to facilitate your transactions,
-                    and your data is kept confidential and secure.
-                  </Text>
-                  <Text style={[styles.spText, { marginTop: 24 }]}>
-                    Thank you for trusting us with your address information. We
-                    are committed to providing you with a safe, convenient, and
-                    enjoyable shopping experience on our platform
-                  </Text>
-                </View>
+                ) : (
+                  <View style={{ width: "100%" }}>
+                    <Text style={[styles.spText, { marginTop: 0 }]}>
+                      At Duty, we understand that your privacy is important to
+                      you. That's why we offer you the option to keep your
+                      address information private by selecting the "Only Me"
+                      option. This means that no one else will be able to see
+                      your address without your consent.
+                    </Text>
+                    <Text style={[styles.spText, { marginTop: 24 }]}>
+                      However, providing your location information can greatly
+                      enhance your experience on our platform. By sharing your
+                      location, you can easily find products and services that
+                      are available near you, making your search more efficient
+                      and saving you valuable time.
+                    </Text>
+                    <Text style={[styles.spText, { marginTop: 24 }]}>
+                      In addition, sharing your address with potential buyers or
+                      sellers is necessary for the seamless and secure
+                      connection between you and them. This ensures that your
+                      transactions are smooth and hassle-free, with products or
+                      services delivered to the correct location.
+                    </Text>
+                    <Text style={[styles.spText, { marginTop: 24 }]}>
+                      Rest assured that we take privacy and security very
+                      seriously at Duty. We only share your information with
+                      relevant parties in order to facilitate your transactions,
+                      and your data is kept confidential and secure.
+                    </Text>
+                    <Text style={[styles.spText, { marginTop: 24 }]}>
+                      Thank you for trusting us with your address information.
+                      We are committed to providing you with a safe, convenient,
+                      and enjoyable shopping experience on our platform
+                    </Text>
+                  </View>
+                )
               }
             />
           </View>
           <View>
-            <Text style={[newStyle.text, { marginTop: 0 }]}>Division</Text>
+            <Text style={[newStyle.text, { marginTop: 0 }]}>
+              {isBn ? "বিভাগ" : "Division"}
+            </Text>
             <InputButton
               value={division}
               onPress={() => {
@@ -229,12 +247,12 @@ export default function EditLocation({ navigation }) {
                 setIndex(0);
               }}
               style={[styles.input, { marginTop: 8, borderColor: "#a3a3a3" }]}
-              placeholder={"Division"}
+              placeholder={isBn ? "বিভাগ" : "Division"}
             />
 
             <View style={{ flexDirection: "row", marginTop: 12 }}>
               <View>
-                <Text style={newStyle.text}>District</Text>
+                <Text style={newStyle.text}>{isBn ? "জেলা" : "District"}</Text>
                 <InputButton
                   error={districtError}
                   onPress={() => {
@@ -256,12 +274,12 @@ export default function EditLocation({ navigation }) {
                       borderColor: "#a3a3a3",
                     },
                   ]}
-                  placeholder="District"
+                  placeholder={isBn ? "জেলা" : "District"}
                 />
               </View>
               <View style={{ width: 13 }} />
               <View>
-                <Text style={newStyle.text}>Thana</Text>
+                <Text style={newStyle.text}>{isBn ? "এরিয়া" : "Area"}</Text>
                 <InputButton
                   error={areaError}
                   onPress={() => {
@@ -283,22 +301,25 @@ export default function EditLocation({ navigation }) {
                       borderColor: "#a3a3a3",
                     },
                   ]}
-                  placeholder="Thana"
+                  placeholder={isBn ? "এরিয়া" : "Area"}
                 />
               </View>
             </View>
-            <Text style={[newStyle.text, { marginTop: 12 }]}>Address</Text>
+            <Text style={[newStyle.text, { marginTop: 12 }]}>
+              {isBn ? "ঠিকানা" : "Address"}
+            </Text>
             <TextArea
               value={address}
               onChange={setAddress}
               style={[styles.input, { marginTop: 8, borderColor: "#a3a3a3" }]}
-              placeholder={"Address"}
+              placeholder={isBn ? "ঠিকানা" : "Address"}
             />
             <View
               style={{
                 alignItems: "flex-end",
                 marginTop: 24,
-              }}>
+              }}
+            >
               <MenuItem
                 onChange={setType}
                 visible={visible}
@@ -323,7 +344,7 @@ export default function EditLocation({ navigation }) {
               active={division && district && area ? true : false}
               disabled={division && district && area ? false : true}
               style={[styles.button, { marginTop: 36 }]}
-              title={"Update"}
+              title={isBn ? "আপডেট করুন" : "Update"}
             />
           </View>
         </View>
@@ -344,7 +365,8 @@ export default function EditLocation({ navigation }) {
         index={index}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+      >
         {select == "Division" ? (
           <Screen
             onChange={(e) => {
@@ -408,7 +430,7 @@ const arrow = `<svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="
 const newStyle = StyleSheet.create({
   text: {
     fontSize: 16,
-    
+
     fontWeight: "400",
   },
 });
