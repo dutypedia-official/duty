@@ -1268,6 +1268,8 @@ const BargainingScreen = (props) => {
   const changeScreenName = params.changeScreenName;
   const dispatch = useDispatch();
   const business = useSelector((state) => state.businessForm);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(Data);
 
   React.useEffect(() => {
@@ -1436,16 +1438,29 @@ const BargainingScreen = (props) => {
           marginVertical: 15,
         }}
       >
-        <Text
-          style={{
-            fontSize: Platform.OS == "ios" ? 17 : 15.5,
-            color: textColor,
+        {isBn ? (
+          <Text
+            style={{
+              fontSize: Platform.OS == "ios" ? 17 : 15.5,
+              color: textColor,
 
-            fontFamily: "Poppins-SemiBold",
-          }}
-        >
-          From {Price} ৳
-        </Text>
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            {Price} ৳ থেকে শুরু
+          </Text>
+        ) : (
+          <Text
+            style={{
+              fontSize: Platform.OS == "ios" ? 17 : 15.5,
+              color: textColor,
+
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            From {Price} ৳
+          </Text>
+        )}
         {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate("Service List_1", {

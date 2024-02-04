@@ -141,19 +141,25 @@ export default function StatusCart({
             styles.mt16,
             {
               color:
-                paid && exporters(status).title != "Failed"
+                paid && exporters(status).value != "Failed"
                   ? "#4ADE80"
                   : "#EC2700",
             },
           ]}
         >
-          {paid && exporters(status).title != "Failed"
-            ? "Paid"
+          {paid && exporters(status).value != "Failed"
+            ? isBn
+              ? "পরিশোধ হয়েছে"
+              : "Paid"
             : !paid
-            ? "Due"
+            ? isBn
+              ? "বাকি"
+              : "Due"
+            : isBn
+            ? "টাকা ফেরত দেয়া হয়েছে"
             : "Refund"}
         </Text>
-        {exporters(status).title == "Failed" && !vendor && (
+        {exporters(status).value == "Failed" && !vendor && (
           <View style={[{ alignItems: "flex-end" }, styles.mt16]}>
             <Text
               onPress={onMore}
@@ -184,10 +190,14 @@ export default function StatusCart({
           >
             {vendor
               ? status == "CANCELLED"
-                ? "Cancel"
+                ? isBn
+                  ? "অর্ডারটি বাতিল করা হয়েছে"
+                  : "Cancel"
                 : exportersVendor(status).title
               : status == "CANCELLED"
-              ? "Cancel"
+              ? isBn
+                ? "অর্ডারটি বাতিল করা হয়েছে"
+                : "Cancel"
               : exporters(status).title}
           </Text>
         ) : (
@@ -556,99 +566,121 @@ const icon = `<svg width="24" height="30" viewBox="0 0 24 30" fill="none" xmlns=
 </svg>
 `;
 const exporters = (key) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   switch (key) {
     case "WAITING_FOR_ACCEPT":
       return {
-        title: "Request pending",
+        title: isBn ? "অনুরুধ পেন্ডিং আছে" : "Request pending",
+        value: "Request pending",
         color: "#7566FF",
       };
     case "ACCEPTED":
       return {
-        title: "Order Accepted",
+        title: isBn ? "সার্ভিসটি গ্রহণ করা হয়েছে" : "Order Accepted",
+        value: "Order Accepted",
         color: "#4ADE80",
       };
     case "WAITING_FOR_PAYMENT":
       return {
-        title: "Order Accepted",
+        title: isBn ? "সার্ভিসটি গ্রহণ করা হয়েছে" : "Order Accepted",
+        value: "Order Accepted",
         color: "#4ADE80",
       };
     case "PROCESSING":
       return {
-        title: "Processing",
+        title: isBn ? "প্রক্রিয়াকরণ" : "Processing",
+        value: "Processing",
         color: "#4ADE80",
       };
     case "DELIVERED":
       return {
-        title: "Delivered",
+        title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
+        value: "Delivered",
         color: "#4ADE80",
       };
     case "REFUNDED":
       return {
-        title: "Failed",
+        title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
+        value: "Failed",
         color: "#EC2700",
       };
     case "CANCELLED":
       return {
-        title: "Failed",
+        title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
+        value: "Failed",
         color: "#EC2700",
       };
     case "COMPLETED":
       return {
-        title: "Delivered",
+        title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
+        value: "Delivered",
         color: "#4ADE80",
       };
     default:
       return {
-        title: "Unknown",
+        title: isBn ? "অজানা" : "Unknown",
+        value: "Unknown",
         color: "#000000",
       };
   }
 };
 const exportersVendor = (key) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   switch (key) {
     case "WAITING_FOR_ACCEPT":
       return {
-        title: "Waiting for accept",
+        title: isBn ? "এখনো গ্রহণ করা হয়নি" : "Waiting for accept",
+        value: "Waiting for accept",
         color: "#7566FF",
       };
     case "ACCEPTED":
       return {
-        title: "Payment pending",
+        title: isBn ? "সার্ভিসটি গ্রহণ করা হয়েছে" : "Order Accepted",
+        value: "Order Accepted",
         color: "#7566FF",
       };
     case "WAITING_FOR_PAYMENT":
       return {
-        title: "Order Accepted",
+        title: isBn ? "টাকা পরিশোধ করা বাকি আছে" : "Payment pending",
+        value: "Payment pending",
         color: "#4ADE80",
       };
     case "PROCESSING":
       return {
-        title: "Processing",
+        title: isBn ? "প্রক্রিয়াকরণ হচ্ছে" : "Processing",
+        value: "Processing",
         color: "#4ADE80",
       };
     case "DELIVERED":
       return {
-        title: "Delivered",
+        title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
+        value: "Delivered",
         color: "#4ADE80",
       };
     case "REFUNDED":
       return {
-        title: "Failed",
+        title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
+        value: "Failed",
         color: "#EC2700",
       };
     case "CANCELLED":
       return {
-        title: "Failed",
+        title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
+        value: "Failed",
         color: "#EC2700",
       };
     case "COMPLETED":
       return {
-        title: "Delivered",
+        title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
+        value: "Delivered",
         color: "#4ADE80",
       };
     default:
       return {
-        title: "Unknown",
+        title: isBn ? "অজানা" : "Unknown",
+        value: "Unknown",
         color: "#000000",
       };
   }

@@ -55,7 +55,7 @@ export default function ImportantNotice({ navigation, route }) {
                 {type == "FAILED"
                   ? `রিফান্ড এর নীতি এবং প্রক্রিয়া`
                   : type == "DELIVERED"
-                  ? `সার্ভিস বুঝে পেয়ে থাকলে,৭২ ঘণ্টার মধ্যে ( হ্যাঁ আমি বুঝে পেয়েছি ) বুতামে ক্লিক করুন`
+                  ? `সার্ভিস ডেলিভারি করার পর ডেলিভারি নিশ্চিতকরণের নিয়মাবলী`
                   : `ডেলিভারি সময় এবং প্রফাইল রেটিং:`}
               </Text>
             ) : (
@@ -72,7 +72,7 @@ export default function ImportantNotice({ navigation, route }) {
                 {type == "FAILED"
                   ? `Refund Policy and Process`
                   : type == "DELIVERED"
-                  ? `Product Received? Click 'Yes' Within 72 Hours!`
+                  ? `Importance of Proper Delivery Confirmation in Online Transactions`
                   : `Delivery Time and Profile Rating.`}
               </Text>
             )
@@ -133,12 +133,9 @@ Our primary goal is to provide a fair and trustworthy marketplace for both buyer
             ) : type == "DELIVERED" ? (
               <Text>
                 {isBn
-                  ? 'আপনার পণ্যটি পাওয়ার পর, অনুগ্রহ করে "হ্যাঁ, আমি বুজে পেয়েছি" বোতামে ক্লিক করুন। 72 ঘন্টার মধ্যে এটি করতে ব্যর্থ হলে আপনার সার্ভিসটি ( বুজে পেয়েছেন ) বলে স্বয়ংক্রিয়ভাবে বিবেচিত হবে। তবে নিশ্চিত থাকুন, এটি হওয়ার আগে আমরা আপনাকে তিনবার আপনার নোটিফিকেশন সেকশনে অবহিত করব। আপনার যদি কোন প্রশ্ন থাকে তাহলে বিনা দ্বিধায় আমাদের'
-                  : 'Upon receiving your product, kindly click on the "Yes, I Received" button. Failure to do so within 72 hours will result in an automatic marking of the item as received. Rest assured, we will notify you three times before this happens. For any queries, please feel free to contact our'}{" "}
-                <Text style={{ color: "#4ADE80" }}>
-                  {isBn ? "সাহায্য এবং সহায়তা টিম" : "support center"}
-                </Text>{" "}
-                {isBn && "এর সাথে  যোগাযোগ করুন।"}
+                  ? `একটি স্বচ্ছ এবং পেশাদার অনলাইন লেনদেন প্রক্রিয়া নিশ্চিত করতে, বিক্রেতার জন্য "হ্যাঁ, আমি ডেলিভারি করেছি" বোতামে ক্লিক করে সার্ভিসটি সম্পূর্ণ হয়েছে তা নিশ্চিত করা অত্যন্ত গুরুত্বপূর্ণ৷ অনলাইন ডেলিভারির ক্ষেত্রে, বিক্রেতাকে বোতামে ক্লিক করার আগে সমস্ত প্রয়োজনীয় ফাইল আপলোড করতে হবে৷।যাইহোক, ফিজিক্যাল ভাবে সার্ভিস প্রদানের জন্য, কর্মচারী বা শ্রমিককে অবশ্যই ক্রেতার সামনে "হ্যাঁ, আমি পেয়েছি" বোতামে ক্লিক করে তাদের সন্তুষ্টি নিশ্চিত করতে বলতে হবে৷।
+ক্রেতা "হ্যাঁ, আমি পেয়েছি" বোতামে ক্লিক করতে ব্যর্থ হলে, বিক্রেতাকে ৭২ ঘন্টার জন্য অপেক্ষা করতে হবে৷। যদি ক্রেতা এখনও এই সময়ের মধ্যে সাড়া না দেয়, তাহলে লেনদেনটি স্বয়ংক্রিয়ভাবে সম্পূর্ণ হিসাবে চিহ্নিত হবে, ধরে নেওয়া হবে যে বিক্রেতা তাদের ডেলিভারি দায়িত্ব যথাযথভাবে পালন করেছেন৷।তা সত্ত্বেও, বিক্রেতার কাছে ডেলিভারির প্রমাণ হিসাবে যথাযথ ডকুমেন্টেশন থাকা অপরিহার্য যাতে ভবিষ্যতে উদ্ভূত কোনো বিবাদ এড়ানো যায়৷`
+                  : `To ensure a transparent and professional online transaction process, it's crucial for the seller to confirm the completion of the service by clicking on the "yes, I delivered" button. In the case of online delivery, the seller must upload all the necessary documents before clicking on the button. However, for physical delivery, the employee or labor must ask the buyer to confirm their satisfaction by clicking on the "yes, I received" button in front of the buyer. If the buyer fails to click on the "yes, I received" button, the seller must wait for a period of 72 hours. If the buyer still doesn't respond within this time, the transaction will be automatically marked as complete, assuming that the seller has fulfilled their delivery obligations properly. Nevertheless, it's essential for the seller to have proper documentation as proof of delivery to avoid any disputes that may arise in the future.`}{" "}
               </Text>
             ) : isBn ? (
               `প্রিয় ${name}, আমাদের প্ল্যাটফর্মে একটি ভাল সুনাম বজায় রাখার জন্য সময়মত ডেলিভারি অত্যন্ত গুরুত্বপূর্ণ৷ আপনি যদি নির্দিষ্ট সময়ের মধ্যে অর্ডারটি ডেলিভারি করতে না পারেন, তাহলে আপনি ক্রেতার সাথে যোগাযোগ করুন এবং অতিরিক্ত সময়ের জন্য অনুরোধ করুন৷ যদি ক্রেতা ইতিমধ্যে অর্থ প্রদান করে থাকে এবং আপনি অর্ডারটি সময়মতো ডেলিভারি করতে না পারেন তবে ক্রেতাকে তার সম্পূর্ণ টাকা ফেরত দেওয়া হবে, যা আপনার বিজনেস প্রোফাইল রেটিংয়ে নেগেটিভ প্রভাব ফেলতে পারে৷ আমাদের কমিউনিটির সকল শর্ত এবং নিয়মনীতি বুজে সাহায্য এবং সহযোগিতা করে একটি পজিটিভ অভিজ্ঞতা নিশ্চিত করার জন্য আপনাকে ধন্যবাদ৷`
@@ -157,19 +154,36 @@ Our primary goal is to provide a fair and trustworthy marketplace for both buyer
           >
             {type == "FAILED" ? (
               isBn ? (
-                ``
+                `প্রিয় ${name}, আমরা বুঝি যে কখনও কখনও একটি অর্ডার আশানুরূপ হিসাবে ডেলিভারি নাও হতে পারে৷ এই ক্ষেত্রে, আমরা ৭-৩০ কার্যদিবসের মধ্যে আপনার টাকা আপনাকে ফেরত দেব৷ যাইহোক, যদি আপনি এই সময়ের মধ্যে আপনার টাকা ফেরত না পেয়ে থাকেন, তাহলে অনুগ্রহ করে সাহায্যের জন্য আমাদের সহায়তা টিমের সাথে যোগাযোগ করতে দ্বিধাবোধ করবেন না৷ আমরা আত্মবিশ্বাসী যে আমাদের প্ল্যাটফর্মে আপনার একটি সুন্দর অভিজ্ঞতা রয়েছে তা নিশ্চিত করতে আমরা প্রতিশ্রুতিবদ্ধ, এবং আমাদের বোঝার জন্য আপনাকে ধন্যবাদ৷ আরও বিশদ বিবরণের জন্য, অনুগ্রহ করে আমাদের অর্থ ফেরত নীতি বিভাগ দেখুন৷`
               ) : (
                 `Dear valued ${name}, we understand that sometimes an order may not be delivered as expected. In such cases, we will refund your payment within 7 working days. However, if you have not received your refund within this time frame, please do not hesitate to contact our support team for further assistance. We are committed to ensuring that you have a seamless experience on our platform, and we thank you for your understanding.`
               )
             ) : type == "DELIVERED" ? (
-              <Text>
-                Upon receiving your product, kindly click on the "Yes, I
-                Received" button. Failure to do so within 72 hours will result
-                in an automatic marking of the item as received. Rest assured,
-                we will notify you three times before this happens. For any
-                queries, please feel free to contact our{" "}
-                <Text style={{ color: "#4ADE80" }}>support center</Text>.
-              </Text>
+              isBn ? (
+                <Text>
+                  আপনার পণ্যটি পাওয়ার পর, অনুগ্রহ করে "হ্যাঁ, আমি বুজে পেয়েছি"
+                  বোতামে ক্লিক করুন। 72 ঘন্টার মধ্যে এটি করতে ব্যর্থ হলে আপনার
+                  সার্ভিসটি ( বুজে পেয়েছেন ) বলে স্বয়ংক্রিয়ভাবে বিবেচিত হবে।
+                  তবে নিশ্চিত থাকুন, এটি হওয়ার আগে আমরা আপনাকে তিনবার আপনার
+                  নোটিফিকেশন সেকশনে অবহিত করব। আপনার যদি কোন প্রশ্ন থাকে তাহলে
+                  বিনা দ্বিধায়{" "}
+                  <Text style={{ color: "#4ADE80" }}>
+                    আমাদের সাহায্য এবং সহায়তা টিম
+                  </Text>
+                  . এর সাথে যোগাযোগ করুন
+                </Text>
+              ) : (
+                <Text>
+                  Upon receiving your product, kindly click on the "Yes, I
+                  Received" button. Failure to do so within 72 hours will result
+                  in an automatic marking of the item as received. Rest assured,
+                  we will notify you three times before this happens. For any
+                  queries, please feel free to contact our{" "}
+                  <Text style={{ color: "#4ADE80" }}>support center</Text>.
+                </Text>
+              )
+            ) : isBn ? (
+              `প্রিয় ${name}, আমাদের প্ল্যাটফর্মে একটি পজিটিভ রেপুটেশন বজায় রাখার জন্য সময়মত ডেলিভারি করা অত্যন্ত গুরুত্বপূর্ণ৷ যদি কোনও বিক্রেতা নির্দিষ্ট সময়ের মধ্যে অর্ডার ডেলিভারি করতে না পারে, তবে তারা অতিরিক্ত সময়ের জন্য অনুরোধ করতে পারে, অথবা আপনি একটি সমাধান খুঁজে পেতে তাদেরকে সাহায্য করতে পারেন৷ তাও যদি বিক্রেতা অর্ডারটি ডেলিভারি  করতে না পারে, তাহলে আপনাকে আপনার সম্পূর্ন টাকা ফেরত দেওয়া হবে এবং তার বিজনেস প্রোফাইল রেটিং এর উপর একটি খারাপ প্রভাব পড়তে পারে৷ আমরা আমাদের কমিউনিটির সকল সদস্যের জন্য একটি নিরাপদ এবং পজিটিভ অভিজ্ঞতা নিশ্চিত করতে প্রতিশ্রুতিবদ্ধ, এবং আপনার সহযোগিতার জন্য ধন্যবাদ৷ আমাদের প্ল্যাটফর্ম নির্বাচন করার জন্যও আপনাকে ধন্যবাদ৷।`
             ) : (
               `Dear ${name}, please be advised that timely delivery is crucial for maintaining a positive experience on our platform. If a seller is unable to deliver the order within the specified timeframe, they may request an extension, or you can communicate with them to find a resolution. If the seller is unable to deliver the order, a refund will be issued to you, and their profile rating may be negatively impacted. We are committed to ensuring a safe and positive experience for all members of our community, and we appreciate your cooperation. Thank you for choosing our platform.`
             )}

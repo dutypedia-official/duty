@@ -192,38 +192,47 @@ const Screens = ({ navigation, route }) => {
   const [Search, setSearch] = React.useState();
   const [Filter, setFilter] = React.useState();
   const [Index, setIndex] = React.useState(-1);
+
   const [AllStatus, setAllStatus] = React.useState([
     {
-      title: "Waiting For Accept",
+      title: isBn ? "এখনো গ্রহণ করা হয়নি" : "Waiting For Accept",
       icon: waitionIcon,
+      value: "Waiting For Accept",
     },
     {
-      title: "Due",
+      title: isBn ? "বাকি" : "Due",
       icon: dueIcon,
+      value: "Due",
     },
     {
-      title: "Paid",
+      title: isBn ? "পরিশোধ হয়েছে" : "Paid",
       icon: paidIcon,
+      value: "Paid",
     },
     {
-      title: "Processing",
+      title: isBn ? "সার্ভিসটি প্রক্রিয়াকরণ হচ্ছে" : "Processing",
       icon: processingIcon,
+      value: "Processing",
     },
     {
-      title: "Delivered",
+      title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
       icon: deliveryIcon,
+      value: "Delivered",
     },
     {
-      title: "Order Completed",
+      title: isBn ? "সার্ভিসটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed",
       icon: completeIcon,
+      value: "Order Completed",
     },
     {
-      title: "Order Canceled",
+      title: isBn ? "সার্ভিসটি বাতিল করা হয়েছে" : "Order Canceled",
       icon: cancelIcon,
+      value: "Order Canceled",
     },
     {
-      title: "Refund",
+      title: isBn ? "টাকা ফেরত দেয়া হয়েছে" : "Refund",
       icon: refundIcon,
+      value: "Refund",
     },
   ]);
   const user = useSelector((state) => state.user);
@@ -417,11 +426,11 @@ const Screens = ({ navigation, route }) => {
           {AllStatus.map((doc, i) => (
             <IconButton
               onPress={() => {
-                if (Filter == doc.title) {
+                if (Filter == doc.value) {
                   setFilter(null);
                   return;
                 }
-                setFilter(doc.title);
+                setFilter(doc.value);
               }}
               style={{
                 justifyContent: "flex-start",
@@ -443,28 +452,7 @@ const Screens = ({ navigation, route }) => {
 const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="15.069" height="14.313" viewBox="0 0 15.069 14.313">
 <path id="Path_19954" data-name="Path 19954" d="M4.449,13.449a8.24,8.24,0,0,1,7.364.606,7.274,7.274,0,0,1,1.894,1.7,6.332,6.332,0,0,1,1.362,3.8v.184a6.279,6.279,0,0,1-.98,3.24,7.185,7.185,0,0,1-2.454,2.345,8.242,8.242,0,0,1-7.168.506A10.731,10.731,0,0,1,2.5,26.65a15.434,15.434,0,0,1-2.2.512.262.262,0,0,1-.295-.2V26.9a.414.414,0,0,1,.114-.213A3.522,3.522,0,0,0,.8,25.4a10.3,10.3,0,0,0,.4-2.1,6.516,6.516,0,0,1-.956-1.975A6.37,6.37,0,0,1,0,19.728v-.179a6.332,6.332,0,0,1,1.376-3.817,7.444,7.444,0,0,1,3.072-2.284m-.635,5.2a1,1,0,1,0,1.1.535,1.007,1.007,0,0,0-1.1-.535m3.531,0a1,1,0,1,0,1.072.509,1.008,1.008,0,0,0-1.072-.509m3.5,0a1,1,0,1,0,1.08.5A1.007,1.007,0,0,0,10.847,18.651Z" transform="translate(0 -12.853)" fill="#546a79"/>
 </svg>`;
-const exporters = (key) => {
-  switch (key) {
-    case "WAITING_FOR_ACCEPT":
-      return "Waiting for accept";
-    case "ACCEPTED":
-      return "Accepted";
-    case "WAITING_FOR_PAYMENT":
-      return "Waiting for payment";
-    case "PROCESSING":
-      return "Processing";
-    case "DELIVERED":
-      return "Delivered";
-    case "REFUNDED":
-      return "Refunded";
-    case "CANCELLED":
-      return "Cancelled";
-    case "COMPLETED":
-      return "Completed";
-    default:
-      return "Unknown";
-  }
-};
+
 const plus = `<svg xmlns="http://www.w3.org/2000/svg" width="13.709" height="13.709" viewBox="0 0 13.709 13.709">
 <path id="add-line" d="M18.181,11.327h-5.8v-5.8a.527.527,0,0,0-1.055,0v5.8h-5.8A.527.527,0,0,0,5,11.854a.48.48,0,0,0,.527.5h5.8v5.832a.527.527,0,1,0,1.055,0v-5.8h5.8a.527.527,0,1,0,0-1.055Z" transform="translate(-4.999 -5)" fill="#666"/>
 </svg>

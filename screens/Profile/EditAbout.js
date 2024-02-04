@@ -70,7 +70,7 @@ export default function EditAbout({ navigation, route }) {
   const [buttonVisible, setButtonVisible] = React.useState(false);
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [about, setAbout] = useState(
-    businessForm?.about ? businessForm.about : text
+    businessForm?.about ? businessForm.about : isBn ? textBn : text
   );
   const [length, setLength] = useState(0);
   const inset = useSafeAreaInsets();
@@ -766,3 +766,4 @@ const plus = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns=
 </svg>
 `;
 const text = `Welcome to my Profile!😊 We are a team of experienced professionals dedicated to providing high-quality services to our clients. Our goal is to exceed our clients' expectations by delivering timely, efficient, and cost-effective solutions.😎 With years of experience in the industry, we are confident in our ability to deliver results that will meet your needs. Thank you for considering our services, and we look forward to working with you!"😍`;
+const textBn = `আমাদের প্রোফাইলে আপনাকে স্বাগতম! 😊 আমরা আমাদের ক্লায়েন্টদের হাই-কোয়ালিটির সার্ভিস প্রদানের জন্য অভিজ্ঞ প্রফেশনাল একটি টিম।আমাদের প্রধান লক্ষ্য হল সময়মত, দক্ষ এবং সাশ্রয়ী সমাধান দিয়ে আমাদের ক্লায়েন্টদের চাহিদা বজায় রাখা৷😎 বছরের পর বছর ধরে অভিজ্ঞতার সাথে, আমরা এই ইন্ডাস্ট্রিতে আমাদের ক্লায়েন্টদের চাহিদা পূরণ করে তাদের খুশি করায় তারা আমাদের উপর আত্মবিশ্বাসী৷ আমাদের সার্ভিসগুলো বিবেচনা করে আমাদের সাথে কাজ করার জন্য আপনাকে ধন্যবাদ,!"😍`;

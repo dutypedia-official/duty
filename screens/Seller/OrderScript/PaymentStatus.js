@@ -3,8 +3,6 @@ import { View, Text, ScrollView } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { socket } from "../../../Class/socket";
 import IconButton from "../../../components/IconButton";
-import AnimatedHeight from "../../../Hooks/AnimatedHeight";
-import ViewMore from "../../../Hooks/ViewMore";
 import { styles } from "../../create_dashboard/BusinessTitle";
 import useLang from "../../../Hooks/UseLang";
 import ReadMore from "../../../components/ReadMore";
@@ -12,7 +10,6 @@ import ReadMore from "../../../components/ReadMore";
 export default function PaymentStatus({ navigation, route }) {
   const type = route?.params?.type;
   const order = route?.params?.order;
-  const [layoutHeight, setLayoutHeight] = useState(0);
   const { language } = useLang();
   const isBn = language == "Bn";
 

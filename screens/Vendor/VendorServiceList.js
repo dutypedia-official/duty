@@ -173,6 +173,7 @@ const Screens = ({ navigation, route }) => {
   }
 
   if (!Data) {
+    return <></>;
     return (
       <View
         style={{
@@ -198,7 +199,7 @@ const Screens = ({ navigation, route }) => {
           }}
           onPress={() => {
             dispatch({ type: "SET_LIST_SELECTION", playload: [] });
-            if (vendor.service.gigs[0].services.category) {
+            if (vendor?.service?.gigs[0]?.services?.category) {
               dispatch({
                 type: "SET_NEW_LIST_DATA",
                 playload: serverToLocal(

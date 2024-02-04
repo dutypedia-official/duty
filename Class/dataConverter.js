@@ -411,7 +411,7 @@ const serverToLocal = (options, category) => {
         });
       }
     });
-  } else if (!options.title) {
+  } else if (!options?.title) {
     for (var key in options) {
       let title = key;
       options[key].forEach((doc) => {
@@ -465,16 +465,16 @@ const convertServerFacilities = (facilities) => {
   let arr = [];
   facilities?.selectedOptions?.map((doc) => {
     arr.push({
-      id:doc?.id,
-      title:doc?.title,
-      checked:true
+      id: doc?.id,
+      title: doc?.title,
+      checked: true,
     });
   });
   facilities?.customOptions?.map((doc) => {
     arr.push({
-      id:doc?.id,
-      title:doc?.title,
-      checked:true
+      id: doc?.id,
+      title: doc?.title,
+      checked: true,
     });
   });
   return arr;
@@ -485,39 +485,39 @@ const convertLocalFacilities = (data) => {
     selectedOptions: data,
   };
 };
-const localData=(key)=>{
-  let arr=[]
-  let d=AllData.filter(d=>d.key==(key?key:"BUIDLER"))[0]
-  d?.data?.map((doc,i)=>{
-    doc?.data?.map((d,j)=>{
-      d?.list?.map((s,j)=>{
-        s?.data?.map((r,i)=>{
+const localData = (key) => {
+  let arr = [];
+  let d = AllData.filter((d) => d.key == (key ? key : "BUIDLER"))[0];
+  d?.data?.map((doc, i) => {
+    doc?.data?.map((d, j) => {
+      d?.list?.map((s, j) => {
+        s?.data?.map((r, i) => {
           arr.push({
-            id:r.id,
-            name:r.title
-          })
-        })
-      })
-    })
-    doc?.list?.map((d,j)=>{
-      d?.data?.map((s,i)=>{
+            id: r.id,
+            name: r.title,
+          });
+        });
+      });
+    });
+    doc?.list?.map((d, j) => {
+      d?.data?.map((s, i) => {
         arr.push({
-          id:s.id,
-          name:s.title
-        })
-      })
-    })
-  })
-  d?.list?.map((doc,i)=>{
-    doc?.data?.map((r,i)=>{
+          id: s.id,
+          name: s.title,
+        });
+      });
+    });
+  });
+  d?.list?.map((doc, i) => {
+    doc?.data?.map((r, i) => {
       arr.push({
-        id:r.id,
-        name:r.title
-      })
-    })
-  })
-  return arr
-}
+        id: r.id,
+        name: r.title,
+      });
+    });
+  });
+  return arr;
+};
 
 export {
   localOptionsToServer,
@@ -527,5 +527,5 @@ export {
   localTimeToServerTime,
   convertLocalFacilities,
   convertServerFacilities,
-  localData
+  localData,
 };

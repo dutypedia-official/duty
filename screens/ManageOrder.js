@@ -206,7 +206,7 @@ const Screens = ({ navigation, route }) => {
 
   const [AllStatus, setAllStatus] = React.useState([
     {
-      title: isBn ? "এখন গ্রহণ করেনি" : "Waiting For Accept",
+      title: isBn ? "এখনো গ্রহণ করা হয়নি" : "Waiting For Accept",
       icon: waitionIcon,
     },
     {

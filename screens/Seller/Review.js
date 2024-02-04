@@ -10,7 +10,7 @@ import {
   FlatList,
   StatusBar,
   SafeAreaView,
-  Alert, 
+  Alert,
   Modal,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -49,7 +49,6 @@ import { vendorLogin } from "../../Class/auth.js";
 import IconButton from "../../components/IconButton.js";
 import Carousel from "react-native-reanimated-carousel";
 
-
 const { width, height } = Dimensions.get("window");
 const Review = (props) => {
   const window = Dimensions.get("window");
@@ -83,7 +82,7 @@ const Review = (props) => {
     }
     return null;
   };
-  console.log("revice")
+  console.log("revice");
   React.useEffect(() => {
     // console.log('-------------------------')
     //console.log(localOptionsToServer(listData));
@@ -143,56 +142,55 @@ const Review = (props) => {
         blobImages.push(fileFromURL(image));
       });
     const result = await uploadFile(blobImages, newUser.token);
-    if(!result){
+    if (!result) {
       setLoading(false);
       //console.log(result)
-      Alert.alert("Opps!","Failed to upload images")
+      Alert.alert("Opps!", "Failed to upload images");
     }
-      //setLoading(false)
-      let Img1 = [];
-      if (profileImage) {
-        Img1.push(fileFromURL(profileImage));
-      } else {
-        Img1 = null;
-      }
-      let Img2 = [];
-      if (backgroundImage) {
-        Img2.push(fileFromURL(backgroundImage));
-      } else {
-        Img2 = null;
-      }
+    //setLoading(false)
+    let Img1 = [];
+    if (profileImage) {
+      Img1.push(fileFromURL(profileImage));
+    } else {
+      Img1 = null;
+    }
+    let Img2 = [];
+    if (backgroundImage) {
+      Img2.push(fileFromURL(backgroundImage));
+    } else {
+      Img2 = null;
+    }
 
-      let img1 = await uploadFile(Img1, newUser.token);
-      let img2 = await uploadFile(Img2, newUser.token);
-      const res = await createService(
-        businessForm,
-        listData,
-        result,
-        newUser.token,
-        Array.isArray(img1) ? img1[0] : null,
-        Array.isArray(img2) ? img2[0] : null
-      ).catch(err=>{
-        console.warn(err.response.data.msg)
-        Alert.alert(res.response.data.msg)
-      })
-      if(!res){
-        setLoading(false);
-        //Alert.alert(res.response.data.msg)
-        return
-      }
-      const data=await vendorLogin(newUser.token, res.data.service.id);
-      if(!data){
-        setLoading(false);
-        Alert.alert("Opps!",data.response.data.msg)
-        return
-      }
+    let img1 = await uploadFile(Img1, newUser.token);
+    let img2 = await uploadFile(Img2, newUser.token);
+    const res = await createService(
+      businessForm,
+      listData,
+      result,
+      newUser.token,
+      Array.isArray(img1) ? img1[0] : null,
+      Array.isArray(img2) ? img2[0] : null
+    ).catch((err) => {
+      console.warn(err.response.data.msg);
+      Alert.alert(res.response.data.msg);
+    });
+    if (!res) {
       setLoading(false);
-      dispatch({ type: "SET_VENDOR", playload: data });
-            //navigation.navigate("Profile");
-      // setTimeout(()=>{
-      //   navigation.navigate("MainProfile");
-      // },100)
-   
+      //Alert.alert(res.response.data.msg)
+      return;
+    }
+    const data = await vendorLogin(newUser.token, res.data.service.id);
+    if (!data) {
+      setLoading(false);
+      Alert.alert("Opps!", data.response.data.msg);
+      return;
+    }
+    setLoading(false);
+    dispatch({ type: "SET_VENDOR", playload: data });
+    //navigation.navigate("Profile");
+    // setTimeout(()=>{
+    //   navigation.navigate("MainProfile");
+    // },100)
   };
   //console.log(Images)
   //return null
@@ -448,27 +446,27 @@ const Review = (props) => {
         />
 
         <View style={{ backgroundColor: primaryColor }}>
-        <Carousel
-          panGestureHandlerProps={{
-            activeOffsetX: [-10, 10],
-          }}
-          loop={false}
-          width={width}
-          height={width + 30}
-          autoPlay={false}
-          data={Images}
-          scrollAnimationDuration={500}
-          onSnapToItem={(index) => {}}
-          renderItem={({ index }) => (
-            <Image
-              style={{
-                width: width,
-                height: width + 30,
-              }}
-              source={{ uri: Images[index].uri }}
-            />
-          )}
-        />
+          <Carousel
+            panGestureHandlerProps={{
+              activeOffsetX: [-10, 10],
+            }}
+            loop={false}
+            width={width}
+            height={width + 30}
+            autoPlay={false}
+            data={Images}
+            scrollAnimationDuration={500}
+            onSnapToItem={(index) => {}}
+            renderItem={({ index }) => (
+              <Image
+                style={{
+                  width: width,
+                  height: width + 30,
+                }}
+                source={{ uri: Images[index].uri }}
+              />
+            )}
+          />
           {/* <SliderBox
             images={Images}
             sliderBoxHeight={250}
@@ -759,7 +757,7 @@ const Review = (props) => {
             borderRadius: 5,
             backgroundColor: ButtonPress ? backgroundColor : "#707070",
             borderWidth: 0,
-            color:ButtonPress ? "white" : "black",
+            color: ButtonPress ? "white" : "black",
           }}
           title="Confirm"
         />

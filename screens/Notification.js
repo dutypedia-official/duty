@@ -194,10 +194,7 @@ const NotificationScreen = ({ navigation, route }) => {
             middle={
               types.filter((d) => d.type == doc.notificationType)?.[0]?.middle
             }
-            verify={
-              notificationData.filter((d) => d.key == doc.notificationType)?.[0]
-                ?.verified
-            }
+            verify={false}
             navigation={navigation}
             active={false}
             orderId={undefined}

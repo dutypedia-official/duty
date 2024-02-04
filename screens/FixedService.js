@@ -574,7 +574,7 @@ const FixedService = (props) => {
                   fontFamily: "Poppins-SemiBold",
                 }}
               >
-                From {Price} ৳
+                {Price} ৳
               </Text>
             )}
           </View>

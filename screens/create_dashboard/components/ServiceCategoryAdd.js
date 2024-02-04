@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ScrollView,
   View,
@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  Keyboard,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { getCategory } from "../../../Class/service";
@@ -20,6 +21,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function ServiceCategoryAdd({ onClose, onSelect }) {
   const [text, setText] = useState();
+  const textInputRef = useRef(null);
   const [data, setData] = useState();
   const user = useSelector((state) => state.user);
   const [key, setKey] = useState();
@@ -49,6 +51,23 @@ export default function ServiceCategoryAdd({ onClose, onSelect }) {
     });
   }, []);
 
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      keyboardDidHide
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const keyboardDidHide = () => {
+    if (textInputRef.current) {
+      textInputRef.current.focus();
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -73,6 +92,7 @@ export default function ServiceCategoryAdd({ onClose, onSelect }) {
         </Text>
         <View>
           <Input
+            innerRef={textInputRef}
             returnKeyType={"done"}
             onSubmitEditing={() => {
               if (onSelect) {

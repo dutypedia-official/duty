@@ -75,6 +75,7 @@ import FixedBackHeader from "../Seller/components/FixedBackHeader";
 import ActivityLoader from "../../components/ActivityLoader";
 import ServiceListViewer from "../../components/ServiceListViewer";
 import ReadMore from "../../components/ReadMore";
+import useLang from "../../Hooks/UseLang";
 
 const { width, height } = Dimensions.get("window");
 const VendorFixedService = (props) => {
@@ -154,6 +155,8 @@ const VendorFixedService = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [scrollDirection, setScrollDirection] = React.useState(false);
   const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {
@@ -531,16 +534,29 @@ const VendorFixedService = (props) => {
               marginVertical: 25,
             }}
           >
-            <Text
-              style={{
-                fontSize: Platform.OS == "ios" ? 17 : 15.5,
-                color: textColor,
+            {isBn ? (
+              <Text
+                style={{
+                  fontSize: Platform.OS == "ios" ? 17 : 15.5,
+                  color: textColor,
 
-                fontFamily: "Poppins-SemiBold",
-              }}
-            >
-              From {Price} ৳
-            </Text>
+                  fontFamily: "Poppins-SemiBold",
+                }}
+              >
+                একদাম {Price} ৳
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: Platform.OS == "ios" ? 17 : 15.5,
+                  color: textColor,
+
+                  fontFamily: "Poppins-SemiBold",
+                }}
+              >
+                {Price} ৳
+              </Text>
+            )}
           </View>
         </View>
 

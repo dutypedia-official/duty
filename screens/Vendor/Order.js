@@ -158,7 +158,7 @@ const Order = () => {
             <SubHeader
               fontStyle={{ fontSize: 20 }}
               {...props}
-              title={"Chose Extra Time"}
+              title={isBn ? "অতিরিক্ত সময় নির্বাচন করুন" : "Chose Extra Time"}
             />
           ),
         }}
@@ -276,7 +276,12 @@ const Order = () => {
       />
       <Stack.Screen
         options={{
-          header: (props) => <SubHeader {...props} title={"Send Proof"} />,
+          header: (props) => (
+            <SubHeader
+              {...props}
+              title={isBn ? "ডেলিভারির প্রমাণ পাঠান" : "Send Proof"}
+            />
+          ),
         }}
         name="OrderDelivery"
         component={OrderDelivery}
@@ -372,35 +377,35 @@ const VendorOrder = ({ navigation, route }) => {
   ]);
   const [AllStatus, setAllStatus] = React.useState([
     {
-      title: "Waiting For Accept",
+      title: isBn ? "এখনো গ্রহণ করা হয়নি" : "Waiting For Accept",
       icon: waitionIcon,
     },
     {
-      title: "Due",
+      title: isBn ? "বাকি" : "Due",
       icon: dueIcon,
     },
     {
-      title: "Paid",
+      title: isBn ? "পরিশোধ হয়েছে" : "Paid",
       icon: paidIcon,
     },
     {
-      title: "Processing",
+      title: isBn ? "অর্ডারটি প্রক্রিয়াকরণ হচ্ছে" : "Processing",
       icon: processingIcon,
     },
     {
-      title: "Delivered",
+      title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
       icon: deliveryIcon,
     },
     {
-      title: "Completed",
+      title: isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed",
       icon: completeIcon,
     },
     {
-      title: "Canceled",
+      title: isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Order Canceled",
       icon: cancelIcon,
     },
     {
-      title: "Refund",
+      title: isBn ? "টাকা ফেরত দেয়া হয়েছে" : "Refund",
       icon: refundIcon,
     },
   ]);
@@ -861,25 +866,27 @@ const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="15.069" height="14.
 <path id="Path_19954" data-name="Path 19954" d="M4.449,13.449a8.24,8.24,0,0,1,7.364.606,7.274,7.274,0,0,1,1.894,1.7,6.332,6.332,0,0,1,1.362,3.8v.184a6.279,6.279,0,0,1-.98,3.24,7.185,7.185,0,0,1-2.454,2.345,8.242,8.242,0,0,1-7.168.506A10.731,10.731,0,0,1,2.5,26.65a15.434,15.434,0,0,1-2.2.512.262.262,0,0,1-.295-.2V26.9a.414.414,0,0,1,.114-.213A3.522,3.522,0,0,0,.8,25.4a10.3,10.3,0,0,0,.4-2.1,6.516,6.516,0,0,1-.956-1.975A6.37,6.37,0,0,1,0,19.728v-.179a6.332,6.332,0,0,1,1.376-3.817,7.444,7.444,0,0,1,3.072-2.284m-.635,5.2a1,1,0,1,0,1.1.535,1.007,1.007,0,0,0-1.1-.535m3.531,0a1,1,0,1,0,1.072.509,1.008,1.008,0,0,0-1.072-.509m3.5,0a1,1,0,1,0,1.08.5A1.007,1.007,0,0,0,10.847,18.651Z" transform="translate(0 -12.853)" fill="#546a79"/>
 </svg>`;
 const exporters = (key) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   switch (key) {
     case "WAITING_FOR_ACCEPT":
-      return "Waiting for accept";
+      return isBn ? "এখনো গ্রহণ করা হয়নি" : "Waiting for accept";
     case "ACCEPTED":
-      return "Accepted";
+      return isBn ? "গ্রহণ করা হয়েছে" : "Accepted";
     case "WAITING_FOR_PAYMENT":
-      return "Waiting for payment";
+      return isBn ? "টাকা পরিশোধ করা বাকি আছে" : "Waiting for payment";
     case "PROCESSING":
-      return "Processing";
+      return isBn ? "প্রক্রিয়াকরণ হচ্ছে" : "Processing";
     case "DELIVERED":
-      return "Delivered";
+      return isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered";
     case "REFUNDED":
-      return "Refunded";
+      return isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Refunded";
     case "CANCELLED":
-      return "Cancelled";
+      return isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Cancelled";
     case "COMPLETED":
-      return "Completed";
+      return isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Completed";
     default:
-      return "Unknown";
+      return isBn ? "অজানা" : "Unknown";
   }
 };
 const plus = `<svg xmlns="http://www.w3.org/2000/svg" width="13.709" height="13.709" viewBox="0 0 13.709 13.709">
@@ -1184,40 +1191,7 @@ export const OfflineScreens = ({ navigation, route }) => {
   //const setRefresh=route.params.setRefresh;
   const [NewOrders, setNewOrders] = React.useState();
   const [Index, setIndex] = React.useState(-1);
-  const [AllStatus, setAllStatus] = React.useState([
-    {
-      title: "Waiting For Accept",
-      icon: waitionIcon,
-    },
-    {
-      title: "Due",
-      icon: dueIcon,
-    },
-    {
-      title: "Paid",
-      icon: paidIcon,
-    },
-    {
-      title: "Processing",
-      icon: processingIcon,
-    },
-    {
-      title: "Delivered",
-      icon: deliveryIcon,
-    },
-    {
-      title: "Order Completed",
-      icon: completeIcon,
-    },
-    {
-      title: "Order Canceled",
-      icon: cancelIcon,
-    },
-    {
-      title: "Refund",
-      icon: refundIcon,
-    },
-  ]);
+
   const [refreshing, setRefreshing] = React.useState(false);
   const bottomSheetRef = React.useRef(null);
   const scrollY = new A.Value(0);

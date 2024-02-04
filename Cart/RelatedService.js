@@ -20,7 +20,7 @@ import { setSaveList } from "../Reducers/saveList";
 import { storeJson } from "../Class/storage";
 
 const RelatedService = (props) => {
-  const onPress=props.onPress;
+  const onPress = props.onPress;
   const navigation = props.navigation;
   const [Like, setLike] = React.useState(false);
   const data = props.data;
@@ -32,47 +32,46 @@ const RelatedService = (props) => {
   const backgroundColor = colors.getBackgroundColor();
   //console.log(data.images[0])
   const image = useImage(data.images[0]);
-  const saveList=useSelector(state=>state.saveList)
-  const dispatch=useDispatch()
+  const saveList = useSelector((state) => state.saveList);
+  const dispatch = useDispatch();
   //const [Love,setLove]=useState(false)
 
-  const listSave=(doc)=>{
-    if(saveList){
-      let arr=saveList.filter(d=>d.id==doc.id);
-      if(arr.length>0){
-        let newArr=saveList.filter(d=>d.id!=doc.id)
-        dispatch(setSaveList(newArr))
-        storeJson("saveList",newArr)
-      }else{
-        newArr=saveList;
-        newArr.push(doc)
-        dispatch(setSaveList(newArr))
-        storeJson("saveList",newArr)
+  const listSave = (doc) => {
+    if (saveList) {
+      let arr = saveList.filter((d) => d.id == doc.id);
+      if (arr.length > 0) {
+        let newArr = saveList.filter((d) => d.id != doc.id);
+        dispatch(setSaveList(newArr));
+        storeJson("saveList", newArr);
+      } else {
+        newArr = saveList;
+        newArr.push(doc);
+        dispatch(setSaveList(newArr));
+        storeJson("saveList", newArr);
       }
-    }else{
-      let arr=[]
-      arr.push(doc)
-      dispatch(setSaveList(arr))
-      storeJson("saveList",arr)
+    } else {
+      let arr = [];
+      arr.push(doc);
+      dispatch(setSaveList(arr));
+      storeJson("saveList", arr);
     }
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     //console.log(saveList)
-    if(saveList){
-      let arr=saveList.filter(d=>d.id==data.id)
-      if(arr.length>0){
-        setLike(true)
-      }else{
-        setLike(false)
+    if (saveList) {
+      let arr = saveList.filter((d) => d.id == data.id);
+      if (arr.length > 0) {
+        setLike(true);
+      } else {
+        setLike(false);
       }
     }
-  },[saveList])
+  }, [saveList]);
 
   if (props.squire) {
     return (
       <TouchableOpacity
         onPress={() => {
-          
           if (navigation) {
             navigation.navigate("OtherProfile", {
               serviceId: data ? data.service.id : null,
@@ -105,7 +104,7 @@ const RelatedService = (props) => {
           <Image
             style={{
               width: "100%",
-              height: (width / 2 - 10)/2,
+              height: (width / 2 - 10) / 2,
               opacity: 0.9,
             }}
             source={{
@@ -121,7 +120,7 @@ const RelatedService = (props) => {
             <Text
               numberOfLines={2}
               style={{
-                fontSize:Platform.OS=="ios"? 14:13,
+                fontSize: Platform.OS == "ios" ? 14 : 13,
                 fontFamily: "Poppins-Medium",
                 lineHeight: 15,
                 color: textColor,
@@ -139,7 +138,7 @@ const RelatedService = (props) => {
             >
               <Text
                 style={{
-                  fontSize:Platform.OS=="ios"? 15:14,
+                  fontSize: Platform.OS == "ios" ? 15 : 14,
                   fontFamily: "Poppins-Medium",
                   color: "#707070",
                 }}
@@ -157,8 +156,8 @@ const RelatedService = (props) => {
                     marginLeft: 5,
                     color: textColor,
                     fontFamily: "Poppins-Medium",
-                    fontSize:15,
-                    color:"#707070"
+                    fontSize: 15,
+                    color: "#707070",
                   }}
                 >
                   5.0
@@ -241,8 +240,8 @@ const RelatedService = (props) => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              setLike(!Like)
-              listSave(data)
+              setLike(!Like);
+              listSave(data);
             }}
           >
             {Like ? (

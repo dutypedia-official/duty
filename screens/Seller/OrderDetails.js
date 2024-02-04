@@ -59,11 +59,14 @@ import { useIsFocused } from "@react-navigation/native";
 import AmarPay from "./OrderScript/AmarPay";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import ReceiptSkeleton from "../../components/ReceiptSkeleton";
+import useLang from "../../Hooks/UseLang";
 
 const OrderDetails = ({ navigation, route }) => {
   const orderId = route?.params?.orderId;
   const isDark = useSelector((state) => state.isDark);
   const colors = new Color(isDark);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const initialState = [
     {
       title: "Bargaining",
@@ -165,12 +168,13 @@ const OrderDetails = ({ navigation, route }) => {
   };
   const dataLoader = async (id) => {
     try {
+      setLoader(true);
       const res = await getSubsOrderById(user.token, id);
       setData(res.data.order);
-      setLoader(false);
     } catch (err) {
-      setLoader(false);
       console.error(err.message);
+    } finally {
+      setLoader(false);
     }
   };
   React.useEffect(() => {
@@ -357,7 +361,7 @@ const OrderDetails = ({ navigation, route }) => {
               });
             }}
             style={styles.button}
-            title={"Cancel order"}
+            title={isBn ? "অর্ডারটি বাতিল করুন" : "Cancel order"}
           />
         )}
         {data?.status == "DELIVERED" && (
@@ -365,20 +369,26 @@ const OrderDetails = ({ navigation, route }) => {
             <Text
               style={[styles.text, { marginBottom: 12, marginHorizontal: 20 }]}
             >
-              Click 'Recived' or Auto-Receive in 72 Hours
+              {isBn
+                ? 'সার্ভিস বুজে পেয়ে থাকলে "হ্যাঁ আমি বুজে পেয়েছি "বোতামে ক্লিক করুন বা 72 ঘন্টার মধ্যে এটি স্বয়ংক্রিয়ভাবে ক্লিক হয়ে যাবে।'
+                : "Click 'Recived' or Auto-Receive in 72 Hours"}
             </Text>
             <IconButton
               onPress={confirmDelivery}
               active={true}
               style={[styles.button]}
-              title={"Received"}
+              title={isBn ? "হ্যাঁ আমি বুজে পেয়েছি" : "Received"}
             />
           </View>
         )}
         {data?.cancelledBy ? (
           <Text style={styles.font}>
             {data.cancelledBy == "USER"
-              ? "You cancelled the order"
+              ? isBn
+                ? "আপনি অর্ডারটি বাতিল করেছেন"
+                : "You cancelled the order"
+              : isBn
+              ? "বিক্রেতা অর্ডারটি বাতিল করেছে"
               : "Seller cancelled the order"}
           </Text>
         ) : !data.cancelledBy && exporters(data?.status).title == "Failed" ? (
@@ -388,7 +398,7 @@ const OrderDetails = ({ navigation, route }) => {
         )}
         {data?.status == "COMPLETED" && (
           <Text style={[styles.font, { color: "#4ADE80" }]}>
-            Order Completed
+            {isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed"}
           </Text>
         )}
       </ScrollView>
