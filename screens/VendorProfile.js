@@ -121,11 +121,11 @@ const VendorProfile = (props) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     {
       title: "Settings",
       value: false,
@@ -888,11 +888,6 @@ const VendorProfile = (props) => {
                 Data={Data}
                 isFocused={isFocused}
                 onPress={clickFixed}
-              />,
-              <PackageScreen
-                isFocused={isFocused}
-                onPress={clickPackage}
-                Data={Data}
               />,
               <ServiceSettings />,
             ]}

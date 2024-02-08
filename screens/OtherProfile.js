@@ -94,11 +94,11 @@ const OtherProfile = (props) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Installment",
     //   value: false,
@@ -434,16 +434,6 @@ const OtherProfile = (props) => {
                 params={{
                   Data: Data,
                   onPress: clickFixed,
-                  RelatedServices: RelatedServices,
-                  UnRelatedServices: UnRelatedServices,
-                }}
-              />,
-
-              <PackageScreen
-                navigation={navigation}
-                params={{
-                  Data: Data,
-                  onPress: clickPackage,
                   RelatedServices: RelatedServices,
                   UnRelatedServices: UnRelatedServices,
                 }}

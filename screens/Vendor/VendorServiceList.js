@@ -39,12 +39,12 @@ export default function VendorServiceList({ navigation, route }) {
       type: "ONETIME",
       name: "Fixed service",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-      name: "Package",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    //   name: "Package",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -78,8 +78,8 @@ export default function VendorServiceList({ navigation, route }) {
       <Tab.Navigator
         screenOptions={{
           tabBarIndicatorStyle: {
-            backgroundColor: "#767676",
-            height: 3,
+            backgroundColor: "#f6f6f6",
+            height: 1,
           },
           tabBarStyle: {
             backgroundColor: "#ffffff",

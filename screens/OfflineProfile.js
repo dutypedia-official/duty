@@ -43,11 +43,11 @@ export default function OfflineProfile({ navigation, route }) {
       value: false,
       type: "SUBS",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
   ]);
   const vendorOrders = useSelector((state) => state.vendorOrders);
   const [Active, setActive] = React.useState(0);

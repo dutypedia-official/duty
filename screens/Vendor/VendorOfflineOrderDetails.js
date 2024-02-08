@@ -95,11 +95,11 @@ const VendorOfflineOrderDetails = ({ navigation, route }) => {
       value: false,
       type: "SUBS",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
   ];
   const user = useSelector((state) => state.user);
 

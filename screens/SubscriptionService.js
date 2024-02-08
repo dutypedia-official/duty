@@ -81,11 +81,11 @@ const SubscriptionService = (props) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     {
       title: "Installment",
       value: false,

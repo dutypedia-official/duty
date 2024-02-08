@@ -33,11 +33,11 @@ const ServiceSettings = ({ navigation, route }) => {
     //   value: false,
     //   type: "SUBS",
     // },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
   ];
   const [Data, setData] = React.useState();
   const vendor = useSelector((state) => state.vendor);

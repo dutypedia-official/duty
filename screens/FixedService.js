@@ -67,6 +67,8 @@ const FixedService = (props) => {
   const [backgroundImage, setBackgroundImage] = React.useState(null);
   const navigation = props.navigation;
   const [Visible, setVisible] = React.useState(false);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const initialState = [
     {
       title: "Bargaining",
@@ -78,11 +80,11 @@ const FixedService = (props) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     {
       title: "Installment",
       value: false,
@@ -94,8 +96,6 @@ const FixedService = (props) => {
       type: "SUBS",
     },
   ];
-  const { language } = useLang();
-  const isBn = language == "Bn";
   const [Facilities, setFacilities] = React.useState([]);
   const [NewDataList, setNewDataList] = React.useState(null);
   const [ServiceList, setServiceList] = React.useState([]);

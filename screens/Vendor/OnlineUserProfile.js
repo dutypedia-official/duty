@@ -41,11 +41,11 @@ export default function OnlineUserProfile({ navigation, route }) {
       value: false,
       type: "SUBS",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
   ]);
   const vendorOrders = useSelector((state) => state.vendorOrders);
   const [Active, setActive] = React.useState("STARTING");
@@ -533,11 +533,11 @@ const TabBar = () => {
       value: false,
       type: "SUBS",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
   ]);
   const [Refresh, setRefresh] = React.useState();
 

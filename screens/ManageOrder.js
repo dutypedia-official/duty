@@ -68,11 +68,11 @@ const ManageOrder = ({ navigation, route }) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -124,7 +124,7 @@ const ManageOrder = ({ navigation, route }) => {
           tabBarStyle: {
             backgroundColor: "#ffffff",
           },
-          tabBarScrollEnabled: true,
+          tabBarScrollEnabled: false,
         }}
       >
         {initialState.map((doc, i) => (

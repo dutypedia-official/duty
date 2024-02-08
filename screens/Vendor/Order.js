@@ -337,11 +337,11 @@ const VendorOrder = ({ navigation, route }) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -359,11 +359,11 @@ const VendorOrder = ({ navigation, route }) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -483,10 +483,11 @@ const VendorOrder = ({ navigation, route }) => {
               backgroundColor: "#767676",
               height: 3,
             },
+
             tabBarStyle: {
               backgroundColor: "#ffffff",
             },
-            tabBarScrollEnabled: true,
+            tabBarScrollEnabled: false,
           }}
         >
           {initialState.map((doc, i) => (
@@ -537,7 +538,7 @@ const VendorOrder = ({ navigation, route }) => {
             tabBarIndicatorStyle: {
               backgroundColor: backgroundColor,
             },
-            tabBarScrollEnabled: true,
+            tabBarScrollEnabled: false,
             tabBarPressColor: "white",
           }}
         >
@@ -593,19 +594,19 @@ const VendorOrder = ({ navigation, route }) => {
           {AllStatus.map((doc, i) => (
             <IconButton
               onPress={() => {
-                if (orderListFilter == doc.title) {
+                if (orderListFilter == doc.value) {
                   dispatch(setOrderListFilter(null));
                   return;
                 }
                 bottomSheetRef.current.close();
-                dispatch(setOrderListFilter(doc.title));
+                dispatch(setOrderListFilter(doc.value));
               }}
               style={{
                 justifyContent: "flex-start",
                 borderWidth: 0,
                 marginHorizontal: 10,
                 backgroundColor:
-                  orderListFilter == doc.title ? "#F2F2F6" : primaryColor,
+                  orderListFilter == doc.value ? "#F2F2F6" : primaryColor,
               }}
               key={i}
               LeftIcon={() => <SvgXml xml={doc.icon} height="24" />}

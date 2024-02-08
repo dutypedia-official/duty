@@ -14,11 +14,11 @@ const initialState = [
     value: false,
     type: "ONETIME",
   },
-  {
-    title: "Package",
-    value: false,
-    type: "PACKAGE",
-  },
+  // {
+  //   title: "Package",
+  //   value: false,
+  //   type: "PACKAGE",
+  // },
   // {
   //   title: "Subscription",
   //   value: false,

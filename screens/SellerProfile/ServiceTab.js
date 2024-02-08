@@ -14,48 +14,53 @@ export default function ServiceTab({
   components,
   wid,
   scrollEnabled,
-  onChange
+  onChange,
 }) {
   const [active, setActive] = useState("Bargaining");
   const [translateValue] = useState(new Animated.Value(0));
   const [index, setIndex] = useState(0);
-  const ref=useRef()
+  const ref = useRef();
   //const [w,setW]=useState(wid?wid:width)
   const press = (v) => {
     Animated.spring(translateValue, {
-      toValue: v * (wid ? wid : width / 3),
+      toValue: v * (wid ? wid : width / 2),
       velocity: 10,
       useNativeDriver: true,
     }).start();
-    if(ref){
-       // console.log(ref)
-        ref?.current?.scrollTo({x:v==1?0:v==3?(v*100):(v*70)})
+    if (ref) {
+      // console.log(ref)
+      ref?.current?.scrollTo({ x: v == 1 ? 0 : v == 3 ? v * 100 : v * 70 });
     }
   };
   return (
     <View>
       {scrollEnabled ? (
-        <ScrollView ref={ref} showsHorizontalScrollIndicator={false} horizontal={true}>
+        <ScrollView
+          ref={ref}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+        >
           <View
             style={{
               flexDirection: "row",
               justifyContent: "center",
               borderBottomWidth: 2,
               borderBottomColor: "#fafafa",
-            }}>
+            }}
+          >
             {categories?.map((doc, i) => (
               <IconButton
                 onPress={() => {
                   setActive(doc.title);
                   press(i);
                   setIndex(i);
-                  console.log(i)
-                  onChange&&onChange(doc.type)
+                  console.log(i);
+                  onChange && onChange(doc.type);
                 }}
                 style={[
                   st.button,
                   i == 0 && { paddingLeft: 20 },
-                  { width: wid ? wid : width / 3 },
+                  { width: wid ? wid : width / 2 },
                 ]}
                 key={i}
                 title={doc.title}
@@ -64,13 +69,14 @@ export default function ServiceTab({
             <View style={[StyleSheet.absoluteFillObject, { top: 45 }]}>
               <Animated.View
                 style={{
-                  width: wid ? wid : width / 3,
+                  width: wid ? wid : width / 2,
                   transform: [{ translateX: translateValue }],
-                }}>
+                }}
+              >
                 <Animated.View
                   style={[
                     {
-                      width: wid ? wid : width / 3,
+                      width: wid ? wid : width / 2,
                       height: 2,
 
                       backgroundColor: "#4ADE80",
@@ -88,7 +94,8 @@ export default function ServiceTab({
             justifyContent: "center",
             borderBottomWidth: 2,
             borderBottomColor: "#fafafa",
-          }}>
+          }}
+        >
           {categories?.map((doc, i) => (
             <IconButton
               onPress={() => {
@@ -99,7 +106,7 @@ export default function ServiceTab({
               style={[
                 st.button,
                 i == 0 && { paddingLeft: 20 },
-                { width: wid ? wid : width / 3 },
+                { width: wid ? wid : width / 2 },
               ]}
               key={i}
               title={doc.title}
@@ -108,13 +115,14 @@ export default function ServiceTab({
           <View style={[StyleSheet.absoluteFillObject, { top: 45 }]}>
             <Animated.View
               style={{
-                width: wid ? wid : width / 3,
+                width: wid ? wid : width / 2,
                 transform: [{ translateX: translateValue }],
-              }}>
+              }}
+            >
               <Animated.View
                 style={[
                   {
-                    width: wid ? wid : width / 3,
+                    width: wid ? wid : width / 2,
                     height: 2,
 
                     backgroundColor: "#4ADE80",
@@ -135,7 +143,7 @@ const st = StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 0,
     fontSize: 16,
-    width: width / 3,
+    width: width / 2,
   },
   active: {
     borderBottomWidth: 1.5,

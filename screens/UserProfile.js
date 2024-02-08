@@ -383,11 +383,11 @@ export const TabBar = ({ userId, offline }) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -405,11 +405,11 @@ export const TabBar = ({ userId, offline }) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -434,7 +434,7 @@ export const TabBar = ({ userId, offline }) => {
           tabBarIndicatorStyle: {
             backgroundColor: "#AC5DCB",
           },
-          tabBarScrollEnabled: true,
+          tabBarScrollEnabled: false,
         }}
       >
         {initialStateOffline.map((doc, i) => (
@@ -499,11 +499,11 @@ const Screens = ({ navigation, route }) => {
       type: "ONETIME",
     },
 
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
   ]);
   const vendor = useSelector((state) => state.vendor);
   const user = useSelector((state) => state.user);
@@ -626,11 +626,11 @@ const OfflineScreens = ({ navigation, route }) => {
       value: false,
       type: "SUBS",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
   ]);
   const vendor = useSelector((state) => state.vendor);
   const user = useSelector((state) => state.user);

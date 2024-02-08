@@ -102,11 +102,11 @@ const VendorSearchOrder = ({ navigation, route }) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -124,11 +124,11 @@ const VendorSearchOrder = ({ navigation, route }) => {
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Package",
-      value: false,
-      type: "PACKAGE",
-    },
+    // {
+    //   title: "Package",
+    //   value: false,
+    //   type: "PACKAGE",
+    // },
     // {
     //   title: "Subscription",
     //   value: false,
@@ -250,7 +250,7 @@ const VendorSearchOrder = ({ navigation, route }) => {
             tabBarStyle: {
               backgroundColor: "#ffffff",
             },
-            tabBarScrollEnabled: true,
+            tabBarScrollEnabled: false,
           }}
         >
           {initialState.map((doc, i) => (
@@ -301,7 +301,7 @@ const VendorSearchOrder = ({ navigation, route }) => {
             tabBarIndicatorStyle: {
               backgroundColor: backgroundColor,
             },
-            tabBarScrollEnabled: true,
+            tabBarScrollEnabled: false,
             tabBarPressColor: "white",
           }}
         >
