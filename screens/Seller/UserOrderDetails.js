@@ -69,14 +69,16 @@ const UserOrderDetails = ({ navigation, route }) => {
   const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
   const assentColor = colors.getAssentColor();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const initialState = [
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
@@ -104,8 +106,7 @@ const UserOrderDetails = ({ navigation, route }) => {
   const [amarpay, setAmarPay] = useState(false);
   const [dutyFee, setDutyFee] = useState();
   const [refreshing, setRefreshing] = useState(false);
-  const { language } = useLang();
-  const isBn = language == "Bn";
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));

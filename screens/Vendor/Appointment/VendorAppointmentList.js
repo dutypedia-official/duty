@@ -94,7 +94,15 @@ export default function VendorAppointmentList({ navigation, route }) {
             initialParams={{
               backgroundColor: backgroundColor,
             }}
-            name={doc}
+            name={
+              doc == "Upcoming"
+                ? isBn
+                  ? "আসছে"
+                  : doc
+                : isBn
+                ? "চলে গেছে"
+                : doc
+            }
             component={Screen}
           />
         ))}
@@ -123,7 +131,12 @@ export default function VendorAppointmentList({ navigation, route }) {
 const Screen = ({ navigation, route }) => {
   const { language } = useLang();
   const isBn = language == "Bn";
-  const name = route.name;
+  const name =
+    route.name == "আসছে"
+      ? "Upcoming"
+      : route.name == "চলে গেছে"
+      ? "Previous"
+      : route.name;
   const [Loader, setLoader] = useState(false);
   const [Data, setData] = useState();
   const backgroundColor = route.params.backgroundColor;

@@ -160,7 +160,7 @@ export default function ThirdStepVerification({ navigation, route }) {
             <Text style={[styles.text, { marginTop: 28 }]}>
               আপলোড{" "}
               <Text style={{ color: "#7566FF" }}>
-                {data?.type == "Company"
+                {data?.type != "Company"
                   ? "জন্ম নিবন্ধন সার্টিফিকেট / পাসপোর্ট /ভোটার আইডি কার্ড /ড্রাইভিং লাইসেন্স"
                   : "ট্রেড লাইসেন্স / কোম্পানি ট্যাক্স সার্টিফিকেট"}
               </Text>
@@ -228,7 +228,7 @@ export default function ThirdStepVerification({ navigation, route }) {
                 ঠিকানা যাচাইয়ের জন্য অনুগ্রহ করে আপনার{" "}
                 <Text style={{ fontWeight: "500" }}>
                   কোম্পানির ব্যাংক স্টেটমেন্ট বা যেকোনো ইউটিলিটি বিল, যেমন:
-                  গ্যাস বিল, পানির বিল বা বর্তমান বিল আপলোড করুন৷।
+                  গ্যাস বিল, পানির বিল আপলোড করুন৷।
                 </Text>
               </Text>
             ) : (
@@ -246,7 +246,7 @@ export default function ThirdStepVerification({ navigation, route }) {
               ঠিকানা যাচাইয়ের জন্য অনুগ্রহ করে আপনার{" "}
               <Text style={{ color: "#7566FF" }}>
                 ব্যাংক স্টেটমেন্ট বা যেকোনো ইউটিলিটি বিল, যেমন: গ্যাস বিল, পানির
-                বিল বা বর্তমান বিল আপলোড করুন৷।
+                বিল আপলোড করুন৷।
               </Text>
             </Text>
           ) : (
@@ -263,7 +263,7 @@ export default function ThirdStepVerification({ navigation, route }) {
             {isBn ? "*নোট" : "*note"}{" "}
             <Text style={{ color: "#000000" }}>
               {isBn
-                ? "ডকুমেন্ট ঠিকানা এবং ইনপুট ঠিকানা অবশ্যই মিল থাকতে হবে)৷"
+                ? "(ডকুমেন্ট ঠিকানা এবং ডিউটিতে আপনার দেয়া ঠিকানার সাথে অবশ্যই মিল থাকতে হবে৷)"
                 : "(Document address and input address must be match)"}
             </Text>
           </Text>

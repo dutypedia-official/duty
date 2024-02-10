@@ -372,14 +372,16 @@ const threeDot = `<svg xmlns="http://www.w3.org/2000/svg" width="18.448" height=
 `;
 
 export const TabBar = ({ userId, offline }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [initialState, setInitialState] = React.useState([
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
@@ -487,14 +489,16 @@ const Screens = ({ navigation, route }) => {
   const primaryColor = colors.getPrimaryColor();
   const assentColor = colors.getAssentColor();
   const dispatch = useDispatch();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [initialState, setInitialState] = React.useState([
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
@@ -511,8 +515,6 @@ const Screens = ({ navigation, route }) => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const key = route.params.key;
-  const { language } = useLang();
-  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (vendor && user && key) {

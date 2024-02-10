@@ -4,6 +4,7 @@ import { SvgXml } from "react-native-svg";
 import { useDispatch, useSelector } from "react-redux";
 import Animated, { interpolate } from "react-native-reanimated";
 import { setSearchOrderRef } from "../Reducers/searchOrderRef";
+import useLang from "./UseLang";
 const initialState = [
   {
     title: "Bargaining",
@@ -41,6 +42,8 @@ export default function SearchOrderHeader({
   descriptors,
   position,
 }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const vendor = useSelector((state) => state.vendor);
   //console.log(navigation);
   const searchOrderRef = useSelector((state) => state.searchOrderRef);
@@ -81,7 +84,9 @@ export default function SearchOrderHeader({
             onChangeText={(e) => dispatch(setSearchOrderRef(e))}
             value={searchOrderRef}
             style={{ flex: 1 }}
-            placeholder="Type name"
+            placeholder={
+              isBn ? "অর্ডার/সার্ভিসের নাম লিখুন" : "Type order/service name"
+            }
           />
           <SvgXml xml={searchIcon} />
         </View>
@@ -99,7 +104,7 @@ export default function SearchOrderHeader({
               fontSize: 16,
             }}
           >
-            Cancel
+            {isBn ? "বাতিল করুন" : "Cancel"}
           </Text>
         </Pressable>
       </View>

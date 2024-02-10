@@ -112,12 +112,12 @@ const VendorProfile = (props) => {
   const [Visible, setVisible] = React.useState(false);
   const initialState = [
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
@@ -127,7 +127,7 @@ const VendorProfile = (props) => {
     //   type: "PACKAGE",
     // },
     {
-      title: "Settings",
+      title: isBn ? "সেটিংস" : "Settings",
       value: false,
       type: "SETTINGS",
     },

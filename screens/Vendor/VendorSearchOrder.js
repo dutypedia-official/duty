@@ -93,12 +93,12 @@ const VendorSearchOrder = ({ navigation, route }) => {
   const isBn = language == "Bn";
   const [initialState, setInitialState] = React.useState([
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },

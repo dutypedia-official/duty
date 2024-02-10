@@ -79,6 +79,8 @@ import useLang from "../../Hooks/UseLang";
 
 const { width, height } = Dimensions.get("window");
 const VendorFixedService = (props) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const newUser = useSelector((state) => state.user);
   const [image, setImage] = React.useState(null);
   const [backgroundImage, setBackgroundImage] = React.useState(null);
@@ -86,12 +88,12 @@ const VendorFixedService = (props) => {
   const [Visible, setVisible] = React.useState(false);
   const initialState = [
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
@@ -155,8 +157,6 @@ const VendorFixedService = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [scrollDirection, setScrollDirection] = React.useState(false);
   const isFocused = useIsFocused();
-  const { language } = useLang();
-  const isBn = language == "Bn";
 
   React.useEffect(() => {
     if (isFocused) {

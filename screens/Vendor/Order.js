@@ -193,7 +193,14 @@ const Order = () => {
         component={UserProfile}
       />
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{
+          header: (props) => (
+            <SubHeader
+              title={isBn ? "সদস্য নির্বাচন করুন" : "Choose Member"}
+              {...props}
+            />
+          ),
+        }}
         name="MemberList"
         component={MemberList}
       />
@@ -328,12 +335,12 @@ const VendorOrder = ({ navigation, route }) => {
   const isBn = language == "Bn";
   const [initialState, setInitialState] = React.useState([
     {
-      title: isBn ? "Bargaining" : "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },

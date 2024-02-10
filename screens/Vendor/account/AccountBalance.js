@@ -21,6 +21,7 @@ import { getVerificationDetails } from "../../../Class/service";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import customStyle from "../../../assets/stylesheet";
 import ActivityLoader from "../../../components/ActivityLoader";
+import useLang from "../../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
 
 export default function AccountBalance({ navigation }) {
@@ -31,7 +32,9 @@ export default function AccountBalance({ navigation }) {
   const vendor = useSelector((state) => state.vendor);
   const [data, setData] = useState();
   const [verification, setVerification] = useState();
-  const inset=useSafeAreaInsets()
+  const inset = useSafeAreaInsets();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.log(vendor.service.verified)
 
   // React.useEffect(() => {
@@ -56,42 +59,39 @@ export default function AccountBalance({ navigation }) {
       setVerification(res.data.verification);
     });
   }, [isFocused]);
-  if(!data){
-    return(
+  if (!data) {
+    return (
       <View style={customStyle.fullBox}>
-        <ActivityLoader/>
+        <ActivityLoader />
       </View>
-    )
+    );
   }
   return (
-    <View style={{ flex: 1,paddingTop:inset?.top }}>
-     
+    <View style={{ flex: 1, paddingTop: inset?.top }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        
         <MasterCart
           onVerify={() => {
-            if(!verification){
+            if (!verification) {
               navigation.navigate("FirstStepVerification");
-              return
+              return;
             }
             navigation.navigate("ReviewVerification");
           }}
           verified={data?.service?.verified}
-          id={data?.bankDetails?data?.bankDetails?.accountNumber:"N/A"}
-          name={`${data?.bankDetails?data?.bankDetails?.accountHolderName:"N/A"}`}
+          id={data?.bankDetails ? data?.bankDetails?.accountNumber : "N/A"}
+          name={`${
+            data?.bankDetails ? data?.bankDetails?.accountHolderName : "N/A"
+          }`}
         />
         <AccountDetailsCart
           amount={data?.balance}
           totalEarnings={data?.totalEarnings}
           pendingAmount={data?.pending}
           onWithdraw={() => {
-            
-            
             if (verification?.accept) {
-              navigation.navigate("WithdrawFirst",{id:data?.id});
-            }else if(!verification){
-              navigation.navigate("RequestVerification")
-              
+              navigation.navigate("WithdrawFirst", { id: data?.id });
+            } else if (!verification) {
+              navigation.navigate("RequestVerification");
             } else {
               navigation.navigate("ReviewVerification");
             }
@@ -101,13 +101,17 @@ export default function AccountBalance({ navigation }) {
           style={{
             paddingHorizontal: 20,
             height: 450,
-          }}>
+          }}
+        >
           <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
             <Tab.Screen
-              name="Transaction history"
+              name={isBn ? "সকল লেনদেন" : "Transaction history"}
               component={RecentTransaction}
             />
-            <Tab.Screen name="Withdraw history" component={RecentWithdraw} />
+            <Tab.Screen
+              name={isBn ? "সকল উত্তোলন" : "Withdraw history"}
+              component={RecentWithdraw}
+            />
           </Tab.Navigator>
         </View>
       </ScrollView>
@@ -115,6 +119,8 @@ export default function AccountBalance({ navigation }) {
   );
 }
 const MasterCart = ({ name, id, verified, onVerify }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{
@@ -127,7 +133,8 @@ const MasterCart = ({ name, id, verified, onVerify }) => {
         height: 207,
         borderRadius: 10,
         overflow: "hidden",
-      }}>
+      }}
+    >
       <SvgXml
         width={width}
         style={{
@@ -143,14 +150,16 @@ const MasterCart = ({ name, id, verified, onVerify }) => {
           height: "100%",
           width: "100%",
           padding: "8%",
-        }}>
+        }}
+      >
         <View
           style={{
             height: 75,
             alignItems: "center",
             flexDirection: "row",
             justifyContent: "space-between",
-          }}>
+          }}
+        >
           <SvgXml xml={chip} />
           {verified ? (
             <SvgXml xml={verifiedIcon} />
@@ -163,13 +172,15 @@ const MasterCart = ({ name, id, verified, onVerify }) => {
                 borderRadius: 5,
                 borderColor: "white",
                 borderWidth: 1,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   color: "white",
                   fontSize: 16,
-                }}>
-                Verify now
+                }}
+              >
+                {isBn ? "ভেরিফাই করুন" : "Verify now"}
               </Text>
             </TouchableHighlight>
           )}
@@ -178,12 +189,14 @@ const MasterCart = ({ name, id, verified, onVerify }) => {
           style={{
             flex: 1,
             justifyContent: "flex-end",
-          }}>
+          }}
+        >
           <Text
             style={{
               fontSize: 24,
               color: "white",
-            }}>
+            }}
+          >
             {name}
           </Text>
           <Text
@@ -191,7 +204,8 @@ const MasterCart = ({ name, id, verified, onVerify }) => {
               fontSize: 12,
               color: "white",
               marginVertical: 5,
-            }}>
+            }}
+          >
             Acc No: {id}
           </Text>
         </View>
@@ -249,7 +263,8 @@ const TabBar = ({ state, navigation }) => {
         flexDirection: "row",
         justifyContent: "space-between",
         marginVertical: 10,
-      }}>
+      }}
+    >
       {state.routes.map((doc, i) => (
         <IconButton
           onPress={() => {

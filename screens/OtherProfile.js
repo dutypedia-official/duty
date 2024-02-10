@@ -83,14 +83,16 @@ const OtherProfile = (props) => {
   const [image, setImage] = React.useState(null);
   const [backgroundImage, setBackgroundImage] = React.useState(null);
   const navigation = props.navigation;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const initialState = [
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
@@ -142,8 +144,7 @@ const OtherProfile = (props) => {
   const [userInfo, setUserInfo] = useState();
   const [individualRating, setIndividualRating] = useState();
   const [reviews, setReviews] = useState();
-  const { language } = useLang();
-  const isBn = language == "Bn";
+
   const slug =
     props.route && props.route.params.slug ? props.route.params.slug : null;
 

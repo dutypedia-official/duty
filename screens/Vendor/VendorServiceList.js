@@ -32,12 +32,14 @@ const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
 export default function VendorServiceList({ navigation, route }) {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [initialState, setInitialState] = React.useState([
     {
       title: "Fixed",
       value: false,
       type: "ONETIME",
-      name: "Fixed service",
+      name: isBn ? "একদাম এর সার্ভিস" : "Fixed service",
     },
     // {
     //   title: "Package",

@@ -57,14 +57,16 @@ const Tab = createMaterialTopTabNavigator();
 
 const SearchOrder = ({ navigation, route }) => {
   const isFocused = useIsFocused();
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const initialState = [
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },

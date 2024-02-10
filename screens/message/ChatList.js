@@ -446,7 +446,7 @@ const Header = ({ type, onConfirm, onChange, value }) => {
             color: "#fff",
           }}
         >
-          {type == "Search"
+          {type != "Search"
             ? isBn
               ? "সদস্যের লিস্ট"
               : "Seller List"

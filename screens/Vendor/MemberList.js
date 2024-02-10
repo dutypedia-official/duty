@@ -20,7 +20,8 @@ import BackHeader from "../../components/BackHeader";
 import SubHeader from "../../components/SubHeader";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-const {width,height}=Dimensions.get("window")
+import useLang from "../../Hooks/UseLang";
+const { width, height } = Dimensions.get("window");
 
 export default function MemberList({ navigation, route }) {
   const [Data, setData] = React.useState();
@@ -45,7 +46,8 @@ export default function MemberList({ navigation, route }) {
   const inset = useSafeAreaInsets();
   const [users, setUsers] = useState();
 
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   React.useEffect(() => {
     if (user && vendor) {
       if (offline) {
@@ -96,7 +98,8 @@ export default function MemberList({ navigation, route }) {
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <StatusBar style="dark" backgroundColor="#ffffff" />
       <View
         style={{
@@ -112,7 +115,8 @@ export default function MemberList({ navigation, route }) {
         onScroll={(e) => {
           scrollY.setValue(e.nativeEvent.contentOffset.y);
           //scroll;
-        }}>
+        }}
+      >
         <Animated.View
           style={[
             {
@@ -123,7 +127,8 @@ export default function MemberList({ navigation, route }) {
               backgroundColor: secondaryColor,
               zIndex: 500,
             },
-          ]}>
+          ]}
+        >
           <View
             style={{
               flexDirection: "row",
@@ -134,7 +139,8 @@ export default function MemberList({ navigation, route }) {
               paddingHorizontal: 20,
               borderBottomWidth: 1,
               borderBottomColor: "#F1EFEF",
-            }}>
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -146,12 +152,13 @@ export default function MemberList({ navigation, route }) {
                 alignItems: "center",
                 borderWidth: 1,
                 borderColor: "#D1D1D1",
-              }}>
+              }}
+            >
               <TextInput
                 onChangeText={setSearch}
                 value={Search}
                 style={{ flex: 1 }}
-                placeholder="Type name"
+                placeholder={isBn ? "নাম লিখুন" : "Type name"}
               />
               <SvgXml xml={searchIcon} />
             </View>
@@ -161,13 +168,15 @@ export default function MemberList({ navigation, route }) {
               }}
               style={{
                 marginLeft: 8,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontWeight: "400",
                   fontSize: 16,
-                }}>
-                Cancel
+                }}
+              >
+                {isBn ? "বাতিল করুন" : "Cancel"}
               </Text>
             </Pressable>
           </View>
@@ -196,22 +205,24 @@ export default function MemberList({ navigation, route }) {
               key={i}
             />
           ))}
-        
-        {users && users.length == 0&& (
+
+        {users && users.length == 0 && (
           <View
             style={{
               alignItems: "center",
-              height: height-300,
+              height: height - 300,
               paddingTop: "20%",
               justifyContent: "center",
-            }}>
+            }}
+          >
             {/* <SvgXml xml={noIcon} /> */}
             <Text
               style={{
                 color: textColor,
                 fontSize: 16,
                 marginTop: 20,
-              }}>
+              }}
+            >
               No member found!
             </Text>
           </View>
@@ -369,7 +380,8 @@ const UserCart = ({ data, onSelect }) => {
         if (onSelect) {
           onSelect(data.id);
         }
-      }}>
+      }}
+    >
       <View
         style={{
           backgroundColor: primaryColor,
@@ -377,14 +389,16 @@ const UserCart = ({ data, onSelect }) => {
           paddingVertical: 4,
           paddingTop: 0,
           marginVertical: 8,
-        }}>
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             paddingTop: 0,
-          }}>
+          }}
+        >
           <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
             <View
               style={{
@@ -396,7 +410,8 @@ const UserCart = ({ data, onSelect }) => {
                 alignItems: "center",
                 overflow: "hidden",
                 borderColor: "#e5e5e5",
-              }}>
+              }}
+            >
               {data && data.user && data.user.profilePhoto ? (
                 <Image
                   style={{
@@ -422,7 +437,8 @@ const UserCart = ({ data, onSelect }) => {
                 marginLeft: 10,
                 flex: 1,
                 marginRight: 20,
-              }}>
+              }}
+            >
               {data && data.user ? (
                 <Text
                   numberOfLines={1}
@@ -430,9 +446,9 @@ const UserCart = ({ data, onSelect }) => {
                     color: textColor,
                     fontSize: 16,
                     fontFamily: "Poppins-Medium",
-                  }}>
+                  }}
+                >
                   {data ? data.user.name : "Um"}{" "}
-                  
                 </Text>
               ) : (
                 <Text
@@ -441,7 +457,8 @@ const UserCart = ({ data, onSelect }) => {
                     color: textColor,
                     fontSize: 16,
                     fontFamily: "Poppins-Medium",
-                  }}>
+                  }}
+                >
                   {data.name}
                 </Text>
               )}

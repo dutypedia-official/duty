@@ -70,7 +70,8 @@ export default function UserAppointmentList({ navigation, route }) {
   const vendor = useSelector((state) => state.vendor);
   const [Upcoming, setUpcoming] = React.useState();
   const [Previous, setPrevious] = React.useState();
-
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const isFocused = useIsFocused();
   const [appointments, setAppointments] = useState(["Upcoming", "Previous"]);
   const inset = useSafeAreaInsets();
@@ -99,7 +100,15 @@ export default function UserAppointmentList({ navigation, route }) {
               backgroundColor: backgroundColor,
             }}
             key={i}
-            name={doc}
+            name={
+              doc == "Upcoming"
+                ? isBn
+                  ? "আসছে"
+                  : doc
+                : isBn
+                ? "চলে গেছে"
+                : doc
+            }
             component={Screen}
           />
         ))}
@@ -111,7 +120,12 @@ const Screen = ({ navigation, route }) => {
   const [data, setData] = useState();
   const user = useSelector((state) => state.user);
   const isFocused = useIsFocused();
-  const name = route.name;
+  const name =
+    route.name == "আসছে"
+      ? "Upcoming"
+      : route.name == "চলে গেছে"
+      ? "Previous"
+      : route.name;
   const backgroundColor = route.params.backgroundColor;
   const dispatch = useDispatch();
   React.useEffect(() => {
