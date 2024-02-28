@@ -66,6 +66,7 @@ export default function CompanyCalendar({ navigation, route }) {
     "Thursday",
     "Friday",
   ];
+
   const { language } = useLang();
   const isBn = language == "Bn";
 
@@ -219,7 +220,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     setChecked(!checked);
                   }}
                   disabled={vendor ? false : true}
-                  title={"24/7 open"}
+                  title={isBn ? "২৪/৭ খোলা" : "24/7 open"}
                   style={{
                     width: 110,
                     justifyContent: "flex-end",
@@ -241,7 +242,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     }}
                     disabled={vendor ? false : true}
                     setVisible={setVisible}
-                    title="Saturday"
+                    title={isBn ? "শনিবার" : "Saturday"}
                   />
                   <Days
                     value={Times}
@@ -254,7 +255,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     }}
                     disabled={vendor ? false : true}
                     setVisible={setVisible}
-                    title="Sunday"
+                    title={isBn ? "রবিবার" : "Sunday"}
                     style={{ marginTop: 16 }}
                   />
                   <Days
@@ -268,7 +269,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     }}
                     disabled={vendor ? false : true}
                     setVisible={setVisible}
-                    title="Monday"
+                    title={isBn ? "সোমবার" : "Monday"}
                     style={{ marginTop: 16 }}
                   />
                   <Days
@@ -282,7 +283,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     }}
                     disabled={vendor ? false : true}
                     setVisible={setVisible}
-                    title="Tuesday"
+                    title={isBn ? "মঙ্গলবার" : "Tuesday"}
                     style={{ marginTop: 16 }}
                   />
                   <Days
@@ -296,7 +297,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     }}
                     disabled={vendor ? false : true}
                     setVisible={setVisible}
-                    title="Wednesday"
+                    title={isBn ? "বুধবার" : "Wednesday"}
                     style={{ marginTop: 16 }}
                   />
                   <Days
@@ -310,7 +311,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     }}
                     disabled={vendor ? false : true}
                     setVisible={setVisible}
-                    title="Thursday"
+                    title={isBn ? "বৃহস্পতিবার" : "Thursday"}
                     style={{ marginTop: 16 }}
                   />
                   <Days
@@ -324,7 +325,7 @@ export default function CompanyCalendar({ navigation, route }) {
                     }}
                     disabled={vendor ? false : true}
                     setVisible={setVisible}
-                    title="Friday"
+                    title={isBn ? "শুক্রবার" : "Friday"}
                     style={{ marginTop: 16 }}
                   />
                 </Animated.View>
@@ -370,6 +371,7 @@ export default function CompanyCalendar({ navigation, route }) {
                   t47={t47}
                   workingTime={workingTime}
                   key={i}
+                  index={i}
                 />
               ))}
               <View style={{ height: 28 }} />
@@ -380,13 +382,24 @@ export default function CompanyCalendar({ navigation, route }) {
     </KeyboardAvoidingView>
   );
 }
-const TimeCart = ({ t47, workingTime, title }) => {
+const TimeCart = ({ t47, workingTime, title, index }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const time = workingTime?.filter((d) =>
     d.day.toLowerCase().match(title.toLowerCase())
   );
   if (time && time?.length == 0 && !t47) {
     return null;
   }
+  const daysBn = [
+    "শনিবার",
+    "রবিবার",
+    "সোমবার",
+    "মঙ্গলবার",
+    "বুধবার",
+    "বৃহস্পতিবার",
+    "শুক্রবার",
+  ];
   return (
     <View
       style={{
@@ -402,7 +415,7 @@ const TimeCart = ({ t47, workingTime, title }) => {
           fontWeight: "400",
         }}
       >
-        {title}
+        {isBn ? daysBn[index] : title}
       </Text>
       <View
         style={{
@@ -420,10 +433,14 @@ const TimeCart = ({ t47, workingTime, title }) => {
           }}
         >
           {t47
-            ? "24/7 open"
+            ? isBn
+              ? "২৪/৭ খোলা"
+              : "24/7 open"
             : `${
                 time && time?.length > 0
                   ? `${changeTime(time[0].open)} - ${changeTime(time[0].close)}`
+                  : isBn
+                  ? "বন্ধ"
                   : "Close"
               }`}
         </Text>

@@ -5,59 +5,73 @@ export const BuilderOptions = {
   housebuilder: [
     {
       id: 1,
-      title: "House Extensions",
+      title: "House Extensions",
+      titleBn: "হাউস এক্সটেনশন",
     },
     {
       id: 2,
       title: "Basement Renovations",
+      titleBn: "বেসমেন্ট সংস্কার",
     },
     {
       id: 3,
       title: "New Garages",
+      titleBn: "নতুন গ্যারেজ",
     },
     {
       id: 4,
       title: "Garage Conversions",
+      titleBn: "গ্যারেজ রূপান্তরণ",
     },
     {
       id: 5,
       title: "Contract Work",
+      titleBn: "চুক্তি কাজ",
     },
     {
       id: 6,
       title: "Roofing Works",
+      titleBn: "ছাদের কাজ",
     },
     {
       id: 7,
       title: "Bathrooms",
+      titleBn: "বাথরুম",
     },
     {
       id: 8,
       title: "Kitchens",
+      titleBn: "রান্নাঘর",
     },
     {
       id: 9,
       title: "Property Maintenance",
+      titleBn: "সম্পত্তি রক্ষণাবেক্ষণ",
     },
     {
       id: 10,
       title: "Painting & Decorating",
+      titleBn: "পেইন্টিং এবং ডেকোরেশন",
     },
     {
       id: 11,
       title: "Fire Damage",
+      titleBn: "আগুনের ক্ষতি",
     },
     {
       id: 12,
       title: "Windows & Doors",
+      titleBn: "জানালা এবং দরজা",
     },
     {
       id: 13,
       title: "Exterior & Interior Doors",
+      titleBn: "বাহিরে এবং অভ্যন্তরে দরজা",
     },
     {
       id: 14,
       title: "All Electrical Services",
+      titleBn: "সমস্ত বৈদ্যুতিক সেবা",
     },
   ],
   officebuilder: [
@@ -83,7 +97,7 @@ export const BuilderOptions = {
     },
     {
       id: 20,
-      title: " Important Design Considerations",
+      title: " Important Design Considerations",
     },
     {
       id: 21,

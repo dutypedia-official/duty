@@ -86,19 +86,7 @@ export default function Reset({ navigation, route }) {
             ]}
             source={pic}
           />
-          <Text style={[signUpStyle.text, signUpStyle.mt44]}>
-            {isBn ? "আপনার ইউজার নেম" : "Your Username"}
-          </Text>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              marginTop: 20,
-              color: "#4ADE80",
-            }}
-          >
-            {username}
-          </Text>
+
           <Text style={[signUpStyle.text, { marginTop: 32 }]}>
             {isBn ? "নতুন পাসওয়ার্ড তৈরি করুন" : "Create new password"}
           </Text>

@@ -2,7 +2,7 @@ import React from "react";
 import { View, TextInput, Text } from "react-native";
 import { Color } from "./../assets/colors";
 import Animated, { StretchInY } from "react-native-reanimated";
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 
 const Input = ({
   onChange,
@@ -22,23 +22,26 @@ const Input = ({
   leftIcon,
   containerStyle,
   secureTextEntry,
-  autoCapitalize
+  autoCapitalize,
+  ...props
 }) => {
   const [Focus, setFocus] = React.useState(false);
   const [Error, setError] = React.useState();
   React.useEffect(() => {
     setError(error);
   }, [error]);
-  const isDark= useSelector((state) => state.isDark);
-  const colors = new Color(isDark)
-  const primaryColor =colors.getPrimaryColor();
+  const isDark = useSelector((state) => state.isDark);
+  const colors = new Color(isDark);
+  const primaryColor = colors.getPrimaryColor();
   const textColor = colors.getTextColor();
-  const backgroundColor =colors.getBackgroundColor();
-  const assentColor=colors.getAssentColor();
+  const backgroundColor = colors.getBackgroundColor();
+  const assentColor = colors.getAssentColor();
   return (
     <Animated.View entering={StretchInY} style={containerStyle}>
       {leftIcon}
-      <TextInput secureTextEntry={secureTextEntry} placeholderTextColor={assentColor}
+      <TextInput
+        secureTextEntry={secureTextEntry}
+        placeholderTextColor={assentColor}
         ref={innerRef}
         returnKeyType={returnKeyType}
         onSubmitEditing={() => {
@@ -78,10 +81,11 @@ const Input = ({
             fontFamily: "Poppins-Light",
             fontSize: 15,
           },
-          
+
           { borderColor: !Focus ? "#e5e5e5" : "#4ADE80" },
           style,
         ]}
+        {...props}
       />
       {Error && (
         <Text
@@ -112,7 +116,7 @@ const Input = ({
             fontSize: 13,
           }}
         >
-         {level}
+          {level}
         </Text>
       )}
       {rightIcon}

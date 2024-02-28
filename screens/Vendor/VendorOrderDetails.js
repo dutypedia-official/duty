@@ -67,28 +67,30 @@ import useLang from "../../Hooks/UseLang";
 const OrderDetails = ({ navigation, route }) => {
   const orderId = route?.params?.orderId;
   const isDark = useSelector((state) => state.isDark);
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const dispatch = useDispatch();
   const initialState = [
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Installment",
-      value: false,
-      type: "INSTALLMENT",
-    },
-    {
-      title: "Subscription",
-      value: false,
-      type: "SUBS",
-    },
+    // {
+    //   title: "Installment",
+    //   value: false,
+    //   type: "INSTALLMENT",
+    // },
+    // {
+    //   title: "Subscription",
+    //   value: false,
+    //   type: "SUBS",
+    // },
     // {
     //   title: "Package",
     //   value: false,
@@ -112,8 +114,7 @@ const OrderDetails = ({ navigation, route }) => {
     route.params && route.params.subsOrder ? route.params.subsOrder : null;
   const [refreshing, setRefreshing] = useState(false);
   const [MemberId, setMemberId] = React.useState();
-  const { language } = useLang();
-  const isBn = language == "Bn";
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     if (!data || !data?.selectedServices) {
@@ -319,6 +320,8 @@ const OrderDetails = ({ navigation, route }) => {
             {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
             {data?.type == "PACKAGE"
               ? `- ${data?.selectedPackage?.name}`
+              : isBn
+              ? "সার্ভিস"
               : "service"}
           </Text>
         </View>
@@ -416,11 +419,15 @@ const OrderDetails = ({ navigation, route }) => {
                   { marginBottom: 12, marginHorizontal: 20, textAlign: "left" },
                 ]}
               >
-                আপনি যদি ইতিমধ্যে আপনার অর্ডারটি ডেলিভারি করে থাকেন, তবে{" "}
-                <Text style={{ color: "#4CD964" }}>
-                  হ্যাঁ আমি ডেলিভারি করেছি
+                <Text style={{ color: "red" }}>
+                  যদি সার্ভিসটি সম্পন্ন করে থাকেন তাহলে ডেলিভারির আগে গ্রাহকের
+                  সাথে ভালভাবে আলাপ করুন এবং সার্ভিসটির সম্পূর্ণ অথবা কিছু অংশ
+                  ভালভাবে চেক করতে বলুন, যাতে ডেলিভারির পরে আপনার গ্রাহকের কোনও
+                  দ্বিমত না থাকে।
+                  {"\n"}
                 </Text>{" "}
-                বুতামে ক্লিক করুন
+                আর আপনি যদি ইতিমধ্যে আপনার অর্ডারটি ডেলিভারি করে থাকেন অথবা করতে
+                চান, তবে হ্যাঁ আমি ডেলিভারি করেছি বুতামে ক্লিক করুন
               </Text>
             ) : (
               <Text
@@ -429,8 +436,11 @@ const OrderDetails = ({ navigation, route }) => {
                   { marginBottom: 12, marginHorizontal: 20, textAlign: "left" },
                 ]}
               >
-                click <Text style={{ color: "#4CD964" }}>yes i delivered</Text>{" "}
-                if you already delivered your order
+                Before delivering the service, talk to the customer and ask them
+                to check it carefully. This helps avoid disagreements after
+                delivery. Click{" "}
+                <Text style={{ color: "#4CD964" }}>yes i delivered</Text> if you
+                already delivered your order
               </Text>
             )}
           </View>

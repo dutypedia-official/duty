@@ -443,7 +443,9 @@ const OnlineCart = ({ doc, i, reload, onPress, navigation }) => {
           </Text>
           <Pressable
             style={{
-              marginRight: 20,
+              paddingRight: 20,
+              width: 60,
+              alignItems: "flex-end",
             }}
             onPress={() => {
               setModalVisible((val) => !val);

@@ -504,7 +504,7 @@ const FixedService = (props) => {
                 marginTop: 20,
               }}
             >
-              #Fixed Service
+              {isBn ? "#একদাম সার্ভিস" : "#Fixed Service"}
             </Text>
             <View style={{ flex: 0.5 }} />
           </View>

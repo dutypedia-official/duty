@@ -159,7 +159,7 @@ export default function StatusCart({
             ? "টাকা ফেরত দেয়া হয়েছে"
             : "Refund"}
         </Text>
-        {exporters(status).value == "Failed" && !vendor && (
+        {exporters(status).value == "Failed" && paid && !vendor && (
           <View style={[{ alignItems: "flex-end" }, styles.mt16]}>
             <Text
               onPress={onMore}
@@ -212,7 +212,17 @@ export default function StatusCart({
               },
             ]}
           >
-            {vendor ? exportersVendor(status).title : exporters(status).title}
+            {vendor
+              ? status == "CANCELLED"
+                ? isBn
+                  ? "অর্ডারটি সম্পন্ন করতে ব্যর্থ হয়েছে"
+                  : "Cancel"
+                : exportersVendor(status).title
+              : status == "CANCELLED"
+              ? isBn
+                ? "অর্ডারটি সম্পন্ন করতে ব্যর্থ হয়েছে"
+                : "Cancel"
+              : exporters(status).title}
           </Text>
         )}
         {!paid && status == "ACCEPTED" && !vendor && (
@@ -380,6 +390,21 @@ export default function StatusCart({
           </View>
         )}
       </View>
+
+      {status == "PROCESSING" && !vendor && (
+        <View
+          style={{
+            paddingVertical: 12,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "violet" }}>
+            বিক্রেতা আপনার অর্ডারটি নিয়ে ইতিমধ্যে কাজ শুরু করে দিয়েছে
+          </Text>
+        </View>
+      )}
+
       {vendor && orderedBy != "VENDOR" ? (
         <View style={[styles.box, { paddingBottom: 0 }]}>
           <Text style={[styles.medium, { textAlign: "left" }]}>
@@ -445,12 +470,12 @@ export default function StatusCart({
               : null
           }
         >
-          {instruction || attachment ? (
+          {!vendor && orderedBy != "VENDOR" && (instruction || attachment) ? (
             <Text style={[styles.medium, { textAlign: "left" }]}>
               {isBn ? "কাজের নির্দেশনা" : "Instruction"}
             </Text>
           ) : null}
-          {instruction && (
+          {instruction && !vendor && orderedBy != "VENDOR" && (
             <>
               <Text style={[styles.small, styles.mt16]}>{instruction}</Text>
             </>
@@ -589,7 +614,7 @@ const exporters = (key) => {
       };
     case "PROCESSING":
       return {
-        title: isBn ? "প্রক্রিয়াকরণ" : "Processing",
+        title: isBn ? "প্রক্রিয়াকরণ হচ্ছে" : "Processing",
         value: "Processing",
         color: "#4ADE80",
       };
@@ -607,13 +632,13 @@ const exporters = (key) => {
       };
     case "CANCELLED":
       return {
-        title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
+        title: isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Cancelled Order",
         value: "Failed",
         color: "#EC2700",
       };
     case "COMPLETED":
       return {
-        title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
+        title: isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed",
         value: "Delivered",
         color: "#4ADE80",
       };
@@ -667,13 +692,13 @@ const exportersVendor = (key) => {
       };
     case "CANCELLED":
       return {
-        title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
+        title: isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Cancelled Order",
         value: "Failed",
         color: "#EC2700",
       };
     case "COMPLETED":
       return {
-        title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
+        title: isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed",
         value: "Delivered",
         color: "#4ADE80",
       };

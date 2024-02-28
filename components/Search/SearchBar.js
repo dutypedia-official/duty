@@ -247,7 +247,7 @@ const Container = ({
                     onSelectCategory(doc.data, doc?.title);
                   }
                 }}
-                title={doc.title}
+                title={isBn ? doc.titleBn : doc.title}
               />
             ))}
           {subData?.map((doc, i) => (
@@ -262,7 +262,7 @@ const Container = ({
                     )
                   : null;
               }}
-              title={doc.title}
+              title={isBn ? doc.titleBn : doc.title}
             />
           ))}
           <View style={{ width: 22 }} />

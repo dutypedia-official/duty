@@ -119,7 +119,7 @@ export default function WithdrawSecond({ navigation, route }) {
               আমি ডিউটির{" "}
               <Text
                 onPress={() => {
-                  Linking.openURL("https://duty.com.bd");
+                  Linking.openURL("https://duty.com.bd/legal/withdraw-policy");
                 }}
                 style={{
                   textDecorationLine: "underline",

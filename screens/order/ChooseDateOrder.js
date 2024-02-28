@@ -85,7 +85,11 @@ export default function ChooseDateOrder({ navigation, route }) {
                   setFrom(dateConverter(date));
                   setFromVisible(false);
                 } else {
-                  setFromDateError("Please select current and current date");
+                  setFromDateError(
+                    isBn
+                      ? "বর্তমান তারিখ থেকে ভবিষ্যতের তারিখ নির্বাচন করুন"
+                      : "Please Select a future date from the current date"
+                  );
                   setFromVisible(false);
                 }
               }}

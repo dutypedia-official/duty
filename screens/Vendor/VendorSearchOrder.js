@@ -170,7 +170,7 @@ const VendorSearchOrder = ({ navigation, route }) => {
       icon: cancelIcon,
     },
     {
-      title: isBn ? "টাকা ফেরত দেয়া হয়েছে" : "Refund",
+      title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
       icon: refundIcon,
     },
   ]);

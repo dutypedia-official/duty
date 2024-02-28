@@ -24,17 +24,26 @@ export default function SignUp_1({ navigation, route }) {
   const sendOtp = async () => {
     setLoader(true);
     setError();
-    sendOTP(number)
-      .catch((err) => {
-        setError(err.response.data.msg);
-      })
-      .finally((res) => {
-        setLoader(false);
 
-        if (!error) {
-          navigation.navigate("SignUp_2", { number: number });
-        }
-      });
+    try {
+      await sendOTP(number);
+      navigation.navigate("SignUp_2", { number: number });
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status == 429) {
+        Alert.alert(
+          isBn
+            ? "আপনি অনেকবার রিকুয়েস্ট করেছেন। দয়া করে ২৪ ঘণ্টা পর আবার চেষ্টা করুন।"
+            : "Too many request! Please try again after 24 hours."
+        );
+      } else {
+        setError(
+          isBn ? "এই নম্বরের ব্যবহারকারী আগে থেকেই আছে" : "User already exists!"
+        );
+      }
+    } finally {
+      setLoader(false);
+    }
   };
 
   if (loader) {

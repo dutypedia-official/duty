@@ -1,0 +1,4 @@
+android {
+    compileSdkVersion 31
+    // other configurations...
+}

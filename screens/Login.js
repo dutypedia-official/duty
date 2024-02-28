@@ -107,7 +107,9 @@ const Login = ({ navigation }) => {
               marginVertical: 72,
             }}
           >
-            <Text style={styles.lebel}>{isBn ? "ইউজার নেম" : "Username"}</Text>
+            <Text style={styles.lebel}>
+              {isBn ? "ফোন নম্বর" : "Mobile Number"}
+            </Text>
             <Input
               autoCapitalize={"none"}
               onSubmitEditing={() => {
@@ -158,9 +160,7 @@ const Login = ({ navigation }) => {
                 }}
                 style={[styles.text, { textDecorationLine: "underline" }]}
               >
-                {isBn
-                  ? "আইডি এবং পাসওয়ার্ড ভুলে গেছি"
-                  : "Forget id and password"}
+                {isBn ? "পাসওয়ার্ড ভুলে গেছি" : "Forget password"}
               </Text>
             </View>
           </View>

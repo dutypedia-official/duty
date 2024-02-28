@@ -322,15 +322,11 @@ const Order = () => {
   );
 };
 
-const VendorOrder = ({ navigation, route }) => {
+const VendorOrder = ({ navigation }) => {
   const isDark = useSelector((state) => state.isDark);
   const colors = new Color(isDark);
   const primaryColor = colors.getPrimaryColor();
-  const secondaryColor = colors.getSecondaryColor();
-  const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
-  const assentColor = colors.getAssentColor();
-  const order = useSelector((state) => state.order);
   const { language } = useLang();
   const isBn = language == "Bn";
   const [initialState, setInitialState] = React.useState([
@@ -386,56 +382,57 @@ const VendorOrder = ({ navigation, route }) => {
     {
       title: isBn ? "এখনো গ্রহণ করা হয়নি" : "Waiting For Accept",
       icon: waitionIcon,
+      value: "Waiting For Accept",
     },
     {
       title: isBn ? "বাকি" : "Due",
       icon: dueIcon,
+      value: "Due",
     },
     {
       title: isBn ? "পরিশোধ হয়েছে" : "Paid",
       icon: paidIcon,
+      value: "Paid",
     },
     {
       title: isBn ? "অর্ডারটি প্রক্রিয়াকরণ হচ্ছে" : "Processing",
       icon: processingIcon,
+      value: "Processing",
     },
     {
       title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
       icon: deliveryIcon,
+      value: "Delivered",
     },
     {
       title: isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed",
       icon: completeIcon,
+      value: "Completed",
     },
     {
       title: isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Order Canceled",
       icon: cancelIcon,
+      value: "Canceled",
     },
     {
-      title: isBn ? "টাকা ফেরত দেয়া হয়েছে" : "Refund",
+      title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
       icon: refundIcon,
+      value: "Refunded",
     },
   ]);
   const [Refresh, setRefresh] = React.useState(false);
   const [Loader, setLoader] = React.useState(false);
   const [Orders, setOrders] = React.useState(null);
-  const user = useSelector((state) => state.user);
   const [Active, setActive] = React.useState("STARTING");
-  const vendor = useSelector((state) => state.vendor);
-  const reload =
-    route.params && route.params.reload ? route.params.reload : null;
   const bottomSheetRef = React.useRef(null);
   const [Change, setChange] = React.useState(false);
-  const orderSocket = useSelector((state) => state.orderSocket);
   const dispatch = useDispatch();
   const [Index, setIndex] = React.useState(-1);
-  const vendorOrders = useSelector((state) => state.vendorOrders);
   const snapPoints = React.useMemo(() => ["25%", "60%"], []);
   const orderListFilter = useSelector((state) => state.orderListFilter);
   const [offlineOrder, setOfflineOrder] = useState(false);
   const offlineOrders = useSelector((state) => state.offlineOrders);
   const [allOrders, setAllOrders] = useState([0, 0, 0, 0, 0]);
-  const orderRef = useSelector((state) => state.orderRef);
 
   // callbacks
   const handleSheetChanges = React.useCallback((index) => {
@@ -500,7 +497,7 @@ const VendorOrder = ({ navigation, route }) => {
           {initialState.map((doc, i) => (
             <Tab.Screen
               options={{
-                tabBarLabel: ({ focused, color }) => (
+                tabBarLabel: ({ focused }) => (
                   <Text
                     style={{
                       fontWeight: "500",
@@ -627,30 +624,17 @@ const VendorOrder = ({ navigation, route }) => {
 };
 
 export default Order;
-const styles = StyleSheet.create({
-  view: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-  },
-  text: {
-    fontSize: Platform.OS == "ios" ? 11 : 9,
-    marginTop: 2,
-  },
-});
 
-export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
+export const OrderCart = ({ data, onPress, user, open }) => {
   const isDark = useSelector((state) => state.isDark);
   const colors = new Color(isDark);
   const primaryColor = colors.getPrimaryColor();
-  const secondaryColor = colors.getSecondaryColor();
-  const textColor = colors.getTextColor();
-  const backgroundColor = colors.getBackgroundColor();
   const assentColor = colors.getAssentColor();
   const dispatch = useDispatch();
   const [Open, setOpen] = React.useState(false);
-  const orderState = useSelector((state) => state.orderState);
   const type = data.type;
+  const { language } = useLang();
+  const isBn = language == "Bn";
   //console.warn(data.installmentData)
   //console.log(data.service?.serviceCenterName)
   //console.log(data.service)
@@ -661,8 +645,10 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
   //   }
   // }, [orderState]);
 
+  if (!data) return null;
+
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={() => {
         if (onPress) {
           onPress();
@@ -767,7 +753,13 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                   marginTop: 4,
                 }}
               >
-                {data && data.status ? exporters(data.status) : "Unknown"}{" "}
+                {data && data.status
+                  ? data.paid && data.status == "CANCELLED"
+                    ? isBn
+                      ? "অর্ডারটি সম্পন্ন করতে ব্যর্থ হয়েছে"
+                      : "Failed"
+                    : exporters(data.status)
+                  : "Unknown"}{" "}
                 <Text
                   numberOfLines={1}
                   style={{
@@ -783,9 +775,15 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
                 >
                   (
                   {data && data.paid && data.status != "CANCELLED"
-                    ? "Paid"
+                    ? isBn
+                      ? "পরিশোধ"
+                      : "Paid"
                     : data && data.paid && data.status == "CANCELLED"
-                    ? "Refunded"
+                    ? isBn
+                      ? "টাকা ফেরত দেয়া হয়েছে"
+                      : "Refunded"
+                    : isBn
+                    ? "বাকি"
                     : "Due"}
                   )
                 </Text>
@@ -866,13 +864,10 @@ export const OrderCart = ({ data, onPress, onSelect, user, open }) => {
           </View>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
-const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="15.069" height="14.313" viewBox="0 0 15.069 14.313">
-<path id="Path_19954" data-name="Path 19954" d="M4.449,13.449a8.24,8.24,0,0,1,7.364.606,7.274,7.274,0,0,1,1.894,1.7,6.332,6.332,0,0,1,1.362,3.8v.184a6.279,6.279,0,0,1-.98,3.24,7.185,7.185,0,0,1-2.454,2.345,8.242,8.242,0,0,1-7.168.506A10.731,10.731,0,0,1,2.5,26.65a15.434,15.434,0,0,1-2.2.512.262.262,0,0,1-.295-.2V26.9a.414.414,0,0,1,.114-.213A3.522,3.522,0,0,0,.8,25.4a10.3,10.3,0,0,0,.4-2.1,6.516,6.516,0,0,1-.956-1.975A6.37,6.37,0,0,1,0,19.728v-.179a6.332,6.332,0,0,1,1.376-3.817,7.444,7.444,0,0,1,3.072-2.284m-.635,5.2a1,1,0,1,0,1.1.535,1.007,1.007,0,0,0-1.1-.535m3.531,0a1,1,0,1,0,1.072.509,1.008,1.008,0,0,0-1.072-.509m3.5,0a1,1,0,1,0,1.08.5A1.007,1.007,0,0,0,10.847,18.651Z" transform="translate(0 -12.853)" fill="#546a79"/>
-</svg>`;
 const exporters = (key) => {
   const { language } = useLang();
   const isBn = language == "Bn";
@@ -890,63 +885,31 @@ const exporters = (key) => {
     case "REFUNDED":
       return isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Refunded";
     case "CANCELLED":
-      return isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Cancelled";
+      return isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Cancelled";
     case "COMPLETED":
-      return isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Completed";
+      return isBn ? "অর্ডারটি সফলভাবে সম্পন্ন হয়েছে" : "Completed";
     default:
       return isBn ? "অজানা" : "Unknown";
   }
 };
-const plus = `<svg xmlns="http://www.w3.org/2000/svg" width="13.709" height="13.709" viewBox="0 0 13.709 13.709">
-<path id="add-line" d="M18.181,11.327h-5.8v-5.8a.527.527,0,0,0-1.055,0v5.8h-5.8A.527.527,0,0,0,5,11.854a.48.48,0,0,0,.527.5h5.8v5.832a.527.527,0,1,0,1.055,0v-5.8h5.8a.527.527,0,1,0,0-1.055Z" transform="translate(-4.999 -5)" fill="#666"/>
-</svg>
-`;
-const re = `<svg xmlns="http://www.w3.org/2000/svg" width="12.261" height="14.034" viewBox="0 0 12.261 14.034">
-<g id="Group_10150" data-name="Group 10150" transform="translate(-250.972 -560.019)">
-  <path id="Path_20519" data-name="Path 20519" d="M15.1,0h.129a1.538,1.538,0,0,1,.784.479q.985.99,1.976,1.976a1.563,1.563,0,0,1,.562,1.155A1.727,1.727,0,0,1,17.9,4.8c-.684.668-1.346,1.357-2.033,2.022a.808.808,0,0,1-1.032.212c-.436-.346-.294-.967-.321-1.453A5.827,5.827,0,0,0,9.1,7.505c-.163.172-.289.4-.513.505-.311.121-.6-.228-.515-.525a6.961,6.961,0,0,1,6.434-5.97C14.508.975,14.426.18,15.1,0Z" transform="translate(242.912 560.019)" fill="#666"/>
-  <path id="Path_20520" data-name="Path 20520" d="M33.58,55.361a2.372,2.372,0,0,1,.558-.555.426.426,0,0,1,.512.543,7,7,0,0,1-1.971,3.929A7.084,7.084,0,0,1,28.22,61.3c0,.539.081,1.332-.587,1.515H27.5a1.528,1.528,0,0,1-.785-.476c-.639-.64-1.277-1.283-1.921-1.919a1.772,1.772,0,0,1-.614-1.045,1.506,1.506,0,0,1,.539-1.25c.718-.709,1.423-1.434,2.148-2.138a.8.8,0,0,1,1.027-.205c.424.352.289.967.319,1.452A5.823,5.823,0,0,0,33.58,55.361Z" transform="translate(228.564 511.238)" fill="#666"/>
-</g>
-</svg>
-`;
-const sort = `<svg xmlns="http://www.w3.org/2000/svg" width="9.374" height="12.5" viewBox="0 0 9.374 12.5">
-<g id="_000000ff" data-name="#000000ff" transform="translate(-27.984 -15.988)">
-  <path id="Path_20480" data-name="Path 20480" d="M29.9,16.284a.553.553,0,0,1,.867,0c.6.613,1.233,1.2,1.808,1.832a.517.517,0,0,1-.638.763,14.5,14.5,0,0,1-1.084-1.034c0,3.356,0,6.713,0,10.069a.532.532,0,1,1-1.039,0q0-5.034,0-10.07a13.67,13.67,0,0,1-1.079,1.031.517.517,0,0,1-.646-.756C28.663,17.486,29.3,16.9,29.9,16.284Z" transform="translate(0 -0.077)" fill="#666"/>
-  <path id="Path_20481" data-name="Path 20481" d="M65.808,16.644a.533.533,0,1,1,1.041-.016q0,5.04,0,10.079c.344-.323.648-.687,1.011-.988a.514.514,0,0,1,.793.3c.091.325-.194.552-.392.756-.535.512-1.037,1.056-1.576,1.561a.531.531,0,0,1-.782-.061c-.6-.618-1.237-1.207-1.82-1.842a.517.517,0,0,1,.637-.763A13.324,13.324,0,0,1,65.805,26.7Q65.813,21.673,65.808,16.644Z" transform="translate(-31.313)" fill="#666"/>
-</g>
-</svg>
-`;
 export const Screens = ({ navigation, route }) => {
   const isDark = useSelector((state) => state.isDark);
   const colors = new Color(isDark);
-  const primaryColor = colors.getPrimaryColor();
-  const secondaryColor = colors.getSecondaryColor();
-  const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
-  const assentColor = colors.getAssentColor();
-  const Order = useSelector((state) => state.orders);
   //const setRefresh=route.params.setRefresh;
   const [NewOrders, setNewOrders] = React.useState();
   const [Index, setIndex] = React.useState(-1);
 
   const [refreshing, setRefreshing] = React.useState(false);
-  const bottomSheetRef = React.useRef(null);
   const scrollY = new A.Value(0);
-  const diffClamp = A.diffClamp(scrollY, 0, 300);
   const [Search, setSearch] = React.useState();
   const [Filter, setFilter] = React.useState();
-  const orderSocket = useSelector((state) => state.orderSocket);
-  const translateY = diffClamp.interpolate({
-    inputRange: [0, 300],
-    outputRange: [0, -300],
-  });
   const [Refresh, setRefresh] = React.useState(false);
   const [Loader, setLoader] = React.useState(false);
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
-  const dispatch = useDispatch();
   const [AllOrders, setAllOrders] = React.useState();
-  const vendorOrders = useSelector((state) => state.vendorOrders);
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
   const [Open, setOpen] = React.useState();
@@ -964,109 +927,6 @@ export const Screens = ({ navigation, route }) => {
     //dispatch({ type: "SET_INTEREST_CATEGORY", playload: "Home" });
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  React.useEffect(() => {
-    if (user && vendor) {
-      //setLoader(true);
-      getOrders(user.token, "vendor", vendor.service.id, route.name, 0)
-        .then((res) => {
-          setAllOrders(res.data.orders);
-          setNewOrders(res.data.orders);
-          //console.log(res.data.orders)
-          setOrder((val) => {
-            return val.map((doc, i) => {
-              if (i == key) {
-                return res.data.total;
-              } else {
-                return doc;
-              }
-            });
-          });
-          //setLoader(false);
-          if (isFocused) {
-            setTotal(res.data.total);
-          }
-        })
-        .catch((err) => {
-          //setLoader(false);
-          console.error(err.response.data.msg);
-        });
-    }
-  }, [Refresh, user, vendor]);
-  React.useEffect(() => {
-    socket.on("updateOrder", (e) => {
-      setRefresh((val) => !val);
-    });
-    socket.on("getOrder", (e) => {
-      setRefresh((val) => !val);
-    });
-    return () => {
-      socket?.off("updateOrder");
-      socket?.off("getOrder");
-    };
-  }, []);
-
-  React.useEffect(() => {
-    if (AllOrders) {
-      switch (orderListFilter) {
-        case "Waiting For Accept":
-          let text = orderListFilter;
-          text = text.split(" ").join("_");
-          let arr = AllOrders.filter((d) =>
-            d.status.toUpperCase().match(text.toUpperCase())
-          );
-          setNewOrders(arr);
-          break;
-
-        case "Due":
-          let dues = AllOrders.filter((d) => d.paid == false);
-          setNewOrders(dues);
-          break;
-        case "Paid":
-          let paid = AllOrders.filter((d) => d.paid == true);
-          setNewOrders(paid);
-          break;
-        case "Processing":
-          let processing = AllOrders.filter((d) =>
-            d.status.toUpperCase().match("PROCESSING")
-          );
-          setNewOrders(processing);
-          break;
-        case "Delivered":
-          let delivered = AllOrders.filter((d) => d.delivered == true);
-          setNewOrders(delivered);
-          break;
-
-        case "Completed":
-          let completed = AllOrders.filter((d) => d.status == "COMPLETED");
-          setNewOrders(completed);
-          break;
-        case "Canceled":
-          let cancel = AllOrders.filter((d) => d.status == "CANCELLED");
-          setNewOrders(cancel);
-          break;
-        case "Refund":
-          let refund = AllOrders.filter((d) => d.status == "REFUNDED");
-          setNewOrders(refund);
-          break;
-        default:
-          setNewOrders(AllOrders);
-      }
-    }
-  }, [orderListFilter]);
-  React.useEffect(() => {
-    if (AllOrders) {
-      if (!Search) {
-        setNewOrders(AllOrders);
-      } else {
-        let text = Search;
-        text = text.split(" ").join("_");
-        let arr = AllOrders.filter((d) =>
-          d.status.toUpperCase().match(text.toUpperCase())
-        );
-        setNewOrders(arr);
-      }
-    }
-  }, [Search]);
 
   // callbacks
   const renderItem = useCallback(
@@ -1109,22 +969,136 @@ export const Screens = ({ navigation, route }) => {
     []
   );
   const loadData = async () => {
-    setLoader(true);
-    const { data } = await getOrders(
-      user.token,
-      "vendor",
-      vendor.service.id,
-      route.name,
-      AllOrders?.length
-    );
-    setLoader(false);
-    if (AllOrders && NewOrders && data.orders.length > 0) {
-      setAllOrders((d) => [...d, ...data.orders]);
-      setNewOrders((d) => [...d, ...data.orders]);
+    try {
+      // setLoader(true);
+      const { data } = await getOrders(
+        user.token,
+        "vendor",
+        vendor.service.id,
+        route.name,
+        AllOrders?.length
+      );
+      setLoader(false);
+      if (AllOrders && NewOrders && data.orders.length > 0) {
+        setAllOrders((d) => [...d, ...data.orders]);
+        setNewOrders((d) => [...d, ...data.orders]);
+      }
+    } catch (error) {
+    } finally {
+      setLoader(false);
     }
   };
 
-  if (!AllOrders) {
+  React.useEffect(() => {
+    if (user && vendor) {
+      setLoader(true);
+      getOrders(user.token, "vendor", vendor.service.id, route.name, 0)
+        .then((res) => {
+          setAllOrders(res.data.orders);
+          setNewOrders(res.data.orders);
+          //console.log(res.data.orders)
+          setOrder((val) => {
+            return val.map((doc, i) => {
+              if (i == key) {
+                return res.data.total;
+              } else {
+                return doc;
+              }
+            });
+          });
+          if (isFocused) {
+            setTotal(res.data.total);
+          }
+          setLoader(false);
+        })
+        .catch((err) => {
+          setLoader(false);
+          console.error(err.response.data.msg);
+        });
+    }
+  }, [user, vendor, refreshing]);
+  React.useEffect(() => {
+    socket.on("updateOrder", () => {
+      setRefresh((val) => !val);
+    });
+    socket.on("getOrder", () => {
+      setRefresh((val) => !val);
+    });
+    return () => {
+      socket?.off("updateOrder");
+      socket?.off("getOrder");
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (AllOrders) {
+      switch (orderListFilter) {
+        case "Waiting For Accept":
+          let text = orderListFilter;
+          text = text.split(" ").join("_");
+          let arr = AllOrders.filter((d) =>
+            d.status.toUpperCase().match(text.toUpperCase())
+          );
+          setNewOrders(arr);
+          break;
+
+        case "Due":
+          let dues = AllOrders.filter((d) => d.paid == false);
+          setNewOrders(dues);
+          break;
+        case "Paid":
+          let paid = AllOrders.filter((d) => d.paid == true);
+          setNewOrders(paid);
+          break;
+        case "Processing":
+          let processing = AllOrders.filter((d) =>
+            d.status.toUpperCase().match("PROCESSING")
+          );
+          setNewOrders(processing);
+          break;
+        case "Delivered":
+          let delivered = AllOrders.filter(
+            (d) => d.delivered == true && d.status != "COMPLETED"
+          );
+          setNewOrders(delivered);
+          break;
+
+        case "Completed":
+          let completed = AllOrders.filter((d) => d.status == "COMPLETED");
+          setNewOrders(completed);
+          break;
+        case "Canceled":
+          let cancel = AllOrders.filter(
+            (d) => d.status == "CANCELLED" && d.paid == false
+          );
+          setNewOrders(cancel);
+          break;
+        case "Refunded":
+          let refund = AllOrders.filter(
+            (d) => d.status == "CANCELLED" && d.paid == true
+          );
+          setNewOrders(refund);
+          break;
+        default:
+          setNewOrders(AllOrders);
+      }
+    }
+  }, [orderListFilter]);
+  React.useEffect(() => {
+    if (AllOrders) {
+      if (!Search) {
+        setNewOrders(AllOrders);
+      } else {
+        let text = Search;
+        text = text.split(" ").join("_");
+        let arr = AllOrders.filter((d) =>
+          d.status.toUpperCase().match(text.toUpperCase())
+        );
+        setNewOrders(arr);
+      }
+    }
+  }, [Search]);
+  if (!AllOrders || AllOrders?.length === 0 || refreshing || Loader) {
     return (
       <View
         style={{
@@ -1190,23 +1164,19 @@ const notify = `<svg xmlns="http://www.w3.org/2000/svg" width="10.924" height="1
 export const OfflineScreens = ({ navigation, route }) => {
   const isDark = useSelector((state) => state.isDark);
   const colors = new Color(isDark);
-  const primaryColor = colors.getPrimaryColor();
   const secondaryColor = colors.getSecondaryColor();
   const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
   const assentColor = colors.getAssentColor();
-  const Order = useSelector((state) => state.orders);
   //const setRefresh=route.params.setRefresh;
   const [NewOrders, setNewOrders] = React.useState();
   const [Index, setIndex] = React.useState(-1);
 
   const [refreshing, setRefreshing] = React.useState(false);
-  const bottomSheetRef = React.useRef(null);
   const scrollY = new A.Value(0);
   const diffClamp = A.diffClamp(scrollY, 0, 300);
   const [Search, setSearch] = React.useState();
   const [Filter, setFilter] = React.useState();
-  const orderSocket = useSelector((state) => state.orderSocket);
   const translateY = diffClamp.interpolate({
     inputRange: [0, 300],
     outputRange: [0, -300],
@@ -1216,11 +1186,8 @@ export const OfflineScreens = ({ navigation, route }) => {
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
-  const dispatch = useDispatch();
   const [AllOrders, setAllOrders] = React.useState();
   const vendorOrders = useSelector((state) => state.offlineOrders);
-  const user = useSelector((state) => state.user);
-  const vendor = useSelector((state) => state.vendor);
   const [Open, setOpen] = React.useState();
   const isFocused = useIsFocused();
   const orderListFilter = useSelector((state) => state.orderListFilter);
@@ -1231,6 +1198,9 @@ export const OfflineScreens = ({ navigation, route }) => {
     //dispatch({ type: "SET_INTEREST_CATEGORY", playload: "Home" });
     wait(1000).then(() => setRefreshing(false));
   }, []);
+
+  // callbacks
+
   React.useEffect(() => {
     if (vendorOrders) {
       let arr = vendorOrders.filter((d) => d.type == route.name);
@@ -1238,12 +1208,6 @@ export const OfflineScreens = ({ navigation, route }) => {
       setNewOrders(arr);
     }
   }, [route.name, isFocused, vendorOrders, Refresh]);
-
-  React.useEffect(() => {
-    socket.on("updateOrder", (e) => {
-      setRefresh((val) => !val);
-    });
-  }, []);
 
   React.useEffect(() => {
     if (AllOrders) {
@@ -1308,14 +1272,6 @@ export const OfflineScreens = ({ navigation, route }) => {
     }
   }, [Search]);
 
-  const snapPoints = React.useMemo(() => ["25%", "60%"], []);
-
-  // callbacks
-  const handleSheetChanges = React.useCallback((index) => {
-    //console.log("handleSheetChanges", index);
-    setIndex(index);
-  }, []);
-
   if (!vendorOrders) {
     return (
       <View
@@ -1329,6 +1285,7 @@ export const OfflineScreens = ({ navigation, route }) => {
       </View>
     );
   }
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -1478,17 +1435,15 @@ export const OfflineScreens = ({ navigation, route }) => {
     </View>
   );
 };
-export const OrderCartOffline = ({ data, onPress, onSelect, user, open }) => {
+export const OrderCartOffline = ({ data, onPress, onSelect, open }) => {
   const isDark = useSelector((state) => state.isDark);
   const colors = new Color(isDark);
   const primaryColor = colors.getPrimaryColor();
-  const secondaryColor = colors.getSecondaryColor();
   const textColor = colors.getTextColor();
   const backgroundColor = colors.getBackgroundColor();
   const assentColor = colors.getAssentColor();
   const dispatch = useDispatch();
   const [Open, setOpen] = React.useState(false);
-  const orderState = useSelector((state) => state.orderState);
   const type = data.type;
   const [userInfo, setUserInfo] = useState();
   const newUser = useSelector((state) => state.user);

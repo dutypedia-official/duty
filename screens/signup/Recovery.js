@@ -7,6 +7,7 @@ import {
   View,
   Text,
   Image,
+  Alert,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import IconButton from "../../components/IconButton";
@@ -26,17 +27,25 @@ export default function Recovery({ navigation, route }) {
   const sendOtp = async () => {
     setLoader(true);
     setError();
-    resetUser(number)
-      .catch((err) => {
-        setError(err.response.data.msg);
-      })
-      .then((res) => {
-        setLoader(false);
-
-        if (!error) {
-          navigation.navigate("SignUp_2", { number: number, reset: true });
-        }
-      });
+    try {
+      await resetUser(number);
+      navigation.navigate("SignUp_2", { number: number, reset: true });
+    } catch (error) {
+      console.log(error.response?.status);
+      if (error.response?.status == 429) {
+        Alert.alert(
+          isBn
+            ? "আপনি অনেকবার রিকুয়েস্ট করেছেন। দয়া করে ২৪ ঘণ্টা পর আবার চেষ্টা করুন।"
+            : "Too many request! Please try again after 24 hours."
+        );
+      } else {
+        setError(
+          isBn ? "এই নাম্বারে কোন অ্যাকাউন্ট খোলা হয় নাই" : "User not found!"
+        );
+      }
+    } finally {
+      setLoader(false);
+    }
   };
   if (loader) {
     return (

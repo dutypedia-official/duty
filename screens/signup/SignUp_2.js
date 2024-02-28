@@ -77,7 +77,10 @@ export default function SignUp_2({ navigation, route }) {
     checkOTP(number, otp)
       .then((res) => {
         setLoader(false);
-        navigation.navigate("SignUp_3", { token: res.data?.token });
+        navigation.navigate("SignUp_3", {
+          token: res.data?.token,
+          mobile: number,
+        });
         //console.log(res.data);
       })
       .catch((err) => {

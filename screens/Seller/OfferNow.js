@@ -210,7 +210,11 @@ const OfferNow = (props) => {
       })
       .catch((err) => {
         setLoader(false);
-        Alert.alert(err.response.data.msg);
+        Alert.alert(
+          err?.response?.data?.msg == "This service has been banned!"
+            ? "এই বিক্রেতাকে সকল অর্ডার করা থেকে অনির্দিষ্ট কালের জন্য বহিষ্কার করা হয়েছে"
+            : err?.response?.data?.msg
+        );
         console.warn(err.response.data.msg);
       });
   };
@@ -440,6 +444,7 @@ const OfferNow = (props) => {
                 <Input
                   value={Price}
                   keyboardType={"number-pad"}
+                  maxLength={8}
                   onChange={(e) => {
                     if (parseInt(e) >= params.price) {
                       setPrice(parseInt(e));

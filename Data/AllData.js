@@ -38,59 +38,67 @@ import { lawyer, lifeStyle } from "./../assets/icon";
 import { LawyerOptions } from "./lawyer";
 import lifestyle from "../assets/Images/lifestyle.webp";
 import { LifeStyleOptions } from "../Data/lifestyle";
-import bs from '../assets/backgrounds/bs.jpg'
-import ck from '../assets/backgrounds/ck.jpg'
-import en from '../assets/backgrounds/en.jpg'
-import ent from '../assets/backgrounds/ent.png'
-import hc from '../assets/backgrounds/hc.jpg'
-import its from '../assets/backgrounds/it.jpg'
-import law from '../assets/backgrounds/law.jpg'
-import lb from '../assets/backgrounds/lb.jpg'
-import music from '../assets/backgrounds/music.jpg'
-import ppt from '../assets/backgrounds/ppt.jpg'
-import salon from '../assets/backgrounds/salon.jpg'
-import tutor from '../assets/backgrounds/tutor.jpg'
-import life from '../assets/backgrounds/life.jpg'
-import bu from '../assets/backgrounds/bu.png'
+import bs from "../assets/backgrounds/bs.jpg";
+import ck from "../assets/backgrounds/ck.jpg";
+import en from "../assets/backgrounds/en.jpg";
+import ent from "../assets/backgrounds/ent.png";
+import hc from "../assets/backgrounds/hc.jpg";
+import its from "../assets/backgrounds/it.jpg";
+import law from "../assets/backgrounds/law.jpg";
+import lb from "../assets/backgrounds/lb.jpg";
+import music from "../assets/backgrounds/music.jpg";
+import ppt from "../assets/backgrounds/ppt.jpg";
+import salon from "../assets/backgrounds/salon.jpg";
+import tutor from "../assets/backgrounds/tutor.jpg";
+import life from "../assets/backgrounds/life.jpg";
+import bu from "../assets/backgrounds/bu.png";
 
 export const AllData = [
   {
     title: "Builder Services",
+    titleBn: "নির্মাতা সার্ভিস",
     icon: BuilderIcon,
     color: "#FF9C68",
     image: builder_1,
-    picture:bu,
-    key:"BUIDLER",
+    picture: bu,
+    key: "BUIDLER",
     data: [
       {
         title: "Bridge Builder",
+        titleBn: "সেতু নির্মাতা",
         list: [
           {
             title: "Bridge Builder",
+            titleBn: "সেতু নির্মাতা",
             data: BuilderOptions.bridgebuilder,
           },
         ],
       },
       {
         title: "Carpenter",
+        titleBn: "কাঠ মিস্ত্রি",
         list: [
           {
             title: "Carpenter",
+            titleBn: "কাঠ মিস্ত্রি",
             data: BuilderOptions.carpenter,
           },
         ],
       },
       {
         title: "House Builder",
+        titleBn: "বাসা নির্মাতা",
         list: [
           {
             title: "House Builder",
+            titleBn: "বাসা/বাড়ি নির্মাতা",
             data: BuilderOptions.housebuilder,
           },
         ],
       },
       {
         title: "Jewellary Items",
+        titleBn: "জুয়েলারী আইটেম",
         list: [
           {
             title: "Jewelry Items",
@@ -112,35 +120,43 @@ export const AllData = [
       },
       {
         title: "Office Builder",
+        titleBn: "অফিস নির্মাতা",
         list: [
           {
             title: "Office Builder",
+            titleBn: "অফিস নির্মাতা",
             data: BuilderOptions.officebuilder,
           },
         ],
       },
       {
         title: "Road Construction",
+        titleBn: "রাস্তা নির্মাতা",
         list: [
           {
             title: "Road Construction",
+            titleBn: "রাস্তা নির্মাতা",
             data: BuilderOptions.roadconstruction,
           },
         ],
       },
       {
         title: "Tailor Service",
+        titleBn: "দর্জি সার্ভিস",
         list: [
           {
-            title: "Ladies Dress",
+            title: "Females Dress",
+            titleBn: "মহিলাদের পোশাক",
             data: BuilderOptions.tailorservice.LadiesDress,
           },
           {
-            title: "Jeans Dress",
+            title: "Males Dress",
+            titleBn: "পুরুষদের পোশাক",
             data: BuilderOptions.tailorservice.JeansDress,
           },
           {
             title: "Baby Dress",
+            titleBn: "বাচ্চাদের পোশাক",
             data: BuilderOptions.tailorservice.BabyDress,
           },
         ],
@@ -149,69 +165,84 @@ export const AllData = [
   },
   {
     title: "Business Services",
+    titleBn: "ব্যবসা সংক্রান্ত সার্ভিস",
     icon: BusinessServiceIcon,
     color: "blue",
     image: business,
-    picture:bs,
-    key:"BUSINESS",
+    picture: bs,
+    key: "BUSINESS",
     data: [
       {
         title: "Branding Services",
+        titleBn: "ব্রান্ড সংক্রান্ত সার্ভিস",
         list: [
           {
             title: "Branding Services",
+            titleBn: "ব্রান্ড সংক্রান্ত সার্ভিস",
             data: BusinessOptions.BRANDINGSERVICES,
           },
         ],
       },
       {
         title: "Business Consulting",
+        titleBn: "ব্যবসা পরামর্শ",
         list: [
           {
             title: "Industry",
+            titleBn: "শিল্প/কারখানা",
             data: BusinessOptions.BusinessConsulting.Industry,
           },
           {
             title: "Purpose",
+            titleBn: "উদ্দেশ্য",
             data: BusinessOptions.BusinessConsulting.Purpose,
           },
         ],
       },
       {
         title: "Business Plans",
+        titleBn: "ব্যবসা পরিকল্পনা",
         list: [
           {
             title: "Business Type",
+            titleBn: "ব্যবসার ধরন",
             data: BusinessOptions.BusinessPlans.BusinessType,
           },
           {
             title: "Plan Format",
+            titleBn: "পরিকল্পনার ফরমেট",
             data: BusinessOptions.BusinessPlans.PlanFormat,
           },
           {
             title: "Plan Purpose",
+            titleBn: "পরিকল্পনার উদ্দেশ্য",
             data: BusinessOptions.BusinessPlans.PlanPurpose,
           },
         ],
       },
       {
         title: "Career Counseling",
+        titleBn: "কেরিয়ার পরামর্শ",
         list: [
           {
             title: "Career Counseling",
+            titleBn: "কেরিয়ার পরামর্শ",
             data: BusinessOptions.CAREERCOUNSELING,
           },
         ],
       },
       {
         title: "Customer Care",
+        titleBn: "গ্রাহক সেবা",
         list: [
           {
             title: "Timezone",
+            titleBn: "সময়ক্ষেত্র",
             data: BusinessOptions.CustomerCare.Timezone,
           },
           {
             title: "Support Software",
+            titleBn: "সফ্টওয়্যার সহায়তা",
             data: BusinessOptions.CustomerCare.SupportSoftware,
           },
           {
@@ -234,6 +265,7 @@ export const AllData = [
       },
       {
         title: "Data Entry",
+        titleBn: "ডেটা এন্ট্রি",
         list: [
           {
             title: "Service Type",
@@ -247,6 +279,7 @@ export const AllData = [
       },
       {
         title: "E-Commerce Management",
+        titleBn: "ই-কমার্স পরিচালনা",
         list: [
           {
             title: "Service Type",
@@ -264,6 +297,7 @@ export const AllData = [
       },
       {
         title: "Financial Consulting",
+        titleBn: "আর্থিক পরামর্শ",
         list: [
           {
             title: "Service Type",
@@ -277,6 +311,7 @@ export const AllData = [
       },
       {
         title: "Game Concept Design",
+        titleBn: "গেম ধারণা ডিজাইন",
         list: [
           {
             title: "Genre",
@@ -302,6 +337,7 @@ export const AllData = [
       },
       {
         title: "Hr Consulting",
+        titleBn: "মানব সম্প্রসারণ পরামর্শ",
         list: [
           {
             title: "Service Type",
@@ -315,15 +351,18 @@ export const AllData = [
       },
       {
         title: "Lead Generation",
+        titleBn: "লিড জেনারেশন",
         list: [
           {
             title: "Lead Generation",
+            titleBn: "লিড জেনারেশন",
             data: BusinessOptions.LEADGENERATION,
           },
         ],
       },
       {
         title: "Legal Consulting",
+        titleBn: "আইনি পরামর্শ",
         list: [
           {
             title: "Service Type",
@@ -345,9 +384,11 @@ export const AllData = [
       },
       {
         title: "Market Research",
+        titleBn: "বাজার গবেষণা",
         list: [
           {
             title: "Market Research",
+            titleBn: "বাজার গবেষণা",
             data: [],
           },
         ],
@@ -371,24 +412,29 @@ export const AllData = [
       },
       {
         title: "Printer",
+        titleBn: "প্রিন্টার",
         list: [
           {
             title: "Printer",
+            titleBn: "প্রিন্টার",
             data: [],
           },
         ],
       },
       {
         title: "Project Management",
+        titleBn: "প্রকল্প ব্যবস্থাপনা",
         list: [
           {
             title: "Project Management",
+            titleBn: "প্রকল্প ব্যবস্থাপনা",
             data: BusinessOptions.PROJECTMANAGEMENT,
           },
         ],
       },
       {
         title: "Supply Chain Management",
+        titleBn: "সাপ্লাই চেইন ব্যবস্থাপনা",
         list: [
           {
             title: "Service Type",
@@ -402,6 +448,7 @@ export const AllData = [
       },
       {
         title: "Virtual Assistant",
+        titleBn: "ভার্চুয়াল সহায়ক",
         list: [
           {
             title: "Service Type",
@@ -421,14 +468,16 @@ export const AllData = [
   },
   {
     title: "Cooker Service",
+    titleBn: "রান্না সেবা",
     icon: CookerIcon,
     color: "#ED488B",
     image: builder_1,
-    picture:ck,
-    key:"COOKER",
+    picture: ck,
+    key: "COOKER",
     data: [
       {
         title: "Dinner & lunch",
+        titleBn: "ডিনার এবং লাঞ্চ",
         list: [
           {
             title: "Charcoal Choice",
@@ -462,6 +511,7 @@ export const AllData = [
       },
       {
         title: "Events Items",
+        titleBn: "সন্ধ্যার আইটেমস",
         list: [
           {
             title: "Birthday",
@@ -475,6 +525,7 @@ export const AllData = [
       },
       {
         title: "Hotel / Restaurant Items",
+        titleBn: "হোটেল / রেস্টুরেন্ট আইটেমস",
         list: [
           {
             title: "Restaurant",
@@ -500,6 +551,7 @@ export const AllData = [
       },
       {
         title: "Wedding Items",
+        titleBn: "বিয়ের আইটেমস",
         list: [
           {
             title: "Wedding",
@@ -543,86 +595,104 @@ export const AllData = [
   },
   {
     title: "Electrician & Mechanician",
+    titleBn: "ইলেকট্রিশিয়ান এবং মেকানিশিয়ান",
     icon: ElectricIcon,
     color: "#FFB800",
     image: electrician,
-    picture:en,
-    key:"ELECTRICIAN",
+    picture: en,
+    key: "ELECTRICIAN",
     data: [
       {
         title: "Ac",
+        titleBn: "এসি",
         list: [
           {
             title: "Ac",
+            titleBn: "এসি",
             data: ElectricianOptions.Ac,
           },
         ],
       },
       {
         title: "Bicycle",
+        titleBn: "সাইকেল",
         list: [
           {
             title: "Bicycle",
+            titleBn: "সাইকেল",
             data: ElectricianOptions.Bicycle,
           },
         ],
       },
       {
         title: "Car",
+        titleBn: "গাড়ি",
         list: [
           {
             title: "Car",
+            titleBn: "গাড়ি",
             data: ElectricianOptions.Car,
           },
         ],
       },
       {
         title: "Camera",
+        titleBn: "ক্যামেরা",
         list: [
           {
             title: "Camera",
+            titleBn: "ক্যামেরা",
             data: ElectricianOptions.Camera,
           },
         ],
       },
       {
         title: "Refrigerator",
+        titleBn: "রেফ্রিজারেটর",
         list: [
           {
             title: "Refrigerator",
+            titleBn: "রেফ্রিজারেটর",
             data: ElectricianOptions.Refrigerator,
           },
         ],
       },
       {
         title: "Mobile",
+        titleBn: "মোবাইল",
         list: [
           {
             title: "Mobile",
+            titleBn: "মোবাইল",
             data: ElectricianOptions.Mobile,
           },
         ],
       },
       {
         title: "Pc",
+        titleBn: "পিসি",
         list: [
           {
             title: "Pc",
+            titleBn: "পিসি",
             data: ElectricianOptions.Pc,
           },
         ],
       },
       {
         title: "Printer",
+        titleBn: "প্রিন্টার",
         list: [
           {
             title: "Printer",
+            titleBn: "প্রিন্টার",
             data: ElectricianOptions.Printer,
           },
         ],
       },
       {
         title: "Bike",
+        titleBn: "বাইক",
         list: [
           {
             title: "Tyres Wheel",
@@ -646,14 +716,16 @@ export const AllData = [
   },
   {
     title: "Entertainment",
+    titleBn: "বিনোদন",
     icon: EntertainmentIcon,
     color: "#8E4DD5",
     image: entertainment,
-    picture:ent,
-    key:"ENTERTAINMENT",
+    picture: ent,
+    key: "ENTERTAINMENT",
     data: [
       {
         title: "Videographer Services",
+        titleBn: "ভিডিওগ্রাফার সেবাসমূহ",
         list: [
           {
             title: "Services",
@@ -661,50 +733,61 @@ export const AllData = [
           },
           {
             title: "Video Shoot",
+            titleBn: "ভিডিও শুট",
             data: EntertainmentOptions.VideographerServices.VideoShoot,
           },
         ],
       },
       {
         title: "Photographer Services",
+        titleBn: "ফটোগ্রাফার সেবাসমূহ",
         list: [
           {
             title: "Sessions",
+            titleBn: "সেশনস",
             data: EntertainmentOptions.photographer_services.Sessions,
           },
           {
             title: "Photography Style",
+            titleBn: "ছবির স্টাইল",
             data: EntertainmentOptions.photographer_services.photography_style,
           },
         ],
       },
       {
         title: "Picnic",
+        titleBn: "পিকনিক",
         list: [
           {
             title: "All City Picnic Spot",
+            titleBn: "সব শহরের পিকনিক স্পট",
             data: EntertainmentOptions.picnic.all_city_picnic_spot,
           },
           {
             title: "Vehicles",
+            titleBn: "যানবাহন",
             data: EntertainmentOptions.picnic.Vehicles,
           },
         ],
       },
       {
         title: "Birthday",
+        titleBn: "জন্মদিন",
         list: [
           {
             title: "Birthday",
+            titleBn: "জন্মদিন",
             data: EntertainmentOptions.Birthday,
           },
         ],
       },
       {
         title: "Wedding",
+        titleBn: "বিবাহ",
         list: [
           {
             title: "Wedding",
+            titleBn: "বিবাহ",
             data: EntertainmentOptions.wedding,
           },
         ],
@@ -713,32 +796,37 @@ export const AllData = [
   },
   {
     title: "House Keeper",
+    titleBn: "বাড়ির কাজের লোক",
     icon: HouseKeeperIcon,
     color: "#FF4155",
     image: entertainment,
-    picture:hc,
-    key:"HOUSEKEEPER",
+    picture: hc,
+    key: "HOUSEKEEPER",
     list: [
       {
         title: "House Keeper",
+        titleBn: "বাড়ির কাজের লোক",
         data: MainHouseKeeper,
       },
     ],
   },
   {
     title: "It & Technology",
+    titleBn: "আইটি এবং প্রযুক্তি",
     icon: ItIcon,
     color: "#2381FF",
     image: it,
-    picture:its,
-    key:"IT",
+    picture: its,
+    key: "IT",
     data: [
       {
         title: "Data",
+        titleBn: "ডেটা",
         image: it,
         data: [
           {
             title: "Database",
+            titleBn: "ডেটাবেস",
             list: [
               {
                 title: "Category",
@@ -764,6 +852,7 @@ export const AllData = [
           },
           {
             title: "Data Processing",
+            titleBn: "ডেটা প্রক্রিয়াকরণ",
             list: [
               {
                 title: "Service Type",
@@ -789,6 +878,7 @@ export const AllData = [
           },
           {
             title: "Data Analytics",
+            titleBn: "ডেটা বিশ্লেষণ",
             list: [
               {
                 title: "Service Type",
@@ -810,6 +900,7 @@ export const AllData = [
           },
           {
             title: "Data Visualization",
+            titleBn: "ডেটা ভিজ্যুয়ালাইজেশন",
             list: [
               {
                 title: "Service Type",
@@ -827,6 +918,7 @@ export const AllData = [
           },
           {
             title: "Data Science",
+            titleBn: "ডেটা সায়েন্স",
             list: [
               {
                 title: "Service Type",
@@ -848,6 +940,7 @@ export const AllData = [
           },
           {
             title: "Data Entry",
+            titleBn: "ডেটা এন্ট্রি",
             list: [
               {
                 title: "Type",
@@ -863,6 +956,7 @@ export const AllData = [
       },
       {
         title: "Graphic",
+        titleBn: "গ্রাফিক",
         image: it,
         data: [
           {
@@ -880,6 +974,7 @@ export const AllData = [
           },
           {
             title: "Business Cards",
+            titleBn: "ব্যবসা কার্ড",
             list: [
               {
                 title: "Main Type",
@@ -893,6 +988,7 @@ export const AllData = [
           },
           {
             title: "Illustration",
+            titleBn: "ইলাস্ট্রেশন",
             list: [
               {
                 title: "Artistic Technique",
@@ -914,6 +1010,7 @@ export const AllData = [
           },
           {
             title: "Pattern Design",
+            titleBn: "প্যাটার্ন ডিজাইন",
             list: [
               {
                 title: "Design Technique",
@@ -935,6 +1032,7 @@ export const AllData = [
           },
           {
             title: "Flyer Design",
+            titleBn: "ফ্লায়ার ডিজাইন",
             list: [
               {
                 title: "Format Type",
@@ -948,6 +1046,7 @@ export const AllData = [
           },
           {
             title: "Book Design",
+            titleBn: "বই ডিজাইন",
             list: [
               {
                 title: "Design Style",
@@ -965,6 +1064,7 @@ export const AllData = [
           },
           {
             title: "Album Cover Design",
+            titleBn: "অ্যালবাম কভার ডিজাইন",
             list: [
               {
                 title: "Design Style",
@@ -982,6 +1082,7 @@ export const AllData = [
           },
           {
             title: "Packaging Design",
+            titleBn: "প্যাকেজিং ডিজাইন",
             list: [
               {
                 title: "Product Type",
@@ -995,6 +1096,7 @@ export const AllData = [
           },
           {
             title: "Ar Filters & Lenses",
+            titleBn: "AR ফিল্টার এবং লেন্স",
             list: [
               {
                 title: "Platform",
@@ -1008,6 +1110,7 @@ export const AllData = [
           },
           {
             title: "Web & Mobile Design",
+            titleBn: "ওয়েব এবং মোবাইল ডিজাইন",
             list: [
               {
                 title: "Main Type",
@@ -1021,6 +1124,7 @@ export const AllData = [
           },
           {
             title: "Social Media Design",
+            titleBn: "সোশ্যাল মিডিয়া ডিজাইন",
             list: [
               {
                 title: "Platform",
@@ -1034,6 +1138,7 @@ export const AllData = [
           },
           {
             title: "Menu Design",
+            titleBn: "মেনু ডিজাইন",
             list: [
               {
                 title: "Pourpose",
@@ -1047,6 +1152,7 @@ export const AllData = [
           },
           {
             title: "Invitation Design",
+            titleBn: "আমন্ত্রণ ডিজাইন",
             list: [
               {
                 title: "Main Type",
@@ -1060,6 +1166,7 @@ export const AllData = [
           },
           {
             title: "Portraits Caricatures",
+            titleBn: "পোর্ট্রেট ক্যারিকেচার",
             list: [
               {
                 title: "Illustration Type",
@@ -1073,6 +1180,7 @@ export const AllData = [
           },
           {
             title: "Cartoons Comics",
+            titleBn: "কার্টুন কমিক্স",
             list: [
               {
                 title: "Main Type",
@@ -1090,6 +1198,7 @@ export const AllData = [
           },
           {
             title: "Web Banners",
+            titleBn: "ওয়েব ব্যানার",
             list: [
               {
                 title: "Main Type",
@@ -1103,6 +1212,7 @@ export const AllData = [
           },
           {
             title: "Photoshop Editing",
+            titleBn: "ফটোশপ এডিটিং",
             list: [
               {
                 title: "Editing Type",
@@ -1116,6 +1226,7 @@ export const AllData = [
           },
           {
             title: "Architecture & Interior Design",
+            titleBn: "স্থপত্য এবং অভ্যন্তর ডিজাইন",
             list: [
               {
                 title: "Service Type",
@@ -1138,6 +1249,7 @@ export const AllData = [
           },
           {
             title: "Landscape Design",
+            titleBn: "ল্যান্ডস্কেপ ডিজাইন",
             list: [
               {
                 title: "Service Type",
@@ -1155,6 +1267,7 @@ export const AllData = [
           },
           {
             title: "Character Modeling",
+            titleBn: "চরিত্র মডেলিং",
             list: [
               {
                 title: "Purpose",
@@ -1172,6 +1285,7 @@ export const AllData = [
           },
           {
             title: "Industrial product Design",
+            titleBn: "শিল্প পণ্য ডিজাইন",
             list: [
               {
                 title: "Service type",
@@ -1192,7 +1306,8 @@ export const AllData = [
             ],
           },
           {
-            title: "Trade Booth Trade",
+            title: "Booth Trade Design",
+            titleBn: "বুথ ট্রেড ডিজাইন",
             list: [
               {
                 title: "Booth Type",
@@ -1210,6 +1325,7 @@ export const AllData = [
           },
           {
             title: "Fashion Design",
+            titleBn: "ফ্যাশন ডিজাইন",
             list: [
               {
                 title: "Service Type",
@@ -1243,6 +1359,7 @@ export const AllData = [
           },
           {
             title: "Jewelry Design",
+            titleBn: "জুয়েলারি ডিজাইন",
             list: [
               {
                 title: "Service Type",
@@ -1260,6 +1377,7 @@ export const AllData = [
           },
           {
             title: "Presentation Design",
+            titleBn: "প্রেজেন্টেশন ডিজাইন",
             list: [
               {
                 title: "Service Type",
@@ -1285,6 +1403,7 @@ export const AllData = [
           },
           {
             title: "Car Wraps",
+            titleBn: "কার র‍্যাপ",
             list: [
               {
                 title: "Vehicle Type",
@@ -1298,6 +1417,7 @@ export const AllData = [
           },
           {
             title: "Tattoo Design",
+            titleBn: "ট্যাটু ডিজাইন",
             list: [
               {
                 title: "Tattoo Style",
@@ -1311,6 +1431,7 @@ export const AllData = [
           },
           {
             title: "Brand Style Guide",
+            titleBn: "ব্র্যান্ড স্টাইল গাইড",
             list: [
               {
                 title: "Brand Style Guide",
@@ -1320,6 +1441,7 @@ export const AllData = [
           },
           {
             title: "Game Category",
+            titleBn: "গেম বিভাগ",
             list: [
               {
                 title: "Game Category",
@@ -1329,72 +1451,88 @@ export const AllData = [
           },
           {
             title: "Infographic",
+            titleBn: "ইনফোগ্রাফিক",
             list: [
               {
                 title: "Infographic",
+                titleBn: "ইনফোগ্রাফিক",
                 data: ItOptions.Graphic.Infographic,
               },
             ],
           },
           {
             title: "Logo Design",
+            titleBn: "লোগো ডিজাইন",
             list: [
               {
                 title: "Logo Design",
+                titleBn: "লোগো ডিজাইন",
                 data: ItOptions.Graphic.LogoDesign,
               },
             ],
           },
           {
             title: "Podcast Design",
+            titleBn: "পডকাস্ট ডিজাইন",
             list: [
               {
                 title: "Podcast Design",
+                titleBn: "পডকাস্ট ডিজাইন",
                 data: ItOptions.Graphic.PodcastDesign,
               },
             ],
           },
           {
             title: "Postcard Design",
+            titleBn: "পোস্টকার্ড ডিজাইন",
             list: [
               {
                 title: "Postcard Design",
+                titleBn: "পোস্টকার্ড ডিজাইন",
                 data: ItOptions.Graphic.PostcardDesign,
               },
             ],
           },
           {
             title: "Signage Design",
+            titleBn: "সাইনেজ ডিজাইন",
             list: [
               {
                 title: "Signage Design",
+                titleBn: "সাইনেজ ডিজাইন",
                 data: ItOptions.Graphic.SignageDesign,
               },
             ],
           },
           {
             title: "Story Boards",
+            titleBn: "স্টোরি বোর্ড",
             list: [
               {
                 title: "Story Boards",
+                titleBn: "স্টোরি বোর্ড",
                 data: ItOptions.Graphic.StoryBoards,
               },
             ],
           },
           {
             title: "T shirt",
+            titleBn: "টি-শার্ট",
             list: [
               {
                 title: "T shirt",
+                titleBn: "টি-শার্ট",
                 data: ItOptions.Graphic.Tshirt,
               },
             ],
           },
           {
             title: "Catalog Design",
+            titleBn: "ক্যাটালগ ডিজাইন",
             list: [
               {
                 title: "Catalog Design",
+                titleBn: "ক্যাটালগ ডিজাইন",
                 data: ItOptions.Graphic.CatalogDesign,
               },
             ],
@@ -1403,10 +1541,12 @@ export const AllData = [
       },
       {
         title: "Digital Marketing",
+        titleBn: "ডিজিটাল মার্কেটিং",
         image: it,
         data: [
           {
             title: "Social Media Marketing",
+            titleBn: "সোশ্যাল মিডিয়া মার্কেটিং",
             list: [
               {
                 title: "Service Type",
@@ -1432,6 +1572,7 @@ export const AllData = [
           },
           {
             title: "Podcast Marketing",
+            titleBn: "পডকাস্ট মার্কেটিং",
             list: [
               {
                 title: "Service Type",
@@ -1451,13 +1592,14 @@ export const AllData = [
           },
           {
             title: "Social Media Advertising",
+            titleBn: "সোশ্যাল মিডিয়া বিজ্ঞাপন",
             list: [
               {
                 title: "Service Type",
                 data: ItOptions.DigitalMarketing.SOCIALMEDIAADVERTISING
                   .ServiceType,
               },
-              { 
+              {
                 title: "Platform Type",
                 data: ItOptions.DigitalMarketing.SOCIALMEDIAADVERTISING
                   .PlatformType,
@@ -1466,6 +1608,7 @@ export const AllData = [
           },
           {
             title: "Seo",
+            titleBn: "এসইও",
             list: [
               {
                 title: "Service Type",
@@ -1479,6 +1622,7 @@ export const AllData = [
           },
           {
             title: "Email Marketing",
+            titleBn: "ইমেল মার্কেটিং",
             list: [
               {
                 title: "Service Type",
@@ -1500,6 +1644,7 @@ export const AllData = [
           },
           {
             title: "Text Message Marketing",
+            titleBn: "টেক্সট মেসেজ মার্কেটিং",
             list: [
               {
                 title: "Platform",
@@ -1514,6 +1659,7 @@ export const AllData = [
           },
           {
             title: "Sem",
+            titleBn: "সেম",
             list: [
               {
                 title: "Service Type",
@@ -1535,6 +1681,7 @@ export const AllData = [
           },
           {
             title: "Crowdfunding",
+            titleBn: "ক্রাউডফান্ডিং",
             list: [
               {
                 title: "Service Type",
@@ -1548,6 +1695,7 @@ export const AllData = [
           },
           {
             title: "Display Advertising",
+            titleBn: "ডিসপ্লে বিজ্ঞাপন",
             list: [
               {
                 title: "Service Type",
@@ -1573,6 +1721,7 @@ export const AllData = [
           },
           {
             title: "Surveys",
+            titleBn: "জরিপ",
             list: [
               {
                 title: "Service Type",
@@ -1590,6 +1739,7 @@ export const AllData = [
           },
           {
             title: "Marketing Strategy",
+            titleBn: "মার্কেটিং কৌশল",
             list: [
               {
                 title: "Consulting",
@@ -1613,6 +1763,7 @@ export const AllData = [
           },
           {
             title: "E-Commerce Marketing",
+            titleBn: "ই-কমার্স মার্কেটিং",
             list: [
               {
                 title: "Service Type",
@@ -1636,6 +1787,7 @@ export const AllData = [
           },
           {
             title: "Influencer Marketing",
+            titleBn: "ইনফ্লুয়েন্সার মার্কেটিং",
             list: [
               {
                 title: "Strategy Research",
@@ -1656,6 +1808,7 @@ export const AllData = [
           },
           {
             title: "Community Management",
+            titleBn: "কমিউনিটি ম্যানেজমেন্ট",
             list: [
               {
                 title: "Service Type",
@@ -1675,6 +1828,7 @@ export const AllData = [
           },
           {
             title: "Affilate Markting",
+            titleBn: "অ্যাফিলিয়েট মার্কেটিং",
             list: [
               {
                 title: "Service Type",
@@ -1694,6 +1848,7 @@ export const AllData = [
           },
           {
             title: "MobileApp Marketing",
+            titleBn: "মোবাইল অ্যাপ মার্কেটিং",
             list: [
               {
                 title: "Service Type",
@@ -1712,6 +1867,7 @@ export const AllData = [
           },
           {
             title: "Music Promotion",
+            titleBn: "সঙ্গীত প্রচার",
             list: [
               {
                 title: "Service Type",
@@ -1737,6 +1893,7 @@ export const AllData = [
           },
           {
             title: "Domain Research",
+            titleBn: "ডোমেইন গবেষণা",
             list: [
               {
                 title: "Domain Research",
@@ -1746,27 +1903,33 @@ export const AllData = [
           },
           {
             title: "Local Seo",
+            titleBn: "লোকাল এসইও",
             list: [
               {
                 title: "Local Seo",
+                titleBn: "লোকাল এসইও",
                 data: ItOptions.DigitalMarketing.LocalSeo,
               },
             ],
           },
           {
             title: "VideoMarketing",
+            titleBn: "ভিডিও মার্কেটিং",
             list: [
               {
                 title: "Video Marketing",
+                titleBn: "ভিডিও মার্কেটিং",
                 data: ItOptions.DigitalMarketing.VideoMarketing,
               },
             ],
           },
           {
             title: "WebAnalytics",
+            titleBn: "ওয়েব এনালাইসিস",
             list: [
               {
                 title: "Web Analytics",
+                titleBn: "ওয়েব এনালাইসিস",
                 data: ItOptions.DigitalMarketing.WebAnalytics,
               },
             ],
@@ -1775,10 +1938,12 @@ export const AllData = [
       },
       {
         title: "Programing & Teach",
+        titleBn: "প্রোগ্রামিং এবং টেক",
         image: it,
         data: [
           {
             title: "Website Builders Cms",
+            titleBn: "ওয়েবসাইট বিল্ডার সিএমএস",
             list: [
               {
                 title: "Service Type",
@@ -1802,6 +1967,7 @@ export const AllData = [
           },
           {
             title: "Word press",
+            titleBn: "ওয়ার্ডপ্রেস",
             list: [
               {
                 title: "Service Type",
@@ -1823,6 +1989,7 @@ export const AllData = [
           },
           {
             title: "Game Development",
+            titleBn: "গেম ডেভলপমেন্ট",
             list: [
               {
                 title: "Service Type",
@@ -1857,6 +2024,7 @@ export const AllData = [
           },
           {
             title: "Development For Streamers",
+            titleBn: "স্ট্রিমারদের জন্য ডেভলপমেন্ট",
             list: [
               {
                 title: "Service Type",
@@ -1881,6 +2049,7 @@ export const AllData = [
           },
           {
             title: "Online Coding Lessons",
+            titleBn: "অনলাইন কোডিং লেসন",
             list: [
               {
                 title: "Lesson Purpose",
@@ -1896,6 +2065,7 @@ export const AllData = [
           },
           {
             title: "Support It",
+            titleBn: "সাপোর্ট আইটি",
             list: [
               {
                 title: "Device",
@@ -1913,6 +2083,7 @@ export const AllData = [
           },
           {
             title: "Chatbots",
+            titleBn: "চ্যাটবট",
             list: [
               {
                 title: "Messaging Platform",
@@ -1930,6 +2101,7 @@ export const AllData = [
           },
           {
             title: "Data Analysis Reports",
+            titleBn: "ডেটা বিশ্লেষণ রিপোর্ট",
             list: [
               {
                 title: "Service Type",
@@ -1943,6 +2115,7 @@ export const AllData = [
           },
           {
             title: "Convert Files",
+            titleBn: "ফাইল কনভার্ট",
             list: [
               {
                 title: "Service Type",
@@ -1960,6 +2133,7 @@ export const AllData = [
           },
           {
             title: "Data bases",
+            titleBn: "ডাটাবেস",
             list: [
               {
                 title: "Service Type",
@@ -1973,6 +2147,7 @@ export const AllData = [
           },
           {
             title: "Qa Review",
+            titleBn: "কিউএ পর্যালোচনা",
             list: [
               {
                 title: "Service Type",
@@ -1998,6 +2173,7 @@ export const AllData = [
           },
           {
             title: "User Testing",
+            titleBn: "ব্যবহারকারী পরীক্ষা",
             list: [
               {
                 title: "Testing Platform",
@@ -2011,6 +2187,7 @@ export const AllData = [
           },
           {
             title: "Web Programming",
+            titleBn: "ওয়েব প্রোগ্রামিং",
             list: [
               {
                 title: "Service Type",
@@ -2029,6 +2206,7 @@ export const AllData = [
           },
           {
             title: "Desktop Applications",
+            titleBn: "ডেস্কটপ অ্যাপ্লিকেশন",
             list: [
               {
                 title: "Service Type",
@@ -2056,6 +2234,7 @@ export const AllData = [
           },
           {
             title: "E-Commerce Development",
+            titleBn: "ই-কমার্স ডেভলপমেন্ট",
             list: [
               {
                 title: "Service Type",
@@ -2075,6 +2254,7 @@ export const AllData = [
           },
           {
             title: "Mobile Apps",
+            titleBn: "মোবাইল অ্যাপ্লিকেশন",
             list: [
               {
                 title: "Service Type",
@@ -2103,10 +2283,12 @@ export const AllData = [
       },
       {
         title: "Video & Animation",
+        titleBn: "ভিডিও এবং অ্যানিমেশন",
         image: it,
         data: [
           {
             title: "Whiteboard animated Explainers",
+            titleBn: "হোয়াইটবোর্ড এনিমেটেড এক্সপ্লেনার",
             list: [
               {
                 title: "Service Type",
@@ -2137,6 +2319,7 @@ export const AllData = [
           },
           {
             title: "Animated Gifs",
+            titleBn: "এনিমেটেড জিফ",
             list: [
               {
                 title: "Purpose",
@@ -2150,6 +2333,7 @@ export const AllData = [
           },
           {
             title: "Intros Outros",
+            titleBn: "ইন্ট্রো আউট্রো",
             list: [
               {
                 title: "Intro/Outro Type",
@@ -2163,6 +2347,7 @@ export const AllData = [
           },
           {
             title: "Short Video Ads",
+            titleBn: "সংক্ষিপ্ত ভিডিও বিজ্ঞাপন",
             list: [
               {
                 title: "Platform",
@@ -2176,6 +2361,7 @@ export const AllData = [
           },
           {
             title: "Character Animation",
+            titleBn: "চরিত্র অ্যানিমেশন",
             list: [
               {
                 title: "Animation Type",
@@ -2189,6 +2375,7 @@ export const AllData = [
           },
           {
             title: "3D Product Animation",
+            titleBn: "3D পণ্য অ্যানিমেশন",
             list: [
               {
                 title: "Industry",
@@ -2206,6 +2393,7 @@ export const AllData = [
           },
           {
             title: "Lyric & Music Videos",
+            titleBn: "গানের লিরিক এবং মিউজিক ভিডিও",
             list: [
               {
                 title: "Service Type",
@@ -2219,6 +2407,7 @@ export const AllData = [
           },
           {
             title: "Animation For Kids",
+            titleBn: "শিশুদের জন্য অ্যানিমেশন",
             list: [
               {
                 title: "Animation Style",
@@ -2232,6 +2421,7 @@ export const AllData = [
           },
           {
             title: "Animation For Streamers",
+            titleBn: "স্ট্রিমারদের জন্য অ্যানিমেশন",
             list: [
               {
                 title: "Column1",
@@ -2245,6 +2435,7 @@ export const AllData = [
           },
           {
             title: "Live Action Explainers",
+            titleBn: "লাইভ অ্যাকশন এক্সপ্লেনার",
             list: [
               {
                 title: "Setting",
@@ -2259,6 +2450,7 @@ export const AllData = [
           },
           {
             title: "Unboxing Videos",
+            titleBn: "আনবক্সিং ভিডিও",
             list: [
               {
                 title: "vedio type",
@@ -2272,6 +2464,7 @@ export const AllData = [
           },
           {
             title: "Drone Video graphy",
+            titleBn: "ড্রোন ভিডিওগ্রাফি",
             list: [
               {
                 title: "Media type",
@@ -2289,6 +2482,7 @@ export const AllData = [
           },
           {
             title: "product Photography",
+            titleBn: "পণ্য ফটোগ্রাফি",
             list: [
               {
                 title: "file Format",
@@ -2306,72 +2500,88 @@ export const AllData = [
           },
           {
             title: "App Website Previews",
+            titleBn: "অ্যাপ ওয়েবসাইট প্রিভিউ",
             list: [
               {
                 title: "App Website Previews",
+                titleBn: "অ্যাপ ওয়েবসাইট প্রিভিউ",
                 data: ItOptions.VideoAnimation.AppWebsitePreviews,
               },
             ],
           },
           {
-            title: "Elearing Video Production",
+            title: "E-learing Video Production",
+            titleBn: "ই-লার্নিং ভিডিও প্রোডাকশন",
             list: [
               {
-                title: "Elearing Video Production",
+                title: "E-learing Video Production",
+                titleBn: "ই-লার্নিং ভিডিও প্রোডাকশন",
                 data: ItOptions.VideoAnimation.ElearingVideoProduction,
               },
             ],
           },
           {
             title: "Lottie Website Animation",
+            titleBn: "লটি ওয়েবসাইট অ্যানিমেশন",
             list: [
               {
                 title: "Lottie Website Animation",
+                titleBn: "লটি ওয়েবসাইট অ্যানিমেশন",
                 data: ItOptions.VideoAnimation.LottieWebsiteAnimation,
               },
             ],
           },
           {
             title: "Screen casting Videos",
+            titleBn: "স্ক্রিনকাস্টিং ভিডিও",
             list: [
               {
                 title: "Screen casting Videos",
+                titleBn: "স্ক্রিনকাস্টিং ভিডিও",
                 data: ItOptions.VideoAnimation.ScreencastingVideos,
               },
             ],
           },
           {
             title: "Slide Show Videos",
+            titleBn: "স্লাইড শো ভিডিও",
             list: [
               {
                 title: "Slide Show Videos",
+                titleBn: "স্লাইড শো ভিডিও",
                 data: ItOptions.VideoAnimation.SlideShowVideos,
               },
             ],
           },
           {
             title: "Sub title Captions",
+            titleBn: "সাবটাইটেল ক্যাপশন",
             list: [
               {
                 title: "Sub title Captions",
+                titleBn: "সাবটাইটেল ক্যাপশন",
                 data: ItOptions.VideoAnimation.SubtitleCaptions,
               },
             ],
           },
           {
             title: "Video Editing",
+            titleBn: "ভিডিও সম্পাদনা",
             list: [
               {
                 title: "Video Editing",
+                titleBn: "ভিডিও সম্পাদনা",
                 data: ItOptions.VideoAnimation.VideoEditing,
               },
             ],
           },
           {
             title: "Visual Effect",
+            titleBn: "ভিজুয়াল ইফেক্ট",
             list: [
               {
                 title: "Visual Effect",
+                titleBn: "ভিজুয়াল ইফেক্ট",
                 data: ItOptions.VideoAnimation.VisualEffect,
               },
             ],
@@ -2382,143 +2592,174 @@ export const AllData = [
   },
   {
     title: "Lawyer Service",
+    titleBn: "আইনজীবী সেবা",
     icon: lawyer,
     color: "#FF4155",
     image: head,
-    picture:law,
-    key:"LAWYER",
+    picture: law,
+    key: "LAWYER",
     data: [
       {
         title: "Bankruptcy Lawyers",
+        titleBn: "দেউলিয়া আইনজীবী",
         list: [
           {
             title: "Bankruptcy Lawyers",
+            titleBn: "দেউলিয়া আইনজীবী",
             data: LawyerOptions.Bankruptcy,
           },
         ],
       },
       {
         title: "Business Lawyers",
+        titleBn: "ব্যবসায়িক আইনজীবী",
         list: [
           {
             title: "Business Lawyers",
+            titleBn: "ব্যবসায়িক আইনজীবী",
             data: LawyerOptions.Business,
           },
         ],
       },
       {
         title: "Civil Lawyers Service",
+        titleBn: "নাগরিক আইনজীবী সেবা",
         list: [
           {
             title: "Civil Lawyers",
+            titleBn: "নাগরিক আইনজীবী সেবা",
             data: LawyerOptions.Civil,
           },
         ],
       },
       {
         title: "Constitutional Lawyers",
+        titleBn: "সংবিধানিক আইনজীবী",
         list: [
           {
             title: "Constitutional Lawyers",
+            titleBn: "সংবিধানিক আইনজীবী",
             data: LawyerOptions.Constitutional,
           },
         ],
       },
       {
         title: "Criminal Defense Lawyers",
+        titleBn: "অপরাধ প্রতিরক্ষা আইনজীবী",
         list: [
           {
             title: "Criminal Defense Lawyers",
+            titleBn: "অপরাধ প্রতিরক্ষা আইনজীবী",
             data: LawyerOptions.Criminal,
           },
         ],
       },
       {
         title: "Environmental Lawyers",
+        titleBn: "পরিবেশ আইনজীবী",
         list: [
           {
             title: "Environmental Lawyers",
+            titleBn: "পরিবেশ আইনজীবী",
             data: LawyerOptions.Environmental,
           },
         ],
       },
       {
         title: "Estate Planning Lawyers",
+        titleBn: "সম্পত্তি পরিকল্পনা আইনজীবী",
         list: [
           {
             title: "Estate Lawyers",
+            titleBn: "উত্থান/এস্টেট আইনজীবী",
             data: LawyerOptions.Estate,
           },
         ],
       },
       {
         title: "Family Lawyers",
+        titleBn: "পরিবার আইনজীবী",
         list: [
           {
             title: "Family Lawyers",
+            titleBn: "পরিবার আইনজীবী",
             data: LawyerOptions.Family,
           },
         ],
       },
       {
         title: "Immigration Lawyers",
+        titleBn: "ইমিগ্রেশন আইনজীবী",
         list: [
           {
             title: "Immigration Lawyers",
+            titleBn: "ইমিগ্রেশন আইনজীবী",
             data: LawyerOptions.Immigration,
           },
         ],
       },
       {
         title: "Intellectual Property Lawyers",
+        titleBn: "বুদ্ধিমত্তা সম্পত্তি আইনজীবী",
         list: [
           {
             title: "Intellectual Lawyers",
+            titleBn: "বুদ্ধিমত্তা আইনজীবী",
             data: LawyerOptions.Intellectual,
           },
         ],
       },
       {
         title: "Labor Lawyers",
+        titleBn: "শ্রম আইনজীবী",
         list: [
           {
             title: "Labor Lawyers",
+            titleBn: "শ্রম আইনজীবী",
             data: LawyerOptions.Labor,
           },
         ],
       },
       {
         title: "Medical Malpractice Lawyers",
+        titleBn: "চিকিৎসা দোষ আইনজীবী",
         list: [
           {
             title: "Medical Malpractice Lawyers",
+            titleBn: "চিকিৎসা দোষ আইনজীবী",
             data: LawyerOptions.Medical,
           },
         ],
       },
       {
         title: "Personal Injury Lawyers",
+        titleBn: "ব্যক্তিগত আঘাতের আইনজীবী",
         list: [
           {
             title: "Personal Injury Lawyers",
+            titleBn: "ব্যক্তিগত আঘাতের আইনজীবী",
             data: LawyerOptions.Personal,
           },
         ],
       },
       {
         title: "Real State Lawyers",
+        titleBn: "রিয়েল এস্টেট আইনজীবী",
         list: [
           {
             title: "Real State Lawyers",
+            titleBn: "রিয়েল এস্টেট আইনজীবী",
             data: LawyerOptions.Real,
           },
         ],
       },
       {
         title: "Tax Lawyers",
+        titleBn: "কর আইনজীবী",
         list: [
           {
             title: "Tax Lawyers",
+            titleBn: "কর আইনজীবী",
             data: LawyerOptions.Tax,
           },
         ],
@@ -2527,14 +2768,16 @@ export const AllData = [
   },
   {
     title: "Music & Audio Service",
+    titleBn: "সঙ্গীত এবং অডিও সেবা",
     icon: MusicIcon,
     color: "#FEB944",
     image: musicaudio,
-    picture:music,
-    key:"MUSIC",
+    picture: music,
+    key: "MUSIC",
     data: [
       {
         title: "Producers & Composers",
+        titleBn: "প্রযোজক এবং সুরকার",
         list: [
           {
             title: "Service Type",
@@ -2552,6 +2795,7 @@ export const AllData = [
       },
       {
         title: "Session Musicians",
+        titleBn: "সেশন মিউজিশিয়ানস",
         list: [
           {
             title: "Instrument",
@@ -2565,6 +2809,7 @@ export const AllData = [
       },
       {
         title: "Singers Concert",
+        titleBn: "গায়কের কনসার্ট",
         list: [
           {
             title: "Singer Type",
@@ -2578,6 +2823,7 @@ export const AllData = [
       },
       {
         title: "Voice Over",
+        titleBn: "ভয়েস ওভার",
         list: [
           {
             title: "Gender",
@@ -2595,6 +2841,7 @@ export const AllData = [
       },
       {
         title: "Beat Making",
+        titleBn: "বিট তৈরি",
         list: [
           {
             title: "Service Type",
@@ -2620,6 +2867,7 @@ export const AllData = [
       },
       {
         title: "Online Music Lessons",
+        titleBn: "অনলাইন সঙ্গীত পাঠ",
         list: [
           {
             title: "Instrument",
@@ -2633,6 +2881,7 @@ export const AllData = [
       },
       {
         title: "Sound Design",
+        titleBn: "সাউন্ড ডিজাইন",
         list: [
           {
             title: "Service Type",
@@ -2654,6 +2903,7 @@ export const AllData = [
       },
       {
         title: "Music Transcription",
+        titleBn: "মিউজিক ট্রান্সক্রিপশন",
         list: [
           {
             title: "Instruments",
@@ -2667,6 +2917,7 @@ export const AllData = [
       },
       {
         title: "Singers & Vocalists",
+        titleBn: "গায়ক এবং কণ্ঠশিল্পী",
         list: [
           {
             title: "Singers Type",
@@ -2680,6 +2931,7 @@ export const AllData = [
       },
       {
         title: "Jingles & Intros",
+        titleBn: "জিংলস এবং ইন্ট্রোস",
         list: [
           {
             title: "Service Type",
@@ -2697,6 +2949,7 @@ export const AllData = [
       },
       {
         title: "Dj Drops & Tags",
+        titleBn: "ডিজে ড্রপস এবং ট্যাগস",
         list: [
           {
             title: "Genre",
@@ -2710,6 +2963,7 @@ export const AllData = [
       },
       {
         title: "Remixing & Mashups",
+        titleBn: "রিমিক্সিং এবং ম্যাশআপস",
         list: [
           {
             title: "Service Type",
@@ -2723,6 +2977,7 @@ export const AllData = [
       },
       {
         title: "Synth Presets",
+        titleBn: "সিন্থ প্রিসেট",
         list: [
           {
             title: "Gener",
@@ -2740,90 +2995,110 @@ export const AllData = [
       },
       {
         title: "Music Instrument Teaching",
+        titleBn: "সঙ্গীত যন্ত্র শেখানো",
         list: [
           {
             title: "Music Instrument Teaching",
+            titleBn: "সঙ্গীত যন্ত্র শেখানো",
             data: MusicAudioOptions.MusicInstrumentTeaching,
           },
         ],
       },
       {
         title: "Teaching Song",
+        titleBn: "গান শেখানো",
         list: [
           {
             title: "TeachingSong",
+            titleBn: "গান শেখানো",
             data: MusicAudioOptions.TeachingSong,
           },
         ],
       },
       {
         title: "Mixing & Mastering",
+        titleBn: "মিক্সিং এবং মাস্টারিং",
         list: [
           {
             title: "Mixing Mastering",
+            titleBn: "মিক্সিং এবং মাস্টারিং",
             data: MusicAudioOptions.MixingMastering,
           },
         ],
       },
       {
         title: "Song writers",
+        titleBn: "গান লেখক",
         list: [
           {
             title: "Song writers",
+            titleBn: "গান লেখক",
             data: MusicAudioOptions.Songwriters,
           },
         ],
       },
       {
         title: "Dj Mixing",
+        titleBn: "ডিজে মিক্সিং",
         list: [
           {
             title: "Dj Mixing",
+            titleBn: "ডিজে মিক্সিং",
             data: MusicAudioOptions.DjMixing,
           },
         ],
       },
       {
         title: "Dialogue Editing",
+        title: "ডায়লগ এডিটিং",
         list: [
           {
             title: "Dialouge Editing",
+            title: "ডায়লগ এডিটিং",
             data: MusicAudioOptions.DialougeEditing,
           },
         ],
       },
       {
         title: "Audio Ads Production",
+        titleBn: "অডিও বিজ্ঞাপন প্রোডাকশন",
         list: [
           {
             title: "Audio Ads Production",
+            titleBn: "অডিও বিজ্ঞাপন প্রোডাকশন",
             data: [],
           },
         ],
       },
       {
         title: "Audiobook Production",
+        titleBn: "অডিওবুক প্রোডাকশন",
         list: [
           {
             title: "Audiobook Production",
+            titleBn: "অডিওবুক প্রোডাকশন",
             data: [],
           },
         ],
       },
       {
-        title: "Podcust Editing",
+        title: "Podcast Editing",
+        titleBn: "পডকাস্ট সম্পাদন",
         list: [
           {
-            title: "Podcust Editing",
+            title: "Podcast Editing",
+            titleBn: "পডকাস্ট সম্পাদন",
             data: [],
           },
         ],
       },
       {
         title: "Vocal Tuning",
+        titleBn: "ভোকাল টিউনিং",
         list: [
           {
             title: "Vocal Tuning",
+            titleBn: "ভোকাল টিউনিং",
             data: [],
           },
         ],
@@ -2832,46 +3107,54 @@ export const AllData = [
   },
   {
     title: "Painter",
+    titleBn: "পেইন্টার",
     icon: PainterIcon,
     color: "#D934BF",
     image: entertainment,
-    picture:ppt,
-    key:"PAINTER",
+    picture: ppt,
+    key: "PAINTER",
     list: [
       {
         title: "Painter",
+        titleBn: "পেইন্টার",
         data: MainPainter,
       },
     ],
   },
   {
     title: "Online Tution",
+    titleBn: "অনলাইন টিউশন",
     icon: OnlineTutionIcon,
     color: "#FBB540",
     image: onlinetution,
-    picture:tutor,
-    key:"ONLINETUTION",
+    picture: tutor,
+    key: "ONLINETUTION",
     data: [
       {
         title: "Language Tutoring",
+        titleBn: "অনলাইন টিউশন",
         list: [
           {
             title: "Language Tutoring",
+            titleBn: "ভাষা টিউটরিং",
             data: OnlineTutionOptions.LANGUAGETUTORING,
           },
         ],
       },
       {
         title: "Math Tutoring",
+        titleBn: "গণিত টিউটরিং",
         list: [
           {
             title: "Math Tutoring",
+            titleBn: "গণিত টিউটরিং",
             data: OnlineTutionOptions.MATHTUTORING,
           },
         ],
       },
       {
         title: "Online Music Lessons",
+        titleBn: "অনলাইন সঙ্গীত পাঠ",
         list: [
           {
             title: "Instrument",
@@ -2885,6 +3168,7 @@ export const AllData = [
       },
       {
         title: "Online Coding Lessons",
+        titleBn: "অনলাইন কোডিং পাঠ",
         list: [
           {
             title: "Lesson Purpose",
@@ -2898,38 +3182,46 @@ export const AllData = [
       },
       {
         title: "Science Tutoring",
+        titleBn: "বিজ্ঞান টিউটরিং",
         list: [
           {
             title: "Science Tutoring",
+            titleBn: "বিজ্ঞান টিউটরিং",
             data: OnlineTutionOptions.SCIENCETUTORING,
           },
         ],
       },
       {
         title: "Social Science Tutoring",
+        titleBn: "সামাজিক বিজ্ঞান টিউটরিং",
         list: [
           {
             title: "Social Science Tutoring",
+            titleBn: "সামাজিক বিজ্ঞান টিউটরিং",
             data: OnlineTutionOptions.SOCIALSCIENCESTUTORING,
           },
         ],
       },
       {
         title: "Business Tutoring",
+        titleBn: "ব্যবসা টিউটরিং",
         list: [
           {
             title: "Business Tutoring",
+            titleBn: "ব্যবসা টিউটরিং",
             data: OnlineTutionOptions.BUSINESSTUTORING,
           },
         ],
       },
       {
         title: "Cooking Lessons",
+        titleBn: "রান্না পাঠ",
         list: [
           {
             title: "Cooking Lessons",
-            data:OnlineTutionOptions.CookingLessons
-          }
+            titleBn: "রান্না পাঠ",
+            data: OnlineTutionOptions.CookingLessons,
+          },
         ],
       },
       // {
@@ -2963,66 +3255,80 @@ export const AllData = [
   },
   {
     title: "Parlour & Saloon",
+    titleBn: "পার্লার এবং সেলুন",
     icon: SaloonIcon,
     color: "#FF5364",
     image: parlour,
-    picture:salon,
-    key:"PARLOUR",
+    picture: salon,
+    key: "PARLOUR",
     data: [
       {
         title: "Man",
+        titleBn: "পুরুষ",
         image: parlour,
         data: [
           {
             title: "Hair Shaping & Styling",
+            titleBn: "চুল আকার ও স্টাইলিং",
             list: [
               {
                 title: "Hair Shaping & Styling",
+                titleBn: "চুল আকার ও স্টাইলিং",
                 data: ParlorOptions.Man.Hair,
               },
             ],
           },
           {
             title: "Color/Texturizing",
+            titleBn: "কালার / টেক্সচারাইজিং",
             list: [
               {
                 title: "Color/Texturizing",
+                titleBn: "কালার / টেক্সচারাইজিং",
                 data: ParlorOptions.Man.Color,
               },
             ],
           },
           {
             title: "Waxing Service",
+            titleBn: "ওয়াক্সিং সেবা",
             list: [
               {
                 title: "Waxing Service",
+                titleBn: "ওয়াক্সিং সেবা",
                 data: ParlorOptions.Man.Waxing,
               },
             ],
           },
           {
             title: "Nails",
+            titleBn: "নখ",
             list: [
               {
                 title: "Nails",
+                titleBn: "নখ",
                 data: ParlorOptions.Man.Nails,
               },
             ],
           },
           {
             title: "Facial",
+            titleBn: "ফেসিয়াল",
             list: [
               {
                 title: "Facial",
+                titleBn: "ফেসিয়াল",
                 data: ParlorOptions.Man.Facial,
               },
             ],
           },
           {
             title: "Extra",
+            titleBn: "অতিরিক্ত",
             list: [
               {
                 title: "Extra",
+                titleBn: "অতিরিক্ত",
                 data: ParlorOptions.Man.Extra,
               },
             ],
@@ -3031,130 +3337,159 @@ export const AllData = [
       },
       {
         title: "Woman",
+        titleBn: "মহিলা",
         image: parlour,
         data: [
           {
             title: "Facial Treatment",
+            titleBn: "ফেসিয়াল চিকিৎসা",
             list: [
               {
                 title: "Facial Treatment",
+                titleBn: "ফেসিয়াল চিকিৎসা",
                 data: ParlorOptions.Woman.Facial,
               },
             ],
           },
           {
             title: "Manicure",
+            titleBn: "ম্যানিকিউর",
             list: [
               {
                 title: "Manicure",
+                titleBn: "ম্যানিকিউর",
                 data: ParlorOptions.Woman.Manicure,
               },
             ],
           },
           {
             title: "Padicure",
+            titleBn: "পেডিকিউর",
             list: [
               {
                 title: "Padicure",
+                titleBn: "পেডিকিউর",
                 data: ParlorOptions.Woman.Padicure,
               },
             ],
           },
           {
             title: "Hair Cut",
+            titleBn: "চুল কাটা",
             list: [
               {
                 title: "Hair Cut",
+                titleBn: "চুল কাটা",
                 data: ParlorOptions.Woman.Hair,
               },
             ],
           },
           {
             title: "Hair Color",
+            titleBn: "চুল রং",
             list: [
               {
                 title: "Hair Color",
+                titleBn: "চুল রং",
                 data: ParlorOptions.Woman.HairColor,
               },
             ],
           },
           {
             title: "Hair Straightener",
+            titleBn: "চুল সোজা করার",
             list: [
               {
                 title: "Hair Straightener",
+                titleBn: "চুল সোজা করার",
                 data: ParlorOptions.Woman.HairStraightener,
               },
             ],
           },
           {
             title: "Hair Spa",
+            titleBn: "চুল স্পা",
             list: [
               {
                 title: "Hair Spa",
+                titleBn: "চুল স্পা",
                 data: ParlorOptions.Woman.HairSpa,
               },
             ],
           },
           {
             title: "Head Massage & Body Polishing",
+            titleBn: "মাথা মাসাজ এবং বডি পলিশিং",
             list: [
               {
                 title: "Head Massage & Body Polishing",
+                titleBn: "মাথা মাসাজ এবং বডি পলিশিং",
                 data: ParlorOptions.Woman.Head,
               },
             ],
           },
           {
             title: "Skin Treatment",
+            titleBn: "ত্বকের চিকিৎসা",
             list: [
               {
                 title: "Skin Treatment",
+                titleBn: "ত্বকের চিকিৎসা",
                 data: ParlorOptions.Woman.Skin,
               },
             ],
           },
           {
             title: "Threading",
+            titleBn: "থ্রেডিং",
             list: [
               {
                 title: "Threading",
+                titleBn: "থ্রেডিং",
                 data: ParlorOptions.Woman.Threading,
               },
             ],
           },
           {
             title: "Bleach & Datan",
+            titleBn: "ব্লিচ এবং ডিটান",
             list: [
               {
                 title: "Bleach & Datan",
+                titleBn: "ব্লিচ এবং ডিটান",
                 data: ParlorOptions.Woman.Bleach,
               },
             ],
           },
           {
             title: "Cleanup",
+            titleBn: "ক্লিনআপ",
             list: [
               {
                 title: "Cleanup",
+                titleBn: "ক্লিনআপ",
                 data: ParlorOptions.Woman.Cleanup,
               },
             ],
           },
           {
             title: "Waxing",
+            titleBn: "ওয়াক্সিং",
             list: [
               {
                 title: "Waxing",
+                titleBn: "ওয়াক্সিং",
                 data: ParlorOptions.Woman.Waxing,
               },
             ],
           },
           {
             title: "Make Up",
+            titleBn: "মেকআপ",
             list: [
               {
                 title: "Make Up",
+                titleBn: "মেকআপ",
                 data: ParlorOptions.Woman.MakeUp,
               },
             ],
@@ -3165,28 +3500,32 @@ export const AllData = [
   },
   {
     title: "Labor",
+    titleBn: "শ্রমিক",
     icon: RentIcon,
     color: "#61AFF6",
     image: entertainment,
-    picture:lb,
-    key:"LABOR",
+    picture: lb,
+    key: "LABOR",
     list: [
       {
         title: "Labor",
+        titleBn: "শ্রমিক",
         data: MainLabor,
       },
     ],
   },
   {
     title: "Life Style",
+    titleBn: "জীবনযাপন",
     icon: lifeStyle,
     color: "#FF9C68",
     image: lifestyle,
-    picture:life,
-    key:"LIFESTYLE",
+    picture: life,
+    key: "LIFESTYLE",
     data: [
       {
         title: "Cooking Lessons",
+        titleBn: "রান্না পাঠ",
         list: [
           {
             title: "Breakfast",
@@ -3232,9 +3571,11 @@ export const AllData = [
       },
       {
         title: "Craft Lessons",
+        titleBn: "ক্রাফট পাঠ",
         list: [
           {
             title: "Craft Type",
+            titleBn: "ক্রাফট পাঠ",
             data: LifeStyleOptions.CraftLessons.CraftType,
           },
           {
@@ -3245,6 +3586,7 @@ export const AllData = [
       },
       {
         title: "Gym",
+        titleBn: "জিম",
         list: [
           {
             title: "Compound Chest Exercises",
@@ -3278,15 +3620,18 @@ export const AllData = [
       },
       {
         title: "Life Coaching",
+        titleBn: "লাইফ কোচিং",
         list: [
           {
             title: "Life Coaching",
+            titleBn: "লাইফ কোচিং",
             data: LifeStyleOptions.LifeCoaching,
           },
         ],
       },
       {
         title: "Personal Stylists",
+        titleBn: "ব্যক্তিগত স্টাইলিস্ট",
         list: [
           {
             title: "Purpose",
@@ -3296,6 +3641,7 @@ export const AllData = [
       },
       {
         title: "Fitness Lessons",
+        titleBn: "ফিটনেস পাঠ",
         list: [
           {
             title: "Trainning Type",

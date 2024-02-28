@@ -47,7 +47,7 @@ export default function OrderInfo({
             {isBn ? `অর্ডার আইডি: ${orderId}` : `Order id: ${orderId}`}
           </Text>
           <Text style={[styles.text, { marginTop: 11 }]}>
-            {isBn ? "তারিখ:" : "Date:"} {serverTimeToLocalDate(date)}
+            {isBn ? "অর্ডার তারিখ:" : "Date:"} {serverTimeToLocalDate(date)}
           </Text>
         </View>
         <View
@@ -135,7 +135,7 @@ export default function OrderInfo({
             ]}
           >
             {isBn
-              ? "আপনার যা সার্ভিস লাগবে অনুগ্রহ করে চ্যাটের মাধ্যমে বিক্রেতাকে স্পষ্ট নির্দেশনা দিন তারা আপনার প্রয়োজনীয়তা অনুযায়ী আপনার এই রসিদে পরিষেবা অ্যাড করবে করবে।"
+              ? "আপনার যা সার্ভিস লাগবে অনুগ্রহ করে চ্যাটের মাধ্যমে বিক্রেতাকে স্পষ্ট নির্দেশনা দিন তারা আপনার প্রয়োজনীয়তা অনুযায়ী আপনার এই রসিদে পরিষেবা অ্যাড করবে।"
               : "Please give clear instructions to the seller via chat. They will add the services to your receipt as per your requirements."}
             "
           </Text>

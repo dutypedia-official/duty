@@ -47,7 +47,7 @@ export default function JoinCart({ style, onJoin, colors, onClick }) {
           <IconButton
             onPress={onClick}
             style={styles.button}
-            title={isBn ? "যোগ দিন" : "Join now"}
+            title={isBn ? "একটি ব্যবসায়িক অ্যাকাউন্ট খুলুন" : "Join now"}
           />
         </View>
       </LinearGradient>

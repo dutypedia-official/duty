@@ -57,6 +57,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const ManageOrder = ({ navigation, route }) => {
   const isFocused = useIsFocused();
+  const [isLoading, setIsLoading] = useState(false);
   const { language } = useLang();
   const isBn = language == "Bn";
   const initialState = [
@@ -93,6 +94,8 @@ const ManageOrder = ({ navigation, route }) => {
   const inset = useSafeAreaInsets();
   const dispatch = useDispatch();
   const orderRef = useSelector((state) => state.orderRef);
+
+  if (!allOrders) return <></>;
 
   return (
     <View
@@ -168,6 +171,7 @@ const ManageOrder = ({ navigation, route }) => {
 
 export default ManageOrder;
 const Screens = ({ navigation, route }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const isDark = useSelector((state) => state.isDark);
   const colors = new Color(isDark);
   const primaryColor = colors.getPrimaryColor();
@@ -195,12 +199,12 @@ const Screens = ({ navigation, route }) => {
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = () => {
     setRefreshing(true);
     setRefresh((val) => !val);
     //dispatch({ type: "SET_INTEREST_CATEGORY", playload: "Home" });
     wait(1000).then(() => setRefreshing(false));
-  }, []);
+  };
   const [Active, setActive] = React.useState("STARTING");
   const [Search, setSearch] = React.useState();
   const [Filter, setFilter] = React.useState();
@@ -210,34 +214,42 @@ const Screens = ({ navigation, route }) => {
     {
       title: isBn ? "এখনো গ্রহণ করা হয়নি" : "Waiting For Accept",
       icon: waitionIcon,
+      value: "Waiting For Accept",
     },
     {
       title: isBn ? "বাকি" : "Due",
       icon: dueIcon,
+      value: "Due",
     },
     {
       title: isBn ? "পরিশোধ হয়েছে" : "Paid",
       icon: paidIcon,
+      value: "Paid",
     },
     {
       title: isBn ? "অর্ডারটি প্রক্রিয়াকরণ হচ্ছে" : "Processing",
       icon: processingIcon,
+      value: "Processing",
     },
     {
       title: isBn ? "ডেলিভারি সম্পন্ন হয়েছে" : "Delivered",
       icon: deliveryIcon,
+      value: "Delivered",
     },
     {
       title: isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed",
       icon: completeIcon,
+      value: "Completed",
     },
     {
       title: isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Order Canceled",
       icon: cancelIcon,
+      value: "Canceled",
     },
     {
-      title: isBn ? "টাকা ফেরত দেয়া হয়েছে" : "Refund",
+      title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
       icon: refundIcon,
+      value: "Refunded",
     },
   ]);
   const user = useSelector((state) => state.user);
@@ -250,6 +262,59 @@ const Screens = ({ navigation, route }) => {
   const bottomSheetRef = React.useRef(null);
 
   const snapPoints = React.useMemo(() => ["25%", "60%"], []);
+
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
+  const to = Math.min((parseInt(total / 20) + 1) * 20, 2);
+
+  const fetchData = async () => {
+    console.log("pukkk");
+    if (!user) return;
+    try {
+      setIsLoading(true);
+      const { data } = await getOrders(
+        user.token,
+        "user",
+        null,
+        route.name,
+        20 * page
+      );
+      setAllOrders(data?.orders);
+      setOrders(data?.orders);
+      setOrder((val) => {
+        return val?.map((doc, i) => {
+          if (i == key) {
+            return data.total;
+          } else {
+            return doc;
+          }
+        });
+      });
+      setTotal(data?.total);
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadData = async (showLoading = true) => {
+    if (showLoading) {
+      setLoader(true);
+    }
+    const { data } = await getOrders(
+      user.token,
+      "user",
+      null,
+      route.name,
+      Orders?.length
+    );
+    if (AllOrders && Orders && data?.orders?.length > 0) {
+      setAllOrders((d) => [...d, ...data.orders]);
+      setOrders((d) => [...d, ...data.orders]);
+    }
+    setLoader(false);
+  };
+
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -262,46 +327,12 @@ const Screens = ({ navigation, route }) => {
       //dispatch(setHideBottomBar(true));
     }
   }, [isFocused]);
-  // callbacks
-  const handleSheetChanges = React.useCallback((index) => {
-    //console.log("handleSheetChanges", index);
-    setIndex(index);
-    if (index < 0) {
-      dispatch(setOrderRef(false));
-    }
-  }, []);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(0);
-  const to = Math.min((parseInt(total / 20) + 1) * 20, 2);
 
   React.useEffect(() => {
     if (user) {
-      //setLoader(true);
-      getOrders(user.token, "user", null, route.name, 20 * page)
-        .then((res) => {
-          setAllOrders(res.data.orders);
-          setOrders(res.data.orders);
-
-          //console.log(res.data.orders)
-          setOrder((val) => {
-            return val.map((doc, i) => {
-              if (i == key) {
-                return res.data.total;
-              } else {
-                return doc;
-              }
-            });
-          });
-          // setLoader(false);
-          //console.log(res.data.total)
-          setTotal(res.data.total);
-        })
-        .catch((err) => {
-          // setLoader(false);
-          console.error(err.response.data.msg);
-        });
+      fetchData();
     }
-  }, [Refresh]);
+  }, [Refresh, user]);
   React.useEffect(() => {
     socket.on("updateOrder", (e) => {
       //e = e?.order;
@@ -319,15 +350,53 @@ const Screens = ({ navigation, route }) => {
 
   React.useEffect(() => {
     if (AllOrders) {
-      if (!Filter) {
-        setOrders(AllOrders);
-      } else {
-        let text = Filter;
-        text = text.split(" ").join("_");
-        let arr = AllOrders.filter((d) =>
-          d.status.toUpperCase().match(text.toUpperCase())
-        );
-        setOrders(arr);
+      switch (Filter) {
+        case "Waiting For Accept":
+          let text = Filter;
+          text = text.split(" ").join("_");
+          let arr = AllOrders.filter((d) =>
+            d.status.toUpperCase().match(text.toUpperCase())
+          );
+          setOrders(arr);
+          break;
+
+        case "Due":
+          let dues = AllOrders.filter((d) => d.paid == false);
+          setOrders(dues);
+          break;
+        case "Paid":
+          let paid = AllOrders.filter((d) => d.paid == true);
+          setOrders(paid);
+          break;
+        case "Processing":
+          let processing = AllOrders.filter((d) =>
+            d.status.toUpperCase().match("PROCESSING")
+          );
+          setOrders(processing);
+          break;
+        case "Delivered":
+          let delivered = AllOrders.filter((d) => d.delivered == true);
+          setOrders(delivered);
+          break;
+
+        case "Completed":
+          let completed = AllOrders.filter((d) => d.status == "COMPLETED");
+          setOrders(completed);
+          break;
+        case "Canceled":
+          let cancel = AllOrders.filter(
+            (d) => d.status == "CANCELLED" && d.paid == false
+          );
+          setOrders(cancel);
+          break;
+        case "Refunded":
+          let refund = AllOrders.filter(
+            (d) => d.status == "CANCELLED" && d.paid == true
+          );
+          setOrders(refund);
+          break;
+        default:
+          setOrders(AllOrders);
       }
     }
   }, [Filter]);
@@ -338,8 +407,8 @@ const Screens = ({ navigation, route }) => {
       } else {
         let text = Search;
         text = text.split(" ").join("_");
-        let arr = AllOrders.filter((d) =>
-          d.status.toUpperCase().match(text.toUpperCase())
+        let arr = AllOrders.filter(
+          (d) => d.status.toUpperCase() == text.toUpperCase()
         );
         setOrders(arr);
       }
@@ -352,70 +421,58 @@ const Screens = ({ navigation, route }) => {
       bottomSheetRef?.current?.close();
     }
   }, [orderRef]);
+
+  // callbacks
+  const handleSheetChanges = React.useCallback((index) => {
+    //console.log("handleSheetChanges", index);
+    setIndex(index);
+    if (index < 0) {
+      dispatch(setOrderRef(false));
+    }
+  }, []);
+
   const renderItem = useCallback(
-    ({ item }) => (
-      <OrderCart
-        onSelect={(e) => {
-          setOpen((val) => {
-            if (e == val) {
-              return null;
-            } else {
-              return e;
-            }
-          });
-          //console.log(e)
-          //dispatch({ type: "ORDER_STATE", playload: e });
-          //dispatch({ type: "ORDER_STATE", playload: e });
-        }}
-        onPress={() => {
-          //console.log(doc.subsOrders)
-          if (item.type == "SUBS" && item.status != "WAITING_FOR_ACCEPT") {
-            navigation.navigate("SubscriptionScript", { data: item });
-            return;
-          }
-          if (
-            item.type == "INSTALLMENT" &&
-            item.status != "WAITING_FOR_ACCEPT"
-          ) {
-            navigation.navigate("InstallmentScript", { data: item });
-            return;
-          }
-          navigation.navigate("OrderDetails", {
-            data: item,
-            orderId: item?.id,
-            type: item?.type,
-          });
-        }}
-        key={item.id}
-        data={item}
-        user={true}
-      />
-    ),
+    ({ item }) =>
+      item && !isLoading ? (
+        <OrderCart
+          onSelect={(e) => {
+            setOpen((val) => {
+              if (e == val) {
+                return null;
+              } else {
+                return e;
+              }
+            });
+            //console.log(e)
+            //dispatch({ type: "ORDER_STATE", playload: e });
+            //dispatch({ type: "ORDER_STATE", playload: e });
+          }}
+          onPress={() => {
+            //console.log(doc.subsOrders)
+            navigation.navigate("OrderDetails", {
+              data: item,
+              orderId: item?.id,
+              type: item?.type,
+            });
+          }}
+          key={item.id}
+          data={item}
+          user={true}
+        />
+      ) : (
+        <></>
+      ),
     []
   );
-  const loadData = async () => {
-    setLoader(true);
-    const { data } = await getOrders(
-      user.token,
-      "user",
-      null,
-      route.name,
-      Orders?.length
-    );
-    setLoader(false);
-    if (AllOrders && Orders && data.orders.length > 0) {
-      setAllOrders((d) => [...d, ...data.orders]);
-      setOrders((d) => [...d, ...data.orders]);
-    }
-  };
-  if (!AllOrders) {
+
+  if (refreshing || isLoading) {
     return (
       <View style={customStyle.fullBox}>
         <ActivityIndicator size="small" color={backgroundColor} />
       </View>
     );
   }
-
+  //
   return (
     <View style={{ flex: 1, paddingVertical: 8 }}>
       {Orders && Orders.length > 0 && (
@@ -473,17 +530,17 @@ const Screens = ({ navigation, route }) => {
           {AllStatus.map((doc, i) => (
             <IconButton
               onPress={() => {
-                if (Filter == doc.title) {
+                if (Filter == doc.value) {
                   setFilter(null);
                   return;
                 }
-                setFilter(doc.title);
+                setFilter(doc.value);
               }}
               style={{
                 justifyContent: "flex-start",
                 borderWidth: 0,
                 marginHorizontal: 10,
-                backgroundColor: Filter == doc.title ? "#F2F2F6" : primaryColor,
+                backgroundColor: Filter == doc.value ? "#F2F2F6" : primaryColor,
               }}
               key={i}
               LeftIcon={() => <SvgXml xml={doc.icon} height="24" />}

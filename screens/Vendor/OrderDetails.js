@@ -2,105 +2,47 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
-  Image,
   Text,
   StyleSheet,
-  ActivityIndicator,
-  Dimensions,
   Alert,
-  TouchableOpacity,
-  Platform,
-  Linking,
-  Pressable,
   RefreshControl,
+  Dimensions,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { Color } from "../../assets/colors";
 import { useSelector, useDispatch } from "react-redux";
-import Button from "./../../components/Button";
-const { width, height } = Dimensions.get("window");
 import {
-  cancelOrder,
-  completeOrderDelivery,
-  getOrders,
-  requestForTime,
-  orderRefound,
   getMemberId,
-  deliverySubs,
-  refoundSubs,
-  vendorCancelSubs,
   getSubsOrderById,
-  acceptRefoundSubs,
-  rejectRefoundSubs,
-  vendorCancelInstallment,
-  rejectRefoundInstallment,
-  refoundInstallment,
   cancelRequestDate,
 } from "../../Class/service";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import Barcode from "./../../components/Barcode";
 import IconButton from "./../../components/IconButton";
-import { AntDesign } from "@expo/vector-icons";
-import {
-  convertServerFacilities,
-  serverToLocal,
-} from "../../Class/dataConverter";
+import { convertServerFacilities } from "../../Class/dataConverter";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { CheckBox } from "../Seller/Pricing";
-import {
-  convertDate,
-  dateConverter,
-  dateDifference,
-  serverTimeToLocalDate,
-  wait,
-} from "../../action";
+import { wait } from "../../action";
 import { socket } from "../../Class/socket";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SvgXml } from "react-native-svg";
-import ActivityLoader from "../../components/ActivityLoader";
 import InfoCart from "../Seller/OrderScript/InfoCart";
 import OrderInfo from "../Seller/OrderScript/OrderInfo";
 import StatusCart from "../Seller/OrderScript/StatusCart";
 import ReceiptSkeleton from "../../components/ReceiptSkeleton";
 import useLang from "../../Hooks/UseLang";
+import ActivityLoader from "../../components/ActivityLoader";
 
 const OrderDetails = ({ navigation, route }) => {
   const orderId = route?.params?.orderId;
-  const isDark = useSelector((state) => state.isDark);
   const dispatch = useDispatch();
-  const colors = new Color(isDark);
-  const primaryColor = colors.getPrimaryColor();
-  const textColor = colors.getTextColor();
-  const backgroundColor = colors.getBackgroundColor();
-  const assentColor = colors.getAssentColor();
   const { language } = useLang();
   const isBn = language == "Bn";
   const initialState = [
     {
-      title: "Bargaining",
+      title: isBn ? "দরদাম" : "Bargaining",
       value: true,
       type: "STARTING",
     },
     {
-      title: "Fixed",
+      title: isBn ? "একদাম" : "Fixed",
       value: false,
       type: "ONETIME",
     },
-    {
-      title: "Installment",
-      value: false,
-      type: "INSTALLMENT",
-    },
-    {
-      title: "Subscription",
-      value: false,
-      type: "SUBS",
-    },
-    // {
-    //   title: "Package",
-    //   value: false,
-    //   type: "PACKAGE",
-    // },
   ];
   const user = useSelector((state) => state.user);
   const [ListData, setListData] = React.useState([]);
@@ -112,19 +54,11 @@ const OrderDetails = ({ navigation, route }) => {
   const [Loader, setLoader] = React.useState(false);
   const vendor = useSelector((state) => state.vendor);
   const [data, setData] = React.useState();
-  const [Refound, setRefound] = React.useState(false);
-  const [RefoundDate, setRefoundDate] = React.useState();
   //console.log(data.type);
   const orderSocket = useSelector((state) => state.orderSocket);
   const [MemberId, setMemberId] = React.useState();
-  const type = route?.params?.type;
-  const sOrder =
-    route.params && route.params.subsOrder ? route.params.subsOrder : null;
-  const index = route.params && route.params.index ? route.params.index : 0;
-  const [subsOrder, setSubsOrder] = useState(sOrder);
-  const installmentData = data?.installmentData ? data?.installmentData : null;
-  const [installmentOrder, setInstallmentOrder] = useState(sOrder);
   const [refreshing, setRefreshing] = useState(false);
+  const { width, height } = Dimensions.get("window");
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setServiceError();
@@ -238,7 +172,7 @@ const OrderDetails = ({ navigation, route }) => {
     }
   };
   React.useEffect(() => {
-    socket.on("updateOrder", (e) => {
+    socket.on("updateOrder", () => {
       if (orderId) {
         dataLoader(orderId);
       }
@@ -286,7 +220,18 @@ const OrderDetails = ({ navigation, route }) => {
   //console.log(data?.agreement)
 
   if (Loader || !data) {
-    return <ReceiptSkeleton />;
+    // return <ReceiptSkeleton />;
+    return (
+      <View
+        style={{
+          height: height,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityLoader />
+      </View>
+    );
   }
 
   return (
@@ -342,6 +287,8 @@ const OrderDetails = ({ navigation, route }) => {
             {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
             {data?.type == "PACKAGE"
               ? `- ${data?.selectedPackage?.name}`
+              : isBn
+              ? "সার্ভিস"
               : "service"}
           </Text>
         </View>
@@ -439,11 +386,15 @@ const OrderDetails = ({ navigation, route }) => {
                   { marginBottom: 12, marginHorizontal: 20, textAlign: "left" },
                 ]}
               >
-                আপনি যদি ইতিমধ্যে আপনার অর্ডারটি ডেলিভারি করে থাকেন, তবে{" "}
-                <Text style={{ color: "#4CD964" }}>
-                  হ্যাঁ আমি ডেলিভারি করেছি
+                <Text style={{ color: "red" }}>
+                  যদি সার্ভিসটি সম্পন্ন করে থাকেন তাহলে ডেলিভারির আগে গ্রাহকের
+                  সাথে ভালভাবে আলাপ করুন এবং সার্ভিসটির সম্পূর্ণ অথবা কিছু অংশ
+                  ভালভাবে চেক করতে বলুন, যাতে ডেলিভারির পরে আপনার গ্রাহকের কোনও
+                  দ্বিমত না থাকে।
+                  {"\n"}
                 </Text>{" "}
-                বুতামে ক্লিক করুন
+                আর আপনি যদি ইতিমধ্যে আপনার অর্ডারটি ডেলিভারি করে থাকেন অথবা করতে
+                চান, তবে হ্যাঁ আমি ডেলিভারি করেছি বুতামে ক্লিক করুন
               </Text>
             ) : (
               <Text
@@ -452,8 +403,11 @@ const OrderDetails = ({ navigation, route }) => {
                   { marginBottom: 12, marginHorizontal: 20, textAlign: "left" },
                 ]}
               >
-                click <Text style={{ color: "#4CD964" }}>yes i delivered</Text>{" "}
-                if you already delivered your order
+                Before delivering the service, talk to the customer and ask them
+                to check it carefully. This helps avoid disagreements after
+                delivery. Click{" "}
+                <Text style={{ color: "#4CD964" }}>yes i delivered</Text> if you
+                already delivered your order
               </Text>
             )}
             <IconButton
@@ -571,9 +525,3 @@ const exporters = (key) => {
       };
   }
 };
-const attachmentIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="12.643" height="17.152" viewBox="0 0 12.643 17.152">
-<g id="_000000ff" data-name="#000000ff" transform="translate(-16.818)">
-  <path id="Path_27803" data-name="Path 27803" d="M16.9,0h6.521a2.254,2.254,0,0,1,1.114.627q2.109,2.107,4.218,4.216a2.1,2.1,0,0,1,.658,1.069A11.016,11.016,0,0,1,29.456,7.5q0,4.422,0,8.843a6.834,6.834,0,0,1-.076.809H16.914a7.326,7.326,0,0,1-.088-1.747c0-1.785,0-3.57,0-5.355a4.882,4.882,0,0,1,.064-1.162.263.263,0,0,1,.431.239c.025,2.507,0,5.016.011,7.524q5.811,0,11.623,0,0-4.639,0-9.277a9.431,9.431,0,0,0-.04-1.348,1.2,1.2,0,0,0-1.1-.981c-1.12-.059-2.246.038-3.366-.051-.059-1.114.013-2.228-.036-3.341A1.249,1.249,0,0,0,23.139.507C21.2.489,19.265.505,17.328.5q0,3.232,0,6.464a8.5,8.5,0,0,1-.036,1.24.278.278,0,0,1-.413.05,2.7,2.7,0,0,1-.06-.614c.009-1.966,0-3.93.005-5.9A9.6,9.6,0,0,1,16.9,0m8.035,1.743q0,1.387,0,2.777,1.389,0,2.779,0Q26.324,3.129,24.932,1.743Z"/>
-</g>
-</svg>
-`;

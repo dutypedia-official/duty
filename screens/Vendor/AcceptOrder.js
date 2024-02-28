@@ -67,14 +67,27 @@ const AcceptOrder = (props) => {
   const isBn = language == "Bn";
   const [DeliverMethod, setDeliverMethod] = React.useState({
     online: [
-      "Online File Share",
-      "Deliver In Video/Voice Call",
-      "Delivered In Another Platform",
-      "Other",
+      {
+        title: "Online File Share",
+        titleBn: "অনলাইনে ফাইল শেয়ার করে",
+      },
+      {
+        title: "Deliver In Video/Voice Call",
+        titleBn: "অডিও / ভিডিও কলের মাধ্যমে",
+      },
+      {
+        title: "Delivered In Another Platform",
+        titleBn: "অন্য তৃতীয় পক্ষের প্লাটফর্মের মাধ্যমে",
+      },
+      {
+        title: "Other",
+        titleBn: "ভিন্ন উপায়ে",
+      },
     ],
     offline: [
       {
         title: "My Self",
+        titleBn: "আমি নিজে",
         // options: [
         //   "By Walk",
         //   "By Vehicles",
@@ -83,8 +96,8 @@ const AcceptOrder = (props) => {
         // ],
       },
       // { title: "Courier Service" },
-      { title: "Our employees" },
-      { title: "Other" },
+      { title: "Our employees", titleBn: "আমাদের কর্মীরা" },
+      { title: "Other", titleBn: "অন্যকিছু" },
     ],
   });
   const [Select, setSelect] = React.useState();
@@ -239,44 +252,6 @@ const AcceptOrder = (props) => {
     }
 
     setLoader(true);
-    if (userOffline) {
-      createVendorOrderOffline(
-        user.token,
-        userId,
-        data.facilites,
-        data.services,
-        data.service.id,
-        data.type,
-        parseInt(selectedPackage ? selectedPackage.price : data.price),
-        Description,
-        parseInt(selectedPackage ? selectedPackage.price : data.price),
-        params.from,
-        params.to,
-        "VENDOR",
-        {
-          deliverMethodOnline: Select,
-          selfDeliverMethodOther: Description,
-          courierServiceName: CourierServiceName,
-          courierServiceAreaName: CourierServiceAddress,
-          otherServiceType: OtherService,
-          deliverBy: Deliver,
-          serviceType: Service,
-        },
-        selectedPackage ? selectedPackage : undefined,
-        data.subsData ? data.subsData : undefined,
-        data.installmentData ? data.installmentData : undefined
-      )
-        .then((res) => {
-          //getLoadData(res.data.receiverId,res.data.order)
-          //console.log(res.data.order)
-          getLoadData();
-        })
-        .catch((err) => {
-          setLoader(false);
-          console.warn(err.response.data.msg);
-        });
-      return;
-    }
 
     if (newVendor) {
       //console.log(data.installmentData)
@@ -336,7 +311,11 @@ const AcceptOrder = (props) => {
         })
         .catch((err) => {
           setLoader(false);
-          console.warn(err.response.data.msg);
+          Alert.alert(
+            err?.response?.data?.msg == "This service has been banned!"
+              ? "অনির্দিষ্ট কালের জন্য আপানাকে সকল অর্ডার করা থেকে বহিষ্কার করা হয়েছে"
+              : err?.response?.data?.msg
+          );
         });
       return;
     }
@@ -546,7 +525,11 @@ const AcceptOrder = (props) => {
               onChange={(e) => {
                 setOtherService(e);
               }}
-              placeholder={isBn ? "এখানে লিখুন" : "Describe here"}
+              placeholder={
+                isBn
+                  ? "আপনি কি ধরনের পরিষেবা প্রদান করতে চান লিখুন"
+                  : "Type how you would like your order to be delivered?"
+              }
             />
           )}
           <View
@@ -616,13 +599,13 @@ const AcceptOrder = (props) => {
                     style={{ margin: 0, height: 20, width: 20 }}
                     selectStyle={{ height: 16, width: 16 }}
                     onChange={() => {
-                      setSelect(doc);
+                      setSelect(doc.title);
                       setDescription(null);
                     }}
-                    value={Select == doc ? true : false}
-                    title={doc}
+                    value={Select == doc.title ? true : false}
+                    title={isBn ? doc.titleBn : doc.title}
                   />
-                  {Select == doc && (
+                  {Select == doc.title && (
                     <Input
                       value={Description}
                       onChange={(e) => {
@@ -631,7 +614,11 @@ const AcceptOrder = (props) => {
                       style={{
                         marginVertical: 10,
                       }}
-                      placeholder="Service Name"
+                      placeholder={
+                        isBn
+                          ? "আপনি কিভাবে আপনার অর্ডার ডেলিভারি করতে চান লিখুন"
+                          : "Type how you would like your order to be delivered?"
+                      }
                     />
                   )}
                 </View>
@@ -691,7 +678,7 @@ const AcceptOrder = (props) => {
                       setSubSelect(null);
                     }}
                     value={Select == doc.title ? true : false}
-                    title={doc.title}
+                    title={isBn ? doc.titleBn : doc.title}
                   />
                   {Select == "My Self " && doc.title == "My Self" && (
                     <View entering={FadeIn} style={{ marginVertical: 10 }}>
@@ -720,7 +707,11 @@ const AcceptOrder = (props) => {
                         <Input
                           value={Description}
                           onChange={(e) => setDescription(e)}
-                          placeholder={isBn ? "এখানে লিখুন" : "Type here"}
+                          placeholder={
+                            isBn
+                              ? "আপনি কিভাবে আপনার অর্ডার ডেলিভারি করতে চান লিখুন"
+                              : "Type how you would like your order to be delivered?"
+                          }
                         />
                       )}
                     </View>
@@ -752,7 +743,11 @@ const AcceptOrder = (props) => {
                       onChange={(e) => {
                         setDescription(e);
                       }}
-                      placeholder={isBn ? "এখানে লিখুন" : "Type here"}
+                      placeholder={
+                        isBn
+                          ? "আপনি কিভাবে আপনার অর্ডার ডেলিভারি করতে চান লিখুন"
+                          : "Type how you would like your order to be delivered?"
+                      }
                     />
                   )}
                 </View>
@@ -930,7 +925,7 @@ const AcceptOrder = (props) => {
             color: textColor,
             marginTop: 12,
           }}
-          title={isBn?"অর্ডারটি নিশ্চিত করুন":"Confirm"}
+          title={isBn ? "অর্ডারটি নিশ্চিত করুন" : "Confirm"}
         />
       </View>
     </View>
@@ -1116,3 +1111,15 @@ const info = `<svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns=
 </defs>
 </svg>
 `;
+
+// বিক্রেতা আপনার অর্ডারটি নিয়ে ইতিমধ্যে কাজ শুরু করে দিয়েছে
+// Duty support
+// 12:41 PM
+// অনলাইনে ফাইল শেয়ার এর মাধ্যমে
+// Duty support
+// 12:42 PM
+// ভিডিও/অডিও কলের মাধ্যমে
+// Duty support
+// 12:43 PM
+// অন্য তৃতীয় পক্ষ প্লাটফর্মের মাধ্যমে
+// ভিন্ন মাধ্যম

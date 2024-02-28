@@ -14,8 +14,8 @@ const ActivityLoader = ({}) => {
       style={{
         borderRadius: 50,
         padding: 4,
-        justifyContent:"center",
-        alignItems:"center"
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <ActivityIndicator size="large" color={backgroundColor} />

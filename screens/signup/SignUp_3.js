@@ -26,6 +26,7 @@ export default function SignUp_3({ navigation, route }) {
   const [visible, setVisible] = React.useState(false);
   const [gender, setGender] = useState();
   const token = route?.params?.token;
+  const mobile = route?.params?.mobile;
   const [name, setName] = useState();
   const [nameError, setNameError] = useState();
   const [genderError, setGenderError] = useState();
@@ -46,7 +47,6 @@ export default function SignUp_3({ navigation, route }) {
   const closeMenu = () => setVisible(false);
   const verify = async () => {
     setNameError();
-    setUserNameError();
     setPasswordError();
     setRePasswordError();
 
@@ -56,22 +56,6 @@ export default function SignUp_3({ navigation, route }) {
     }
     if (name.split("")?.length > 20) {
       setNameError(isBn ? "নাম খুব বড়" : "Name is too large");
-      return;
-    }
-    if (!regName.test(userName)) {
-      setUserNameError(
-        isBn
-          ? "ইংরেজি বর্ণমালা এবং সংখ্যা ব্যবহার করুন( কোনও স্পেস দিবেন না )"
-          : "Use alphabet & number"
-      );
-      return;
-    }
-    if (userName.split("")?.length < 4) {
-      setUserNameError(isBn ? "নাম খুব ছোট" : "Name is too small");
-      return;
-    }
-    if (userName.split("")?.length > 20) {
-      setUserNameError(isBn ? "নাম খুব বড়" : "Name is too large");
       return;
     }
     if (password.split("")?.length < 8) {
@@ -85,9 +69,9 @@ export default function SignUp_3({ navigation, route }) {
       return;
     }
     setLoader(true);
-    registerUser(token, name, userName, password, age, gender)
+    registerUser(token, name, password, age, gender)
       .then((res) => {
-        userLogin(userName, password)
+        userLogin(mobile, password)
           .then((res) => {
             setLoader(false);
             //console.log(res);
@@ -222,16 +206,6 @@ export default function SignUp_3({ navigation, route }) {
               />
             </View>
           </View>
-          <Text style={[styles.label, styles.mt20]}>
-            {isBn ? "একটি ইউজার নেম তৈরি করুন" : "Create a username"}
-          </Text>
-          <Input
-            autoCapitalize={"none"}
-            value={userName}
-            onChange={setUserName}
-            placeholder={isBn ? "আপনার ইউজার লিখুন" : "Type your username"}
-            style={[styles.input, styles.mt8]}
-          />
           <View
             style={{
               flexDirection: "row",
@@ -315,12 +289,12 @@ export default function SignUp_3({ navigation, route }) {
         <IconButton
           onPress={verify}
           disabled={
-            name && gender && age && userName && password && RePassword && check
+            name && gender && age && password && RePassword && check
               ? false
               : true
           }
           active={
-            name && gender && age && userName && password && RePassword && check
+            name && gender && age && password && RePassword && check
               ? true
               : false
           }

@@ -40,9 +40,12 @@ import SubHeader from "../components/SubHeader";
 import customStyle from "../assets/stylesheet";
 import OrderDetails from "./Seller/OrderDetails";
 import { getJson } from "../Class/storage";
+import useLang from "../Hooks/UseLang";
 const Stack = createNativeStackNavigator();
 
 export const SearchSecond = ({ navigation, route }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const sheetRef = React.useRef(null);
   const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
   const [index, setIndex] = useState(-1);
@@ -144,11 +147,13 @@ export const SearchSecond = ({ navigation, route }) => {
             style={{
               backgroundColor: "white",
               borderRadius: 30,
-            }}>
+            }}
+          >
             <BottomSheetScrollView
               contentContainerStyle={{
                 backgroundColor: "white",
-              }}>
+              }}
+            >
               <FilterCard
                 onSelect={(e) => {
                   setFilter(e);
@@ -164,6 +169,8 @@ export const SearchSecond = ({ navigation, route }) => {
   );
 };
 export const SearchThird = ({ navigation, route }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const sheetRef = React.useRef(null);
   const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
   const [index, setIndex] = useState(-1);
@@ -275,11 +282,13 @@ export const SearchThird = ({ navigation, route }) => {
             style={{
               backgroundColor: "white",
               borderRadius: 30,
-            }}>
+            }}
+          >
             <BottomSheetScrollView
               contentContainerStyle={{
                 backgroundColor: "white",
-              }}>
+              }}
+            >
               <FilterCard
                 onSelect={(e) => {
                   setFilter(e);
@@ -295,6 +304,8 @@ export const SearchThird = ({ navigation, route }) => {
   );
 };
 export const SearchFirst = ({ navigation, route }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [searchKey, setSearchKey] = useState();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -442,6 +453,8 @@ const ITEM = ({ onSelect }) => {
   );
 };
 const SCREEN = ({ data, navigation, loader }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   // 2 next 12; after calculating 12 if there odd number then print flat cart
   const [newData, setNewData] = useState();
   useEffect(() => {
@@ -470,7 +483,8 @@ const SCREEN = ({ data, navigation, loader }) => {
         marginHorizontal: 20,
         flex: 1,
         flexWrap: "wrap",
-      }}>
+      }}
+    >
       {!data && (
         <View
           style={{
@@ -478,7 +492,8 @@ const SCREEN = ({ data, navigation, loader }) => {
             alignItems: "center",
             width: "100%",
             height: "100%",
-          }}>
+          }}
+        >
           <ActivityLoader />
         </View>
       )}
@@ -554,15 +569,19 @@ const SCREEN = ({ data, navigation, loader }) => {
             </View>
           )
         )}
-        {data&&data.length==0&&(
-          <Text style={{
-            color:"#484848",
-            fontSize:18,
-            fontWeight:"500",
-            width:"100%",
-            marginTop:24
-          }}>Top search services</Text>
-        )}
+      {data && data.length == 0 && (
+        <Text
+          style={{
+            color: "#484848",
+            fontSize: 18,
+            fontWeight: "500",
+            width: "100%",
+            marginTop: 24,
+          }}
+        >
+          {isBn ? "বেশি খোঁজা হয়েছে" : "Top search services"}
+        </Text>
+      )}
       {data &&
         data.length == 0 &&
         newData?.map((doc, i) => (

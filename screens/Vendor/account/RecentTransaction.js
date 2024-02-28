@@ -69,6 +69,8 @@ const icon = `<svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns=
 </svg>
 `;
 export const NoThing = () => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   return (
     <View
       style={{

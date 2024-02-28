@@ -109,7 +109,6 @@ const UserOrderDetails = ({ navigation, route }) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
   }, []);
   React.useEffect(() => {
     if (isFocused) {
@@ -304,6 +303,8 @@ const UserOrderDetails = ({ navigation, route }) => {
             {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
             {data?.type == "PACKAGE"
               ? `- ${data?.selectedPackage?.name}`
+              : isBn
+              ? "সার্ভিস"
               : "service"}
           </Text>
         </View>
@@ -397,11 +398,11 @@ const UserOrderDetails = ({ navigation, route }) => {
         ) : (
           <></>
         )}
-        {data?.status == "COMPLETED" && (
+        {/* {data?.status == "COMPLETED" && (
           <Text style={[styles.font, { color: "#4ADE80" }]}>
             {isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed"}
           </Text>
-        )}
+        )} */}
       </ScrollView>
       <Modal animationType="slide" visible={Boolean(amarpay)}>
         <AmarPay

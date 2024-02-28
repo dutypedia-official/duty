@@ -1,70 +1,40 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
-  Image,
   Text,
   StyleSheet,
-  ActivityIndicator,
-  Dimensions,
   Alert,
-  Pressable,
   Modal,
   RefreshControl,
+  Dimensions,
 } from "react-native";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { Color } from "../../assets/colors";
+import { Color, primaryColor } from "../../assets/colors";
 import { useSelector, useDispatch } from "react-redux";
-import Button from "./../../components/Button";
-const { width, height } = Dimensions.get("window");
 import {
-  cancelOrder,
-  getOrders,
-  makePayment,
-  orderRefound,
   acceptTimeRequest,
-  completeOrder,
-  makePaymentSubscription,
   getSubsOrderById,
-  userCancelSubs,
-  receiveSubs,
-  makePaymentInstallment,
-  makeAdvancedPaymentInstallment,
-  paymentRequestViaAmarPay,
   payRequest,
-  cancelOrderByUser,
-  getDutyFee,
 } from "../../Class/service";
-import Barcode from "./../../components/Barcode";
-import {
-  convertServerFacilities,
-  serverToLocal,
-} from "../../Class/dataConverter";
+import { convertServerFacilities } from "../../Class/dataConverter";
 import Toast from "react-native-root-toast";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { socket } from "../../Class/socket";
 import IconButton from "../../components/IconButton";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ActivityLoader from "../../components/ActivityLoader";
-import {
-  localTimeToServerDate,
-  serverTimeToLocalDate,
-  wait,
-} from "../../action";
 import InfoCart from "./OrderScript/InfoCart";
 import OrderInfo from "./OrderScript/OrderInfo";
 import StatusCart from "./OrderScript/StatusCart";
-import { createConversation } from "../../Class/message";
 import { useIsFocused } from "@react-navigation/native";
 import AmarPay from "./OrderScript/AmarPay";
 import { setHideBottomBar } from "../../Reducers/hideBottomBar";
 import ReceiptSkeleton from "../../components/ReceiptSkeleton";
 import useLang from "../../Hooks/UseLang";
+import { ActivityIndicator } from "react-native-paper";
+import ActivityLoader from "../../components/ActivityLoader";
 
 const OrderDetails = ({ navigation, route }) => {
   const orderId = route?.params?.orderId;
   const isDark = useSelector((state) => state.isDark);
-  const colors = new Color(isDark);
   const { language } = useLang();
   const isBn = language == "Bn";
   const initialState = [
@@ -88,65 +58,17 @@ const OrderDetails = ({ navigation, route }) => {
 
   const [ListData, setListData] = React.useState([]);
   const [Facilities, setFacilities] = React.useState([]);
-  const [data, setData] = React.useState();
+  const [data, setData] = React?.useState();
   const [Loader, setLoader] = React.useState(false);
   const dispatch = useDispatch();
-  const type = route?.params?.type;
-  const sOrder =
-    route.params && route.params.subsOrder ? route.params.subsOrder : null;
-  const index = route.params && route.params.index ? route.params.index : 0;
-  const [subsOrder, setSubsOrder] = useState(sOrder);
-  const [installmentOrder, setInstallmentOrder] = useState(sOrder);
-  const installmentData = data?.installmentData;
   const isFocused = useIsFocused();
   const [amarpay, setAmarPay] = useState(false);
-  const [dutyFee, setDutyFee] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const { width, height } = Dimensions.get("window");
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-
-    wait(1000).then(() => setRefreshing(false));
   }, []);
-  React.useEffect(() => {
-    if (isFocused) {
-      //console.log("hidden")
-      dispatch(setHideBottomBar(false));
-      setTimeout(() => {
-        dispatch(setHideBottomBar(false));
-      }, 50);
-    } else {
-      //console.log("seen")
-      //dispatch(setHideBottomBar(true));
-    }
-  }, [isFocused]);
-  useEffect(() => {
-    if (orderId && isFocused) {
-      setLoader(false);
-      dataLoader(orderId);
-    } else {
-      setLoader(false);
-    }
-  }, [orderId, refreshing, isFocused]);
-  React.useEffect(() => {
-    //console.log(data.selectedServices);
-    //console.warn(subsOrder)
-    if (data) {
-      setListData(data.selectedServices);
-    }
-    if (
-      data &&
-      data.facilites &&
-      Array.isArray(data.facilites.selectedOptions)
-    ) {
-      setFacilities(convertServerFacilities(data.facilites));
-    } else if (data && Array.isArray(data.facilites)) {
-      setFacilities(data.facilites);
-    }
-    if (data && data.type == "PACKAGE") {
-      setFacilities(data.selectedPackage?.features);
-    }
-    //console.log(data.selectedPackage)
-  }, [data]);
+
   const loadData = async (receiverId, order) => {
     //setLoader(false);
     try {
@@ -170,30 +92,13 @@ const OrderDetails = ({ navigation, route }) => {
     try {
       setLoader(true);
       const res = await getSubsOrderById(user.token, id);
-      setData(res.data.order);
+      setData(res.data?.order);
     } catch (err) {
       console.error(err.message);
     } finally {
       setLoader(false);
     }
   };
-  React.useEffect(() => {
-    socket.on("updateOrder", (e) => {
-      if (orderId) {
-        dataLoader(orderId);
-      }
-    });
-    return () => {
-      socket?.off("updateOrder");
-    };
-  }, []);
-  useEffect(() => {
-    if (data?.id && isFocused) {
-      //console.log(data.id)
-      // dataLoader()
-      dataLoader(data?.id);
-    }
-  }, [isFocused]);
 
   const callPayment = () => {
     // navigation.navigate("PaymentStatus",{type:true})
@@ -246,8 +151,77 @@ const OrderDetails = ({ navigation, route }) => {
     navigation.navigate("ClintFeedBack", { order: data });
   };
 
+  React.useEffect(() => {
+    socket.on("updateOrder", (e) => {
+      if (orderId) {
+        dataLoader(orderId);
+      }
+    });
+    return () => {
+      socket?.off("updateOrder");
+    };
+  }, []);
+  useEffect(() => {
+    if (data?.id && isFocused) {
+      //console.log(data.id)
+      // dataLoader()
+      dataLoader(data?.id);
+    }
+  }, [isFocused]);
+  React.useEffect(() => {
+    if (isFocused) {
+      //console.log("hidden")
+      dispatch(setHideBottomBar(false));
+      setTimeout(() => {
+        dispatch(setHideBottomBar(false));
+      }, 50);
+    } else {
+      //console.log("seen")
+      //dispatch(setHideBottomBar(true));
+    }
+  }, [isFocused]);
+  useEffect(() => {
+    if (orderId && isFocused) {
+      setLoader(false);
+      dataLoader(orderId);
+    } else {
+      setLoader(false);
+    }
+  }, [orderId, isFocused]);
+  React.useEffect(() => {
+    //console.log(data.selectedServices);
+    //console.warn(subsOrder)
+    if (data) {
+      setListData(data.selectedServices);
+    }
+    if (
+      data &&
+      data.facilites &&
+      Array.isArray(data.facilites.selectedOptions)
+    ) {
+      setFacilities(convertServerFacilities(data.facilites));
+    } else if (data && Array.isArray(data.facilites)) {
+      setFacilities(data.facilites);
+    }
+    if (data && data.type == "PACKAGE") {
+      setFacilities(data.selectedPackage?.features);
+    }
+    //console.log(data.selectedPackage)
+  }, [data]);
+
   if (Loader || !data) {
-    return <ReceiptSkeleton />;
+    // return <ReceiptSkeleton />;
+    return (
+      <View
+        style={{
+          height: height,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityLoader />
+      </View>
+    );
   }
   return (
     <SafeAreaView
@@ -301,6 +275,8 @@ const OrderDetails = ({ navigation, route }) => {
             {initialState.filter((d) => d.type.match(data.type))[0].title}{" "}
             {data?.type == "PACKAGE"
               ? `- ${data?.selectedPackage?.name}`
+              : isBn
+              ? "সার্ভিস"
               : "service"}
           </Text>
         </View>
@@ -343,13 +319,14 @@ const OrderDetails = ({ navigation, route }) => {
           deliveryText={data?.proofText}
           deliveryImage={data?.proofImage}
           type={data?.type}
+          orderedBy={data?.orderedBy}
         />
         {data?.status == "ACCEPTED" && data?.paid == false && (
           <IconButton
             onPress={callPayment}
             active={true}
             style={[styles.button, { marginBottom: 12 }]}
-            title={"Pay now"}
+            title={isBn ? "টাকা পরিশোধ করুন" : "Pay now"}
           />
         )}
         {data?.paid == false && exporters(data?.status).title != "Failed" && (
@@ -396,11 +373,11 @@ const OrderDetails = ({ navigation, route }) => {
         ) : (
           <></>
         )}
-        {data?.status == "COMPLETED" && (
+        {/* {data?.status == "COMPLETED" && (
           <Text style={[styles.font, { color: "#4ADE80" }]}>
             {isBn ? "অর্ডারটি সফল ভাবে সম্পন্ন হয়েছে" : "Order Completed"}
           </Text>
-        )}
+        )} */}
       </ScrollView>
       <Modal animationType="slide" visible={Boolean(amarpay)}>
         <AmarPay

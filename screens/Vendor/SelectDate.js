@@ -6,7 +6,7 @@ import { Color } from "../../assets/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Button from "../../components/Button";
-import { convertDate, dateConverter } from "../../action";
+import { convertDate, dateConverter, dateDifference } from "../../action";
 import IconButton from "../../components/IconButton";
 import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
@@ -78,7 +78,12 @@ export default function SelectDate({ onChange, navigation, route }) {
             isVisible={Open}
             mode="date"
             onConfirm={(e) => {
-              if (ClosingTime && ClosingTime < e) {
+              let newDate = dateConverter(new Date());
+              let oldDate = dateConverter(e);
+              if (
+                (ClosingTime && ClosingTime < e) ||
+                dateDifference(newDate, oldDate) < 0
+              ) {
                 setError(
                   isBn
                     ? "তারিখটি বর্তমানে দিন থেকে ভবিষ্যতের তারিখের ভিতরে নির্বাচন করতে হবে।"
@@ -122,7 +127,12 @@ export default function SelectDate({ onChange, navigation, route }) {
             isVisible={Close}
             mode="date"
             onConfirm={(e) => {
-              if (OpeningTime && OpeningTime >= e) {
+              let newDate = dateConverter(new Date());
+              let oldDate = dateConverter(e);
+              if (
+                (OpeningTime && OpeningTime >= e) ||
+                dateDifference(newDate, oldDate) < 0
+              ) {
                 setError(
                   isBn
                     ? "তারিখটি বর্তমানে দিন থেকে ভবিষ্যতের তারিখের ভিতরে নির্বাচন করতে হবে।"

@@ -99,7 +99,9 @@ export default function NeedExtraTime({ navigation, route }) {
                 setVisible(false);
                 Alert.alert(
                   "Opps!",
-                  "You need to select upcoming date from delivery"
+                  isBn
+                    ? "আপনাকে আগের সর্বশেষ ডেলিভারির তারিখ থেকে সামনের তারিখ নির্বাচন করতে হবে"
+                    : "You need to select upcoming date from delivery date"
                 );
               }
             }}

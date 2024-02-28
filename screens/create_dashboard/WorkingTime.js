@@ -216,7 +216,7 @@ export default function WorkingTime({ navigation, route }) {
               onChange={() => {
                 setChecked(!checked);
               }}
-              title={"24/7 open"}
+              title={isBn ? "২৪/৭ খোলা" : "24/7 open"}
               style={{
                 width: 110,
                 justifyContent: "flex-end",
@@ -239,7 +239,7 @@ export default function WorkingTime({ navigation, route }) {
                   setSat(val);
                 }}
                 setVisible={setVisible}
-                title="Saturday"
+                title={isBn ? "শনিবার" : "Saturday"}
               />
               <Days
                 dayValue={sun}
@@ -254,7 +254,7 @@ export default function WorkingTime({ navigation, route }) {
                   setSun(val);
                 }}
                 setVisible={setVisible}
-                title="Sunday"
+                title={isBn ? "রবিবার" : "Sunday"}
                 style={{ marginTop: 16 }}
               />
               <Days
@@ -270,7 +270,7 @@ export default function WorkingTime({ navigation, route }) {
                   setMon(val);
                 }}
                 setVisible={setVisible}
-                title="Monday"
+                title={isBn ? "সোমবার" : "Monday"}
                 style={{ marginTop: 16 }}
               />
               <Days
@@ -286,7 +286,7 @@ export default function WorkingTime({ navigation, route }) {
                   setTue(val);
                 }}
                 setVisible={setVisible}
-                title="Tuesday"
+                title={isBn ? "মঙ্গলবার" : "Tuesday"}
                 style={{ marginTop: 16 }}
               />
               <Days
@@ -302,7 +302,7 @@ export default function WorkingTime({ navigation, route }) {
                   setWed(val);
                 }}
                 setVisible={setVisible}
-                title="Wednesday"
+                title={isBn ? "বুধবার" : "Wednesday"}
                 style={{ marginTop: 16 }}
               />
               <Days
@@ -318,7 +318,7 @@ export default function WorkingTime({ navigation, route }) {
                   setThu(val);
                 }}
                 setVisible={setVisible}
-                title="Thursday"
+                title={isBn ? "বৃহস্পতিবার" : "Thursday"}
                 style={{ marginTop: 16 }}
               />
               <Days
@@ -334,7 +334,7 @@ export default function WorkingTime({ navigation, route }) {
                   setFri(val);
                 }}
                 setVisible={setVisible}
-                title="Friday"
+                title={isBn ? "শুক্রবার" : "Friday"}
                 style={{ marginTop: 16 }}
               />
             </Animated.View>

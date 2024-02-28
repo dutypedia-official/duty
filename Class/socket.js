@@ -1,16 +1,16 @@
 import { io } from "socket.io-client";
 const URL = "https://duty.com.bd";
-const socket = io(URL,{
+const socket = io(URL, {
   reconnection: true,
   reconnectionDelay: 1000,
-  reconnectionAttempts: 989538344345623,
+  reconnectionAttempts: 1000,
 });
 const getSocket = (id) => {
   //console.log(id)
   socket.emit("join", id);
   return socket;
 };
-const getOnlineUsers = async() => {
+const getOnlineUsers = async () => {
   socket.on("getUsers", (users) => {
     //console.log(users)
     return users;

@@ -184,6 +184,7 @@ export default function EditServicePrice({ navigation, route }) {
           <Input
             error={priceError}
             value={price}
+            maxLength={8}
             onChange={(e) => {
               // console.log(toEn(e))
               if (e?.split("")?.length > 8) {

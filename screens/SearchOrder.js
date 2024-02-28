@@ -227,12 +227,12 @@ const Screens = ({ navigation, route }) => {
       value: "Order Completed",
     },
     {
-      title: isBn ? "সার্ভিসটি বাতিল করা হয়েছে" : "Order Canceled",
+      title: isBn ? "অর্ডারটি বাতিল করা হয়েছে" : "Order Canceled",
       icon: cancelIcon,
       value: "Order Canceled",
     },
     {
-      title: isBn ? "টাকা ফেরত দেয়া হয়েছে" : "Refund",
+      title: isBn ? "সার্ভিসটি সম্পন্ন করতে ব্যর্থ হয়েছে" : "Failed",
       icon: refundIcon,
       value: "Refund",
     },

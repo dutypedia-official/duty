@@ -133,6 +133,8 @@ export const Cart = ({
   onLayout,
   service,
 }) => {
+  const { language } = useLang();
+  const isBn = language == "Bn";
   const [button, setButton] = useState(true);
   const [day, setDay] = useState(dateDifference(data?.createdAt, new Date()));
   //const user = useSelector((state) => state.user);
@@ -205,7 +207,9 @@ export const Cart = ({
           style={[styles.text1, { justifySelf: "flex-end", fontWeight: "400" }]}
         >
           {data
-            ? types.filter((d) => d.type.match(data?.order?.type))[0]?.title
+            ? isBn
+              ? types.filter((d) => d.type.match(data?.order?.type))[0]?.titleBn
+              : types.filter((d) => d.type.match(data?.order?.type))[0]?.title
             : "Bargaining"}
         </Text>
       </View>
@@ -279,7 +283,7 @@ export const Cart = ({
                   },
                 ]}
               >
-                Replay
+                {isBn ? "জবাব দিন" : "Reply"}
               </Text>
             </TouchableOpacity>
           )}

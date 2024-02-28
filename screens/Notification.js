@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Pressable,
   Dimensions,
+  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -65,8 +66,17 @@ import Reset from "./signup/Reset";
 import Recovery from "./signup/Recovery";
 import Login from "./Login";
 import useLang from "../Hooks/UseLang";
+import { ActivityIndicator } from "react-native-paper";
 
 const Stack = createNativeStackNavigator();
+
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+  const paddingToBottom = 20;
+  return (
+    layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+  );
+};
 
 const NotificationScreen = ({ navigation, route }) => {
   const user = useSelector((state) => state.user);
@@ -76,6 +86,12 @@ const NotificationScreen = ({ navigation, route }) => {
   const vendor = useSelector((state) => state.vendor);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [limit, setLimit] = useState(20);
+  const [skip, setSkip] = useState(0);
+  const [isEnd, setIsEnd] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
   const unReadNotification = useSelector((state) => state.unReadNotification);
 
   useEffect(() => {
@@ -111,32 +127,7 @@ const NotificationScreen = ({ navigation, route }) => {
       setReadNotification(res.data.notifications);
     });
   }, [isFocused, user, vendor, unReadNotification]);
-  // useEffect(() => {
-  //   socket.on("notificationReceived", (e) => {
-  //     if (vendor) {
-  //       getVendorNotificationCount(user.token, vendor.service.id)
-  //         .then((res) => {
-  //           setUnreadCount(res.data.count);
-  //           dispatch(storeNotificationCount(res.data.count));
-  //         })
-  //         .catch((err) => {
-  //           console.error(err.response.data.msg);
-  //         });
-  //     } else {
-  //       getUnreadCount(user.token)
-  //         .then((res) => {
-  //           setUnreadCount(res.data.count);
-  //           dispatch(storeNotificationCount(res.data.count));
-  //         })
-  //         .catch((err) => {
-  //           console.error(err.response.data.msg);
-  //         });
-  //     }
-  //   });
-  //   return () => {
-  //     socket?.off("notificationReceived");
-  //   };
-  // }, []);
+
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -157,33 +148,17 @@ const NotificationScreen = ({ navigation, route }) => {
       </View>
     );
   }
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {/* {unreadNotification &&
-        unreadNotification.map((doc, i) => (
-          <NotificationCart
-            start={
-              types.filter((d) => d.type == doc.notificationType)?.[0]?.start
-            }
-            end={types.filter((d) => d.type == doc.notificationType)?.[0]?.end}
-            middle={
-              types.filter((d) => d.type == doc.notificationType)?.[0]?.middle
-            }
-            active={true}
-            orderId={
-              doc.notificationType.split("_")[1] == "APPOINTMENT"
-                ? undefined
-                : doc.entityId
-            }
-            navigation={navigation}
-            data={doc}
-            key={i}
-            icon={
-              notificationData.filter((d) => d.key == doc.notificationType)?.[0]
-                ?.icon
-            }
-          />
-        ))} */}
+    <ScrollView
+      scrollEventThrottle={400}
+      onScroll={({ nativeEvent }) => {
+        if (isCloseToBottom(nativeEvent)) {
+          setIsLoading(true);
+        }
+      }}
+      showsVerticalScrollIndicator={false}
+    >
       {readNotification &&
         readNotification.map((doc, i) => (
           <NotificationCart
@@ -212,6 +187,12 @@ const NotificationScreen = ({ navigation, route }) => {
             }
           />
         ))}
+
+      {isLoading && (
+        <View style={{ paddingVertical: 10 }}>
+          <ActivityIndicator size="small" color="lightgreen" />
+        </View>
+      )}
       {readNotification && readNotification.length == 0 && (
         <Text
           style={{

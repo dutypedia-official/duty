@@ -17,7 +17,6 @@ import {
   Easing,
   StatusBar as Bar,
 } from "react-native";
-import rnTextSize, { TSFontSpecs } from "react-native-text-size";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import {

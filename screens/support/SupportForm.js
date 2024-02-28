@@ -26,15 +26,6 @@ import { uploadFile } from "../../Class/upload";
 import ActivityLoader from "../../components/ActivityLoader";
 import useLang from "../../Hooks/UseLang";
 const { width, height } = Dimensions.get("window");
-const status = [
-  "Cancel Order",
-  "Refund Order",
-  "Report For A Seller",
-  "Withdraw",
-  "Buyer Account Issues ",
-  "Seller Account Issues",
-  "Delete My Account",
-];
 
 export default function SupportForm({ navigation, route }) {
   const inset = useSafeAreaInsets();
@@ -51,6 +42,16 @@ export default function SupportForm({ navigation, route }) {
   const vendor = useSelector((state) => state.vendor);
   const { language } = useLang();
   const isBn = language == "Bn";
+
+  const status = [
+    isBn ? "অর্ডার বাতিল করন" : "Cancel Order",
+    isBn ? "টাকা ফেরত" : "Refund Order",
+    isBn ? "একজন বিক্রেতার অ্যাকাউন্ট রিপোর্ট" : "Report For A Seller",
+    isBn ? "টাকা উত্তোলন" : "Withdraw",
+    isBn ? "ক্রেতার অ্যাকাউন্ট সমস্যা" : "Buyer Account Issues ",
+    isBn ? "বিক্রেতার অ্যাকাউন্ট সমস্যা" : "Seller Account Issues",
+    isBn ? "আমার অ্যাকাউন্টটি মুছে দিন" : "Delete My Account",
+  ];
 
   // callbacks
   const handleSheetChange = React.useCallback((index) => {
@@ -223,7 +224,8 @@ export default function SupportForm({ navigation, route }) {
                 : subject
             }
           />
-          {subject == "Delete My Account" && (
+          {(subject == "Delete My Account" ||
+            subject == "আমার অ্যাকাউন্টটি মুছে দিন") && (
             <Text
               style={{
                 fontSize: 14,

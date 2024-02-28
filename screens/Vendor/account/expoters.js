@@ -1,46 +1,55 @@
+import useLang from "../../../Hooks/UseLang";
+
 export const exporters = (key) => {
-    switch (key) {
-      case "WAITING_FOR_ACCEPT":
-        return "Wait for accept order";
-      case "ACCEPTED":
-        return "Waiting for payment";
-      case "WAITING_FOR_PAYMENT":
-        return "Waiting for payment";
-      case "PROCESSING":
-        return "Processing";
-      case "DELIVERED":
-        return "Delivered";
-      case "REFUNDED":
-        return "Refunded";
-      case "CANCELLED":
-        return "Cancelled";
-      case "COMPLETED":
-        return "Completed";
-      case "PENDING":
-        return "Pending";
-      default:
-        return "Unknown";
-    }
-  };
-  export const allExporters=[
-    {
-      title:"Processing",
-      key:"PROCESSING"
-    },
-    {
-      title:"Pending",
-      key:"PENDING"
-    },
-    {
-      title:"Accepted",
-      key:"ACCEPTED"
-    },
-    {
-      title:"Cancelled",
-      key:"CANCELLED"
-    },
-    {
-      title:"Completed",
-      key:"COMPLETED"
-    },
-  ]
+  const { language } = useLang();
+  const isBn = language == "Bn";
+  switch (key) {
+    case "WAITING_FOR_ACCEPT":
+      return isBn ? "Waiting for accept order" : "Waiting for accept order";
+    case "ACCEPTED":
+      return isBn ? "Waiting for payment" : "Waiting for payment";
+    case "WAITING_FOR_PAYMENT":
+      return isBn ? "Waiting for payment" : "Waiting for payment";
+    case "PROCESSING":
+      return isBn ? "প্রক্রিয়াকরণ হচ্ছে" : "Processing";
+    case "DELIVERED":
+      return isBn ? "" : "Delivered";
+    case "REFUNDED":
+      return isBn ? "" : "Refunded";
+    case "CANCELLED":
+      return isBn ? "বাতিল করা হয়েছে" : "Cancelled";
+    case "COMPLETED":
+      return isBn ? "সম্পন্ন হয়েছে" : "Completed";
+    case "PENDING":
+      return isBn ? "পেন্ডিং আছে" : "Pending";
+    default:
+      return isBn ? "" : "Unknown";
+  }
+};
+export const allExporters = [
+  {
+    title: "Processing",
+    titleBn: "প্রক্রিয়াকরণ",
+    key: "PROCESSING",
+  },
+  {
+    title: "Pending",
+    titleBn: "পেন্ডিং",
+    key: "PENDING",
+  },
+  {
+    title: "Accepted",
+    titleBn: "গ্রহণকৃত",
+    key: "ACCEPTED",
+  },
+  {
+    title: "Cancelled",
+    titleBn: "বাতিল",
+    key: "CANCELLED",
+  },
+  {
+    title: "Completed",
+    titleBn: "সম্পন্ন",
+    key: "COMPLETED",
+  },
+];
