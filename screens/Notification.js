@@ -132,7 +132,7 @@ const NotificationScreen = ({ navigation, route }) => {
     setSkip(skip + limit);
     try {
       setIsLoading(true);
-      const { data } = await getNotifications(limit, skip);
+      const { data } = await getNotifications(user.token, limit, skip);
       setNotifications([...notifications, ...data.notifications]);
       if (data.notifications.length < limit) {
         setIsEnd(true);
