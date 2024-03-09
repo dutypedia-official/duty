@@ -128,22 +128,6 @@ const NotificationScreen = ({ navigation, route }) => {
     });
   }, [isFocused, user, vendor, unReadNotification]);
 
-  const fetchNotifications = async () => {
-    setSkip(skip + limit);
-    try {
-      setIsLoading(true);
-      const { data } = await getNotifications(user.token, limit, skip);
-      setNotifications([...notifications, ...data.notifications]);
-      if (data.notifications.length < limit) {
-        setIsEnd(true);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   React.useEffect(() => {
     if (isFocused) {
       //console.log("hidden")
@@ -170,13 +154,13 @@ const NotificationScreen = ({ navigation, route }) => {
       scrollEventThrottle={400}
       onScroll={({ nativeEvent }) => {
         if (isCloseToBottom(nativeEvent)) {
-          fetchNotifications();
+          // setIsLoading(true);
         }
       }}
       showsVerticalScrollIndicator={false}
     >
-      {notifications &&
-        notifications.map((doc, i) => (
+      {readNotification &&
+        readNotification.map((doc, i) => (
           <NotificationCart
             start={
               types.filter((d) => d.type == doc.notificationType)?.[0]?.start
@@ -204,11 +188,6 @@ const NotificationScreen = ({ navigation, route }) => {
           />
         ))}
 
-      {isLoading && (
-        <View style={{ paddingVertical: 10 }}>
-          <ActivityIndicator size="small" color="lightgreen" />
-        </View>
-      )}
       {readNotification && readNotification.length == 0 && (
         <Text
           style={{

@@ -1,4 +1,3 @@
-
 import {
   StyleSheet,
   Text,
@@ -8,10 +7,14 @@ import {
   DevSettings,
   Modal,
   Alert,
-  TextInput
+  TextInput,
 } from "react-native";
-import * as Linking from 'expo-linking';
-import { NavigationContainer, DefaultTheme, Link } from "@react-navigation/native";
+import * as Linking from "expo-linking";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  Link,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 import { secondaryColor } from "./assets/colors";
@@ -38,11 +41,9 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import * as Updates from "expo-updates";
-import {setDeviceToken} from "./Reducers/deviceToken";
+import { setDeviceToken } from "./Reducers/deviceToken";
 import { localData } from "./Class/dataConverter";
 import axios from "axios";
-
-
 
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -130,14 +131,12 @@ const Views = () => {
   const notificationListener = React.useRef();
   const responseListener = React.useRef();
   const user = useSelector((state) => state.user);
-  const [isOffline,setIsOffline]=useState(false)
-  const dispatch=useDispatch()
-
+  const [isOffline, setIsOffline] = useState(false);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    
-    regNotification()
-    getNetworkStatus()
+    regNotification();
+    getNetworkStatus();
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
@@ -155,46 +154,47 @@ const Views = () => {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, [user]);
-  React.useEffect(()=>{
-    if(!Array.isArray(user)&&user?.user?.id){
+  React.useEffect(() => {
+    if (!Array.isArray(user) && user?.user?.id) {
       socket.on("connect", () => {
         getSocket(user?.user?.id);
       });
-      updateDeviceToken(user.token, expoPushToken).then(res=>{
-        console.log("Success")
-      }).catch(e=>{
-        console.log(e.response.data.msg)
-      })
+      updateDeviceToken(user.token, expoPushToken)
+        .then((res) => {
+          console.log("Success");
+        })
+        .catch((e) => {
+          console.log(e.response.data.msg);
+        });
     }
-  },[isOffline,user,expoPushToken])
+  }, [isOffline, user, expoPushToken]);
 
   const regNotification = async () => {
     const token = await registerForPushNotificationsAsync();
+    console.log("ptttttt", token);
     setExpoPushToken(token);
-    dispatch(setDeviceToken(token))
+    dispatch(setDeviceToken(token));
     //console.log(token)
     // if (!Array.isArray(user) && user?.token && token) {
     //   await updateDeviceToken(user.token, token);
     // }
   };
-  const getNetworkStatus=async()=>{
-    
-    const res=await Network.getNetworkStateAsync();
-    if(!res.isConnected){
-      setIsOffline(true)
-      Alert.alert("Ops!","You are offline")
-    }else{
-      setIsOffline(false)
+  const getNetworkStatus = async () => {
+    const res = await Network.getNetworkStateAsync();
+    if (!res.isConnected) {
+      setIsOffline(true);
+      Alert.alert("Ops!", "You are offline");
+    } else {
+      setIsOffline(false);
     }
-  }
-  const handleDeepLink=(event)=>{
-    const data=Linking.parse(event?.url)
-    console.log(data)
-  }
-  useEffect(()=>{
-    Linking.addEventListener("url",handleDeepLink);
-    
-  },[])
+  };
+  const handleDeepLink = (event) => {
+    const data = Linking.parse(event?.url);
+    console.log(data);
+  };
+  useEffect(() => {
+    Linking.addEventListener("url", handleDeepLink);
+  }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       {/* <CustomAppStatusBar
@@ -202,19 +202,29 @@ const Views = () => {
         backgroundColor={statusBar?.backgroundColor}
       /> */}
       <StackRoute />
-     
+
       <Modal
         visible={ModalVisible}
         onRequestClose={() => {
           setModalVisible(!ModalVisible);
-        }}></Modal>
+        }}
+      ></Modal>
     </GestureHandlerRootView>
   );
 };
 
-
 async function registerForPushNotificationsAsync() {
   let token;
+
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
   if (Device.isDevice) {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
@@ -224,22 +234,19 @@ async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
-      //Alert.alert("Failed to get push token for push notification!");
+      alert("Failed to get push token for push notification!");
       return;
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
+    // Learn more about projectId:
+    // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
+    token = (
+      await Notifications.getExpoPushTokenAsync({
+        projectId: "81b891e3-f2d8-4658-961f-3fa315ee1ba4",
+      })
+    ).data;
     console.log(token);
   } else {
-    //Alert.alert("Must use physical device for Push Notifications");
-  }
-
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
-    });
+    alert("Must use physical device for Push Notifications");
   }
 
   return token;

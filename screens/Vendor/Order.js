@@ -1098,7 +1098,7 @@ export const Screens = ({ navigation, route }) => {
       }
     }
   }, [Search]);
-  if (!AllOrders || AllOrders?.length === 0 || refreshing || Loader) {
+  if (!AllOrders || refreshing || Loader) {
     return (
       <View
         style={{
@@ -1130,7 +1130,16 @@ export const Screens = ({ navigation, route }) => {
       )}
       {/* {Loader && <ActivityLoader />} */}
       {NewOrders && NewOrders.length == 0 && !Loader && (
-        <View style={customStyle.fullBox}>
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <SvgXml xml={noOrder} />
           <Text
             style={{
@@ -1140,7 +1149,7 @@ export const Screens = ({ navigation, route }) => {
           >
             {isBn ? "কোনও অর্ডার নেই" : "No Order Found"}
           </Text>
-        </View>
+        </ScrollView>
       )}
       {Loader && (
         <View style={[customStyle.fullBox, { marginBottom: 20 }]}>

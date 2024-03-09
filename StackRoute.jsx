@@ -1,101 +1,37 @@
-import {
-  Alert,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  StatusBar,
-} from "react-native";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  useRoute,
-} from "@react-navigation/native";
+import { View } from "react-native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TransitionSpecs } from "@react-navigation/stack";
 import TabRoute from "./screens/TabRoute";
-import ChatScreen from "./screens/ChatScreen";
-import ChatHead from "./components/ChatHead";
-import OtherProfile from "./screens/OtherProfile";
 const Stack = createStackNavigator();
 import { Color } from "./assets/colors";
 import SearchScreen from "./screens/SearchScreen";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import ManageOrder from "./screens/ManageOrder";
 import SubHeader from "./components/SubHeader";
-import OtherProfileHeader from "./components/OtherProfileHeader";
-import AllReviewHeader from "./components/AllReviewHeader";
-import AllReview from "./screens/AllReview";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import React from "react";
-import TableData from "./screens/Seller/TableData";
-import {
-  MD3LightTheme as Default,
-  Provider as PaperProvider,
-} from "react-native-paper";
-import SubCategories from "./screens/Seller/SubCategories";
-import Pricing from "./screens/Seller/Pricing";
-import Service from "./screens/Seller/Service";
-import Address from "./screens/Seller/Address";
 import Review from "./screens/Seller/Review";
 import AllServiceList from "./screens/Seller/AllServiceList";
-import CompanyCalendar from "./screens/Seller/CompanyCalendar";
 import Login from "./screens/Login";
-import { checkUser } from "./Class/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { getService, getDashboard } from "./Class/service";
 import AllService from "./screens/Vendor/AllService";
 import VendorAddress from "./screens/Vendor/VendorAddress";
-import Expenses from "./screens/Vendor/Expenses";
-import { AddExpenses } from "./screens/Vendor/Expenses";
-import DashboardList from "./screens/Vendor/DashboardList";
-import Category from "./screens/Seller/Category";
 import Support from "./screens/Support";
-import { getJson } from "./Class/storage";
-import { getSocket, socket } from "./Class/socket";
 import VendorProfile from "./screens/VendorProfile";
 import AddPackage, { AddScreen } from "./screens/services/AddPackage";
 import AppointmentHeader from "./components/Appointment/AppointmentHeader";
 import AppointmentList from "./screens/Seller/Appointment/AppointmentList";
 import CreateAppointment from "./screens/Seller/Appointment/CreateAppointment";
 import AppointmentDetails from "./screens/Seller/Appointment/AppointmentDetails";
-import VendorAppointmentList from "./screens/Vendor/Appointment/VendorAppointmentList";
 import CreateVendorAppointment from "./screens/Vendor/Appointment/CreateVendorAppointment";
 import AppointmentForm from "./screens/Vendor/Appointment/AppointmentForm";
 import RequestAppointmentList from "./screens/Vendor/Appointment/RequestAppointmentList";
 import VendorAppointmentListDetails from "./screens/Vendor/Appointment/VendorAppointmentListDetails";
-import UserAppointmentList from "./screens/Seller/UserAppointment/UserAppointmentList";
 import UserRequestAppointment from "./screens/Seller/UserAppointment/UserRequestAppointment";
 import UserAppointmentDetails from "./screens/Seller/UserAppointment/UserAppointmentDetails";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import FixedService from "./screens/FixedService";
-import PackageService from "./screens/PackageService";
 import { SubscriptionDates } from "./screens/Seller/SubscriptionDates";
-import * as Network from "expo-network";
 import AccountHeader from "./screens/Vendor/account/AccountHeader";
 import WithdrawFirst from "./screens/Vendor/account/WithdrawFirst";
 import WithdrawSecond from "./screens/Vendor/account/WithdrawSecond";
 import WithdrawFinal from "./screens/Vendor/account/WithdrawFinal";
-import ServiceScreen from "./screens/ServiceScreen";
-import ServiceHeader from "./components/LandingPage/ServiceHeader";
-import Search from "./screens/Search";
-import InitialPage from "./screens/create_dashboard/InitialPage";
-import CommonHeader from "./screens/create_dashboard/CommonHeader";
-import BusinessTitle from "./screens/create_dashboard/BusinessTitle";
-import YourInformation from "./screens/create_dashboard/YourInformation";
-import StakeHolder from "./screens/create_dashboard/StakeHolder";
-import Established from "./screens/create_dashboard/Established";
-import WorkingTime from "./screens/create_dashboard/WorkingTime";
-import NewPricing from "./screens/create_dashboard/NewPricing";
-import Skills from "./screens/create_dashboard/Skills";
-import ServiceDescribe from "./screens/create_dashboard/ServiceDescribe";
-import Location from "./screens/create_dashboard/Location";
-import About from "./screens/create_dashboard/About";
-import FinalReview from "./screens/create_dashboard/FinalReview";
 import ChatImage from "./screens/message/ChatImage";
 import SignUp_1 from "./screens/signup/SignUp_1";
 import SignUp_2 from "./screens/signup/SignUp_2";
@@ -105,7 +41,6 @@ import Reset from "./screens/signup/Reset";
 import UserProfile from "./screens/UserProfile";
 import WebViews from "./screens/WebViews";
 import * as Linking from "expo-linking";
-import SellerProfile from "./screens/SellerProfile";
 import customStyle from "./assets/stylesheet";
 import ActivityLoader from "./components/ActivityLoader";
 import useLang from "./Hooks/UseLang";
@@ -144,7 +79,7 @@ export default function StackRoute() {
           initialRouteName: "Home",
           screens: {
             Home: {
-              initialRouteName: vendor ? "VendorOrder" : "Feed",
+              initialRouteName: user && vendor ? "VendorOrder" : "Feed",
               screens: {
                 OtherProfile: {
                   path: "feed/service/:slug",

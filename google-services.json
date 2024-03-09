@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "35837306735",
-    "project_id": "duty-5776a",
-    "storage_bucket": "duty-5776a.appspot.com"
+    "project_number": "236738021575",
+    "project_id": "duty-f1002",
+    "storage_bucket": "duty-f1002.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:35837306735:android:7dfa61b64b38dbf3642a9a",
+        "mobilesdk_app_id": "1:236738021575:android:a1c03a9f552618656496e2",
         "android_client_info": {
           "package_name": "com.duty.bd"
         }
       },
       "oauth_client": [
         {
-          "client_id": "35837306735-phaa4sh7b2l2hph31367k8cg3stb643q.apps.googleusercontent.com",
+          "client_id": "236738021575-bmrcuo71g40dqgu7luruv184rvt1eivj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDDb-Q3Tdub-1Rx0okeVLZRLB7TXC6Hcc8"
+          "current_key": "AIzaSyCZ_7qFitXX1Bn6wtgWw72aUfMMhMq0t7E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "35837306735-phaa4sh7b2l2hph31367k8cg3stb643q.apps.googleusercontent.com",
+              "client_id": "236738021575-bmrcuo71g40dqgu7luruv184rvt1eivj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

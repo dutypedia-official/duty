@@ -175,7 +175,6 @@ const Screens = ({ navigation, route }) => {
   }
 
   if (!Data) {
-    return <></>;
     return (
       <View
         style={{
@@ -185,57 +184,6 @@ const Screens = ({ navigation, route }) => {
         }}
       >
         <SvgXml xml={emptyIcon} width="80%" />
-        <FAB
-          color="#FFFFFF"
-          icon="plus"
-          style={{
-            position: "absolute",
-            borderRadius: 30,
-            backgroundColor: "#43B05C",
-            bottom: 40,
-            right: 20,
-            width: 50,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={() => {
-            dispatch({ type: "SET_LIST_SELECTION", playload: [] });
-            if (vendor?.service?.gigs[0]?.services?.category) {
-              dispatch({
-                type: "SET_NEW_LIST_DATA",
-                playload: serverToLocal(
-                  vendor.service.gigs[0].services.options,
-                  vendor.service.gigs[0].services.category
-                ),
-              });
-              navigation.navigate("AddServiceList_1", {
-                NewDataList: serverToLocal(
-                  vendor.service.gigs[0].services.options,
-                  vendor.service.gigs[0].services.category
-                ),
-                name: "VendorOrderDetails",
-                data: "ONETIME",
-              });
-            } else {
-              dispatch({
-                type: "SET_NEW_LIST_DATA",
-                playload: serverToLocal(
-                  vendor.service.gigs[0].services,
-                  vendor.service.gigs[0].dashboard
-                ),
-              });
-              navigation.navigate("AddServiceList_1", {
-                NewDataList: serverToLocal(
-                  vendor.service.gigs[0].services,
-                  vendor.service.gigs[0].dashboard
-                ),
-                name: "VendorOrderDetails",
-                data: "ONETIME",
-              });
-            }
-          }}
-        />
       </View>
     );
   }

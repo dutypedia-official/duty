@@ -16,14 +16,14 @@ export const getUnreadNotification = async (token) => {
 };
 export const getNotification = async (token, limit = 20, skip = 0) => {
   const res = await axios.get(
-    `${url}/server/notification/get-notifications?limit=${limit}&skip=${skip}`,
+    `${url}/server/notification/get-notifications?limit=50&skip=0`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
   return res;
 };
 export const getVendorNotification = async (token, serviceId) => {
   const res = await axios.get(
-    `${url}/server/notification/get-vendor-notifications?serviceId=${serviceId}`,
+    `${url}/server/notification/get-vendor-notifications?serviceId=${serviceId}&limit=50&skip=0`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
   return res;

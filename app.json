@@ -33,7 +33,7 @@
     "ios": {
       "associatedDomains": ["applinks:duty.com.bd"],
       "supportsTablet": true,
-      "buildNumber": "7",
+      "buildNumber": "8",
       "infoPlist": {},
       "bitcode": false,
       "bundleIdentifier": "com.duty.bd",
@@ -62,7 +62,7 @@
       ],
       "googleServicesFile": "./google-services.json",
       "package": "com.duty.bd",
-      "versionCode": 4,
+      "versionCode": 8,
       "permissions": [
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.BLUETOOTH",

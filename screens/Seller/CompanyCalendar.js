@@ -54,6 +54,7 @@ export default function CompanyCalendar({ navigation, route }) {
   const isFocused = useIsFocused();
   const t47 = route?.params?.t47;
   const workingTime = route?.params?.workingTime;
+  console.log(workingTime);
   const user = useSelector((state) => state.user);
   const vendor = useSelector((state) => state.vendor);
   const [loader, setLoader] = useState(false);
@@ -65,6 +66,16 @@ export default function CompanyCalendar({ navigation, route }) {
     "Wednesday",
     "Thursday",
     "Friday",
+  ];
+
+  const daysBn = [
+    "শনিবার",
+    "রবিবার",
+    "সোমবার",
+    "মঙ্গলবার",
+    "বুধবার",
+    "বৃহস্পতিবার",
+    "শুক্রবার",
   ];
 
   const { language } = useLang();
@@ -365,15 +376,25 @@ export default function CompanyCalendar({ navigation, route }) {
             </>
           ) : (
             <View>
-              {days.map((doc, i) => (
-                <TimeCart
-                  title={doc}
-                  t47={t47}
-                  workingTime={workingTime}
-                  key={i}
-                  index={i}
-                />
-              ))}
+              {isBn
+                ? daysBn.map((doc, i) => (
+                    <TimeCart
+                      title={doc}
+                      t47={t47}
+                      workingTime={workingTime}
+                      key={i}
+                      index={i}
+                    />
+                  ))
+                : days.map((doc, i) => (
+                    <TimeCart
+                      title={doc}
+                      t47={t47}
+                      workingTime={workingTime}
+                      key={i}
+                      index={i}
+                    />
+                  ))}
               <View style={{ height: 28 }} />
             </View>
           )}

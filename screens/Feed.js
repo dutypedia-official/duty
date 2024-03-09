@@ -48,6 +48,7 @@ const Feed = ({ navigation, route }) => {
   const assentColor = colors.getAssentColor();
   const backgroundColor = colors.getBackgroundColor();
   const user = useSelector((state) => state.user);
+  const vendor = useSelector((state) => state.vendor);
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -73,6 +74,130 @@ const Feed = ({ navigation, route }) => {
       dispatch(setHideBottomBar(true));
     }
   }, [isFocused]);
+
+  return (
+    <>
+      <View style={{ flex: 1 }}>
+        <StatusBar
+          translucent={false}
+          style="dark"
+          backgroundColor={primaryColor}
+        />
+        <View style={{ height: insets?.top }} />
+        <ScrollView
+          style={{ flexGrow: 1 }}
+          stickyHeaderIndices={[0]}
+          scrollEventThrottle={16}
+          stickyHeaderHiddenOnScroll={true}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                //setPageChange(true);
+                onRefresh();
+              }}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+          onScroll={(e) => {
+            scrollY.setValue(e.nativeEvent.contentOffset.y);
+            //scroll;
+          }}
+        >
+          <Animated.View
+            style={[
+              {
+                transform: [{ translateY: translateY }],
+
+                top: 0,
+                left: 0,
+                right: 0,
+                backgroundColor: primaryColor,
+                zIndex: 500,
+              },
+            ]}
+          >
+            <View
+              style={{
+                paddingTop: 28,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: Platform.OS == "ios" ? 0 : 10,
+                alignItems: "center",
+                paddingHorizontal: 20,
+                paddingBottom: 20,
+              }}
+            >
+              <SvgXml xml={dutyIcon} />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Search");
+                }}
+                style={{
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <SvgXml xml={search} />
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+          <JoinCart
+            onClick={() => {
+              if (Array.isArray(user)) {
+                navigation.navigate("LogIn");
+                return;
+              }
+              navigation.navigate("InitialServiceCreate");
+            }}
+          />
+          <ServiceListCart navigation={navigation} />
+          <PopularCategory
+            refresh={refreshing}
+            navigation={navigation}
+            onMore={(data) => {
+              navigation.navigate("ServiceScreen", { data: data });
+            }}
+          />
+          <TopSeller
+            refresh={refreshing}
+            navigation={navigation}
+            onMore={(data) => {
+              navigation.navigate("ServiceScreen", { data: data });
+            }}
+          />
+          <Trending
+            refresh={refreshing}
+            navigation={navigation}
+            onMore={(data) => {
+              navigation.navigate("ServiceScreen", { data: data });
+            }}
+          />
+          <JoinCart
+            onClick={() => {
+              if (Array.isArray(user)) {
+                navigation.navigate("LogIn");
+                return;
+              }
+              navigation.navigate("InitialServiceCreate");
+            }}
+            colors={["#5C258D", "#4389A2"]}
+          />
+          <TopSeller
+            refresh={refreshing}
+            navigation={navigation}
+            title={isBn ? "কিছু সাজেস্ট" : "Some Suggest"}
+            onMore={(data) => {
+              navigation.navigate("ServiceScreen", { data: data });
+            }}
+          />
+        </ScrollView>
+      </View>
+    </>
+  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -152,7 +277,6 @@ const Feed = ({ navigation, route }) => {
             navigation.navigate("InitialServiceCreate");
           }}
         />
-        {/* <View style={{height:30,width:100,backgroundColor:"red"}}/> */}
         <ServiceListCart navigation={navigation} />
         <PopularCategory
           refresh={refreshing}

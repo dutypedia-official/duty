@@ -20,13 +20,19 @@ export default function NeedExtraTime({ navigation, route }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [layoutHeight, setLayoutHeight] = useState(0);
-  const [dates, setDate] = useState(new Date());
+  const [dates, setDate] = useState(null);
   const [visible, setVisible] = useState(false);
   const data = route?.params?.data;
   const [loader, setLoader] = useState(false);
   const user = useSelector((state) => state.user);
   const { language } = useLang();
   const isBn = language == "Bn";
+
+  const dateAfter = (date) => {
+    let d = new Date(date);
+    d.setDate(d.getDate() + 1);
+    return d;
+  };
 
   React.useEffect(() => {
     if (isFocused) {

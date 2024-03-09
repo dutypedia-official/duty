@@ -185,6 +185,10 @@ const Service = ({ navigation, route }) => {
       );
       return;
     }
+    if (parseInt(Price) < 50) {
+      setPriceError(isBn ? "সর্বনিম্ন ৫০ টাকা" : "Minimum 50Tk.");
+      return;
+    }
     if (FacilitiesCounter == 0 && direct && type != "SUBS") {
       setFacilitiesError(
         isBn
@@ -622,6 +626,7 @@ const Service = ({ navigation, route }) => {
               <Input
                 innerRef={priceRef}
                 value={Price}
+                maxLength={8}
                 error={PriceError}
                 onChange={(val) => {
                   setPrice(val);
@@ -633,7 +638,11 @@ const Service = ({ navigation, route }) => {
                   width: width - 40,
                   marginLeft: 20,
                 }}
-                placeholder={isBn ? "দাম" : "Price"}
+                placeholder={
+                  isBn
+                    ? "দাম লিখুন ( সর্বনিম্ন ৫০ ৳ )"
+                    : "Price (Minimum 50Tk.)"
+                }
               />
             ) : null}
 

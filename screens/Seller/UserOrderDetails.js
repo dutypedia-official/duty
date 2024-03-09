@@ -388,7 +388,11 @@ const UserOrderDetails = ({ navigation, route }) => {
         {data?.cancelledBy ? (
           <Text style={styles.font}>
             {data.cancelledBy == "USER"
-              ? "You cancelled the order"
+              ? isBn
+                ? "আপনি অর্ডারটি বাতিল করেছেন"
+                : "You cancelled the order"
+              : isBn
+              ? "বিক্রেতা অর্ডারটি বাতিল করেছে"
               : "Seller cancelled the order"}
           </Text>
         ) : !data.cancelledBy && exporters(data?.status).title == "Failed" ? (

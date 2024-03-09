@@ -491,7 +491,16 @@ const Screens = ({ navigation, route }) => {
         />
       )}
       {Orders && Orders.length == 0 && (
-        <View style={customStyle.fullBox}>
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <SvgXml xml={noOrder} />
           <Text
             style={{
@@ -501,7 +510,7 @@ const Screens = ({ navigation, route }) => {
           >
             {isBn ? "কোনও অর্ডার নেই" : "No Order Found"}
           </Text>
-        </View>
+        </ScrollView>
       )}
       {Loader && (
         <View style={[customStyle.fullBox, { marginBottom: 20 }]}>
