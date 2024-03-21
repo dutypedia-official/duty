@@ -145,7 +145,7 @@ export const TopSellerCard = ({
     },
   });
   useEffect(() => {
-    getRating(data?.id).then((res) => {
+    getRating(user?.token, data?.service?.id).then((res) => {
       setRating(res.data.rating);
     });
   }, []);
@@ -295,7 +295,7 @@ export const TopSellerCardLike = ({ width, style, height, data, onPress }) => {
     },
   });
   useEffect(() => {
-    getRating(data?.id).then((res) => {
+    getRating(user?.token, data?.service?.id).then((res) => {
       setRating(res.data.rating);
     });
   }, []);

@@ -62,7 +62,7 @@
       ],
       "googleServicesFile": "./google-services.json",
       "package": "com.duty.bd",
-      "versionCode": 8,
+      "versionCode": 9,
       "permissions": [
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.BLUETOOTH",

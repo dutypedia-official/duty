@@ -290,11 +290,9 @@ const VendorProfile = (props) => {
   }, [vendor, data, isFocused]);
 
   React.useState(() => {
-    if (newUser && data) {
-      getFullRating(newUser?.token, data?.service?.id).then((res) => {
-        setRating(res?.data?.rating);
-      });
-    }
+    getFullRating(newUser?.token, data?.service?.id).then((res) => {
+      setRating(res?.data?.rating);
+    });
   }, [data, newUser]);
   const clickFixed = (doc) => {
     navigation.navigate("VendorFixedService", { data: doc });

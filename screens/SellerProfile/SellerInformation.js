@@ -13,7 +13,7 @@ import Avatar from "../../components/Avatar";
 const primaryColor = "white";
 import { Tooltip } from "react-native-paper";
 import AnimatedHeight from "../../Hooks/AnimatedHeight";
-import { getFullRating } from "../../Class/service";
+import { getFullRating, getRating } from "../../Class/service";
 import { MotiView } from "moti";
 import ProfileOption from "../../components/ProfileOption";
 import { calenderIcon, noticeIcon, user } from "../../assets/icon";
@@ -36,17 +36,20 @@ export default function SellerInformation({ Data, newUser, navigation }) {
   const [OpenDetails, setOpenDetails] = React.useState(false);
   const [calenderHeight, setCalenderHeight] = React.useState(0);
   const { language } = useLang();
+  const [isReady, setIsReady] = useState(false);
   const isBn = language == "Bn";
   useEffect(() => {
     Data && setSpecialty(Data?.service?.keywords);
   }, [Data]);
-  React.useState(() => {
-    if (newUser && Data) {
-      getFullRating(newUser?.token, Data?.service?.id).then((res) => {
+  React.useLayoutEffect(() => {
+    const timeoutId = setTimeout(() => {
+      getRating(newUser?.token, Data?.service?.id).then((res) => {
         setRating(res?.data?.rating);
       });
-    }
-  }, [Data, newUser]);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [newUser, Data]);
 
   return (
     <>

@@ -1,7 +1,14 @@
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
-export default function InputButton({ style, value, onPress, placeholder,error,Icon }) {
+export default function InputButton({
+  style,
+  value,
+  onPress,
+  placeholder,
+  error,
+  Icon,
+}) {
   return (
     <View>
       <Pressable
@@ -15,23 +22,27 @@ export default function InputButton({ style, value, onPress, placeholder,error,I
             height: 45,
             paddingHorizontal: 10,
             alignItems: "center",
-            flexDirection:"row",
-            justifyContent:"space-between"
+            flexDirection: "row",
+            justifyContent: "space-between",
           },
 
           { borderColor: "#e5e5e5" },
           style,
-        ]}>
-        <Text numberOfLines={1}
+        ]}
+      >
+        <Text
+          numberOfLines={1}
           style={{
             fontFamily: "Poppins-Light",
             fontSize: 15,
-          }}>
+            opacity: value ? 1 : 0.5,
+          }}
+        >
           {value ? value : placeholder}
         </Text>
-        {Icon&&(<Icon/>)}
+        {Icon && <Icon />}
       </Pressable>
-      {error&&(<Text style={{color:"red",marginTop:5}}>{error}</Text>)}
+      {error && <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>}
     </View>
   );
 }

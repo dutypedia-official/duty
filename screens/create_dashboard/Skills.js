@@ -48,6 +48,7 @@ export default function Skills({ navigation, route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const { language } = useLang();
   const isBn = language == "Bn";
+  console.log(serviceCategory);
   useEffect(() => {
     setLength(skills.length);
   }, [skills.length]);

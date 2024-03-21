@@ -47,9 +47,9 @@ export const createService = async (
   let dateIs = `${businessForm.startDate.year}-${month}-${day}`;
   const formData = {
     data: {
-      keywords:businessForm?.keywords,
-      category:businessForm?.category,
-      skills:businessForm?.skills,
+      keywords: businessForm?.keywords,
+      category: businessForm?.category,
+      skills: businessForm?.skills,
       uploadServiceData: {
         about: businessForm.about.toString(),
         speciality: businessForm.speciality,
@@ -65,7 +65,7 @@ export const createService = async (
         worker: businessForm.teamNumber,
         startDate: dateIs,
         workingTime: working,
-        t47:businessForm?.t47,
+        t47: businessForm?.t47,
         startingPrice: businessForm.price,
         facilites: {
           title: "Choose Your Facilities",
@@ -86,7 +86,7 @@ export const createService = async (
     wallPhotoUrl: img2,
   };
   //console.log('----------------------------------------------------');
-  
+
   const options = {
     method: "POST",
     headers: myHeaders,
@@ -120,9 +120,12 @@ export const getServiceBySlug = async (token, slug) => {
 };
 export const getServiceMessageCount = async (token, serviceId) => {
   //console.log(token)
-  const result = await axios.get(`${url}/server/chat/messages/count-unread-by-service/${serviceId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const result = await axios.get(
+    `${url}/server/chat/messages/count-unread-by-service/${serviceId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return result;
 };
 export const getGigs = async (token, id) => {
@@ -154,28 +157,37 @@ export const getServiceGigs = async (token) => {
   });
   return res;
 };
-export const getGigById = async (token,gigId) => {
+export const getGigById = async (token, gigId) => {
   const res = await axios.get(`${url}/server/services/get/gig/${gigId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res;
 };
-export const getCategory = async (token,query) => {
-  const res = await axios.get(`${url}/server/services/get-category-data?q=${query}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const getCategory = async (token, query) => {
+  const res = await axios.get(
+    `${url}/server/services/get-category-data?q=${query}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return res;
 };
-export const getCategorySkills = async (token,key) => {
-  const res = await axios.get(`${url}/server/services/get-suggestion-data?key=${key}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const getCategorySkills = async (token, key) => {
+  const res = await axios.get(
+    `${url}/server/services/get-suggestion-data?key=${key}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return res;
 };
-export const getSkillSuggestion = async (token,category) => {
-  const res = await axios.get(`${url}/server/services/get-skill-data?category=${category}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const getSkillSuggestion = async (token, category) => {
+  const res = await axios.get(
+    `${url}/server/services/get-skill-data?category=${category}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return res;
 };
 export const changeActiveService = async (token, serviceId, type) => {
@@ -212,14 +224,14 @@ export const createOtherService = async (
         ? businessForm.facilities.filter((data) => data.checked == true)
         : [],
     },
-    skills:listData,
+    skills: listData,
     description: businessForm.description,
     images: images,
     serviceId: serviceId,
     type: type,
     packageData: businessForm.packageData,
   };
-  
+
   const res = await axios.post(`${url}/server/services/create/gig`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -266,7 +278,7 @@ export const createOtherServiceIndividual = async (
     installmentData: installmentData,
   };
 
-  return
+  return;
   const res = await axios.post(`${url}/server/services/create/gig`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -320,14 +332,18 @@ export const getDashboardTitle = (title) => {
   let text = title.toUpperCase().split("");
   let dashboard = "";
   DASHBOARD.forEach((das, i) => {
-    let arr=das.split("")
-    if(text[0].match("I")&&text[1].match("T")){
-      dashboard=DASHBOARD[i]
-    }else if(text[0].match(arr[0])&&text[1].match(arr[1])&&text[2].match(arr[2])){
-      dashboard=DASHBOARD[i]
+    let arr = das.split("");
+    if (text[0].match("I") && text[1].match("T")) {
+      dashboard = DASHBOARD[i];
+    } else if (
+      text[0].match(arr[0]) &&
+      text[1].match(arr[1]) &&
+      text[2].match(arr[2])
+    ) {
+      dashboard = DASHBOARD[i];
     }
-  })
-  
+  });
+
   return dashboard;
 };
 export const getAllGigs = async (token) => {
@@ -1056,15 +1072,17 @@ export const rejectRefoundInstallment = async (token, orderId) => {
 
   return res;
 };
-export const search = async (token, data,sub) => {
-  console.log(data)
+export const search = async (token, data, sub) => {
+  console.log(data);
   const res = await axios.post(`${url}/server/services/search?q=${sub}`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res;
 };
-export const getRating = async (serviceId) => {
-  const res = await axios.get(`${url}/server/review/get-rating/${serviceId}`);
+export const getRating = async (token, serviceId) => {
+  const res = await axios.get(`${url}/server/review/get-rating/${serviceId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return res;
 };
 export const getDashboardInfo = async (token, serviceId) => {
@@ -1127,7 +1145,7 @@ export const getVerificationDetails = async (token, serviceId) => {
   return res;
 };
 export const saveBankDetails = async (token, data) => {
-  console.log(data)
+  console.log(data);
   const res = await axios.post(`${url}/server/balance/add-bank`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -1297,35 +1315,49 @@ export const getSuggestServices = async () => {
   const res = await axios.get(`${url}/server/services/gigs/suggest`);
   return res;
 };
-export const createSupport = async (token,subject,description,image,serviceId) => {
-  const res = await axios.post(`${url}/server/support/create`,{
-    subject: subject,
-    message: description,
-    image: image,
-    serviceId:serviceId
-  },{
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const createSupport = async (
+  token,
+  subject,
+  description,
+  image,
+  serviceId
+) => {
+  const res = await axios.post(
+    `${url}/server/support/create`,
+    {
+      subject: subject,
+      message: description,
+      image: image,
+      serviceId: serviceId,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return res;
 };
-export const createReport = async (token,subject,description,serviceId) => {
-  const res = await axios.post(`${url}/server/services/report`,{
-    subject: subject,
-    description: description,
-    serviceId: serviceId,
-  },{
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const createReport = async (token, subject, description, serviceId) => {
+  const res = await axios.post(
+    `${url}/server/services/report`,
+    {
+      subject: subject,
+      description: description,
+      serviceId: serviceId,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return res;
 };
 export const getDutyFee = async (token) => {
-  const res = await axios.get(`${url}/server/services/get-duty-fee`,{
+  const res = await axios.get(`${url}/server/services/get-duty-fee`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res;
 };
-export const getFullRating = async (token,serviceId) => {
-  const res = await axios.get(`${url}/server/review/get-rating/${serviceId}`,{
+export const getFullRating = async (token, serviceId) => {
+  const res = await axios.get(`${url}/server/review/get-rating/${serviceId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res;

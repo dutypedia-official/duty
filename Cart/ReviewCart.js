@@ -110,7 +110,6 @@ export default ReviewCart;
 const styles = StyleSheet.create({
   text1: {
     fontSize: 14,
-    lineHeight: 14,
     fontWeight: "500",
   },
   text2: {

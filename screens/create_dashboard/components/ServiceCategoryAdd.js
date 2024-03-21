@@ -51,22 +51,22 @@ export default function ServiceCategoryAdd({ onClose, onSelect }) {
     });
   }, []);
 
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      keyboardDidHide
-    );
+  // useEffect(() => {
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     "keyboardDidHide",
+  //     keyboardDidHide
+  //   );
 
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
+  //   return () => {
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
 
-  const keyboardDidHide = () => {
-    if (textInputRef.current) {
-      textInputRef.current.focus();
-    }
-  };
+  // const keyboardDidHide = () => {
+  //   if (textInputRef.current) {
+  //     textInputRef.current.focus();
+  //   }
+  // };
 
   return (
     <KeyboardAvoidingView
@@ -158,7 +158,7 @@ export default function ServiceCategoryAdd({ onClose, onSelect }) {
                 key
                   ? key
                   : {
-                      name: key,
+                      name: text,
                     }
               );
             }

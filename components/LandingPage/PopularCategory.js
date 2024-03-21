@@ -116,7 +116,7 @@ export const Card = ({ style, data, onPress }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getRating(data?.id).then((res) => {
+    getRating(user?.token, data?.service?.id).then((res) => {
       setRating(res.data.rating);
     });
   }, []);
